@@ -67,19 +67,21 @@ $most_searched_stmt->close();
     <title>Country Capital Finder</title>
 </head>
 <body>
-    <h1>🇺🇸🇪🇺 Find a Country's Capital 🇷🇺🇨🇳</h1>
+    <div class="main">
+        <h1>🇺🇸🇪🇺 Find a Country's Capital 🇷🇺🇨🇳</h1>
 
-    <form action="index.php" method="post">
-        <label>Enter a country: </label>
-        <input type="text" name="country" required>
-        <input type="submit" value="Submit">
-    </form>
+        <form action="index.php" method="post">
+            <label>Enter a country: </label>
+            <input type="text" name="country" required>
+            <input type="submit" value="Submit">
+        </form>
 
-    <?php if (isset($message)) { ?>
-        <p><?php echo $message; ?></p>
-    <?php } ?>
+        <?php if (isset($message)) { ?>
+            <p><?php echo $message; ?></p>
+        <?php } ?>
+    </div>
 
-    <h3>What's the Most Searched Country on this app?</h3>
+    <h3>What's the most searched country on this app?</h3>
     <div id="most-searched">
         <?php if ($most_searched_country) { ?>
             <p>The most searched country on this app is <?php echo $most_searched_country; ?> with <?php echo $most_searches; ?> searches.</p>

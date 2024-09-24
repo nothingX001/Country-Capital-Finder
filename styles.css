@@ -5,3 +5,10 @@ body {
     padding: 0;
     text-align: center;
 }
+
+.main {
+    padding: 80px;
+    margin: 10px 160px 10px 160px;
+    border: 1px black solid;
+    border-radius: 5px;
+}
