@@ -1,14 +1,14 @@
 <?php
-// ClearDB connection details
-$url = parse_url(getenv("mysql://bbf9f52b4bd161:1731f103@us-cluster-east-01.k8s.cleardb.net/heroku_bcd9c36422ff993?reconnect=true"));
+// Parse the ClearDB connection information from the environment variable
+$cleardb_url = parse_url("mysql://bbf9f52b4bd161:1731f103@us-cluster-east-01.k8s.cleardb.net/heroku_bcd9c36422ff993?reconnect=true");
 
-$host = $url["host"];
-$user = $url["user"];
-$password = $url["pass"];
-$dbname = substr($url["path"], 1); // Remove the leading '/' from the path
+$host = $cleardb_url["host"]; // us-cluster-east-01.k8s.cleardb.net
+$user = $cleardb_url["user"]; // bbf9f52b4bd161
+$pass = $cleardb_url["pass"]; // 1731f103
+$db = substr($cleardb_url["path"], 1); // heroku_bcd9c36422ff993
 
-// Connect to ClearDB MySQL
-$conn = new mysqli($host, $user, $password, $dbname);
+// Create a connection to the database
+$conn = new mysqli($host, $user, $pass, $db);
 
 // Check the connection
 if ($conn->connect_error) {
