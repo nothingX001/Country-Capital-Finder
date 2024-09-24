@@ -1,18 +1,17 @@
 <?php
-// Parse the DATABASE_URL environment variable provided by Heroku
-$db = parse_url(getenv("postgres://ua60mjac0k7a4b:pa526b469a3cc8a5d08dd59171c895c666d76320c1a9c61441195f57f7c909991@c67okggoj39697.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d364glsdk3i6cn"));
+// ClearDB connection details
+$url = parse_url(getenv("mysql://bbf9f52b4bd161:1731f103@us-cluster-east-01.k8s.cleardb.net/heroku_bcd9c36422ff993?reconnect=true"));
 
-// Extract the connection parameters from the URL
-$host = $db["host"];
-$port = $db["port"];
-$user = $db["user"];
-$password = $db["pass"];
-$dbname = ltrim($db["path"], '/');
+$host = $url["host"];
+$user = $url["user"];
+$password = $url["pass"];
+$dbname = substr($url["path"], 1); // Remove the leading '/' from the path
 
-// Connect to PostgreSQL using the parsed connection parameters
-$conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
+// Connect to ClearDB MySQL
+$conn = new mysqli($host, $user, $password, $dbname);
 
-if (!$conn) {
-    die("Connection failed: " . pg_last_error());
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
