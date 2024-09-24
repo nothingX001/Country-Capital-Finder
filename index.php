@@ -81,7 +81,7 @@ $most_searched_stmt->close();
         <?php } ?>
     </div>
 
-    <h3>What's the most searched country on this app?</h3>
+    <h4>What's the most searched country on this app?</h4>
     <div id="most-searched">
         <?php if ($most_searched_country) { ?>
             <p>The most searched country on this app is <?php echo $most_searched_country; ?> with <?php echo $most_searches; ?> searches.</p>
