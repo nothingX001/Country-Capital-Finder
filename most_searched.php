@@ -21,3 +21,4 @@ if ($most_searched_country) {
     echo "No searches have been recorded yet.";
 }
 ?>
+
