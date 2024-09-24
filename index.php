@@ -67,7 +67,7 @@ $most_searched_stmt->close();
     <title>Country Capital Finder</title>
 </head>
 <body>
-    <h1>🇺🇸🇪🇺 Find a Country's Capital! 🇷🇺🇨🇳</h1>
+    <h1>🇺🇸🇪🇺 Find a Country's Capital 🇷🇺🇨🇳</h1>
 
     <form action="index.php" method="post">
         <label>Enter a country: </label>
