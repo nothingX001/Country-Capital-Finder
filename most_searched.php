@@ -16,7 +16,7 @@ $most_searched_stmt->fetch();
 $most_searched_stmt->close();
 
 if ($most_searched_country) {
-    echo "The most searched country is $most_searched_country with $most_searches searches.";
+    echo "The most searched country on this app is $most_searched_country with $most_searches searches.";
 } else {
     echo "No searches have been recorded yet.";
 }
