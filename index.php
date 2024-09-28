@@ -160,13 +160,6 @@ $unique_countries_stmt->close();
             </ul>
         </section>
 
-        <section id="quiz">
-            <h2>Test Your Knowledge: Country Capitals Quiz</h2>
-            <p>Think you know your capitals? Take our quiz and see how well you do!</p>
-            <button onclick="startQuiz()">Start Quiz</button>
-        </section>
-
-
         <!-- Site Statistics Section -->
         <section class="most-searched-section">
             <h2>📊 Site Statistics</h2>
