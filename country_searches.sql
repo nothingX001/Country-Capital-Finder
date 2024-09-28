@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 24, 2024 at 03:51 PM
+-- Generation Time: Sep 28, 2024 at 05:31 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -237,6 +237,18 @@ INSERT INTO `countries` (`id`, `country_name`, `capital_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `recent_searches`
+--
+
+CREATE TABLE `recent_searches` (
+  `id` int(11) NOT NULL,
+  `country_id` int(11) NOT NULL,
+  `search_time` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `search_tracking`
 --
 
@@ -277,10 +289,17 @@ ALTER TABLE `countries`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `recent_searches`
+--
+ALTER TABLE `recent_searches`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_country_id_recent` (`country_id`);
+
+--
 -- Indexes for table `search_tracking`
 --
 ALTER TABLE `search_tracking`
-  ADD KEY `country_id` (`country_id`);
+  ADD KEY `idx_country_id` (`country_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -293,8 +312,20 @@ ALTER TABLE `countries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
 
 --
+-- AUTO_INCREMENT for table `recent_searches`
+--
+ALTER TABLE `recent_searches`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `recent_searches`
+--
+ALTER TABLE `recent_searches`
+  ADD CONSTRAINT `recent_searches_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
 
 --
 -- Constraints for table `search_tracking`
