@@ -37,24 +37,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $insert_stmt->execute();
             $insert_stmt->close();
         }
+
+        // Update most recent search
+        $recent_stmt = $conn->prepare("INSERT INTO recent_searches (country_id, search_time) VALUES (?, NOW())");
+        $recent_stmt->bind_param("i", $country_id);
+        $recent_stmt->execute();
+        $recent_stmt->close();
     } else {
         $message = "Sorry, the country you entered is not in our list.";
     }
 }
 
-// Get the most searched country
-$most_searched_stmt = $conn->prepare("
-    SELECT c.country_name, MAX(st.search_count) as max_searches
-    FROM search_tracking st
-    JOIN countries c ON st.country_id = c.id
-    GROUP BY c.country_name
-    ORDER BY max_searches DESC
+// Fetch statistics for the Site Statistics section
+include 'most_searched.php';
+
+// Fetch the most recent search
+$recent_search_stmt = $conn->prepare("
+    SELECT c.country_name, r.search_time
+    FROM recent_searches r
+    JOIN countries c ON r.country_id = c.id
+    ORDER BY r.search_time DESC
     LIMIT 1
 ");
-$most_searched_stmt->execute();
-$most_searched_stmt->bind_result($most_searched_country, $most_searches);
-$most_searched_stmt->fetch();
-$most_searched_stmt->close();
+$recent_search_stmt->execute();
+$recent_search_stmt->bind_result($most_recent_search, $search_time);
+$recent_search_stmt->fetch();
+$recent_search_stmt->close();
+
+// Get total searches
+$total_searches_stmt = $conn->prepare("SELECT SUM(search_count) FROM search_tracking");
+$total_searches_stmt->execute();
+$total_searches_stmt->bind_result($total_searches);
+$total_searches_stmt->fetch();
+$total_searches_stmt->close();
+
+// Get searches today
+$searches_today_stmt = $conn->prepare("
+    SELECT COUNT(*) FROM recent_searches 
+    WHERE DATE(search_time) = CURDATE()
+");
+$searches_today_stmt->execute();
+$searches_today_stmt->bind_result($searches_today);
+$searches_today_stmt->fetch();
+$searches_today_stmt->close();
+
+// Get number of unique countries searched
+$unique_countries_stmt = $conn->prepare("SELECT COUNT(DISTINCT country_id) FROM search_tracking");
+$unique_countries_stmt->execute();
+$unique_countries_stmt->bind_result($unique_countries_searched);
+$unique_countries_stmt->fetch();
+$unique_countries_stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -80,69 +112,26 @@ $most_searched_stmt->close();
         <?php } ?>
     </div>
 
+    <!-- Site Statistics Section -->
     <div class="most-searched-section">
-        <h4>What's the most searched country on this app?</h4>
-        <div id="most-searched">
-            <?php if ($most_searched_country) { ?>
-                <p>The most searched country on this app is <?php echo $most_searched_country; ?> with <?php echo $most_searches; ?> searches.</p>
-            <?php } else { ?>
-                <p>No searches have been recorded yet.</p>
-            <?php } ?>
+        <h4>📊 Site Statistics</h4>
+        <div id="site-stats">
+            <!-- Most Searched Country -->
+            <p>🔝 Most Searched Country: <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
+
+            <!-- Most Recent Search -->
+            <p>🕒 Most Recent Search: <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $search_time ?? "N/A"; ?></p>
+
+            <!-- Total Number of Searches -->
+            <p>🔢 Total Searches: <?php echo $total_searches ?? 0; ?></p>
+
+            <!-- Searches Today -->
+            <p>📅 Searches Today: <?php echo $searches_today ?? 0; ?></p>
+
+            <!-- Number of Unique Countries Searched -->
+            <p>🌍 Unique Countries Searched: <?php echo $unique_countries_searched ?? 0; ?></p>
         </div>
     </div>
-
-    <!-- SEO Optimized Content Starts Here -->
-
-    <!-- FAQ Section -->
-    <section class="faq">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-item">
-            <h3>What is a country capital finder?</h3>
-            <p>A country capital finder is a tool that helps users quickly locate the capital city of any country around the world.</p>
-        </div>
-        <div class="faq-item">
-            <h3>How accurate is the information?</h3>
-            <p>Our country capital information is regularly updated and sourced from trusted databases to ensure accuracy.</p>
-        </div>
-        <div class="faq-item">
-            <h3>How do I use this tool?</h3>
-            <p>Simply type the name of any country in the search bar above and click "Submit" to find its capital.</p>
-        </div>
-    </section>
-
-    <!-- List of Countries and Capitals -->
-    <section class="country-capitals">
-        <h2>Complete List of Countries and Capitals</h2>
-        <p>Below is a list of all countries and their capital cities:</p>
-        <ul>
-            <li>United States - Washington, D.C.</li>
-            <li>France - Paris</li>
-            <li>Germany - Berlin</li>
-            <li>Japan - Tokyo</li>
-            <li>Australia - Canberra</li>
-            <!-- Add more countries as needed -->
-        </ul>
-    </section>
-
-    <!-- Travel Section -->
-    <section class="travel-tips">
-        <h2>Top Travel Tips for Visiting Capital Cities</h2>
-        <p>Traveling to a capital city soon? Here are some tips:</p>
-        <ul>
-            <li>Plan ahead and make sure to visit famous landmarks.</li>
-            <li>Always carry local currency when visiting markets or small shops.</li>
-            <li>Try local foods – every capital city has its own unique cuisine!</li>
-            <!-- Add more tips as necessary -->
-        </ul>
-    </section>
-
-    <!-- Educational Content -->
-    <section class="learning-capitals">
-        <h2>Why Learn About World Capitals?</h2>
-        <p>Knowing the capitals of countries can improve your geographical knowledge, help in travel, and even prepare you for trivia games. Use our tool to test and expand your knowledge of world capitals!</p>
-    </section>
-
-    <!-- SEO Optimized Content Ends Here -->
 
 </body>
 </html>
