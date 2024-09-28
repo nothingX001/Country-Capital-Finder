@@ -5,8 +5,8 @@ body {
     padding: 0;
     background: linear-gradient(135deg, #fceff9, #e0c3fc);
     text-align: center;
-    padding-left: 10px; /* Add padding for side spacing */
-    padding-right: 10px; /* Add padding for side spacing */
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* Main Section */
@@ -98,14 +98,14 @@ p.message {
     font-weight: bold;
     color: #333;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #f7797d; /* Line below the heading */
+    border-bottom: 2px solid #f7797d; /* Ensure line below the heading */
     padding-bottom: 0.5rem;
 }
 
 /* Bullet points visible only in the Why Use section */
 #why-use ul {
-    list-style: disc; /* Add bullet points */
-    padding-left: 40px; /* Indent the bullet points */
+    list-style: disc;
+    padding-left: 40px;
 }
 
 #why-use ul li {
@@ -127,7 +127,7 @@ p.message {
 
 /* Remove bullets from the FAQ section */
 #faq ul {
-    list-style: none; /* Remove bullet points */
+    list-style: none;
     padding-left: 0;
 }
 
@@ -157,8 +157,9 @@ p.message {
 
 /* Site Statistics inside SEO Content */
 .site-stats {
-    padding-top: 1.5rem; /* Reduced padding for even spacing */
-    margin-top: 1.5rem; /* Adjusted margin for better spacing */
+    padding-top: 2rem;
+    border-top: none; /* Remove any extra lines */
+    margin-top: 2rem;
 }
 
 .site-stats p {
@@ -174,18 +175,18 @@ p.message {
 
 /* Center the Quiz button, but align the header to the left */
 #quiz h2 {
-    text-align: left; /* Align the header to the left */
+    text-align: left;
 }
 
 #quiz p, #quiz button {
     text-align: center;
-    margin: 0 auto; /* Center the button */
-    display: block; /* Make the button a block element for centering */
+    margin: 0 auto;
+    display: block;
 }
 
 /* Add even spacing to the top of the quiz button */
 #quiz button {
-    margin: 20px auto; /* Adjust the margin to add spacing at the top */
+    margin: 20px auto;
     display: block;
     padding: 12px 20px;
     background: linear-gradient(90deg, #f7797d, #FBD786);
@@ -205,7 +206,7 @@ p.message {
 /* Responsiveness */
 @media (max-width: 768px) {
     input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 95%; /* Add spacing on the sides for mobile */
+        width: 95%;
     }
 
     .seo-content h2, .site-stats h4 {
@@ -213,7 +214,7 @@ p.message {
     }
 
     h1 {
-        font-size: 2.2rem; /* Shrink the h1 further on small screens */
+        font-size: 2.2rem;
     }
 
     .seo-content p, .seo-content li {
