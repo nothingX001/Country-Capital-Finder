@@ -99,9 +99,81 @@ p.message {
     color: #555;
 }
 
+/* SEO Content Section */
+.seo-content {
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin: 50px auto;
+    width: 80%;
+    max-width: 900px;
+    text-align: left;
+}
+
+.seo-content h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f7797d;
+    padding-bottom: 0.5rem;
+}
+
+.seo-content ul,
+.seo-content dl {
+    margin-bottom: 1.5rem;
+    color: #555;
+}
+
+.seo-content li,
+.seo-content dt {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.seo-content dd {
+    margin-left: 20px;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.seo-content p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.seo-content button {
+    background: linear-gradient(90deg, #f7797d, #FBD786);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.seo-content button:hover {
+    transform: scale(1.05);
+}
+
 /* Responsiveness */
 @media (max-width: 768px) {
-    input[type="text"], input[type="submit"], .main, .most-searched-section {
+    input[type="text"], input[type="submit"], .main, .most-searched-section, .seo-content {
         width: 90%;
+    }
+
+    .seo-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .seo-content p, .seo-content li {
+        font-size: 1.1rem;
     }
 }
