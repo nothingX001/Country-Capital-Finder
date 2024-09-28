@@ -54,10 +54,6 @@ input[type="submit"] {
     margin-top: 1rem;
 }
 
-input[type="submit"]:hover {
-    box-shadow: 0 5px 15px rgba(247, 121, 125, 0.4);
-}
-
 /* Most Searched Section */
 .most-searched-section {
     background-color: #fff;
