@@ -17,27 +17,21 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
 -- Database: `country_searches`
---
 
 -- --------------------------------------------------------
-
---
 -- Table structure for table `countries`
 --
 
-CREATE TABLE `countries` (
+CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(11) NOT NULL,
   `country_name` varchar(255) NOT NULL,
-  `capital_name` varchar(255) NOT NULL
+  `capital_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
 -- Dumping data for table `countries`
---
-
-INSERT INTO `countries` (`id`, `country_name`, `capital_name`) VALUES
+INSERT IGNORE INTO `countries` (`id`, `country_name`, `capital_name`) VALUES
 (1, 'Afghanistan', 'Kabul'),
 (2, 'Albania', 'Tirana'),
 (3, 'Algeria', 'Algiers'),
@@ -223,7 +217,7 @@ INSERT INTO `countries` (`id`, `country_name`, `capital_name`) VALUES
 (183, 'Ukraine', 'Kyiv'),
 (184, 'United Arab Emirates', 'Abu Dhabi'),
 (185, 'United Kingdom', 'London'),
-(186, 'United States', 'Washington, D.C'),
+(186, 'United States', 'Washington, D.C.'),
 (187, 'Uruguay', 'Montevideo'),
 (188, 'Uzbekistan', 'Tashkent'),
 (189, 'Vanuatu', 'Port Vila'),
@@ -236,32 +230,31 @@ INSERT INTO `countries` (`id`, `country_name`, `capital_name`) VALUES
 
 -- --------------------------------------------------------
 
---
 -- Table structure for table `recent_searches`
 --
 
-CREATE TABLE `recent_searches` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `recent_searches` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `country_id` int(11) NOT NULL,
-  `search_time` timestamp NOT NULL DEFAULT current_timestamp()
+  `search_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `idx_country_id_recent` (`country_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
---
 -- Table structure for table `search_tracking`
 --
 
-CREATE TABLE `search_tracking` (
+CREATE TABLE IF NOT EXISTS `search_tracking` (
   `country_id` int(11) DEFAULT NULL,
-  `search_count` int(11) DEFAULT 1
+  `search_count` int(11) DEFAULT 1,
+  KEY `idx_country_id` (`country_id`),
+  CONSTRAINT `search_tracking_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
 -- Dumping data for table `search_tracking`
---
-
-INSERT INTO `search_tracking` (`country_id`, `search_count`) VALUES
+INSERT IGNORE INTO `search_tracking` (`country_id`, `search_count`) VALUES
 (186, 14),
 (182, 1),
 (91, 1),
@@ -278,60 +271,6 @@ INSERT INTO `search_tracking` (`country_id`, `search_count`) VALUES
 (21, 1),
 (125, 5);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `countries`
---
-ALTER TABLE `countries`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `recent_searches`
---
-ALTER TABLE `recent_searches`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_country_id_recent` (`country_id`);
-
---
--- Indexes for table `search_tracking`
---
-ALTER TABLE `search_tracking`
-  ADD KEY `idx_country_id` (`country_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `countries`
---
-ALTER TABLE `countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
-
---
--- AUTO_INCREMENT for table `recent_searches`
---
-ALTER TABLE `recent_searches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `recent_searches`
---
-ALTER TABLE `recent_searches`
-  ADD CONSTRAINT `recent_searches_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`);
-
---
--- Constraints for table `search_tracking`
---
-ALTER TABLE `search_tracking`
-  ADD CONSTRAINT `search_tracking_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
