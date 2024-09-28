@@ -66,34 +66,7 @@ p.message {
     margin-top: 1rem;
 }
 
-/* Site Statistics Section */
-.most-searched-section {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    margin: 50px auto;
-    width: 80%;
-    max-width: 900px;
-    text-align: left;
-}
-
-.most-searched-section h4 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 2px solid #f7797d;
-    padding-bottom: 10px;
-    margin-bottom: 1rem;
-}
-
-.most-searched-section p {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 1rem;
-}
-
-/* SEO Content Section - Minimalist, Clean, Instagram-Inspired */
+/* SEO Content Section - Merged with Site Statistics */
 .seo-content {
     background: linear-gradient(135deg, #fff, #f0f0f0);
     padding: 2rem;
@@ -119,23 +92,47 @@ p.message {
     padding-bottom: 0.5rem;
 }
 
-.seo-content ul {
-    list-style: none;
-    padding-left: 0;
+/* Bullet points visible only in the Why Use section */
+#why-use ul {
+    list-style: disc; /* Add bullet points */
+    padding-left: 40px; /* Indent the bullet points */
 }
 
-.seo-content ul li {
+#why-use ul li {
     margin-bottom: 1.5rem;
 }
 
-.seo-content ul li p {
+#why-use ul li p {
     font-size: 1.1rem;
     color: #555;
     line-height: 1.6;
     margin: 0.5rem 0;
 }
 
-.seo-content ul li p strong {
+#why-use ul li p strong {
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Remove bullets from the FAQ section */
+#faq ul {
+    list-style: none; /* Remove bullet points */
+    padding-left: 0;
+}
+
+#faq ul li {
+    margin-bottom: 1.5rem;
+}
+
+#faq ul li p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0.5rem 0;
+}
+
+#faq ul li p strong {
     color: #333;
     font-size: 1.2rem;
     font-weight: bold;
@@ -148,30 +145,63 @@ p.message {
     margin-bottom: 1.5rem;
 }
 
-.seo-content button {
+/* Site Statistics inside SEO Content */
+.site-stats {
+    padding-top: 2rem;
+    border-top: 2px solid #f7797d;
+    margin-top: 2rem;
+}
+
+.site-stats h4 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.site-stats p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 1rem;
+}
+
+/* Center the Quiz button, but align the header to the left */
+#quiz h2 {
+    text-align: left; /* Align the header to the left */
+}
+
+#quiz p, #quiz button {
+    text-align: center;
+    margin: 0 auto; /* Center the button */
+    display: block; /* Make the button a block element for centering */
+}
+
+/* Add even spacing to the top of the quiz button */
+#quiz button {
+    margin: 20px auto; /* Adjust the margin to add spacing at the top */
+    display: block;
+    padding: 12px 20px;
     background: linear-gradient(90deg, #f7797d, #FBD786);
     color: white;
     border: none;
     border-radius: 20px;
-    padding: 12px 20px;
     font-size: 1.1rem;
     cursor: pointer;
-    margin-top: 1.5rem;
     transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
 }
 
-.seo-content button:hover {
+#quiz button:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsiveness */
 @media (max-width: 768px) {
-    input[type="text"], input[type="submit"], .main, .most-searched-section, .seo-content {
+    input[type="text"], input[type="submit"], .main, .seo-content {
         width: 90%;
     }
 
-    .seo-content h2 {
+    .seo-content h2, .site-stats h4 {
         font-size: 1.8rem;
     }
 
