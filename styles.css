@@ -4,11 +4,6 @@ body {
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #fceff9, #e0c3fc);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
     text-align: center;
 }
 
@@ -18,7 +13,8 @@ body {
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    margin: 50px auto; /* Center the main section with margin */
+    max-width: 600px; /* Limit the width of the main section */
 }
 
 h1 {
@@ -52,15 +48,15 @@ input[type="submit"] {
     font-weight: bold;
     cursor: pointer;
     margin-top: 1.5rem; /* Adds space above the button */
-    display: inline-block; /* Prevents shrinkage and odd alignment */
+    display: inline-block;
 }
 
 /* Styling for the message returned by the form submission */
 p.message {
-    font-size: 1.5rem; /* Larger font for the result message */
+    font-size: 1.5rem;
     font-weight: bold;
     color: #333;
-    margin-top: 1rem; /* Space between the button and the message */
+    margin-top: 1rem;
 }
 
 /* Most Searched Section */
@@ -69,17 +65,40 @@ p.message {
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    margin-top: 50px;
+    max-width: 600px;
+    margin: 50px auto;
 }
 
-.most-searched-section h4 {
-    font-size: 1.5rem;
-    color: #555;
+/* FAQ and SEO Sections */
+section {
+    margin-top: 50px;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text left for easier reading */
+    margin: 50px auto;
 }
 
-#most-searched p {
-    color: #555;
-    font-size: 1.1rem;
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 0.5rem;
 }
 
 /* Responsiveness */
