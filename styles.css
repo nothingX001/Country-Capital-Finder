@@ -51,14 +51,16 @@ input[type="submit"] {
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 1.5rem; /* Adds space above the button */
+    display: inline-block; /* Prevents shrinkage and odd alignment */
 }
 
 /* Styling for the message returned by the form submission */
 p.message {
-    font-size: 1.5rem; /* Increase this size if needed */
+    font-size: 1.5rem; /* Larger font for the result message */
     font-weight: bold;
     color: #333;
-    margin-top: 1rem;
+    margin-top: 1rem; /* Space between the button and the message */
 }
 
 /* Most Searched Section */
