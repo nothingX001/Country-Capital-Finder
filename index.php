@@ -144,38 +144,19 @@ $unique_countries_stmt->close();
 
         <section id="faq">
             <h2>Frequently Asked Questions (FAQ)</h2>
-                <ul>
-                    <li>
-                        <p><strong>What is a country capital finder?</strong></p>
-                        <p>A <strong>country capital finder</strong> is an online tool that helps users quickly locate the capital city of any country worldwide.</p>
-                    </li>
-                    <li>
-                        <p><strong>How accurate is the capital information provided?</strong></p>
-                        <p>The information is sourced from reliable databases and updated regularly to ensure accuracy.</p>
-                    </li>
-                    <li>
-                        <p><strong>How do I find the capital of a country?</strong></p>
-                        <p>Simply enter the name of the country into the search box, and our tool will return its capital.</p>
-                    </li>
-                </ul>
-        </section>
-
-        <section id="fun-facts">
-            <h2>Fun Facts About Capitals</h2>
             <ul>
-                <li><strong>Did you know</strong> that the capital of <strong>Turkey</strong>, <strong>Ankara</strong>, is often mistaken for Istanbul?</li>
-                <li><strong>Fun fact</strong>: <strong>Canberra</strong> was chosen as the capital of <strong>Australia</strong> to settle a rivalry between Sydney and Melbourne.</li>
-                <li><strong>Trivia</strong>: The capital of <strong>Bolivia</strong>, <strong>Sucre</strong>, shares governmental duties with <strong>La Paz</strong>.</li>
-            </ul>
-        </section>
-
-        <section id="travel-tips">
-            <h2>Travel Information</h2>
-            <p>Planning a trip to a capital city? Here are our top travel tips for visiting the world’s capitals:</p>
-            <ul>
-                <li><strong>Best time to visit Paris</strong>: Spring and fall offer mild weather and fewer crowds.</li>
-                <li><strong>Top attractions in Tokyo</strong>: Visit the ancient temples of Asakusa and the bustling Shibuya Crossing.</li>
-                <li><strong>Must-see landmarks in Washington, D.C.</strong>: The White House, Lincoln Memorial, and Smithsonian Museums.</li>
+                <li>
+                    <strong>What is the country capital finder?</strong>
+                    <p>The country capital finder is an online tool that helps users quickly locate the capital city of any country worldwide.</p>
+                </li>
+                <li>
+                    <strong>How accurate is the capital information provided?</strong>
+                    <p>The information is sourced from reliable databases and updated regularly to ensure accuracy.</p>
+                </li>
+                <li>
+                    <strong>How do I find the capital of a country?</strong>
+                    <p>Simply enter the name of the country into the search box, and our tool will return its capital.</p>
+                </li>
             </ul>
         </section>
 
@@ -184,27 +165,27 @@ $unique_countries_stmt->close();
             <p>Think you know your capitals? Take our quiz and see how well you do!</p>
             <button onclick="startQuiz()">Start Quiz</button>
         </section>
-    </div>
+
 
         <!-- Site Statistics Section -->
-        <div class="most-searched-section">
-        <h4>📊 Site Statistics</h4>
-        <div id="site-stats">
-            <!-- Most Searched Country -->
-            <p>🔝 Most Searched Country: <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
+        <section class="most-searched-section">
+            <h2>📊 Site Statistics</h2>
+            <div id="site-stats">
+                <!-- Most Searched Country -->
+                <p>🔝 Most Searched Country: <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
 
-            <!-- Most Recent Search -->
-            <p>🕒 Most Recent Search: <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $search_time ?? "N/A"; ?></p>
+                <!-- Most Recent Search -->
+                <p>🕒 Most Recent Search: <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $search_time ?? "N/A"; ?></p>
 
-            <!-- Total Number of Searches -->
-            <p>🔢 Total Searches: <?php echo $total_searches ?? 0; ?></p>
+                <!-- Total Number of Searches -->
+                <p>🔢 Total Searches: <?php echo $total_searches ?? 0; ?></p>
 
-            <!-- Searches Today -->
-            <p>📅 Searches Today: <?php echo $searches_today ?? 0; ?></p>
+                <!-- Searches Today -->
+                <p>📅 Searches Today: <?php echo $searches_today ?? 0; ?></p>
 
-            <!-- Number of Unique Countries Searched -->
-            <p>🌍 Unique Countries Searched: <?php echo $unique_countries_searched ?? 0; ?></p>
-        </div>
+                <!-- Number of Unique Countries Searched -->
+                <p>🌍 Unique Countries Searched: <?php echo $unique_countries_searched ?? 0; ?></p>
+            </section>
     </div>
 
 </body>
