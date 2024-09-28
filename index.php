@@ -80,6 +80,13 @@ $recent_search_stmt->bind_result($most_recent_search, $search_time);
 $recent_search_stmt->fetch();
 $recent_search_stmt->close();
 
+// Convert the search time into a more readable format
+if ($search_time) {
+    $formatted_search_time = date("F j, Y, g:i a", strtotime($search_time));
+} else {
+    $formatted_search_time = "N/A";
+}
+
 // Get total number of searches
 $total_searches_stmt = $conn->prepare("SELECT SUM(search_count) FROM search_tracking");
 $total_searches_stmt->execute();
@@ -112,7 +119,7 @@ $unique_countries_stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
     <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
-    <meta name="author" content="Cher">
+    <meta name="author" content="country capital finder">
     <title>Country Capital Finder</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -160,25 +167,15 @@ $unique_countries_stmt->close();
             </ul>
         </section>
 
-        <!-- Site Statistics Section -->
-        <section class="most-searched-section">
-            <h2>📊 Site Statistics</h2>
-            <div id="site-stats">
-                <!-- Most Searched Country -->
-                <p>🔝 Most Searched Country: <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
-
-                <!-- Most Recent Search -->
-                <p>🕒 Most Recent Search: <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $search_time ?? "N/A"; ?></p>
-
-                <!-- Total Number of Searches -->
-                <p>🔢 Total Searches: <?php echo $total_searches ?? 0; ?></p>
-
-                <!-- Searches Today -->
-                <p>📅 Searches Today: <?php echo $searches_today ?? 0; ?></p>
-
-                <!-- Number of Unique Countries Searched -->
-                <p>🌍 Unique Countries Searched: <?php echo $unique_countries_searched ?? 0; ?></p>
-            </section>
+        <!-- Site Statistics Section inside SEO Content -->
+        <div class="site-stats">
+            <h4>📊 Site Statistics</h4>
+            <p>🔝 Most Searched Country: <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
+            <p>🕒 Most Recent Search: <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $formatted_search_time; ?></p>
+            <p>🔢 Total Searches: <?php echo $total_searches ?? 0; ?></p>
+            <p>📅 Searches Today: <?php echo $searches_today ?? 0; ?></p>
+            <p>🌍 Unique Countries Searched: <?php echo $unique_countries_searched ?? 0; ?></p>
+        </div>
     </div>
 
 </body>
