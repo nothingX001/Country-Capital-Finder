@@ -81,13 +81,16 @@ $most_searched_stmt->close();
         <?php } ?>
     </div>
 
-    <h4>What's the most searched country on this app?</h4>
-    <div id="most-searched">
-        <?php if ($most_searched_country) { ?>
-            <p>The most searched country on this app is <?php echo $most_searched_country; ?> with <?php echo $most_searches; ?> searches.</p>
-        <?php } else { ?>
-            <p>No searches have been recorded yet.</p>
-        <?php } ?>
+    <!-- Most Searched Section -->
+    <div class="most-searched-section">
+        <h4>What's the most searched country on this app?</h4>
+        <div id="most-searched">
+            <?php if ($most_searched_country) { ?>
+                <p>The most searched country on this app is <?php echo $most_searched_country; ?> with <?php echo $most_searches; ?> searches.</p>
+            <?php } else { ?>
+                <p>No searches have been recorded yet.</p>
+            <?php } ?>
+        </div>
     </div>
 </body>
 </html>
