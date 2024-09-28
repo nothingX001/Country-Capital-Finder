@@ -13,8 +13,9 @@ body {
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin: 50px auto; /* Center the main section with margin */
-    max-width: 600px; /* Limit the width of the main section */
+    margin: 50px auto;
+    width: 80%; /* Make the main section box wider */
+    max-width: 900px; /* Ensures the width doesn't stretch too much on large screens */
 }
 
 h1 {
@@ -66,14 +67,14 @@ p.message {
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
-    max-width: 600px;
+    max-width: 900px; /* Consistent width with main section */
     margin: 50px auto;
 }
 
 /* FAQ and SEO Sections */
 section {
     margin-top: 50px;
-    max-width: 600px;
+    max-width: 900px; /* Consistent width with main section */
     padding: 20px;
     background-color: #fff;
     border-radius: 15px;
@@ -105,5 +106,9 @@ ul li {
 @media (max-width: 768px) {
     input[type="text"], input[type="submit"] {
         width: 90%;
+    }
+
+    .main, .most-searched-section, section {
+        width: 90%; /* Maintain responsiveness on smaller screens */
     }
 }
