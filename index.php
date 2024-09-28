@@ -1,5 +1,10 @@
 <?php
-include 'config.php';
+// Enable error reporting to debug
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include 'config.php'; // Database connection
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -48,8 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Fetch statistics for the Site Statistics section
-include 'most_searched.php';
+// Fetch the most searched country
+$most_searched_stmt = $conn->prepare("
+    SELECT c.country_name, MAX(st.search_count) as max_searches
+    FROM search_tracking st
+    JOIN countries c ON st.country_id = c.id
+    GROUP BY c.country_name
+    ORDER BY max_searches DESC
+    LIMIT 1
+");
+$most_searched_stmt->execute();
+$most_searched_stmt->bind_result($most_searched_country, $most_searches);
+$most_searched_stmt->fetch();
+$most_searched_stmt->close();
 
 // Fetch the most recent search
 $recent_search_stmt = $conn->prepare("
@@ -64,7 +80,7 @@ $recent_search_stmt->bind_result($most_recent_search, $search_time);
 $recent_search_stmt->fetch();
 $recent_search_stmt->close();
 
-// Get total searches
+// Get total number of searches
 $total_searches_stmt = $conn->prepare("SELECT SUM(search_count) FROM search_tracking");
 $total_searches_stmt->execute();
 $total_searches_stmt->bind_result($total_searches);
