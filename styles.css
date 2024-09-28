@@ -14,8 +14,8 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
-    width: 80%; /* Make the main section box wider */
-    max-width: 900px; /* Ensures the width doesn't stretch too much on large screens */
+    width: 80%;
+    max-width: 900px;
 }
 
 h1 {
@@ -48,7 +48,7 @@ input[type="submit"] {
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 1.5rem; /* Adds space above the button */
+    margin-top: 1.5rem;
     display: inline-block;
 }
 
@@ -61,30 +61,18 @@ p.message {
 }
 
 /* Most Searched Section */
-.most-searched-section {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
-    max-width: 900px; /* Consistent width with main section */
-    margin: 50px auto;
+.most-searched-section h4,
+section h2,
+section p,
+section ul {
+    margin: 20px auto;
+    max-width: 900px;
+    text-align: left;
 }
 
-/* FAQ and SEO Sections */
-section {
-    margin-top: 50px;
-    max-width: 900px; /* Consistent width with main section */
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Align text left for easier reading */
-    margin: 50px auto;
-}
-
-h2 {
+h2, h4 {
     font-size: 2rem;
+    font-weight: bold;
     margin-bottom: 1rem;
 }
 
@@ -109,6 +97,6 @@ ul li {
     }
 
     .main, .most-searched-section, section {
-        width: 90%; /* Maintain responsiveness on smaller screens */
+        width: 90%;
     }
 }
