@@ -75,7 +75,7 @@ p.message {
     margin-top: 1rem;
 }
 
-/* SEO Content Section - Merged with Site Statistics */
+/* SEO Content Section */
 .seo-content {
     background: linear-gradient(135deg, #fff, #f0f0f0);
     padding: 2rem;
@@ -93,13 +93,14 @@ p.message {
 }
 
 /* Consistent Heading Styling */
-.seo-content h2, .site-stats h4 {
+.seo-content h2 {
     font-size: 2rem;
     font-weight: bold;
     color: #333;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #f7797d; /* Ensure line below the heading */
+    border-bottom: 2px solid #f7797d; /* Line below the heading */
     padding-bottom: 0.5rem;
+    margin-top: 2rem; /* Ensure consistent spacing between sections */
 }
 
 /* Bullet points visible only in the Why Use section */
@@ -157,9 +158,9 @@ p.message {
 
 /* Site Statistics inside SEO Content */
 .site-stats {
-    padding-top: 2rem;
-    border-top: none; /* Remove any extra lines */
     margin-top: 2rem;
+    padding-top: 0;
+    border-top: none; /* Ensure no extra lines appear */
 }
 
 .site-stats p {
@@ -209,7 +210,7 @@ p.message {
         width: 95%;
     }
 
-    .seo-content h2, .site-stats h4 {
+    .seo-content h2 {
         font-size: 1.8rem;
     }
 
