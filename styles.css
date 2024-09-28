@@ -60,34 +60,51 @@ p.message {
     margin-top: 1rem;
 }
 
-/* Most Searched Section */
-.most-searched-section h4,
-section h2,
-section p,
-section ul {
-    margin: 20px auto;
+/* Creative Box Styling for Sections */
+section, .most-searched-section {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Softer shadow for a modern look */
+    margin: 50px auto;
+    width: 80%;
     max-width: 900px;
-    text-align: left;
+    text-align: left; /* Text aligned to the left for readability */
 }
 
+/* Styling the headings */
 h2, h4 {
     font-size: 2rem;
-    font-weight: bold;
+    color: #333;
     margin-bottom: 1rem;
+    font-weight: bold;
+    border-bottom: 2px solid #f7797d; /* Decorative line below headings */
+    padding-bottom: 10px;
 }
 
 h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    color: #555;
     margin-bottom: 0.5rem;
 }
 
+/* List styling */
 ul {
-    list-style-type: none;
-    padding: 0;
+    list-style-type: disc;
+    padding-left: 20px; /* Adds space for the bullets */
+    margin-bottom: 1rem;
 }
 
 ul li {
     margin-bottom: 0.5rem;
+    color: #333;
+}
+
+/* Additional paragraph styling */
+section p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
 }
 
 /* Responsiveness */
