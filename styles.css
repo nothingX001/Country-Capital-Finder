@@ -156,9 +156,9 @@ p.message {
 
 /* Site Statistics inside SEO Content */
 .site-stats {
-    padding-top: 2rem;
+    padding-top: 1.5rem; /* Reduced padding for even spacing */
     border-top: 2px solid #f7797d;
-    margin-top: 2rem;
+    margin-top: 1.5rem; /* Adjusted margin for better spacing */
 }
 
 .site-stats h4 {
@@ -172,6 +172,11 @@ p.message {
     font-size: 1.1rem;
     color: #555;
     margin-bottom: 1rem;
+}
+
+/* Black text for statistics labels */
+.site-stats p strong {
+    color: #000; /* Make labels black */
 }
 
 /* Center the Quiz button, but align the header to the left */
