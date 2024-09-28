@@ -103,6 +103,11 @@ p.message {
     margin-top: 2rem; /* Ensure consistent spacing between sections */
 }
 
+#why-use, #faq, .site-stats {
+    margin-top: 2rem; /* Add consistent top margin to each section */
+    margin-bottom: 2rem; /* Add consistent bottom margin */
+}
+
 /* Bullet points visible only in the Why Use section */
 #why-use ul {
     list-style: disc;
@@ -130,6 +135,12 @@ p.message {
 #faq ul {
     list-style: none;
     padding-left: 0;
+}
+
+/* Ensure no line below FAQ section */
+#faq {
+    border-bottom: none;
+    margin-bottom: 2rem;
 }
 
 #faq ul li {
