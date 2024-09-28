@@ -77,7 +77,7 @@ $most_searched_stmt->close();
         </form>
 
         <?php if (isset($message)) { ?>
-            <p><?php echo $message; ?></p>
+            <p class="message"><?php echo $message; ?></p>
         <?php } ?>
     </div>
 
