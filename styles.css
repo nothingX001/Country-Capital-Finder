@@ -44,16 +44,18 @@ input[type="submit"], .seo-content button {
     background: linear-gradient(90deg, #f7797d, #FBD786);
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
+    border-radius: 25px;
+    padding: 12px 25px;
     font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
     margin-top: 1.5rem;
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 input[type="submit"]:hover, .seo-content button:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Styling for the message returned by the form submission */
@@ -91,28 +93,21 @@ p.message {
     margin-bottom: 1rem;
 }
 
-.most-searched-section h5 {
-    font-size: 1.3rem;
-    margin-top: 1rem;
-    color: #333;
-}
-
-.most-searched-section ol {
-    list-style: decimal;
-    margin-left: 20px;
-    color: #555;
-}
-
-/* SEO Content Section */
+/* SEO Content Section - Minimalist, Clean, Instagram-Inspired */
 .seo-content {
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #fff, #f0f0f0);
     padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin: 50px auto;
-    width: 80%;
+    width: 85%;
     max-width: 900px;
     text-align: left;
+    transition: all 0.3s ease-in-out;
+}
+
+.seo-content:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
 }
 
 .seo-content h2 {
@@ -151,6 +146,23 @@ p.message {
     color: #555;
     line-height: 1.8;
     margin-bottom: 1.5rem;
+}
+
+.seo-content button {
+    background: linear-gradient(90deg, #f7797d, #FBD786);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
+}
+
+.seo-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsiveness */
