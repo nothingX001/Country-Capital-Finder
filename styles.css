@@ -51,7 +51,6 @@ input[type="submit"] {
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
     margin-top: 1rem;
 }
 
