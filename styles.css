@@ -5,6 +5,8 @@ body {
     padding: 0;
     background: linear-gradient(135deg, #fceff9, #e0c3fc);
     text-align: center;
+    padding-left: 10px; /* Add padding for side spacing */
+    padding-right: 10px; /* Add padding for side spacing */
 }
 
 /* Main Section */
@@ -23,6 +25,13 @@ h1 {
     font-weight: bold;
     color: #333;
     margin-bottom: 1rem;
+}
+
+/* Shrink h1 text on smaller screens */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
 }
 
 form {
@@ -198,11 +207,15 @@ p.message {
 /* Responsiveness */
 @media (max-width: 768px) {
     input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 90%;
+        width: 95%; /* Add spacing on the sides for mobile */
     }
 
     .seo-content h2, .site-stats h4 {
         font-size: 1.8rem;
+    }
+
+    h1 {
+        font-size: 2.2rem; /* Shrink the h1 further on small screens */
     }
 
     .seo-content p, .seo-content li {
