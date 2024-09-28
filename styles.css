@@ -92,12 +92,13 @@ p.message {
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
 }
 
-.seo-content h2 {
+/* Consistent Heading Styling */
+.seo-content h2, .site-stats h4 {
     font-size: 2rem;
     font-weight: bold;
     color: #333;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #f7797d;
+    border-bottom: 2px solid #f7797d; /* Line below the heading */
     padding-bottom: 0.5rem;
 }
 
@@ -157,15 +158,7 @@ p.message {
 /* Site Statistics inside SEO Content */
 .site-stats {
     padding-top: 1.5rem; /* Reduced padding for even spacing */
-    border-top: 2px solid #f7797d;
     margin-top: 1.5rem; /* Adjusted margin for better spacing */
-}
-
-.site-stats h4 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 1rem;
 }
 
 .site-stats p {
