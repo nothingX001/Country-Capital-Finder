@@ -168,7 +168,7 @@ $unique_countries_stmt->close();
         </section>
 
     <!-- Site Statistics Section inside SEO Content -->
-        <section class="site-stats">
+        <section id="site-stats">
             <h2>📊 Site Statistics</h2>
             <p><strong>🔝 Most Searched Country:</strong> <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
             <p><strong>🕒 Most Recent Search:</strong> <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $formatted_search_time; ?></p>

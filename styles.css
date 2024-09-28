@@ -158,7 +158,7 @@ p.message {
 }
 
 /* Consistent Spacing Between Sections */
-#why-use, #faq, .site-stats {
+#why-use, #faq, #site-stats {
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
@@ -171,20 +171,20 @@ p.message {
 }
 
 /* Site Statistics inside SEO Content */
-.site-stats {
+#site-stats {
     margin-top: 2rem;
     padding-top: 0;
     border-top: none; /* Ensure no extra lines appear */
 }
 
-.site-stats p {
+#site-stats p {
     font-size: 1.1rem;
     color: #555;
     margin-bottom: 1rem;
 }
 
 /* Black text for statistics labels */
-.site-stats p strong {
+#site-stats p strong {
     color: #000; /* Make labels black */
 }
 
