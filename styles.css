@@ -103,9 +103,12 @@ p.message {
     margin-top: 2rem; /* Ensure consistent spacing between sections */
 }
 
-#why-use, #faq, .site-stats {
-    margin-top: 2rem; /* Add consistent top margin to each section */
-    margin-bottom: 2rem; /* Add consistent bottom margin */
+/* No border below FAQ section */
+#faq {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
 }
 
 /* Bullet points visible only in the Why Use section */
@@ -137,12 +140,6 @@ p.message {
     padding-left: 0;
 }
 
-/* Ensure no line below FAQ section */
-#faq {
-    border-bottom: none;
-    margin-bottom: 2rem;
-}
-
 #faq ul li {
     margin-bottom: 1.5rem;
 }
@@ -158,6 +155,12 @@ p.message {
     color: #333;
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+/* Consistent Spacing Between Sections */
+#why-use, #faq, .site-stats {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .seo-content p {
