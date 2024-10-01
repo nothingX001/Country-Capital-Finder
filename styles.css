@@ -85,7 +85,6 @@ p.message {
     width: 85%;
     max-width: 900px;
     text-align: left;
-    transition: all 0.3s ease-in-out;
 }
 
 /* Add padding on smaller screens to prevent content stretching */
@@ -93,10 +92,6 @@ p.message {
     .seo-content {
         padding: 20px;
     }
-}
-
-.seo-content:hover {
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* Consistent Heading Styling */
@@ -204,25 +199,6 @@ p.message {
     text-align: center;
     margin: 0 auto;
     display: block;
-}
-
-/* Add even spacing to the top of the quiz button */
-#quiz button {
-    margin: 20px auto;
-    display: block;
-    padding: 12px 20px;
-    background: linear-gradient(90deg, #f7797d, #FBD786);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease;
-}
-
-#quiz button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsiveness */
