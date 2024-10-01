@@ -380,6 +380,7 @@ $unique_countries_stmt->close();
                 <li>Zambia</li>
                 <li>Zimbabwe</li>
             </ul>
+            <p>More countries to be added in the future.</p>
         </section>
     </div>
     </div>
