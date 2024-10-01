@@ -80,9 +80,9 @@ $recent_search_stmt->bind_result($most_recent_search, $search_time);
 $recent_search_stmt->fetch();
 $recent_search_stmt->close();
 
-// Convert the search time into a more readable format in UTC
+// Convert the search time into a more readable format in ISO format for JS
 if ($search_time) {
-    $formatted_search_time = date("Y-m-d H:i:s", strtotime($search_time)) . " UTC";
+    $formatted_search_time = date("Y-m-d\TH:i:s\Z", strtotime($search_time));
 } else {
     $formatted_search_time = "N/A";
 }
@@ -190,21 +190,26 @@ function convertUTCtoLocal() {
 
     if (utcTimeString && utcTimeString !== "N/A") {
         // Parse the UTC date string into a Date object
-        const utcDate = new Date(utcTimeString + ' UTC');
-        
-        // Convert the Date object to the user's local time
-        const localDateString = utcDate.toLocaleString([], { 
-            weekday: 'short', 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric', 
-            hour: '2-digit', 
-            minute: '2-digit', 
-            timeZoneName: 'short'  // This will add the timezone abbreviation
-        });
+        const utcDate = new Date(utcTimeString);
 
-        // Update the content of the element with local time and timezone
-        recentSearchElement.innerText = localDateString;
+        // Check if the date is valid
+        if (!isNaN(utcDate)) {
+            // Convert the Date object to the user's local time
+            const localDateString = utcDate.toLocaleString([], {
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                timeZoneName: 'short'
+            });
+
+            // Update the content of the element with local time and timezone
+            recentSearchElement.innerText = localDateString;
+        } else {
+            recentSearchElement.innerText = "N/A";  // If invalid, show N/A
+        }
     }
 }
 
