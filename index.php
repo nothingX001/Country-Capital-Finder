@@ -211,15 +211,21 @@ function convertUTCtoLocal() {
             const month = utcDate.toLocaleString('default', { month: 'long' });
             const weekday = utcDate.toLocaleString('default', { weekday: 'long' });
             const year = utcDate.getFullYear();
-            const hour = utcDate.getHours();
-            const minute = utcDate.getMinutes().toString().padStart(2, '0');
-            const timeZone = utcDate.toLocaleTimeString('default', { timeZoneName: 'short' }).split(' ')[2];
+
+            // Format the time in 12-hour AM/PM format
+            const timeOptions = {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,  // Ensure it's 12-hour format with AM/PM
+                timeZoneName: 'short'
+            };
+            const timeString = utcDate.toLocaleTimeString('default', timeOptions);
 
             // Add ordinal suffix to the day
             const ordinalDay = day + getOrdinalSuffix(day);
 
             // Construct the formatted date string
-            const formattedDateString = `${weekday}, ${month} ${ordinalDay}, ${year} at ${hour}:${minute} ${timeZone}`;
+            const formattedDateString = `${weekday}, ${month} ${ordinalDay}, ${year} at ${timeString}`;
 
             // Update the content of the element with the country and formatted local time
             recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}`;
