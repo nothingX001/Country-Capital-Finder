@@ -80,9 +80,9 @@ $recent_search_stmt->bind_result($most_recent_search, $search_time);
 $recent_search_stmt->fetch();
 $recent_search_stmt->close();
 
-// Convert the search time into a more readable format
+// Convert the search time into a more readable format in UTC
 if ($search_time) {
-    $formatted_search_time = date("F j, Y, g:i a", strtotime($search_time));
+    $formatted_search_time = date("Y-m-d H:i:s", strtotime($search_time)) . " UTC";
 } else {
     $formatted_search_time = "N/A";
 }
@@ -142,9 +142,10 @@ $unique_countries_stmt->close();
         <section id="why-use">
             <h2>Why Use the Country Capital Finder?</h2>
             <ul>
-                <li>You can instantly <strong>find capitals</strong> of any country.</li>
-                <li>You have access to <strong>up-to-date information</strong> on over 195 countries.</li>
-                <li>You can explore real-time data with our <strong>site statistics</strong>.</li>
+                <li>Instantly <strong>find capitals</strong> of any country.</li>
+                <li>Access <strong>up-to-date information</strong> on over 195 countries.</li>
+                <li>Get fun facts about famous and lesser-known capitals.</li>
+                <li>Explore real-time data with our <strong>site statistics</strong>.</li>
             </ul>
         </section>
 
@@ -168,16 +169,48 @@ $unique_countries_stmt->close();
 
     <!-- Site Statistics Section inside SEO Content -->
         <section id="site-stats">
-            <h2>Site Statistics 📊</h2>
+            <h2>📊 Site Statistics</h2>
             <p><strong>🔝 Most Searched Country:</strong> <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
-            <p><strong>🕒 Most Recent Search:</strong> Someone searched for <?php echo $most_recent_search ?? "No searches yet"; ?> on <?php echo $formatted_search_time; ?>.</p>
+            <p><strong>🕒 Most Recent Search:</strong> 
+                <span id="recent-search-time" data-utc="<?php echo $formatted_search_time; ?>">
+                    <?php echo $formatted_search_time; ?>
+                </span>
+            </p>
             <p><strong>🔢 Total Searches:</strong> <?php echo $total_searches ?? 0; ?></p>
             <p><strong>📅 Searches Today:</strong> <?php echo $searches_today ?? 0; ?></p>
             <p><strong>🌍 Unique Countries Searched:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
         </section>
     </div>
 
+    <script>
+// Function to convert UTC time to user's local timezone
+function convertUTCtoLocal() {
+    const recentSearchElement = document.getElementById('recent-search-time');
+    const utcTimeString = recentSearchElement.getAttribute('data-utc');
 
+    if (utcTimeString && utcTimeString !== "N/A") {
+        // Parse the UTC date string into a Date object
+        const utcDate = new Date(utcTimeString + ' UTC');
+        
+        // Convert the Date object to the user's local time
+        const localDateString = utcDate.toLocaleString([], { 
+            weekday: 'short', 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            timeZoneName: 'short'  // This will add the timezone abbreviation
+        });
+
+        // Update the content of the element with local time and timezone
+        recentSearchElement.innerText = localDateString;
+    }
+}
+
+// Run the conversion function after the page loads
+window.onload = convertUTCtoLocal;
+</script>
 
 </body>
 </html>
