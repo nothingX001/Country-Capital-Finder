@@ -172,7 +172,7 @@ $unique_countries_stmt->close();
             <h2>📊 Site Statistics</h2>
             <p><strong>🔝 Most Searched Country:</strong> <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
             <p><strong>🕒 Most Recent Search:</strong> 
-                <span id="recent-search-time" data-utc="<?php echo $formatted_search_time; ?>">
+                <span id="recent-search-time" data-country="<?php echo $most_recent_search ?? 'N/A'; ?>" data-utc="<?php echo $formatted_search_time; ?>">
                     <?php echo $formatted_search_time; ?>
                 </span>
             </p>
@@ -183,33 +183,51 @@ $unique_countries_stmt->close();
     </div>
 
     <script>
-// Function to convert UTC time to user's local timezone
+// Function to get the ordinal suffix for a day
+function getOrdinalSuffix(day) {
+    if (day > 3 && day < 21) return 'th'; // Covers 11th-13th
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+}
+
+// Function to convert UTC time to user's local timezone with formatted date
 function convertUTCtoLocal() {
     const recentSearchElement = document.getElementById('recent-search-time');
     const utcTimeString = recentSearchElement.getAttribute('data-utc');
+    const countrySearched = recentSearchElement.getAttribute('data-country');
 
-    if (utcTimeString && utcTimeString !== "N/A") {
+    if (utcTimeString && utcTimeString !== "N/A" && countrySearched && countrySearched !== "N/A") {
         // Parse the UTC date string into a Date object
         const utcDate = new Date(utcTimeString);
 
         // Check if the date is valid
         if (!isNaN(utcDate)) {
-            // Convert the Date object to the user's local time
-            const localDateString = utcDate.toLocaleString([], {
-                weekday: 'short', 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric', 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                timeZoneName: 'short'
-            });
+            // Extract the day, month, year, and time components
+            const day = utcDate.getDate();
+            const month = utcDate.toLocaleString('default', { month: 'long' });
+            const weekday = utcDate.toLocaleString('default', { weekday: 'long' });
+            const year = utcDate.getFullYear();
+            const hour = utcDate.getHours();
+            const minute = utcDate.getMinutes().toString().padStart(2, '0');
+            const timeZone = utcDate.toLocaleTimeString('default', { timeZoneName: 'short' }).split(' ')[2];
 
-            // Update the content of the element with local time and timezone
-            recentSearchElement.innerText = localDateString;
+            // Add ordinal suffix to the day
+            const ordinalDay = day + getOrdinalSuffix(day);
+
+            // Construct the formatted date string
+            const formattedDateString = `${weekday}, ${month} ${ordinalDay}, ${year} at ${hour}:${minute} ${timeZone}`;
+
+            // Update the content of the element with the country and formatted local time
+            recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}`;
         } else {
             recentSearchElement.innerText = "N/A";  // If invalid, show N/A
         }
+    } else {
+        recentSearchElement.innerText = "No recent searches.";
     }
 }
 
