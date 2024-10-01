@@ -142,10 +142,9 @@ $unique_countries_stmt->close();
         <section id="why-use">
             <h2>Why Use the Country Capital Finder?</h2>
             <ul>
-                <li>Instantly <strong>find capitals</strong> of any country.</li>
-                <li>Access <strong>up-to-date information</strong> on over 195 countries.</li>
-                <li>Get fun facts about famous and lesser-known capitals.</li>
-                <li>Explore real-time data with our <strong>site statistics</strong>.</li>
+                <li>You can instantly <strong>find capitals</strong> of any country.</li>
+                <li>You have access to <strong>up-to-date information</strong> on over 195 countries.</li>
+                <li>You can explore real-time data with our <strong>site statistics</strong>.</li>
             </ul>
         </section>
 
