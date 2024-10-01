@@ -170,7 +170,7 @@ $unique_countries_stmt->close();
         <section id="site-stats">
             <h2>Site Statistics 📊</h2>
             <p><strong>🔝 Most Searched Country:</strong> <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
-            <p><strong>🕒 Most Recent Search:</strong> Someone searched for <?php echo $most_recent_search ?? "No searches yet"; ?> at <?php echo $formatted_search_time; ?></p>
+            <p><strong>🕒 Most Recent Search:</strong> Someone searched for <?php echo $most_recent_search ?? "No searches yet"; ?> on <?php echo $formatted_search_time; ?>.</p>
             <p><strong>🔢 Total Searches:</strong> <?php echo $total_searches ?? 0; ?></p>
             <p><strong>📅 Searches Today:</strong> <?php echo $searches_today ?? 0; ?></p>
             <p><strong>🌍 Unique Countries Searched:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
