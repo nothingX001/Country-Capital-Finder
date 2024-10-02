@@ -496,6 +496,24 @@ function get_flag_emoji($country) {
     return isset($country_map[$country]) ? $country_map[$country] : '';
 }
 
+// Function to normalize the country input (case-insensitive + alias support)
+function normalize_country_input($input) {
+    global $alias_map;
+    
+    // Convert input to lowercase
+    $input = strtolower($input);
+    
+    // Check if the input matches any alias (also in lowercase)
+    foreach ($alias_map as $alias => $canonical) {
+        if (strtolower($alias) == $input) {
+            return $canonical; // Return the canonical country name
+        }
+    }
+    
+    // If no alias match, capitalize the first letter of each word
+    return ucwords($input);
+}
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country = $_POST['country'];
