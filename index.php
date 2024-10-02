@@ -206,14 +206,288 @@ $country_map = [
 
 // Alias map for alternate country names
 $alias_map = [
+    // United States
     "USA" => "United States",
     "US" => "United States",
     "America" => "United States",
+    "U.S.A." => "United States",
+    
+    // United Kingdom
     "UK" => "United Kingdom",
-    "Congo (Congo-Kinshasa)" => "Democratic Republic of the Congo",
+    "Britain" => "United Kingdom",
+    "England" => "United Kingdom",
+    "Great Britain" => "United Kingdom",
+    "Scotland" => "United Kingdom",
+    "Wales" => "United Kingdom",
+    "Northern Ireland" => "United Kingdom",
+    
+    // Democratic Republic of the Congo
     "DRC" => "Democratic Republic of the Congo",
-    "Congo (Congo-Brazzaville)" => "Republic of the Congo",
-    // Add more aliases as needed
+    "Congo (Kinshasa)" => "Democratic Republic of the Congo",
+    "Congo-Kinshasa" => "Democratic Republic of the Congo",
+    "DR Congo" => "Democratic Republic of the Congo",
+    
+    // Republic of the Congo
+    "Congo (Brazzaville)" => "Republic of the Congo",
+    "Congo-Brazzaville" => "Republic of the Congo",
+    
+    // South Korea
+    "Korea (South)" => "South Korea",
+    "ROK" => "South Korea",
+    "Republic of Korea" => "South Korea",
+    "S. Korea" => "South Korea",
+    
+    // North Korea
+    "Korea (North)" => "North Korea",
+    "DPRK" => "North Korea",
+    "Democratic People's Republic of Korea" => "North Korea",
+    "N. Korea" => "North Korea",
+    
+    // Russia
+    "Russian Federation" => "Russia",
+    "Rossiya" => "Russia",
+    
+    // Netherlands
+    "Holland" => "Netherlands",
+    "Dutchland" => "Netherlands",
+    "Nederland" => "Netherlands",
+    
+    // Ivory Coast
+    "Ivory Coast" => "Côte d'Ivoire",
+    "Cote d'Ivoire" => "Côte d'Ivoire",
+    
+    // Myanmar
+    "Burma" => "Myanmar",
+    
+    // Bolivia
+    "Bolivia (Plurinational State of)" => "Bolivia",
+    
+    // Venezuela
+    "Bolivarian Republic of Venezuela" => "Venezuela",
+    
+    // Syria
+    "Syrian Arab Republic" => "Syria",
+    
+    // Laos
+    "Lao People's Democratic Republic" => "Laos",
+    "Laos PDR" => "Laos",
+    
+    // Vietnam
+    "Viet Nam" => "Vietnam",
+    "Socialist Republic of Vietnam" => "Vietnam",
+    
+    // Tanzania
+    "United Republic of Tanzania" => "Tanzania",
+    
+    // Gambia
+    "The Gambia" => "Gambia",
+    
+    // Libya
+    "Libyan Arab Jamahiriya" => "Libya",
+    
+    // Moldova
+    "Republic of Moldova" => "Moldova",
+    
+    // Macedonia
+    "FYROM" => "North Macedonia",
+    "Former Yugoslav Republic of Macedonia" => "North Macedonia",
+    
+    // UAE
+    "UAE" => "United Arab Emirates",
+    "Emirates" => "United Arab Emirates",
+    
+    // Czech Republic
+    "Czechia" => "Czech Republic",
+    
+    // Swaziland
+    "Eswatini" => "Swaziland",
+    
+    // Micronesia
+    "Federated States of Micronesia" => "Micronesia",
+    
+    // East Timor
+    "Timor-Leste" => "East Timor",
+    
+    // Palestine
+    "State of Palestine" => "Palestine",
+    "Palestinian Territories" => "Palestine",
+    
+    // Taiwan
+    "Republic of China" => "Taiwan",
+    "ROC" => "Taiwan",
+    
+    // Iran
+    "Islamic Republic of Iran" => "Iran",
+    
+    // Egypt
+    "Arab Republic of Egypt" => "Egypt",
+    
+    // Sudan
+    "Republic of the Sudan" => "Sudan",
+    
+    // South Sudan
+    "Republic of South Sudan" => "South Sudan",
+    
+    // Saudi Arabia
+    "Kingdom of Saudi Arabia" => "Saudi Arabia",
+    
+    // Brunei
+    "Brunei Darussalam" => "Brunei",
+    
+    // Bahamas
+    "The Bahamas" => "Bahamas",
+    
+    // Venezuela
+    "Bolivarian Republic of Venezuela" => "Venezuela",
+    
+    // Timor-Leste
+    "East Timor" => "Timor-Leste",
+    
+    // Papua New Guinea
+    "PNG" => "Papua New Guinea",
+    
+    // Kazakhstan
+    "Republic of Kazakhstan" => "Kazakhstan",
+    
+    // Kyrgyzstan
+    "Kyrgyz Republic" => "Kyrgyzstan",
+    
+    // Finland
+    "Suomi" => "Finland",
+    
+    // Japan
+    "Nippon" => "Japan",
+    
+    // Greece
+    "Hellas" => "Greece",
+    
+    // Germany
+    "Deutschland" => "Germany",
+    
+    // Spain
+    "España" => "Spain",
+    
+    // Mexico
+    "Estados Unidos Mexicanos" => "Mexico",
+    
+    // Afghanistan
+    "Islamic Republic of Afghanistan" => "Afghanistan",
+    
+    // Armenia
+    "Hayastan" => "Armenia",
+    
+    // Azerbaijan
+    "Republic of Azerbaijan" => "Azerbaijan",
+    
+    // Bangladesh
+    "People's Republic of Bangladesh" => "Bangladesh",
+    
+    // Belgium
+    "Belgique" => "Belgium",
+    "België" => "Belgium",
+    
+    // Bosnia and Herzegovina
+    "Bosnia" => "Bosnia and Herzegovina",
+    "BiH" => "Bosnia and Herzegovina",
+    
+    // Botswana
+    "Republic of Botswana" => "Botswana",
+    
+    // China
+    "People's Republic of China" => "China",
+    
+    // Croatia
+    "Hrvatska" => "Croatia",
+    
+    // Cyprus
+    "Republic of Cyprus" => "Cyprus",
+    
+    // Denmark
+    "Kingdom of Denmark" => "Denmark",
+    
+    // Fiji
+    "Republic of Fiji" => "Fiji",
+    
+    // France
+    "République française" => "France",
+    
+    // Ghana
+    "Republic of Ghana" => "Ghana",
+    
+    // Iceland
+    "Republic of Iceland" => "Iceland",
+    
+    // India
+    "Republic of India" => "India",
+    
+    // Indonesia
+    "Republic of Indonesia" => "Indonesia",
+    
+    // Ireland
+    "Éire" => "Ireland",
+    
+    // Italy
+    "Repubblica Italiana" => "Italy",
+    
+    // Jamaica
+    "Commonwealth of Jamaica" => "Jamaica",
+    
+    // Lebanon
+    "Lebanese Republic" => "Lebanon",
+    
+    // Mexico
+    "Mexican United States" => "Mexico",
+    
+    // Montenegro
+    "Crna Gora" => "Montenegro",
+    
+    // Nepal
+    "Federal Democratic Republic of Nepal" => "Nepal",
+    
+    // Philippines
+    "Republic of the Philippines" => "Philippines",
+    
+    // Portugal
+    "Portuguese Republic" => "Portugal",
+    
+    // Romania
+    "Republic of Romania" => "Romania",
+    
+    // Rwanda
+    "Republic of Rwanda" => "Rwanda",
+    
+    // Senegal
+    "Republic of Senegal" => "Senegal",
+    
+    // Seychelles
+    "Republic of Seychelles" => "Seychelles",
+    
+    // Singapore
+    "Republic of Singapore" => "Singapore",
+    
+    // Solomon Islands
+    "Solomons" => "Solomon Islands",
+    
+    // Switzerland
+    "Swiss Confederation" => "Switzerland",
+    
+    // Turkey
+    "Republic of Türkiye" => "Turkey",
+    
+    // Uganda
+    "Republic of Uganda" => "Uganda",
+    
+    // Ukraine
+    "Ukrayina" => "Ukraine",
+    
+    // Uruguay
+    "Eastern Republic of Uruguay" => "Uruguay",
+    
+    // Zambia
+    "Republic of Zambia" => "Zambia",
+    
+    // Zimbabwe
+    "Republic of Zimbabwe" => "Zimbabwe"
 ];
 
 // Function to get the flag emoji for a country
