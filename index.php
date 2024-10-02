@@ -224,7 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($capital) {
         $flag_emoji = get_flag_emoji($country);
-        $message = "The capital of {$country} is {$capital} {$flag_emoji}.";
+        $message = "The capital of {$country} is {$capital} {$flag_emoji}";
 
         // Update search tracking
         $search_stmt = $conn->prepare("SELECT search_count FROM search_tracking WHERE country_id = ?");
