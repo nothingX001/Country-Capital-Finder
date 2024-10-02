@@ -6,6 +6,204 @@ error_reporting(E_ALL);
 
 include 'config.php'; // Database connection
 
+// Country to ISO 3166-1 alpha-2 mapping
+$country_flags = [
+    'Afghanistan' => 'AF',
+    'Albania' => 'AL',
+    'Algeria' => 'DZ',
+    'Andorra' => 'AD',
+    'Angola' => 'AO',
+    'Antigua and Barbuda' => 'AG',
+    'Argentina' => 'AR',
+    'Armenia' => 'AM',
+    'Australia' => 'AU',
+    'Austria' => 'AT',
+    'Azerbaijan' => 'AZ',
+    'Bahamas' => 'BS',
+    'Bahrain' => 'BH',
+    'Bangladesh' => 'BD',
+    'Barbados' => 'BB',
+    'Belarus' => 'BY',
+    'Belgium' => 'BE',
+    'Belize' => 'BZ',
+    'Benin' => 'BJ',
+    'Bhutan' => 'BT',
+    'Bolivia' => 'BO',
+    'Bosnia and Herzegovina' => 'BA',
+    'Botswana' => 'BW',
+    'Brazil' => 'BR',
+    'Brunei' => 'BN',
+    'Bulgaria' => 'BG',
+    'Burkina Faso' => 'BF',
+    'Burundi' => 'BI',
+    'Cabo Verde' => 'CV',
+    'Cambodia' => 'KH',
+    'Cameroon' => 'CM',
+    'Canada' => 'CA',
+    'Chile' => 'CL',
+    'China' => 'CN',
+    'Colombia' => 'CO',
+    'Costa Rica' => 'CR',
+    'Croatia' => 'HR',
+    'Cuba' => 'CU',
+    'Cyprus' => 'CY',
+    'Czech Republic' => 'CZ',
+    'Denmark' => 'DK',
+    'Djibouti' => 'DJ',
+    'Dominica' => 'DM',
+    'Dominican Republic' => 'DO',
+    'Ecuador' => 'EC',
+    'Egypt' => 'EG',
+    'El Salvador' => 'SV',
+    'Equatorial Guinea' => 'GQ',
+    'Eritrea' => 'ER',
+    'Estonia' => 'EE',
+    'Eswatini' => 'SZ',
+    'Ethiopia' => 'ET',
+    'Fiji' => 'FJ',
+    'Finland' => 'FI',
+    'France' => 'FR',
+    'Gabon' => 'GA',
+    'Gambia' => 'GM',
+    'Georgia' => 'GE',
+    'Germany' => 'DE',
+    'Ghana' => 'GH',
+    'Greece' => 'GR',
+    'Grenada' => 'GD',
+    'Guatemala' => 'GT',
+    'Guinea' => 'GN',
+    'Guinea-Bissau' => 'GW',
+    'Guyana' => 'GY',
+    'Haiti' => 'HT',
+    'Honduras' => 'HN',
+    'Hungary' => 'HU',
+    'Iceland' => 'IS',
+    'India' => 'IN',
+    'Indonesia' => 'ID',
+    'Iran' => 'IR',
+    'Iraq' => 'IQ',
+    'Ireland' => 'IE',
+    'Israel' => 'IL',
+    'Italy' => 'IT',
+    'Jamaica' => 'JM',
+    'Japan' => 'JP',
+    'Jordan' => 'JO',
+    'Kazakhstan' => 'KZ',
+    'Kenya' => 'KE',
+    'Kiribati' => 'KI',
+    'North Korea' => 'KP',
+    'South Korea' => 'KR',
+    'Kosovo' => 'XK',
+    'Kuwait' => 'KW',
+    'Kyrgyzstan' => 'KG',
+    'Laos' => 'LA',
+    'Latvia' => 'LV',
+    'Lebanon' => 'LB',
+    'Lesotho' => 'LS',
+    'Liberia' => 'LR',
+    'Libya' => 'LY',
+    'Liechtenstein' => 'LI',
+    'Lithuania' => 'LT',
+    'Luxembourg' => 'LU',
+    'Madagascar' => 'MG',
+    'Malawi' => 'MW',
+    'Malaysia' => 'MY',
+    'Maldives' => 'MV',
+    'Mali' => 'ML',
+    'Malta' => 'MT',
+    'Marshall Islands' => 'MH',
+    'Mauritania' => 'MR',
+    'Mauritius' => 'MU',
+    'Mexico' => 'MX',
+    'Micronesia' => 'FM',
+    'Moldova' => 'MD',
+    'Monaco' => 'MC',
+    'Mongolia' => 'MN',
+    'Montenegro' => 'ME',
+    'Morocco' => 'MA',
+    'Mozambique' => 'MZ',
+    'Myanmar' => 'MM',
+    'Namibia' => 'NA',
+    'Nauru' => 'NR',
+    'Nepal' => 'NP',
+    'Netherlands' => 'NL',
+    'New Zealand' => 'NZ',
+    'Nicaragua' => 'NI',
+    'Niger' => 'NE',
+    'Nigeria' => 'NG',
+    'North Macedonia' => 'MK',
+    'Norway' => 'NO',
+    'Oman' => 'OM',
+    'Pakistan' => 'PK',
+    'Palau' => 'PW',
+    'Panama' => 'PA',
+    'Papua New Guinea' => 'PG',
+    'Paraguay' => 'PY',
+    'Peru' => 'PE',
+    'Philippines' => 'PH',
+    'Poland' => 'PL',
+    'Portugal' => 'PT',
+    'Qatar' => 'QA',
+    'Romania' => 'RO',
+    'Russia' => 'RU',
+    'Rwanda' => 'RW',
+    'Saint Kitts and Nevis' => 'KN',
+    'Saint Lucia' => 'LC',
+    'Saint Vincent and the Grenadines' => 'VC',
+    'Samoa' => 'WS',
+    'San Marino' => 'SM',
+    'Sao Tome and Principe' => 'ST',
+    'Saudi Arabia' => 'SA',
+    'Senegal' => 'SN',
+    'Serbia' => 'RS',
+    'Seychelles' => 'SC',
+    'Sierra Leone' => 'SL',
+    'Singapore' => 'SG',
+    'Slovakia' => 'SK',
+    'Slovenia' => 'SI',
+    'Solomon Islands' => 'SB',
+    'Somalia' => 'SO',
+    'South Africa' => 'ZA',
+    'South Sudan' => 'SS',
+    'Spain' => 'ES',
+    'Sri Lanka' => 'LK',
+    'Sudan' => 'SD',
+    'Suriname' => 'SR',
+    'Sweden' => 'SE',
+    'Switzerland' => 'CH',
+    'Syria' => 'SY',
+    'Taiwan' => 'TW',
+    'Tajikistan' => 'TJ',
+    'Tanzania' => 'TZ',
+    'Thailand' => 'TH',
+    'Togo' => 'TG',
+    'Tonga' => 'TO',
+    'Trinidad and Tobago' => 'TT',
+    'Tunisia' => 'TN',
+    'Turkey' => 'TR',
+    'Turkmenistan' => 'TM',
+    'Tuvalu' => 'TV',
+    'Uganda' => 'UG',
+    'Ukraine' => 'UA',
+    'United Arab Emirates' => 'AE',
+    'United Kingdom' => 'GB',
+    'United States' => 'US',
+    'Uruguay' => 'UY',
+    'Uzbekistan' => 'UZ',
+    'Vanuatu' => 'VU',
+    'Vatican City' => 'VA',
+    'Venezuela' => 'VE',
+    'Vietnam' => 'VN',
+    'Yemen' => 'YE',
+    'Zambia' => 'ZM',
+    'Zimbabwe' => 'ZW'
+];
+
+// Function to convert country code to flag emoji
+function country_to_flag_emoji($country_code) {
+    return mb_convert_encoding('&#' . (127397 + ord($country_code[0])) . ';' . '&#' . (127397 + ord($country_code[1])) . ';', 'UTF-8', 'HTML-ENTITIES');
+}
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country = $_POST['country'];
@@ -19,7 +217,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 
     if ($capital) {
-        $message = "The capital of {$country} is {$capital}.";
+        $country_code = $country_flags[$country] ?? ''; // Find the country code
+        $flag_emoji = $country_code ? country_to_flag_emoji($country_code) : ''; // Get the flag emoji
+        $message = "The capital of {$country} is {$capital} {$flag_emoji}.";
 
         // Update search tracking
         $search_stmt = $conn->prepare("SELECT search_count FROM search_tracking WHERE country_id = ?");
@@ -179,210 +379,17 @@ $unique_countries_stmt->close();
             <p><strong>📅 Searches Today:</strong> <?php echo $searches_today ?? 0; ?></p>
             <p><strong>🌍 Unique Countries Searched:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
         </section>
-        <!-- List of 195 Countries Section -->
+
+        <!-- List of Countries Section -->
         <section id="country-list">
-            <h2>Complete List of Countries in Our Database</h2>
-            <p>Here's the complete list of countries in our database. Try to guess their capital before searching in the finder!</p>
+            <h2>Complete List of Countries</h2>
+            <p>Here's the complete list of countries in our database. Try to guess its capital before searching in the finder!</p>
             <ul>
-                <li>Afghanistan</li>
-                <li>Albania</li>
-                <li>Algeria</li>
-                <li>Andorra</li>
-                <li>Angola</li>
-                <li>Antigua and Barbuda</li>
-                <li>Argentina</li>
-                <li>Armenia</li>
-                <li>Australia</li>
-                <li>Austria</li>
-                <li>Azerbaijan</li>
-                <li>Bahamas</li>
-                <li>Bahrain</li>
-                <li>Bangladesh</li>
-                <li>Barbados</li>
-                <li>Belarus</li>
-                <li>Belgium</li>
-                <li>Belize</li>
-                <li>Benin</li>
-                <li>Bhutan</li>
-                <li>Bolivia</li>
-                <li>Bosnia and Herzegovina</li>
-                <li>Botswana</li>
-                <li>Brazil</li>
-                <li>Brunei</li>
-                <li>Bulgaria</li>
-                <li>Burkina Faso</li>
-                <li>Burundi</li>
-                <li>Cabo Verde</li>
-                <li>Cambodia</li>
-                <li>Cameroon</li>
-                <li>Canada</li>
-                <li>Central African Republic</li>
-                <li>Chad</li>
-                <li>Chile</li>
-                <li>China</li>
-                <li>Colombia</li>
-                <li>Comoros</li>
-                <li>Democratic Republic of the Congo</li>
-                <li>Republic of the Congo</li>
-                <li>Costa Rica</li>
-                <li>Croatia</li>
-                <li>Cuba</li>
-                <li>Cyprus</li>
-                <li>Czech Republic</li>
-                <li>Denmark</li>
-                <li>Djibouti</li>
-                <li>Dominica</li>
-                <li>Dominican Republic</li>
-                <li>East Timor (Timor-Leste)</li>
-                <li>Ecuador</li>
-                <li>Egypt</li>
-                <li>El Salvador</li>
-                <li>Equatorial Guinea</li>
-                <li>Eritrea</li>
-                <li>Estonia</li>
-                <li>Eswatini</li>
-                <li>Ethiopia</li>
-                <li>Fiji</li>
-                <li>Finland</li>
-                <li>France</li>
-                <li>Gabon</li>
-                <li>Gambia</li>
-                <li>Georgia</li>
-                <li>Germany</li>
-                <li>Ghana</li>
-                <li>Greece</li>
-                <li>Grenada</li>
-                <li>Guatemala</li>
-                <li>Guinea</li>
-                <li>Guinea-Bissau</li>
-                <li>Guyana</li>
-                <li>Haiti</li>
-                <li>Honduras</li>
-                <li>Hungary</li>
-                <li>Iceland</li>
-                <li>India</li>
-                <li>Indonesia</li>
-                <li>Iran</li>
-                <li>Iraq</li>
-                <li>Ireland</li>
-                <li>Israel</li>
-                <li>Italy</li>
-                <li>Jamaica</li>
-                <li>Japan</li>
-                <li>Jordan</li>
-                <li>Kazakhstan</li>
-                <li>Kenya</li>
-                <li>Kiribati</li>
-                <li>North Korea</li>
-                <li>South Korea</li>
-                <li>Kosovo</li>
-                <li>Kuwait</li>
-                <li>Kyrgyzstan</li>
-                <li>Laos</li>
-                <li>Latvia</li>
-                <li>Lebanon</li>
-                <li>Lesotho</li>
-                <li>Liberia</li>
-                <li>Libya</li>
-                <li>Liechtenstein</li>
-                <li>Lithuania</li>
-                <li>Luxembourg</li>
-                <li>Madagascar</li>
-                <li>Malawi</li>
-                <li>Malaysia</li>
-                <li>Maldives</li>
-                <li>Mali</li>
-                <li>Malta</li>
-                <li>Marshall Islands</li>
-                <li>Mauritania</li>
-                <li>Mauritius</li>
-                <li>Mexico</li>
-                <li>Micronesia</li>
-                <li>Moldova</li>
-                <li>Monaco</li>
-                <li>Mongolia</li>
-                <li>Montenegro</li>
-                <li>Morocco</li>
-                <li>Mozambique</li>
-                <li>Myanmar</li>
-                <li>Namibia</li>
-                <li>Nauru</li>
-                <li>Nepal</li>
-                <li>Netherlands</li>
-                <li>New Zealand</li>
-                <li>Nicaragua</li>
-                <li>Niger</li>
-                <li>Nigeria</li>
-                <li>North Macedonia</li>
-                <li>Norway</li>
-                <li>Oman</li>
-                <li>Pakistan</li>
-                <li>Palau</li>
-                <li>Panama</li>
-                <li>Papua New Guinea</li>
-                <li>Paraguay</li>
-                <li>Peru</li>
-                <li>Philippines</li>
-                <li>Poland</li>
-                <li>Portugal</li>
-                <li>Qatar</li>
-                <li>Romania</li>
-                <li>Russia</li>
-                <li>Rwanda</li>
-                <li>Saint Kitts and Nevis</li>
-                <li>Saint Lucia</li>
-                <li>Saint Vincent and the Grenadines</li>
-                <li>Samoa</li>
-                <li>San Marino</li>
-                <li>Sao Tome and Principe</li>
-                <li>Saudi Arabia</li>
-                <li>Senegal</li>
-                <li>Serbia</li>
-                <li>Seychelles</li>
-                <li>Sierra Leone</li>
-                <li>Singapore</li>
-                <li>Slovakia</li>
-                <li>Slovenia</li>
-                <li>Solomon Islands</li>
-                <li>Somalia</li>
-                <li>South Africa</li>
-                <li>South Sudan</li>
-                <li>Spain</li>
-                <li>Sri Lanka</li>
-                <li>Sudan</li>
-                <li>Suriname</li>
-                <li>Sweden</li>
-                <li>Switzerland</li>
-                <li>Syria</li>
-                <li>Taiwan</li>
-                <li>Tajikistan</li>
-                <li>Tanzania</li>
-                <li>Thailand</li>
-                <li>Togo</li>
-                <li>Tonga</li>
-                <li>Trinidad and Tobago</li>
-                <li>Tunisia</li>
-                <li>Turkey</li>
-                <li>Turkmenistan</li>
-                <li>Tuvalu</li>
-                <li>Uganda</li>
-                <li>Ukraine</li>
-                <li>United Arab Emirates</li>
-                <li>United Kingdom</li>
-                <li>United States</li>
-                <li>Uruguay</li>
-                <li>Uzbekistan</li>
-                <li>Vanuatu</li>
-                <li>Vatican City</li>
-                <li>Venezuela</li>
-                <li>Vietnam</li>
-                <li>Yemen</li>
-                <li>Zambia</li>
-                <li>Zimbabwe</li>
+                <?php foreach (array_keys($country_flags) as $country_name): ?>
+                    <li><?php echo $country_name; ?></li>
+                <?php endforeach; ?>
             </ul>
-            <p>More countries to be added in the future.</p>
         </section>
-    </div>
     </div>
 
     <script>
@@ -431,7 +438,7 @@ function convertUTCtoLocal() {
             const formattedDateString = `${weekday}, ${month} ${ordinalDay}, ${year} at ${timeString}`;
 
             // Update the content of the element with the country and formatted local time
-            recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}.`;
+            recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}`;
         } else {
             recentSearchElement.innerText = "N/A";  // If invalid, show N/A
         }
