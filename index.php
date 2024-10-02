@@ -229,6 +229,7 @@ $alias_map = [
     "Congo (Brazzaville)" => "Republic of the Congo",
     "Congo-Brazzaville" => "Republic of the Congo",
     "CAR" => "Central African Republic",
+    "Cape Verde" => "Cabo Verde",
     "Korea (South)" => "South Korea",
     "ROK" => "South Korea",
     "Republic of Korea" => "South Korea",
