@@ -312,6 +312,7 @@ $alias_map = [
 
     // East Timor
     "East Timor" => "East Timor (Timor-Leste)",
+    "Timor Leste" => "East Timor (Timor-Leste)",
     "Timor-Leste" => "East Timor (Timor-Leste)",
     "Democratic Republic of Timor-Leste" => "East Timor (Timor-Leste)",
 
