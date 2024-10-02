@@ -516,15 +516,13 @@ function normalize_country_input($input) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $country = $_POST['country'];
-
-    // Check if the country name exists in alias map
-    if (isset($alias_map[$country])) {
-        $country = $alias_map[$country]; // Replace with the official name
-    }
-
+    $country_input = $_POST['country'];
+    
+    // Normalize the country input (case-insensitive and alias resolution)
+    $country = normalize_country_input($country_input);
+    
     // Search for the country in the database
-    $stmt = $conn->prepare("SELECT id, capital_name FROM countries WHERE country_name = ?");
+    $stmt = $conn->prepare("SELECT id, capital_name FROM countries WHERE LOWER(country_name) = LOWER(?)");
     $stmt->bind_param("s", $country);
     $stmt->execute();
     $stmt->bind_result($country_id, $capital);
