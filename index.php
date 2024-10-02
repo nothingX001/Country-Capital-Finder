@@ -340,6 +340,9 @@ $alias_map = [
     "Republic of Uganda" => "Uganda",
     "Ukrayina" => "Ukraine",
     "Eastern Republic of Uruguay" => "Uruguay",
+    "Vatican"=> "Vatican City",
+    "the Vatican"=> "Vatican City",
+    "Vatican City State"=> "Vatican City",
     "Republic of Zambia" => "Zambia",
     "Republic of Zimbabwe" => "Zimbabwe"
 ];
