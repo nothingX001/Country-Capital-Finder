@@ -358,7 +358,7 @@ $unique_countries_stmt->close();
             <ul>
                 <li>
                     <strong>What is the country capital finder?</strong>
-                    <p>The country capital finder is an online tool that helps users quickly locate the capital city of any country worldwide.</p>
+                    <p>The country capital finder is an application that helps users quickly locate international capital cities.</p>
                 </li>
                 <li>
                     <strong>How accurate is the capital information provided?</strong>
@@ -443,7 +443,7 @@ function convertUTCtoLocal() {
             const formattedDateString = `${weekday}, ${month} ${ordinalDay}, ${year} at ${timeString}`;
 
             // Update the content of the element with the country and formatted local time
-            recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}`;
+            recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}.`;
         } else {
             recentSearchElement.innerText = "N/A";  // If invalid, show N/A
         }
