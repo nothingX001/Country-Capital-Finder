@@ -312,6 +312,7 @@ $alias_map = [
 
     // East Timor
     "Timor-Leste" => "East Timor",
+    "Democratic Republic of Timor-Leste" => "East Timor",
 
     // Palestine
     "State of Palestine" => "Palestine",
