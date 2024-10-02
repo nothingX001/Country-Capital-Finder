@@ -347,9 +347,6 @@ $alias_map = [
     // Venezuela
     "Bolivarian Republic of Venezuela" => "Venezuela",
 
-    // Timor-Leste
-    "East Timor" => "Timor-Leste",
-
     // Papua New Guinea
     "PNG" => "Papua New Guinea",
 
