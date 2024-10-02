@@ -226,6 +226,7 @@ $alias_map = [
 
     // Democratic Republic of the Congo
     "DRC" => "Democratic Republic of the Congo",
+    "DR" => "Democratic Republic of the Congo",
     "Congo (Kinshasa)" => "Democratic Republic of the Congo",
     "Congo-Kinshasa" => "Democratic Republic of the Congo",
     "DR Congo" => "Democratic Republic of the Congo",
@@ -239,6 +240,7 @@ $alias_map = [
     "Korea (South)" => "South Korea",
     "ROK" => "South Korea",
     "Republic of Korea" => "South Korea",
+    "Korea Republic" => "South Korea",
     "S. Korea" => "South Korea",
 
     // North Korea
@@ -397,6 +399,7 @@ $alias_map = [
 
     // China
     "People's Republic of China" => "China",
+    "PRC" => "China",
 
     // Croatia
     "Hrvatska" => "Croatia",
