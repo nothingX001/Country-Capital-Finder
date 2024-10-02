@@ -311,7 +311,7 @@ $alias_map = [
     "Federated States of Micronesia" => "Micronesia",
 
     // East Timor
-    "East Timor" > "East Timor (Timor-Leste)",
+    "East Timor" => "East Timor (Timor-Leste)",
     "Timor-Leste" => "East Timor (Timor-Leste)",
     "Democratic Republic of Timor-Leste" => "East Timor (Timor-Leste)",
 
