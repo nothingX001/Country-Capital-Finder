@@ -47,7 +47,7 @@ $country_map = [
     "Colombia" => "🇨🇴",
     "Comoros" => "🇰🇲",
     "Congo (Congo-Brazzaville)" => "🇨🇬",
-    "Congo (Congo-Kinshasa)" => "🇨🇩",
+    "Democratic Republic of the Congo" => "🇨🇩",
     "Costa Rica" => "🇨🇷",
     "Croatia" => "🇭🇷",
     "Cuba" => "🇨🇺",
@@ -204,6 +204,18 @@ $country_map = [
     "Zimbabwe" => "🇿🇼"
 ];
 
+// Alias map for alternate country names
+$alias_map = [
+    "USA" => "United States",
+    "US" => "United States",
+    "America" => "United States",
+    "UK" => "United Kingdom",
+    "Congo (Congo-Kinshasa)" => "Democratic Republic of the Congo",
+    "DRC" => "Democratic Republic of the Congo",
+    "Congo (Congo-Brazzaville)" => "Republic of the Congo",
+    // Add more aliases as needed
+];
+
 // Function to get the flag emoji for a country
 function get_flag_emoji($country) {
     global $country_map;
@@ -213,6 +225,11 @@ function get_flag_emoji($country) {
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country = $_POST['country'];
+
+    // Check if the country name exists in alias map
+    if (isset($alias_map[$country])) {
+        $country = $alias_map[$country]; // Replace with the official name
+    }
 
     // Search for the country in the database
     $stmt = $conn->prepare("SELECT id, capital_name FROM countries WHERE country_name = ?");
@@ -224,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($capital) {
         $flag_emoji = get_flag_emoji($country);
-        $message = "The capital of {$country} is {$capital} {$flag_emoji}";
+        $message = "The capital of {$country} is {$capital} {$flag_emoji}.";
 
         // Update search tracking
         $search_stmt = $conn->prepare("SELECT search_count FROM search_tracking WHERE country_id = ?");
