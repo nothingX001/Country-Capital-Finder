@@ -46,7 +46,7 @@ $country_map = [
     "China" => "🇨🇳",
     "Colombia" => "🇨🇴",
     "Comoros" => "🇰🇲",
-    "Congo (Congo-Brazzaville)" => "🇨🇬",
+    "Republic of the Congo" => "🇨🇬",
     "Democratic Republic of the Congo" => "🇨🇩",
     "Costa Rica" => "🇨🇷",
     "Côte d'Ivoire"=> "🇨🇮",
@@ -100,6 +100,7 @@ $country_map = [
     "Kiribati" => "🇰🇮",
     "North Korea" => "🇰🇵",
     "South Korea" => "🇰🇷",
+    "Kosovo" => "🇽🇰",
     "Kuwait" => "🇰🇼",
     "Kyrgyzstan" => "🇰🇬",
     "Laos" => "🇱🇦",
@@ -293,6 +294,7 @@ $alias_map = [
 
     // Macedonia
     "FYROM" => "North Macedonia",
+    "Macedonia" => "North Macedonia",
     "Former Yugoslav Republic of Macedonia" => "North Macedonia",
 
     // UAE
