@@ -758,7 +758,7 @@ function convertUTCtoLocal() {
             const formattedDateString = `${weekday}, ${month} ${ordinalDay}, ${year} at ${timeString}`;
 
             // Update the content of the element with the country and formatted local time
-            recentSearchElement.innerText = `Someone searched for ${countrySearched} on ${formattedDateString}.`;
+            recentSearchElement.innerText = `Someone searched for the capital of ${countrySearched} on ${formattedDateString}.`;
         } else {
             recentSearchElement.innerText = "N/A";  // If invalid, show N/A
         }
