@@ -284,7 +284,6 @@ $alias_map = [
     "Kingdom of Saudi Arabia" => "Saudi Arabia",
     "Brunei Darussalam" => "Brunei",
     "The Bahamas" => "Bahamas",
-    "Bolivarian Republic of Venezuela" => "Venezuela",
     "PNG" => "Papua New Guinea",
     "Republic of Kazakhstan" => "Kazakhstan",
     "Kyrgyz Republic" => "Kyrgyzstan",
