@@ -6,194 +6,6 @@ error_reporting(E_ALL);
 
 include 'config.php'; // Database connection
 
-// Country map for converting country names to flags
-function country_to_flag_emoji($country) {
-    $country_map = [
-        'AFGHANISTAN' => 'AF',
-        'ALBANIA' => 'AL',
-        'ALGERIA' => 'DZ',
-        'ANDORRA' => 'AD',
-        'ANGOLA' => 'AO',
-        'ARGENTINA' => 'AR',
-        'ARMENIA' => 'AM',
-        'AUSTRALIA' => 'AU',
-        'AUSTRIA' => 'AT',
-        'AZERBAIJAN' => 'AZ',
-        'BAHAMAS' => 'BS',
-        'BAHRAIN' => 'BH',
-        'BANGLADESH' => 'BD',
-        'BARBADOS' => 'BB',
-        'BELARUS' => 'BY',
-        'BELGIUM' => 'BE',
-        'BELIZE' => 'BZ',
-        'BENIN' => 'BJ',
-        'BHUTAN' => 'BT',
-        'BOLIVIA' => 'BO',
-        'BOSNIA AND HERZEGOVINA' => 'BA',
-        'BOTSWANA' => 'BW',
-        'BRAZIL' => 'BR',
-        'BRUNEI' => 'BN',
-        'BULGARIA' => 'BG',
-        'BURKINA FASO' => 'BF',
-        'BURUNDI' => 'BI',
-        'CAMBODIA' => 'KH',
-        'CAMEROON' => 'CM',
-        'CANADA' => 'CA',
-        'CAPE VERDE' => 'CV',
-        'CENTRAL AFRICAN REPUBLIC' => 'CF',
-        'CHAD' => 'TD',
-        'CHILE' => 'CL',
-        'CHINA' => 'CN',
-        'COLOMBIA' => 'CO',
-        'COMOROS' => 'KM',
-        'CONGO' => 'CG',
-        'COSTA RICA' => 'CR',
-        'CROATIA' => 'HR',
-        'CUBA' => 'CU',
-        'CYPRUS' => 'CY',
-        'CZECH REPUBLIC' => 'CZ',
-        'DENMARK' => 'DK',
-        'DJIBOUTI' => 'DJ',
-        'DOMINICA' => 'DM',
-        'DOMINICAN REPUBLIC' => 'DO',
-        'EAST TIMOR' => 'TL',
-        'ECUADOR' => 'EC',
-        'EGYPT' => 'EG',
-        'EL SALVADOR' => 'SV',
-        'ESTONIA' => 'EE',
-        'ESWATINI' => 'SZ',
-        'ETHIOPIA' => 'ET',
-        'FIJI' => 'FJ',
-        'FINLAND' => 'FI',
-        'FRANCE' => 'FR',
-        'GABON' => 'GA',
-        'GAMBIA' => 'GM',
-        'GEORGIA' => 'GE',
-        'GERMANY' => 'DE',
-        'GHANA' => 'GH',
-        'GREECE' => 'GR',
-        'GRENADA' => 'GD',
-        'GUATEMALA' => 'GT',
-        'GUINEA' => 'GN',
-        'GUYANA' => 'GY',
-        'HAITI' => 'HT',
-        'HONDURAS' => 'HN',
-        'HUNGARY' => 'HU',
-        'ICELAND' => 'IS',
-        'INDIA' => 'IN',
-        'INDONESIA' => 'ID',
-        'IRAN' => 'IR',
-        'IRAQ' => 'IQ',
-        'IRELAND' => 'IE',
-        'ISRAEL' => 'IL',
-        'ITALY' => 'IT',
-        'JAMAICA' => 'JM',
-        'JAPAN' => 'JP',
-        'JORDAN' => 'JO',
-        'KAZAKHSTAN' => 'KZ',
-        'KENYA' => 'KE',
-        'KOREA' => 'KR',
-        'KOSOVO' => 'XK',
-        'KUWAIT' => 'KW',
-        'KYRGYZSTAN' => 'KG',
-        'LAOS' => 'LA',
-        'LATVIA' => 'LV',
-        'LEBANON' => 'LB',
-        'LESOTHO' => 'LS',
-        'LIBERIA' => 'LR',
-        'LIBYA' => 'LY',
-        'LIECHTENSTEIN' => 'LI',
-        'LITHUANIA' => 'LT',
-        'LUXEMBOURG' => 'LU',
-        'MADAGASCAR' => 'MG',
-        'MALAWI' => 'MW',
-        'MALAYSIA' => 'MY',
-        'MALDIVES' => 'MV',
-        'MALI' => 'ML',
-        'MALTA' => 'MT',
-        'MAURITANIA' => 'MR',
-        'MAURITIUS' => 'MU',
-        'MEXICO' => 'MX',
-        'MONACO' => 'MC',
-        'MONGOLIA' => 'MN',
-        'MONTENEGRO' => 'ME',
-        'MOROCCO' => 'MA',
-        'MOZAMBIQUE' => 'MZ',
-        'MYANMAR' => 'MM',
-        'NAMIBIA' => 'NA',
-        'NEPAL' => 'NP',
-        'NETHERLANDS' => 'NL',
-        'NEW ZEALAND' => 'NZ',
-        'NICARAGUA' => 'NI',
-        'NIGER' => 'NE',
-        'NIGERIA' => 'NG',
-        'NORTH MACEDONIA' => 'MK',
-        'NORWAY' => 'NO',
-        'OMAN' => 'OM',
-        'PAKISTAN' => 'PK',
-        'PANAMA' => 'PA',
-        'PAPUA NEW GUINEA' => 'PG',
-        'PARAGUAY' => 'PY',
-        'PERU' => 'PE',
-        'PHILIPPINES' => 'PH',
-        'POLAND' => 'PL',
-        'PORTUGAL' => 'PT',
-        'QATAR' => 'QA',
-        'ROMANIA' => 'RO',
-        'RUSSIA' => 'RU',
-        'RWANDA' => 'RW',
-        'SAUDI ARABIA' => 'SA',
-        'SENEGAL' => 'SN',
-        'SERBIA' => 'RS',
-        'SEYCHELLES' => 'SC',
-        'SIERRA LEONE' => 'SL',
-        'SINGAPORE' => 'SG',
-        'SLOVAKIA' => 'SK',
-        'SLOVENIA' => 'SI',
-        'SOLOMON ISLANDS' => 'SB',
-        'SOMALIA' => 'SO',
-        'SOUTH AFRICA' => 'ZA',
-        'SOUTH SUDAN' => 'SS',
-        'SPAIN' => 'ES',
-        'SRI LANKA' => 'LK',
-        'SUDAN' => 'SD',
-        'SURINAME' => 'SR',
-        'SWEDEN' => 'SE',
-        'SWITZERLAND' => 'CH',
-        'SYRIA' => 'SY',
-        'TAIWAN' => 'TW',
-        'TAJIKISTAN' => 'TJ',
-        'TANZANIA' => 'TZ',
-        'THAILAND' => 'TH',
-        'TOGO' => 'TG',
-        'TONGA' => 'TO',
-        'TRINIDAD AND TOBAGO' => 'TT',
-        'TUNISIA' => 'TN',
-        'TURKEY' => 'TR',
-        'TURKMENISTAN' => 'TM',
-        'UGANDA' => 'UG',
-        'UKRAINE' => 'UA',
-        'UNITED ARAB EMIRATES' => 'AE',
-        'UNITED KINGDOM' => 'GB',
-        'UNITED STATES' => 'US',
-        'URUGUAY' => 'UY',
-        'UZBEKISTAN' => 'UZ',
-        'VANUATU' => 'VU',
-        'VATICAN CITY' => 'VA',
-        'VENEZUELA' => 'VE',
-        'VIETNAM' => 'VN',
-        'YEMEN' => 'YE',
-        'ZAMBIA' => 'ZM',
-        'ZIMBABWE' => 'ZW'
-    ];
-
-    if (array_key_exists(strtoupper($country), $country_map)) {
-        return mb_chr(127397 + ord($country_map[strtoupper($country)][0])) .
-               mb_chr(127397 + ord($country_map[strtoupper($country)][1]));
-    }
-    return ''; // Return empty string if no flag found
-}
-
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country = $_POST['country'];
@@ -207,7 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
 
     if ($capital) {
-        $message = "The capital of {$country} is {$capital}. " . country_to_flag_emoji($country);
+        // Append flag emoji to the message
+        $flag_emoji = country_to_flag_emoji($country);
+        $message = "The capital of {$country} is {$capital}. {$flag_emoji}";
 
         // Update search tracking
         $search_stmt = $conn->prepare("SELECT search_count FROM search_tracking WHERE country_id = ?");
@@ -298,6 +112,201 @@ $unique_countries_stmt->execute();
 $unique_countries_stmt->bind_result($unique_countries_searched);
 $unique_countries_stmt->fetch();
 $unique_countries_stmt->close();
+
+// Function to convert a country name into a flag emoji
+function country_to_flag_emoji($country) {
+    $country_map = [
+        'Afghanistan' => 'AF',
+        'Albania' => 'AL',
+        'Algeria' => 'DZ',
+        'Andorra' => 'AD',
+        'Angola' => 'AO',
+        'Argentina' => 'AR',
+        'Armenia' => 'AM',
+        'Australia' => 'AU',
+        'Austria' => 'AT',
+        'Azerbaijan' => 'AZ',
+        'Bahamas' => 'BS',
+        'Bahrain' => 'BH',
+        'Bangladesh' => 'BD',
+        'Barbados' => 'BB',
+        'Belarus' => 'BY',
+        'Belgium' => 'BE',
+        'Belize' => 'BZ',
+        'Benin' => 'BJ',
+        'Bhutan' => 'BT',
+        'Bolivia' => 'BO',
+        'Bosnia and Herzegovina' => 'BA',
+        'Botswana' => 'BW',
+        'Brazil' => 'BR',
+        'Brunei' => 'BN',
+        'Bulgaria' => 'BG',
+        'Burkina Faso' => 'BF',
+        'Burundi' => 'BI',
+        'Cambodia' => 'KH',
+        'Cameroon' => 'CM',
+        'Canada' => 'CA',
+        'Cape Verde' => 'CV',
+        'Central African Republic' => 'CF',
+        'Chad' => 'TD',
+        'Chile' => 'CL',
+        'China' => 'CN',
+        'Colombia' => 'CO',
+        'Comoros' => 'KM',
+        'Congo' => 'CG',
+        'Costa Rica' => 'CR',
+        'Croatia' => 'HR',
+        'Cuba' => 'CU',
+        'Cyprus' => 'CY',
+        'Czech Republic' => 'CZ',
+        'Denmark' => 'DK',
+        'Djibouti' => 'DJ',
+        'Dominica' => 'DM',
+        'Dominican Republic' => 'DO',
+        'East Timor' => 'TL',
+        'Ecuador' => 'EC',
+        'Egypt' => 'EG',
+        'El Salvador' => 'SV',
+        'Estonia' => 'EE',
+        'Eswatini' => 'SZ',
+        'Ethiopia' => 'ET',
+        'Fiji' => 'FJ',
+        'Finland' => 'FI',
+        'France' => 'FR',
+        'Gabon' => 'GA',
+        'Gambia' => 'GM',
+        'Georgia' => 'GE',
+        'Germany' => 'DE',
+        'Ghana' => 'GH',
+        'Greece' => 'GR',
+        'Grenada' => 'GD',
+        'Guatemala' => 'GT',
+        'Guinea' => 'GN',
+        'Guyana' => 'GY',
+        'Haiti' => 'HT',
+        'Honduras' => 'HN',
+        'Hungary' => 'HU',
+        'Iceland' => 'IS',
+        'India' => 'IN',
+        'Indonesia' => 'ID',
+        'Iran' => 'IR',
+        'Iraq' => 'IQ',
+        'Ireland' => 'IE',
+        'Israel' => 'IL',
+        'Italy' => 'IT',
+        'Jamaica' => 'JM',
+        'Japan' => 'JP',
+        'Jordan' => 'JO',
+        'Kazakhstan' => 'KZ',
+        'Kenya' => 'KE',
+        'Korea' => 'KR',
+        'Kosovo' => 'XK',
+        'Kuwait' => 'KW',
+        'Kyrgyzstan' => 'KG',
+        'Laos' => 'LA',
+        'Latvia' => 'LV',
+        'Lebanon' => 'LB',
+        'Lesotho' => 'LS',
+        'Liberia' => 'LR',
+        'Libya' => 'LY',
+        'Liechtenstein' => 'LI',
+        'Lithuania' => 'LT',
+        'Luxembourg' => 'LU',
+        'Madagascar' => 'MG',
+        'Malawi' => 'MW',
+        'Malaysia' => 'MY',
+        'Maldives' => 'MV',
+        'Mali' => 'ML',
+        'Malta' => 'MT',
+        'Mauritania' => 'MR',
+        'Mauritius' => 'MU',
+        'Mexico' => 'MX',
+        'Monaco' => 'MC',
+        'Mongolia' => 'MN',
+        'Montenegro' => 'ME',
+        'Morocco' => 'MA',
+        'Mozambique' => 'MZ',
+        'Myanmar' => 'MM',
+        'Namibia' => 'NA',
+        'Nepal' => 'NP',
+        'Netherlands' => 'NL',
+        'New Zealand' => 'NZ',
+        'Nicaragua' => 'NI',
+        'Niger' => 'NE',
+        'Nigeria' => 'NG',
+        'North Macedonia' => 'MK',
+        'Norway' => 'NO',
+        'Oman' => 'OM',
+        'Pakistan' => 'PK',
+        'Panama' => 'PA',
+        'Papua New Guinea' => 'PG',
+        'Paraguay' => 'PY',
+        'Peru' => 'PE',
+        'Philippines' => 'PH',
+        'Poland' => 'PL',
+        'Portugal' => 'PT',
+        'Qatar' => 'QA',
+        'Romania' => 'RO',
+        'Russia' => 'RU',
+        'Rwanda' => 'RW',
+        'Saudi Arabia' => 'SA',
+        'Senegal' => 'SN',
+        'Serbia' => 'RS',
+        'Seychelles' => 'SC',
+        'Sierra Leone' => 'SL',
+        'Singapore' => 'SG',
+        'Slovakia' => 'SK',
+        'Slovenia' => 'SI',
+        'Solomon Islands' => 'SB',
+        'Somalia' => 'SO',
+        'South Africa' => 'ZA',
+        'South Sudan' => 'SS',
+        'Spain' => 'ES',
+        'Sri Lanka' => 'LK',
+        'Sudan' => 'SD',
+        'Suriname' => 'SR',
+        'Sweden' => 'SE',
+        'Switzerland' => 'CH',
+        'Syria' => 'SY',
+        'Taiwan' => 'TW',
+        'Tajikistan' => 'TJ',
+        'Tanzania' => 'TZ',
+        'Thailand' => 'TH',
+        'Togo' => 'TG',
+        'Tonga' => 'TO',
+        'Trinidad and Tobago' => 'TT',
+        'Tunisia' => 'TN',
+        'Turkey' => 'TR',
+        'Turkmenistan' => 'TM',
+        'Uganda' => 'UG',
+        'Ukraine' => 'UA',
+        'United Arab Emirates' => 'AE',
+        'United Kingdom' => 'GB',
+        'United States' => 'US',
+        'Uruguay' => 'UY',
+        'Uzbekistan' => 'UZ',
+        'Vanuatu' => 'VU',
+        'Vatican City' => 'VA',
+        'Venezuela' => 'VE',
+        'Vietnam' => 'VN',
+        'Yemen' => 'YE',
+        'Zambia' => 'ZM',
+        'Zimbabwe' => 'ZW'
+    ];
+
+    // Lookup the country code
+    if (isset($country_map[$country])) {
+        $country_code = $country_map[$country];
+        // Convert the country code into flag emoji
+        $flag_emoji = '';
+        foreach (str_split($country_code) as $letter) {
+            $flag_emoji .= chr(ord($letter) + 127397);
+        }
+        return $flag_emoji;
+    } else {
+        return ''; // Return empty string if no country code is found
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -368,190 +377,16 @@ $unique_countries_stmt->close();
             <p><strong>🌍 Unique Countries Searched:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
         </section>
 
-        <!-- Complete list of countries in our database -->
+        <!-- Full List of Countries Section -->
         <section id="country-list">
-            <h2>Complete List of Countries in Our Database</h2>
-            <p>Here's the complete list of countries in our database. Try to guess their capitals before searching in the finder!</p>
+            <h2>🌍 Complete List of Countries in Our Database</h2>
+            <p>Here's the complete list of countries in our database. Try to guess its capital before searching in the finder!</p>
             <ul>
-                <li>Afghanistan</li>
-                <li>Albania</li>
-                <li>Algeria</li>
-                <li>Andorra</li>
-                <li>Angola</li>
-                <li>Argentina</li>
-                <li>Armenia</li>
-                <li>Australia</li>
-                <li>Austria</li>
-                <li>Azerbaijan</li>
-                <li>Bahamas</li>
-                <li>Bahrain</li>
-                <li>Bangladesh</li>
-                <li>Barbados</li>
-                <li>Belarus</li>
-                <li>Belgium</li>
-                <li>Belize</li>
-                <li>Benin</li>
-                <li>Bhutan</li>
-                <li>Bolivia</li>
-                <li>Bosnia and Herzegovina</li>
-                <li>Botswana</li>
-                <li>Brazil</li>
-                <li>Brunei</li>
-                <li>Bulgaria</li>
-                <li>Burkina Faso</li>
-                <li>Burundi</li>
-                <li>Cambodia</li>
-                <li>Cameroon</li>
-                <li>Canada</li>
-                <li>Cape Verde</li>
-                <li>Central African Republic</li>
-                <li>Chad</li>
-                <li>Chile</li>
-                <li>China</li>
-                <li>Colombia</li>
-                <li>Comoros</li>
-                <li>Congo</li>
-                <li>Costa Rica</li>
-                <li>Croatia</li>
-                <li>Cuba</li>
-                <li>Cyprus</li>
-                <li>Czech Republic</li>
-                <li>Denmark</li>
-                <li>Djibouti</li>
-                <li>Dominica</li>
-                <li>Dominican Republic</li>
-                <li>East Timor</li>
-                <li>Ecuador</li>
-                <li>Egypt</li>
-                <li>El Salvador</li>
-                <li>Estonia</li>
-                <li>Eswatini</li>
-                <li>Ethiopia</li>
-                <li>Fiji</li>
-                <li>Finland</li>
-                <li>France</li>
-                <li>Gabon</li>
-                <li>Gambia</li>
-                <li>Georgia</li>
-                <li>Germany</li>
-                <li>Ghana</li>
-                <li>Greece</li>
-                <li>Grenada</li>
-                <li>Guatemala</li>
-                <li>Guinea</li>
-                <li>Guyana</li>
-                <li>Haiti</li>
-                <li>Honduras</li>
-                <li>Hungary</li>
-                <li>Iceland</li>
-                <li>India</li>
-                <li>Indonesia</li>
-                <li>Iran</li>
-                <li>Iraq</li>
-                <li>Ireland</li>
-                <li>Israel</li>
-                <li>Italy</li>
-                <li>Jamaica</li>
-                <li>Japan</li>
-                <li>Jordan</li>
-                <li>Kazakhstan</li>
-                <li>Kenya</li>
-                <li>Korea</li>
-                <li>Kosovo</li>
-                <li>Kuwait</li>
-                <li>Kyrgyzstan</li>
-                <li>Laos</li>
-                <li>Latvia</li>
-                <li>Lebanon</li>
-                <li>Lesotho</li>
-                <li>Liberia</li>
-                <li>Libya</li>
-                <li>Liechtenstein</li>
-                <li>Lithuania</li>
-                <li>Luxembourg</li>
-                <li>Madagascar</li>
-                <li>Malawi</li>
-                <li>Malaysia</li>
-                <li>Maldives</li>
-                <li>Mali</li>
-                <li>Malta</li>
-                <li>Mauritania</li>
-                <li>Mauritius</li>
-                <li>Mexico</li>
-                <li>Monaco</li>
-                <li>Mongolia</li>
-                <li>Montenegro</li>
-                <li>Morocco</li>
-                <li>Mozambique</li>
-                <li>Myanmar</li>
-                <li>Namibia</li>
-                <li>Nepal</li>
-                <li>Netherlands</li>
-                <li>New Zealand</li>
-                <li>Nicaragua</li>
-                <li>Niger</li>
-                <li>Nigeria</li>
-                <li>North Macedonia</li>
-                <li>Norway</li>
-                <li>Oman</li>
-                <li>Pakistan</li>
-                <li>Panama</li>
-                <li>Papua New Guinea</li>
-                <li>Paraguay</li>
-                <li>Peru</li>
-                <li>Philippines</li>
-                <li>Poland</li>
-                <li>Portugal</li>
-                <li>Qatar</li>
-                <li>Romania</li>
-                <li>Russia</li>
-                <li>Rwanda</li>
-                <li>Saudi Arabia</li>
-                <li>Senegal</li>
-                <li>Serbia</li>
-                <li>Seychelles</li>
-                <li>Sierra Leone</li>
-                <li>Singapore</li>
-                <li>Slovakia</li>
-                <li>Slovenia</li>
-                <li>Solomon Islands</li>
-                <li>Somalia</li>
-                <li>South Africa</li>
-                <li>South Sudan</li>
-                <li>Spain</li>
-                <li>Sri Lanka</li>
-                <li>Sudan</li>
-                <li>Suriname</li>
-                <li>Sweden</li>
-                <li>Switzerland</li>
-                <li>Syria</li>
-                <li>Taiwan</li>
-                <li>Tajikistan</li>
-                <li>Tanzania</li>
-                <li>Thailand</li>
-                <li>Togo</li>
-                <li>Tonga</li>
-                <li>Trinidad and Tobago</li>
-                <li>Tunisia</li>
-                <li>Turkey</li>
-                <li>Turkmenistan</li>
-                <li>Uganda</li>
-                <li>Ukraine</li>
-                <li>United Arab Emirates</li>
-                <li>United Kingdom</li>
-                <li>United States</li>
-                <li>Uruguay</li>
-                <li>Uzbekistan</li>
-                <li>Vanuatu</li>
-                <li>Vatican City</li>
-                <li>Venezuela</li>
-                <li>Vietnam</li>
-                <li>Yemen</li>
-                <li>Zambia</li>
-                <li>Zimbabwe</li>
+                <?php foreach ($country_map as $country => $code) { ?>
+                    <li><?php echo $country; ?></li>
+                <?php } ?>
             </ul>
         </section>
-
     </div>
 
     <script>
