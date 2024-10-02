@@ -257,6 +257,7 @@ $alias_map = [
     "Holland" => "Netherlands",
     "Dutchland" => "Netherlands",
     "Nederland" => "Netherlands",
+    "The Netherlands" => "Netherlands",
 
     // Ivory Coast
     "Ivory Coast" => "Côte d'Ivoire",
