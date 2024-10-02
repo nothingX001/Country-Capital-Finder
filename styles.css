@@ -5,8 +5,7 @@ body {
     padding: 0;
     background: linear-gradient(135deg, #fceff9, #e0c3fc);
     text-align: center;
-    padding-left: 10px;
-    padding-right: 10px;
+    box-sizing: border-box;  /* Ensure everything respects box-sizing */
 }
 
 /* Main Section */
@@ -16,10 +15,12 @@ body {
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     margin: 50px auto;
-    width: 80%;
-    max-width: 900px;
+    width: 90%; /* Reduced width for mobile */
+    max-width: 900px; /* Max width for larger screens */
+    box-sizing: border-box;
 }
 
+/* Shrink h1 text on smaller screens */
 h1 {
     font-size: 3rem;
     font-weight: bold;
@@ -27,28 +28,28 @@ h1 {
     margin-bottom: 1rem;
 }
 
-/* Shrink h1 text on smaller screens */
 @media (max-width: 768px) {
     h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem; /* Adjusted for mobile */
     }
 }
 
+/* Form */
 form {
     margin-top: 1.5rem;
 }
 
 input[type="text"] {
-    width: 80%;
-    padding: 10px;
+    width: 100%;  /* Full width for mobile responsiveness */
+    padding: 12px;
     margin-top: 1rem;
     border-radius: 25px;
     border: 1px solid #ccc;
     font-size: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
 }
 
-/* Button Hover Animation */
 input[type="submit"], .seo-content button {
     background: linear-gradient(90deg, #f7797d, #FBD786);
     color: white;
@@ -60,11 +61,8 @@ input[type="submit"], .seo-content button {
     cursor: pointer;
     margin-top: 1.5rem;
     transition: all 0.3s ease-in-out;
-}
-
-input[type="submit"]:hover, .seo-content button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;  /* Full width for mobile responsiveness */
+    box-sizing: border-box;
 }
 
 /* Styling for the message returned by the form submission */
@@ -82,16 +80,10 @@ p.message {
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin: 50px auto;
-    width: 85%;
+    width: 90%;  /* Full width for mobile responsiveness */
     max-width: 900px;
     text-align: left;
-}
-
-/* Add padding on smaller screens to prevent content stretching */
-@media (max-width: 768px) {
-    .seo-content {
-        padding: 20px;
-    }
+    box-sizing: border-box;  /* Ensure padding is accounted for */
 }
 
 /* Consistent Heading Styling */
@@ -100,43 +92,12 @@ p.message {
     font-weight: bold;
     color: #333;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #f7797d; /* Line below the heading */
+    border-bottom: 2px solid #f7797d;
     padding-bottom: 0.5rem;
-    margin-top: 2rem; /* Ensure consistent spacing between sections */
-}
-
-/* No border below FAQ section */
-#faq {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 2rem;
     margin-top: 2rem;
 }
 
-/* Bullet points visible only in the Why Use section */
-#why-use ul {
-    list-style: disc;
-    padding-left: 40px;
-}
-
-#why-use ul li {
-    margin-bottom: 1.5rem;
-}
-
-#why-use ul li p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.6;
-    margin: 0.5rem 0;
-}
-
-#why-use ul li p strong {
-    color: #333;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-/* Remove bullets from the FAQ section */
+/* Remove bullets from FAQ section */
 #faq ul {
     list-style: none;
     padding-left: 0;
@@ -153,30 +114,14 @@ p.message {
     margin: 0.5rem 0;
 }
 
-#faq ul li p strong {
-    color: #333;
-    font-size: 1.2rem;
-    font-weight: bold;
+/* Bullet points visible only in the Why Use section */
+#why-use ul {
+    list-style: disc;
+    padding-left: 40px;
 }
 
-/* Consistent Spacing Between Sections */
-#why-use, #faq, #site-stats {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-
-.seo-content p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.8;
+#why-use ul li {
     margin-bottom: 1.5rem;
-}
-
-/* Site Statistics inside SEO Content */
-#site-stats {
-    margin-top: 2rem;
-    padding-top: 0;
-    border-top: none; /* Ensure no extra lines appear */
 }
 
 #site-stats p {
@@ -185,9 +130,8 @@ p.message {
     margin-bottom: 1rem;
 }
 
-/* Black text for statistics labels */
 #site-stats p strong {
-    color: #000; /* Make labels black */
+    color: #000; /* Black text for statistics labels */
 }
 
 /* Center the Quiz button, but align the header to the left */
@@ -201,12 +145,22 @@ p.message {
     display: block;
 }
 
+#quiz button {
+    margin-top: 20px; /* Spacing above button */
+    display: block;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #f7797d, #FBD786);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
 /* Responsiveness */
 @media (max-width: 768px) {
     input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 90%;  /* Add some margin on the sides to prevent full-width content */
-        margin-left: auto;
-        margin-right: auto;
+        width: 95%;  /* Better padding on mobile */
     }
 
     .seo-content h2 {
@@ -219,10 +173,5 @@ p.message {
 
     .seo-content p, .seo-content li {
         font-size: 1.1rem;
-    }
-
-    /* Padding for better mobile responsiveness */
-    .main, .seo-content {
-        padding: 1.5rem;
     }
 }
