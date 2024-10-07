@@ -609,7 +609,7 @@ $unique_countries_stmt->close();
         <!-- List of countries in the database -->
         <section id="complete-list">
             <h2>Complete List of Countries in Our Database</h2>
-            <p>Here's the complete list of countries in our database. Try to guess its capital before searching in the finder!</p>
+            <p>Here's the complete list of countries in our database. Try to guess capitals before searching in the finder!</p>
             <ul>
                 <?php foreach ($country_map as $country => $flag): ?>
                     <li><?php echo $country . " " . $flag; ?></li>
