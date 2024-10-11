@@ -73,6 +73,38 @@ p.message {
     margin-top: 1rem;
 }
 
+/* NavBar Styling */
+.navbar {
+    margin-top: 20px; /* Adds space between search box and NavBar */
+    text-align: center;
+}
+
+.navbar-list {
+    list-style-type: none;
+    padding: 0;
+    display: inline-flex;
+    gap: 20px; /* Space between items */
+    margin: 10px 0;
+}
+
+.navbar-list li {
+    display: inline;
+}
+
+.navbar-list li a {
+    text-decoration: none;
+    color: #333; /* Adjust color to fit the theme */
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-list li a:hover {
+    background-color: #ffd700; /* Adjust hover color */
+    color: #000;
+}
+
 /* SEO Content Section */
 .seo-content {
     background: linear-gradient(135deg, #fff, #f0f0f0);
@@ -132,29 +164,6 @@ p.message {
 
 #site-stats p strong {
     color: #000; /* Black text for statistics labels */
-}
-
-/* Center the Quiz button, but align the header to the left */
-#quiz h2 {
-    text-align: left;
-}
-
-#quiz p, #quiz button {
-    text-align: center;
-    margin: 0 auto;
-    display: block;
-}
-
-#quiz button {
-    margin-top: 20px; /* Spacing above button */
-    display: block;
-    padding: 12px 20px;
-    background: linear-gradient(90deg, #f7797d, #FBD786);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    cursor: pointer;
 }
 
 /* Responsiveness */
