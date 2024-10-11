@@ -14,7 +14,7 @@ body {
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin: 50px auto;
+    margin: 0px 50px 50px 50px;
     width: 90%; /* Reduced width for mobile */
     max-width: 900px; /* Max width for larger screens */
     box-sizing: border-box;
@@ -101,7 +101,7 @@ p.message {
 }
 
 .navbar-list li a:hover {
-    background-color: #ffd700; /* Adjust hover color */
+    background-color: purple; /* Adjust hover color */
     color: #000;
 }
 
