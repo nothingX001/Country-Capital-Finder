@@ -567,33 +567,6 @@ $unique_countries_stmt->close();
     </div>
 
     <div class="seo-content">
-        <section id="why-use">
-            <h2>Why Use the Country Capital Finder?</h2>
-            <ul>
-                <li>You can instantly <strong>find capitals</strong> of any country.</li>
-                <li>You have access to <strong>up-to-date information</strong> on over 195 countries.</li>
-                <li>You can explore real-time data with our <strong>site statistics</strong>.</li>
-            </ul>
-        </section>
-
-        <section id="faq">
-            <h2>Frequently Asked Questions (FAQ)</h2>
-            <ul>
-                <li>
-                    <strong>What is the country capital finder?</strong>
-                    <p>The country capital finder is an application that helps users quickly locate international capital cities.</p>
-                </li>
-                <li>
-                    <strong>How accurate is the capital information provided?</strong>
-                    <p>The information is sourced from reliable databases and updated regularly to ensure accuracy.</p>
-                </li>
-                <li>
-                    <strong>How do I find the capital of a country?</strong>
-                    <p>Simply enter the name of the country into the search box, and our tool will return its capital.</p>
-                </li>
-            </ul>
-        </section>
-
     <!-- Site Statistics Section inside SEO Content -->
         <section id="site-stats">
             <h2>📊 Site Statistics</h2>
