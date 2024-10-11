@@ -1,0 +1,21 @@
+<?php
+// quiz.php
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Country Capital Quiz</title>
+</head>
+<body>
+
+<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+
+<h1>Country Capital Quiz</h1>
+<p>Test your knowledge of country capitals!</p>
+
+<!-- Quiz content or links to individual quizzes go here -->
+
+</body>
+</html>
