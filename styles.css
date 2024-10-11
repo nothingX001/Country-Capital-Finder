@@ -10,13 +10,13 @@ body {
 
 /* Main Section */
 .main {
-    margin-top: 10px; /* Reduced space between NavBar and main section */
+    margin-top: 20px; /* Slightly reduced space between NavBar and main section */
     padding: 2rem;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 90%; /* Reduced width for mobile */
-    max-width: 900px; /* Max width for larger screens */
+    width: 90%; /* Keep centered layout */
+    max-width: 900px;
     box-sizing: border-box;
 }
 
