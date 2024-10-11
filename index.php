@@ -550,6 +550,9 @@ $unique_countries_stmt->close();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+    <?php include 'navbar.php'; ?>
+
     <div class="main">
         <h1>🇺🇸🇪🇺 Find a Country's Capital 🇷🇺🇨🇳</h1>
 
@@ -563,8 +566,6 @@ $unique_countries_stmt->close();
             <p class="message"><?php echo $message; ?></p>
         <?php } ?>
     </div>
-
-    <?php include 'navbar.php'; ?>
 
     <div class="seo-content">
         <section id="why-use">
