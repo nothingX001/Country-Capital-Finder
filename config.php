@@ -19,4 +19,3 @@ if ($cleardb_url) {
 } else {
     die("CLEARDB_DATABASE_URL is not set");
 }
-?>

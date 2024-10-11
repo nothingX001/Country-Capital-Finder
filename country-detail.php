@@ -23,6 +23,7 @@ if ($country_name && array_key_exists($country_name, $country_map)) {
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($country_name); ?> Profile</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
