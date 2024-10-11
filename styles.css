@@ -149,7 +149,7 @@ p.message {
 }
 
 #faq ul li p {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: #555;
     line-height: 1.6;
     margin: 0.5rem 0;
@@ -166,7 +166,7 @@ p.message {
 }
 
 #site-stats p {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: #555;
     margin-bottom: 1rem;
 }
@@ -190,6 +190,6 @@ p.message {
     }
 
     .seo-content p, .seo-content li {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
     }
 }
