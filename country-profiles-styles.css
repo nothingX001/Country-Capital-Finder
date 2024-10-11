@@ -2,6 +2,8 @@
 #main-country-profiles {
     border-radius: 5px;
     background-color: white;
+    padding: 50px auto;
+    margin: 50px auto;
 }
 
 /* Country List Styling */
