@@ -12,10 +12,11 @@
 </head>
 <body>
 
-<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
-
-<h1>Country Capital Quiz</h1>
-<p>Test your knowledge of country capitals!</p>
+    <?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+    <section id="main-quiz">
+        <h1>Country Capital Quiz</h1>
+        <p>Test your knowledge of country capitals!</p>
+    </section>
 
 <!-- Quiz content or links to individual quizzes go here -->
 

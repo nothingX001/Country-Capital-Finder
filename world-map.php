@@ -12,10 +12,11 @@
 </head>
 <body>
 
-<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
-
-<h1>Explore the World</h1>
-<p>Click on regions or countries to learn more.</p>
+    <?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+    <section id="main-world-map">
+        <h1>Explore the World</h1>
+        <p>Click on regions or countries to learn more.</p>
+    </section>
 
 <!-- Placeholder for world map functionality -->
 
