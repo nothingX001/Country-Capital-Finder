@@ -1,9 +1,13 @@
 /* Main */
 #main-country-profiles {
-    border-radius: 5px;
-    background-color: white;
-    padding: 50px auto;
-    margin: 50px auto;
+    margin: 20px auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Adjust for responsive width */
+    max-width: 900px; /* Max width for larger screens */
+    box-sizing: border-box;
 }
 
 /* Country List Styling */
