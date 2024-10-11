@@ -31,6 +31,10 @@ p {
     font-size: 1.3rem;
 }
 
+label {
+    font-size: 1.3rem;
+}
+
 .header-flags {
     font-size: 3rem;
     margin: 0 auto;
