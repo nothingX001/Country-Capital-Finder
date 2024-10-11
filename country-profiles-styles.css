@@ -12,13 +12,13 @@
 /* Country List Styling */
 ul {
     list-style: none; /* Removes default bullets */
-    padding-left: 0;
     text-align: center; /* Aligns the list items to the left */
     margin: 20px auto; /* Centers the list within the page */
 }
 
 ul li a {
     text-decoration: none;
+    font-size: 1.5rem;
     color: #333;
     font-weight: bold;
     display: inline-block;
