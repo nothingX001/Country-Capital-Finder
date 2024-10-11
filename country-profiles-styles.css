@@ -13,8 +13,9 @@
 ul {
     list-style: none; /* Removes default bullets */
     padding: 0;
-    text-align: center; /* Aligns the list items to the left */
+    text-align: left; /* Aligns the list items to the left */
     margin: 20px auto; /* Centers the list within the page */
+    max-width: 560px;
 }
 
 ul li a {
