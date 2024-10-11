@@ -214,23 +214,25 @@ $country_map = $country_map = [
 <head>
     <meta charset="UTF-8">
     <title>Country Profiles</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="country-profiles-styles.css">
 </head>
 <body>
 
-<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+    <?php include 'navbar.php'; ?> <!-- Include your NavBar -->
 
-<h1>Country Profiles</h1>
-<p>Select a country to view its profile.</p>
-<ul>
-    <?php foreach ($country_map as $country => $flag): ?>
-        <li>
-            <a href="country-profile.php?country=<?php echo urlencode($country); ?>">
-                <?php echo $country . " " . $flag; ?>
-            </a>
-        </li>
-    <?php endforeach; ?>
-</ul>
+    <section id="main-country-profiles">
+        <h1>Country Profiles</h1>
+        <p>Select a country to view its profile.</p>
+        <ul>
+            <?php foreach ($country_map as $country => $flag): ?>
+                <li>
+                    <a href="country-profile.php?country=<?php echo urlencode($country); ?>">
+                        <?php echo $country . " " . $flag; ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </section>
 
 </body>
 </html>
