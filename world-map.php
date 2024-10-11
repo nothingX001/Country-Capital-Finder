@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <title>World Map</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="world-map-styles.css">
 </head>
 <body>
 
