@@ -608,17 +608,6 @@ $unique_countries_stmt->close();
             <p><strong>📅 Searches Today:</strong> <?php echo $searches_today ?? 0; ?></p>
             <p><strong>🌍 Unique Countries Searched:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
         </section>
-
-        <!-- List of countries in the database -->
-        <section id="complete-list">
-            <h2>Complete List of Countries in Our Database</h2>
-            <p>Try to guess the corresponding capitals before searching in the finder!</p>
-            <ul>
-                <?php foreach ($country_map as $country => $flag): ?>
-                    <li><?php echo $country . " " . $flag; ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </section>
     </div>
 
     <script>
