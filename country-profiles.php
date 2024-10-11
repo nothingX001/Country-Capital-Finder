@@ -214,6 +214,7 @@ $country_map = $country_map = [
 <head>
     <meta charset="UTF-8">
     <title>Country Profiles</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="country-profiles-styles.css">
 </head>
 <body>
