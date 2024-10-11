@@ -101,7 +101,7 @@ p.message {
 }
 
 .navbar-list li a:hover {
-    background-color: purple; /* Adjust hover color */
+    background-color: #9545a5; /* Adjust hover color */
     color: #000;
 }
 
