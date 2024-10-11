@@ -9,6 +9,11 @@
     box-sizing: border-box;
 }
 
+#main-country-profiles h1 {
+    margin: 0;
+    padding: 0;
+}
+
 /* Country List Styling */
 ul {
     list-style: none; /* Removes default bullets */
