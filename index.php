@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 include 'config.php'; // Database connection
 
+include 'navbar.php';
+
 // Country flag emoji map (hard-coded for now)
 $country_map = [
     "Afghanistan" => "🇦🇫",
