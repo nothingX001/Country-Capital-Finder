@@ -555,7 +555,7 @@ $unique_countries_stmt->close();
 
     <div class="main">
         <h2 class="header-flags">🇺🇸🇪🇺🇷🇺🇨🇳</h2>
-        <h1>Find a Country's Capital</h1>
+        <h1>FIND YOUR COUNTRY'S CAPITAL!</h1>
 
         <form action="index.php" method="post">
             <label>Enter a country: </label>
