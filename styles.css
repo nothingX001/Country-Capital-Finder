@@ -136,7 +136,7 @@ p.message {
     cursor: pointer;
     display: none;
     position: fixed;
-    top: 15px; /* Maintain consistent spacing on mobile */
+    top: 15px; /* Consistent spacing at top */
     left: 50%;
     transform: translateX(-50%);
     padding: 8px 12px; /* Reduced padding to match original size */
@@ -207,9 +207,9 @@ p.message {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    /* Ensure space between the hamburger menu and main section */
+    /* Align main section closer to hamburger menu */
     .main {
-        margin-top: 100px; /* Reduced space to bring the main section closer */
+        margin-top: 60px; /* Match space between hamburger and screen top */
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
@@ -233,7 +233,7 @@ p.message {
         display: none; /* Hide the navbar list initially */
         flex-direction: column;
         position: fixed; /* Ensures it does not overlap with main content */
-        top: 60px;
+        top: 60px; /* Match space with top of screen */
         left: 0;
         width: 100%;
         background-color: #333;
