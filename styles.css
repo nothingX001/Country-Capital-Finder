@@ -208,7 +208,7 @@ p.message {
 @media (max-width: 768px) {
     /* Add spacing to push down the main section */
     .main {
-        margin-top: 70px;
+        margin-top: 40px;
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
