@@ -129,15 +129,17 @@ p.message {
 /* Toggle Button for Mobile */
 .navbar-toggle {
     font-size: 1.8rem;
-    background: none;
+    background-color: #333; /* Matching background color */
     border: none;
-    color: #333;
+    color: #fff;
     cursor: pointer;
     display: none;
     position: absolute;
-    top: 0; /* Centered in the top middle */
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
+    padding: 10px 15px;
+    border-radius: 5px;
 }
 
 /* SEO Content Section */
@@ -224,7 +226,7 @@ p.message {
         display: none; /* Hide the navbar list initially */
         flex-direction: column;
         position: absolute;
-        top: 5px;
+        top: 60px;
         left: 0;
         width: 100%;
         background-color: #333;
@@ -252,5 +254,10 @@ p.message {
     /* Show the navbar list when the 'open' class is added */
     .navbar-list.open {
         display: flex;
+    }
+
+    /* Adjusted spacing and styling for open state */
+    .navbar.open .navbar-toggle {
+        background-color: #333; /* Ensure consistency */
     }
 }
