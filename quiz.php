@@ -28,6 +28,7 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 <head>
     <meta charset="UTF-8">
     <title>Country Capital Quiz</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
