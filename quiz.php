@@ -23,7 +23,6 @@ $quizQuestions = getQuizQuestions($conn);
 <head>
     <meta charset="UTF-8">
     <title>Country Capital Quiz</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
@@ -88,8 +87,8 @@ function showNextQuestion() {
         const questionData = questions[currentQuestionIndex];
         const questionType = Math.random() > 0.5 ? 'country' : 'capital';
         const questionText = questionType === 'country' 
-            ? `What is the capital of ${questionData.country_name}?`
-            : `Of which country is ${questionData.capital_name} the capital?`;
+            ? `What is the capital of "${questionData.country_name}"?`
+            : `Of which country is "${questionData.capital_name}" the capital?`;
 
         document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
         document.getElementById('userAnswer').value = '';
@@ -108,7 +107,8 @@ function endQuiz() {
     // Generate detailed results
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
-        resultsHTML += `<p>Question ${index + 1}: The answer was "${response.correctAnswer}". You put "${response.userAnswer}".</p>`;
+        const resultText = response.isCorrect ? "Correct" : "Incorrect";
+        resultsHTML += `<p>Question ${index + 1}: ${resultText}. The answer was "${response.correctAnswer}". You put "${response.userAnswer}".</p>`;
     });
     document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
@@ -118,18 +118,20 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
     const questionData = questions[currentQuestionIndex];
-    const isCountryQuestion = currentQuestionIndex % 2 === 0;
+    const isCountryQuestion = Math.random() > 0.5;
     const correctAnswer = isCountryQuestion 
         ? questionData.capital_name.toLowerCase()
         : questionData.country_name.toLowerCase();
 
     // Check answer (case-insensitive)
-    if (userAnswer === correctAnswer) {
+    const isCorrect = userAnswer === correctAnswer;
+    if (isCorrect) {
         score++;
     }
 
     // Record user response
     userResponses.push({
+        isCorrect: isCorrect,
         correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
         userAnswer: userAnswer
     });
