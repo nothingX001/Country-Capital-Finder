@@ -24,7 +24,7 @@
     padding: 0;
     text-align: left; /* Aligns the list items to the left */
     margin: 20px auto; /* Centers the list within the page */
-    max-width: 560px;
+    max-width: 760px;
 }
 
 #main-country-profiles ul li a {
@@ -37,5 +37,5 @@
 }
 
 #main-country-profiles ul li a:hover {
-    color: #b155c3; /* Hover color for links */
+    color: rgba(50, 0, 20, 0.8);
 }

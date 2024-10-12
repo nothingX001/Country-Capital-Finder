@@ -16,6 +16,7 @@
     <section id="main-world-map">
         <h1>Explore the World</h1>
         <p>Click on regions or countries to learn more.</p>
+        <p>(Feature not available yet. Coming soon!)</p>
     </section>
 
 <!-- Placeholder for world map functionality -->
