@@ -8,3 +8,12 @@
     max-width: 900px; /* Max width for larger screens */
     box-sizing: border-box;
 }
+
+#main-quiz h1 {
+    margin: 0;
+    padding: 0;
+}
+
+#main-quiz p {
+    font-size: 1.3rem;
+}
