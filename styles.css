@@ -84,13 +84,15 @@ p.message {
     padding: 15px 0;
 }
 
+/* Navbar Container */
 .navbar-container {
     display: flex;
-    justify-content: center; /* Always center the navbar */
+    justify-content: center; /* Center navbar on desktop */
     align-items: center;
     max-width: 900px;
 }
 
+/* Navbar List */
 .navbar-list {
     list-style-type: none;
     padding: 0;
