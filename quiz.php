@@ -14,7 +14,7 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
-// Fetch the questions
+// Fetch the initial questions
 $quizQuestions = getQuizQuestions($conn);
 ?>
 
@@ -23,7 +23,6 @@ $quizQuestions = getQuizQuestions($conn);
 <head>
     <meta charset="UTF-8">
     <title>Country Capital Quiz</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
@@ -115,7 +114,7 @@ function endQuiz() {
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect ? "Correct" : "Incorrect";
-        resultsHTML += `<p>Question ${index + 1}: ${resultText}. The answer was "${response.correctAnswer}". You put "${response.userAnswer}".</p>`;
+        resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}. The answer was "${response.correctAnswer}". You put "${response.userAnswer}".</p>`;
     });
     document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
@@ -132,12 +131,17 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
 
     // Check if user answer matches any correct option
     const isCorrect = checkAnswer(userAnswer, correctAnswer);
+    const questionText = isCountryQuestion 
+        ? `What is the capital of "${questionData.country_name}"?`
+        : `Of which country is "${questionData.capital_name}" the capital?`;
+
     if (isCorrect) {
         score++;
     }
 
     // Record user response
     userResponses.push({
+        questionText: questionText,
         isCorrect: isCorrect,
         correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
         userAnswer: userAnswer
@@ -147,14 +151,21 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     showNextQuestion();
 });
 
+// Function to reload the page with new questions
+function reloadQuiz() {
+    fetch('quiz.php')
+        .then(response => response.json())
+        .then(newQuestions => {
+            questions = newQuestions;
+            startQuiz();
+        });
+}
+
 // Event listener to start the quiz
 document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
 
 // Event listener for "Redo Quiz" button
-document.getElementById('redoQuizBtn').addEventListener('click', () => {
-    document.getElementById('resultContainer').style.display = 'none';
-    document.getElementById('startQuizBtn').style.display = 'block';
-});
+document.getElementById('redoQuizBtn').addEventListener('click', reloadQuiz);
 
 </script>
 
