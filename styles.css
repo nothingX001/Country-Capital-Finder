@@ -137,7 +137,7 @@ p.message {
     cursor: pointer;
     display: none;
     position: relative;
-    padding: 5px 10px;
+    padding: 8px; /* Even padding all around */
     border-radius: 5px;
     margin-top: 5px;
     z-index: 1000;
@@ -206,10 +206,9 @@ p.message {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    /* Adjust navbar-container for closer alignment */
-    .navbar-container {
-        margin-top: 5px;
-        margin-bottom: 5px;
+    /* Align main section closer to hamburger menu */
+    .main {
+        margin-top: 20px;
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
