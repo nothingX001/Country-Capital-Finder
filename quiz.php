@@ -136,8 +136,8 @@ function endQuiz() {
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect 
-            ? `Correct. The answer was "${response.correctAnswer}".` 
-            : `Incorrect. The answer was "${response.correctAnswer}". You put "${response.userAnswer}".`;
+            ? `Correct. The answer was ${response.correctAnswer}.` 
+            : `Incorrect. The answer was ${response.correctAnswer}. You put "${response.userAnswer}".`;
 
         resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>`;
     });
