@@ -5,6 +5,7 @@ $capital_aliases = [
     "washington d.c." => "Washington, D.C",
     "dc" => "Washington, D.C",
     "d.c." => "Washington, D.C",
+    "DC"=> "Washington, D.C",
 
     // The Hague / Amsterdam
     "the hague" => "Amsterdam / The Hague",
