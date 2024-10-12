@@ -132,7 +132,7 @@ function endQuiz() {
     clearInterval(timer);
     document.getElementById('quizContainer').style.display = 'none';
     document.getElementById('resultContainer').style.display = 'block';
-    document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}`;
+    document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
 
     // Generate detailed results
     let resultsHTML = '';
