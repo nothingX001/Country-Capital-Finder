@@ -10,7 +10,7 @@ body {
 
 /* Main Section */
 .main {
-    margin: 40px auto; /* Increased margin for better spacing on all screens */
+    margin: 20px auto; /* Restore original spacing */
     padding: 2rem;
     background-color: #fff;
     border-radius: 15px;
@@ -90,7 +90,7 @@ p.message {
 
 /* NavBar Styling */
 .navbar {
-    margin-top: 20px;
+    margin-top: 20px; /* Restore original spacing on desktop */
     text-align: center;
 }
 
@@ -129,17 +129,17 @@ p.message {
 
 /* Toggle Button for Mobile */
 .navbar-toggle {
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Adjusted to original smaller size */
     border: none;
     color: white;
     background-color: #333;
     cursor: pointer;
     display: none;
     position: fixed;
-    top: 30px; /* Increased space between top of screen and menu */
+    top: 15px; /* Maintain consistent spacing on mobile */
     left: 50%;
     transform: translateX(-50%);
-    padding: 12px 18px;
+    padding: 8px 12px; /* Reduced padding to match original size */
     border-radius: 5px;
     z-index: 1000; /* Ensures it stays on top */
 }
@@ -207,9 +207,9 @@ p.message {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    /* Add spacing to push down the main section */
+    /* Ensure space between the hamburger menu and main section */
     .main {
-        margin-top: 140px; /* Ensures extra space between navbar and main section */
+        margin-top: 100px; /* Reduced space to bring the main section closer */
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
@@ -233,7 +233,7 @@ p.message {
         display: none; /* Hide the navbar list initially */
         flex-direction: column;
         position: fixed; /* Ensures it does not overlap with main content */
-        top: 70px; /* Extra spacing between top of screen and list */
+        top: 60px;
         left: 0;
         width: 100%;
         background-color: #333;
@@ -257,7 +257,7 @@ p.message {
 
     .navbar-toggle {
         display: block; /* Show the toggle button on mobile */
-        top: 30px; /* Consistent spacing from the top */
+        top: 15px; /* Consistent spacing from the top */
     }
 
     /* Show the navbar list when the 'open' class is added */
