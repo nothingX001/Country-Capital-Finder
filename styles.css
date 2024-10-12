@@ -90,7 +90,7 @@ p.message {
 
 /* NavBar Styling */
 .navbar {
-    margin-top: 15px; /* Reduce space above on desktop */
+    margin-top: 15px; /* Reduced space */
     text-align: center;
 }
 
@@ -135,8 +135,7 @@ p.message {
     background-color: #333;
     cursor: pointer;
     display: none;
-    position: relative; /* Static instead of fixed */
-    top: 0; /* Reset any offset */
+    position: relative;
     padding: 8px 12px;
     border-radius: 5px;
     margin-top: 10px;
@@ -237,7 +236,7 @@ p.message {
         left: 0;
         width: 100%;
         height: 100vh; /* Cover full viewport height */
-        background-color: #333;
+        background-color: rgba(199, 140, 182, 0.9); /* Mauve color with transparency */
         justify-content: center;
         align-items: center;
         padding: 0;
@@ -246,7 +245,7 @@ p.message {
     }
 
     .navbar-list li {
-        padding: 1rem 0;
+        padding: 1.5rem 0; /* Increased padding for even spacing */
         text-align: center;
         width: 100%;
     }
@@ -254,7 +253,7 @@ p.message {
     .navbar-list li a {
         display: block;
         color: #fff;
-        padding: 15px;
+        padding: 10px;
         text-decoration: none;
         width: 100%;
         text-align: center;
@@ -272,6 +271,6 @@ p.message {
 
     /* Adjusted styling for open state */
     .navbar.open .navbar-toggle {
-        background-color: #333; /* Ensure consistency */
+        background-color: rgba(199, 140, 182, 0.9); /* Consistent mauve background */
     }
 }
