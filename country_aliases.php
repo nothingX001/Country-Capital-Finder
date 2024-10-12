@@ -9,6 +9,7 @@ $country_aliases = [
     "Britain" => "United Kingdom",
     "Great Britain" => "United Kingdom",
     "The United Kingdom" => "United Kingdom",
+    "Brasil"=> "Brazil",
     "DRC" => "Democratic Republic of the Congo",
     "DR" => "Democratic Republic of the Congo",
     "Congo (Kinshasa)" => "Democratic Republic of the Congo",
