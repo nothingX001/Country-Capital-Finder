@@ -129,7 +129,6 @@ p.message {
 /* Toggle Button for Mobile */
 .navbar-toggle {
     font-size: 1.8rem;
-    background-color: #333; /* Matching background color */
     border: none;
     color: #fff;
     cursor: pointer;
