@@ -133,6 +133,8 @@ $capital_aliases = [
     "seoul" => "Seoul",
     "soul" => "Seoul", // Phonetic variant
 
+    "Pyeongyang" => "Pyongyang",
+
     // Singapore
     "singapore" => "Singapore",
     "singapura" => "Singapore", // Malay name for Singapore
