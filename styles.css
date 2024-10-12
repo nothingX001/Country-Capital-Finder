@@ -204,6 +204,10 @@ p.message {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+    .main {
+        margin-top: 50px;
+    }
+
     input[type="text"], input[type="submit"], .main, .seo-content {
         width: 95%; /* Better padding on mobile */
     }
