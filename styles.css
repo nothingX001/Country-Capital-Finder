@@ -245,26 +245,27 @@ p.message {
     }
 
     .navbar-list li {
-        padding: 1.2rem 0; /* Slightly reduced for even spacing */
+        padding: 1.2rem 0; /* Adjusted for even spacing */
         text-align: center;
-        width: 80%; /* Centering with background */
+        width: 80%; /* Align for full centering */
     }
 
     .navbar-list li a {
-        display: inline-block; /* Inline-block for text centering */
+        display: inline-block;
         color: #fff;
-        padding: 10px 15px; /* Adjust padding for background hover effect */
+        padding: 10px 15px;
+        background-color: rgba(100, 0, 50, 0.8); /* Darker background color */
+        border-radius: 5px;
         text-decoration: none;
         width: 100%;
         text-align: center;
-        background-color: rgba(255, 255, 255, 0.2); /* Background color for each item */
-        border-radius: 5px; /* Rounded corners for each item */
+        transition: background-color 0.3s;
     }
 
-    /* Hover effect for each item */
+    /* Hover effect with lighter background */
     .navbar-list li a:hover {
-        background-color: rgba(255, 255, 255, 0.5); /* Shorter hover width */
-        padding: 10px 10px; /* Reduced padding on hover for shorter width effect */
+        background-color: rgba(255, 255, 255, 0.4); /* Lighter mauve on hover */
+        padding: 10px 10px; /* Shorter width */
     }
 
     .navbar-toggle {
