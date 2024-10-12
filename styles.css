@@ -123,8 +123,8 @@ p.message {
 }
 
 .navbar-list li a:hover {
-    background-color: #b155c3;
-    color: #000;
+    background-color: rgba(50, 0, 20, 0.8);
+    color: white;
 }
 
 /* Toggle Button for Mobile */
@@ -132,7 +132,7 @@ p.message {
     font-size: 1.6rem;
     border: none;
     color: white;
-    background-color: #333;
+    background-color: rgba(50, 0, 20, 0.8);
     cursor: pointer;
     display: none;
     position: relative;
