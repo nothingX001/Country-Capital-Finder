@@ -42,18 +42,18 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
-// Function to normalize input by removing accents, punctuation, and capitalization
+// Function to normalize input for case-insensitive comparison
 function normalize($string) {
     $string = strtolower($string);
     $string = str_replace(['ü', 'é', 'á', 'ö', 'ç', 'ñ', 'ã', 'í'], ['u', 'e', 'a', 'o', 'c', 'n', 'a', 'i'], $string);
-    $string = preg_replace('/[^a-z0-9]/', '', $string);
+    $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove non-alphanumeric characters
     return $string;
 }
 
 // Fetch initial questions
 $quizQuestions = getQuizQuestions($conn);
 
-// Convert aliases to lowercase for easy normalization
+// Lowercase alias maps for consistent normalization
 $country_aliases = array_change_key_case($country_aliases, CASE_LOWER);
 $capital_aliases = array_change_key_case($capital_aliases, CASE_LOWER);
 
@@ -95,10 +95,10 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 </section>
 
 <script>
-// Alias map from PHP
+// Alias map from PHP to JavaScript
 const aliasMap = <?php echo json_encode($alias_map); ?>;
 
-// "The" countries in lowercase for comparisons
+// Array of countries requiring "the"
 const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
 
 // Function to add "the" for countries that require it
@@ -106,7 +106,7 @@ function addThe(country) {
     return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
 }
 
-// Function to normalize user input by converting to lowercase, removing accents and non-alphanumeric characters
+// Normalize input for case-insensitive matching
 function normalizeInput(input) {
     let normalized = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     normalized = normalized.replace(/[^a-z0-9]/g, ''); // Remove non-alphanumeric chars
@@ -166,7 +166,7 @@ function showNextQuestion() {
     }
 }
 
-// Check if user answer matches any correct alias or spelling
+// Check if the answer is correct
 function checkAnswer(userAnswer, correctAnswer) {
     const normalizedAnswer = normalizeInput(userAnswer);
     const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
@@ -180,7 +180,7 @@ function endQuiz() {
     document.getElementById('resultContainer').style.display = 'block';
     document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
 
-    // Display results
+    // Display detailed results
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect 
@@ -220,10 +220,10 @@ function reloadQuiz() {
     location.reload();
 }
 
-// Event listener for start button
+// Start button event listener
 document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
 
-// Event listener for redo button
+// Redo button event listener
 document.getElementById('redoQuizBtn').addEventListener('click', reloadQuiz);
 
 </script>
