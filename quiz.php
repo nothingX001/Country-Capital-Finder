@@ -4,6 +4,32 @@ include 'config.php';
 include 'country_aliases.php';
 include 'capital_aliases.php';
 
+// Array of countries that should be preceded by "the"
+$the_countries = [
+    "United States",
+    "United Kingdom",
+    "Netherlands",
+    "Philippines",
+    "Bahamas",
+    "Gambia",
+    "Czech Republic",
+    "United Arab Emirates",
+    "Central African Republic",
+    "Republic of the Congo",
+    "Democratic Republic of the Congo",
+    "Maldives",
+    "Marshall Islands",
+    "Seychelles",
+    "Solomon Islands",
+    "Comoros"
+];
+
+// Function to add "the" to countries that require it
+function addThe($country) {
+    global $the_countries;
+    return in_array($country, $the_countries) ? "the $country" : $country;
+}
+
 // Function to get 10 random country-capital pairs
 function getQuizQuestions($conn) {
     $questions = [];
@@ -30,7 +56,6 @@ $alias_map = array_merge(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
@@ -63,6 +88,14 @@ $alias_map = array_merge(
 <script>
 // Alias map passed from PHP to JavaScript for use in normalization
 const aliasMap = <?php echo json_encode($alias_map); ?>;
+
+// Countries that should include "the" in questions/answers
+const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
+
+// Function to add "the" for countries that require it
+function addThe(country) {
+    return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
+}
 
 // Function to normalize user input by converting to lowercase and checking aliases
 function normalizeInput(input) {
@@ -107,8 +140,8 @@ function showNextQuestion() {
         const questionData = questions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
         const questionText = isCountryQuestion 
-            ? `What is the capital of ${questionData.country_name}?`
-            : `Of which country is ${questionData.capital_name} the capital?`;
+            ? `What is the capital of ${addThe(questionData.country_name)}?`
+            : `Of which country is ${addThe(questionData.capital_name)} the capital?`;
 
         // Store the question text and correct answer
         userResponses.push({
@@ -142,8 +175,8 @@ function endQuiz() {
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect 
-            ? `Correct. The answer was ${response.correctAnswer}.` 
-            : `Incorrect. The answer was ${response.correctAnswer}. You put "${response.userAnswer}".`;
+            ? `Correct. The answer was ${addThe(response.correctAnswer)}.`
+            : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You put "${response.userAnswer}".`;
 
         resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>`;
     });
