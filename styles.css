@@ -137,9 +137,9 @@ p.message {
     cursor: pointer;
     display: none;
     position: relative;
-    padding: 6px 10px; /* Reduced padding */
+    padding: 5px 10px; /* Slightly smaller padding */
     border-radius: 5px;
-    margin-top: 5px; /* Reduced margin */
+    margin-top: 5px; /* Reduced margin above */
     z-index: 1000;
 }
 
@@ -207,7 +207,7 @@ p.message {
 /* Mobile Styles */
 @media (max-width: 768px) {
     .main {
-        margin-top: 20px;
+        margin-top: 15px; /* Reduced gap for closer alignment */
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
@@ -270,7 +270,8 @@ p.message {
 
     .navbar-toggle {
         display: block;
-        margin-top: 5px; /* Reduced margin for closer spacing */
+        margin-top: 3px; /* Reduced margin */
+        margin-bottom: 3px; /* Reduced bottom margin */
     }
 
     /* Show the navbar list when the 'open' class is added */
