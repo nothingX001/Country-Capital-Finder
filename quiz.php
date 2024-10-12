@@ -98,6 +98,12 @@ function showNextQuestion() {
     }
 }
 
+// Function to check if answer matches any capital option
+function checkAnswer(userAnswer, correctAnswer) {
+    const answers = correctAnswer.toLowerCase().split('/').map(answer => answer.trim());
+    return answers.includes(userAnswer);
+}
+
 // Function to end the quiz
 function endQuiz() {
     clearInterval(timer);
@@ -119,13 +125,13 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
     const questionData = questions[currentQuestionIndex];
-    const isCountryQuestion = Math.random() > 0.5;
+    const isCountryQuestion = currentQuestionIndex % 2 === 0;
     const correctAnswer = isCountryQuestion 
         ? questionData.capital_name.toLowerCase()
         : questionData.country_name.toLowerCase();
 
-    // Check answer (case-insensitive)
-    const isCorrect = userAnswer === correctAnswer;
+    // Check if user answer matches any correct option
+    const isCorrect = checkAnswer(userAnswer, correctAnswer);
     if (isCorrect) {
         score++;
     }
