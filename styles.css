@@ -10,7 +10,7 @@ body {
 
 /* Main Section */
 .main {
-    margin: 20px auto; /* Restore original spacing */
+    margin: 30px auto; /* Slightly increased margin */
     padding: 2rem;
     background-color: #fff;
     border-radius: 15px;
@@ -90,7 +90,7 @@ p.message {
 
 /* NavBar Styling */
 .navbar {
-    margin-top: 20px; /* Restore original spacing on desktop */
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -129,19 +129,19 @@ p.message {
 
 /* Toggle Button for Mobile */
 .navbar-toggle {
-    font-size: 1.6rem; /* Adjusted to original smaller size */
+    font-size: 1.6rem;
     border: none;
     color: white;
     background-color: #333;
     cursor: pointer;
     display: none;
-    position: fixed;
-    top: 15px; /* Consistent spacing at top */
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 8px 12px; /* Reduced padding to match original size */
+    position: relative; /* Static instead of fixed */
+    top: 0; /* Reset any offset */
+    padding: 8px 12px;
     border-radius: 5px;
-    z-index: 1000; /* Ensures it stays on top */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    z-index: 1000;
 }
 
 /* SEO Content Section */
@@ -207,9 +207,9 @@ p.message {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    /* Align main section closer to hamburger menu */
+    /* Adjust main section margin on mobile */
     .main {
-        margin-top: 60px; /* Match space between hamburger and screen top */
+        margin-top: 30px;
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
@@ -232,14 +232,11 @@ p.message {
     .navbar-list {
         display: none; /* Hide the navbar list initially */
         flex-direction: column;
-        position: fixed; /* Ensures it does not overlap with main content */
-        top: 60px; /* Match space with top of screen */
-        left: 0;
+        position: static;
         width: 100%;
         background-color: #333;
         padding: 0;
         margin: 0;
-        z-index: 999; /* Keeps it above main content */
     }
 
     .navbar-list li {
@@ -257,7 +254,6 @@ p.message {
 
     .navbar-toggle {
         display: block; /* Show the toggle button on mobile */
-        top: 15px; /* Consistent spacing from the top */
     }
 
     /* Show the navbar list when the 'open' class is added */
@@ -265,7 +261,7 @@ p.message {
         display: flex;
     }
 
-    /* Adjusted spacing and styling for open state */
+    /* Adjusted styling for open state */
     .navbar.open .navbar-toggle {
         background-color: #333; /* Ensure consistency */
     }
