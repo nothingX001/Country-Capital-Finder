@@ -155,6 +155,7 @@ $country_aliases = [
     "Solomons" => "Solomon Islands",
     "Swiss Confederation" => "Switzerland",
     "Republic of Türkiye" => "Turkey",
+    "Türkiye"=> "Turkey",
     "Republic of Uganda" => "Uganda",
     "Ukrayina" => "Ukraine",
     "Eastern Republic of Uruguay" => "Uruguay",
