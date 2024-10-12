@@ -46,6 +46,8 @@ $quizQuestions = getQuizQuestions($conn);
 <div id="resultContainer" style="display: none;">
     <h2>Quiz Results</h2>
     <p id="score"></p>
+    <div id="detailedResults"></div>
+    <button id="redoQuizBtn">Redo Quiz</button>
 </div>
 
 <script>
@@ -55,11 +57,17 @@ let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 let timeElapsed = 0;
+let userResponses = []; // Track each user’s response and correct answers
 
 // Function to start the quiz
 function startQuiz() {
     document.getElementById('startQuizBtn').style.display = 'none';
+    document.getElementById('resultContainer').style.display = 'none';
     document.getElementById('quizContainer').style.display = 'block';
+    score = 0;
+    timeElapsed = 0;
+    userResponses = [];
+    currentQuestionIndex = 0;
     startTimer();
     showNextQuestion();
 }
@@ -96,26 +104,48 @@ function endQuiz() {
     document.getElementById('quizContainer').style.display = 'none';
     document.getElementById('resultContainer').style.display = 'block';
     document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}`;
+
+    // Generate detailed results
+    let resultsHTML = '';
+    userResponses.forEach((response, index) => {
+        resultsHTML += `<p>Question ${index + 1}: The answer was "${response.correctAnswer}". You put "${response.userAnswer}".</p>`;
+    });
+    document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
 
 // Function to handle answer submission
 document.getElementById('answerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
-    const correctAnswer = currentQuestionIndex % 2 === 0 
-        ? questions[currentQuestionIndex].capital_name.toLowerCase()
-        : questions[currentQuestionIndex].country_name.toLowerCase();
+    const questionData = questions[currentQuestionIndex];
+    const isCountryQuestion = currentQuestionIndex % 2 === 0;
+    const correctAnswer = isCountryQuestion 
+        ? questionData.capital_name.toLowerCase()
+        : questionData.country_name.toLowerCase();
 
     // Check answer (case-insensitive)
     if (userAnswer === correctAnswer) {
         score++;
     }
+
+    // Record user response
+    userResponses.push({
+        correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
+        userAnswer: userAnswer
+    });
+
     currentQuestionIndex++;
     showNextQuestion();
 });
 
 // Event listener to start the quiz
 document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+
+// Event listener for "Redo Quiz" button
+document.getElementById('redoQuizBtn').addEventListener('click', () => {
+    document.getElementById('resultContainer').style.display = 'none';
+    document.getElementById('startQuizBtn').style.display = 'block';
+});
 
 </script>
 
