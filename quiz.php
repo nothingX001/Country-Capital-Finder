@@ -42,22 +42,22 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
-// Function to normalize and standardize strings for comparison
+// Function to normalize input by removing accents, punctuation, and capitalization
 function normalize($string) {
     $string = strtolower($string);
-    $string = str_replace(['ü', 'é', 'á', 'ö', 'ç'], ['u', 'e', 'a', 'o', 'c'], $string); // Replace special chars
-    $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove all non-alphanumeric characters
+    $string = str_replace(['ü', 'é', 'á', 'ö', 'ç', 'ñ', 'ã', 'í'], ['u', 'e', 'a', 'o', 'c', 'n', 'a', 'i'], $string); // Replace accented chars
+    $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove non-alphanumeric characters
     return $string;
 }
 
-// Fetch the initial questions
+// Fetch initial questions
 $quizQuestions = getQuizQuestions($conn);
 
-// Merge and normalize alias arrays for easier case-insensitive use
+// Convert aliases to lowercase for easy normalization
 $country_aliases = array_change_key_case($country_aliases, CASE_LOWER);
 $capital_aliases = array_change_key_case($capital_aliases, CASE_LOWER);
 
-// Updated alias map combining both country and capital aliases
+// Combined alias map
 $alias_map = array_merge($country_aliases, $capital_aliases);
 ?>
 
@@ -95,10 +95,10 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 </section>
 
 <script>
-// Alias map passed from PHP to JavaScript for use in normalization
+// Alias map from PHP
 const aliasMap = <?php echo json_encode($alias_map); ?>;
 
-// Countries that should include "the" in questions/answers
+// "The" countries in lowercase for comparisons
 const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
 
 // Function to add "the" for countries that require it
@@ -106,22 +106,22 @@ function addThe(country) {
     return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
 }
 
-// Function to normalize user input by converting to lowercase, replacing special characters, and removing spaces
+// Function to normalize user input by converting to lowercase, removing accents and non-alphanumeric characters
 function normalizeInput(input) {
-    let normalized = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remove accents
+    let normalized = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     normalized = normalized.replace(/[^a-z0-9]/g, ''); // Remove non-alphanumeric chars
     return aliasMap[normalized] || normalized;
 }
 
-// Initialize variables for the quiz
+// Initialize quiz variables
 let questions = <?php echo json_encode($quizQuestions); ?>;
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 let timeElapsed = 0;
-let userResponses = []; // Track each user’s response and correct answers
+let userResponses = [];
 
-// Function to start the quiz
+// Start quiz function
 function startQuiz() {
     document.getElementById('startQuizBtn').style.display = 'none';
     document.getElementById('resultContainer').style.display = 'none';
@@ -134,7 +134,7 @@ function startQuiz() {
     showNextQuestion();
 }
 
-// Function to start the timer
+// Start timer function
 function startTimer() {
     timer = setInterval(() => {
         timeElapsed++;
@@ -144,7 +144,7 @@ function startTimer() {
     }, 1000);
 }
 
-// Function to show the next question
+// Show the next question
 function showNextQuestion() {
     if (currentQuestionIndex < questions.length) {
         const questionData = questions[currentQuestionIndex];
@@ -153,7 +153,6 @@ function showNextQuestion() {
             ? `What is the capital of ${addThe(questionData.country_name)}?`
             : `Of which country is ${addThe(questionData.capital_name)} the capital?`;
 
-        // Store the question text and correct answer
         userResponses.push({
             questionText: questionText,
             correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
@@ -167,21 +166,21 @@ function showNextQuestion() {
     }
 }
 
-// Function to check if answer matches any capital option
+// Check if user answer matches any correct alias or spelling
 function checkAnswer(userAnswer, correctAnswer) {
     const normalizedAnswer = normalizeInput(userAnswer);
     const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
     return correctOptions.includes(normalizedAnswer);
 }
 
-// Function to end the quiz
+// End quiz function
 function endQuiz() {
     clearInterval(timer);
     document.getElementById('quizContainer').style.display = 'none';
     document.getElementById('resultContainer').style.display = 'block';
     document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
 
-    // Generate detailed results
+    // Display results
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect 
@@ -193,25 +192,22 @@ function endQuiz() {
     document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
 
-// Function to handle answer submission
+// Answer submission handler
 document.getElementById('answerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim();
     const questionData = questions[currentQuestionIndex];
-    const response = userResponses[currentQuestionIndex]; // Access current question's response data
+    const response = userResponses[currentQuestionIndex];
 
-    // Get the correct answer based on question type
     const correctAnswer = response.isCountryQuestion 
         ? questionData.capital_name
         : questionData.country_name;
 
-    // Check if user answer matches any correct option
     const isCorrect = checkAnswer(userAnswer, correctAnswer);
     if (isCorrect) {
         score++;
     }
 
-    // Update the response with user answer and result
     response.userAnswer = userAnswer;
     response.isCorrect = isCorrect;
 
@@ -219,15 +215,15 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     showNextQuestion();
 });
 
-// Function to reload the quiz with new questions
+// Redo quiz function
 function reloadQuiz() {
-    location.reload();  // Reload the page to fetch new questions and start fresh
+    location.reload();
 }
 
-// Event listener to start the quiz
+// Event listener for start button
 document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
 
-// Event listener for "Redo Quiz" button
+// Event listener for redo button
 document.getElementById('redoQuizBtn').addEventListener('click', reloadQuiz);
 
 </script>
