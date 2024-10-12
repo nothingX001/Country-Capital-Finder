@@ -10,13 +10,13 @@ body {
 
 /* Main Section */
 .main {
-    margin: 20px auto; /* Slightly increased margin */
+    margin: 20px auto;
     padding: 2rem;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 90%; /* Adjust for responsive width */
-    max-width: 900px; /* Max width for larger screens */
+    max-width: 900px;
     box-sizing: border-box;
 }
 
@@ -45,7 +45,7 @@ label {
 
 @media (max-width: 768px) {
     h1 {
-        font-size: 2.5rem; /* Adjusted for mobile */
+        font-size: 2.5rem;
     }
 }
 
@@ -55,7 +55,7 @@ form {
 }
 
 input[type="text"] {
-    width: 100%; /* Full width for mobile responsiveness */
+    width: 100%;
     padding: 12px;
     margin-top: 1rem;
     border-radius: 25px;
@@ -76,7 +76,7 @@ input[type="submit"], .seo-content button {
     cursor: pointer;
     margin-top: 1.5rem;
     transition: all 0.3s ease-in-out;
-    width: 100%; /* Full width for mobile responsiveness */
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -90,7 +90,7 @@ p.message {
 
 /* NavBar Styling */
 .navbar {
-    margin-top: 15px; /* Reduced space */
+    margin-top: 15px;
     text-align: center;
 }
 
@@ -100,7 +100,7 @@ p.message {
     justify-content: center; /* Center align on all screens */
     align-items: center;
     max-width: 900px;
-    margin: 30px 0; /* Even spacing for top and bottom on desktop */
+    margin: 30px auto; /* Centered and even spacing on desktop */
     position: relative;
 }
 
@@ -111,6 +111,7 @@ p.message {
     display: flex;
     gap: 20px;
     margin: 0;
+    justify-content: center; /* Center items within the container */
 }
 
 .navbar-list li a {
@@ -139,7 +140,6 @@ p.message {
     padding: 8px 12px;
     border-radius: 5px;
     margin-top: 10px;
-    margin-bottom: 5px;
     z-index: 1000;
 }
 
@@ -150,10 +150,10 @@ p.message {
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin: 50px auto;
-    width: 90%; /* Full width for mobile responsiveness */
+    width: 90%;
     max-width: 900px;
     text-align: left;
-    box-sizing: border-box; /* Ensure padding is accounted for */
+    box-sizing: border-box;
 }
 
 /* Consistent Heading Styling */
@@ -201,18 +201,17 @@ p.message {
 }
 
 #site-stats p strong {
-    color: #000; /* Black text for statistics labels */
+    color: #000;
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    /* Align main section closer to hamburger menu */
     .main {
         margin-top: 20px;
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 95%; /* Better padding on mobile */
+        width: 95%;
     }
 
     .seo-content h2 {
@@ -229,48 +228,48 @@ p.message {
 
     /* Navbar - Mobile Layout */
     .navbar-list {
-        display: none; /* Hide the navbar list initially */
+        display: none;
         flex-direction: column;
-        position: fixed; /* Overlay vertically over content */
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh; /* Cover full viewport height */
-        background-color: rgba(199, 140, 182, 0.9); /* Mauve color with transparency */
+        height: 100vh;
+        background-color: rgba(199, 140, 182, 0.9);
         justify-content: center;
-        align-items: center; /* Ensure items center vertically */
-        text-align: center; /* Ensure text centers in each item */
+        align-items: center;
+        text-align: center;
         padding: 0;
         margin: 0;
-        z-index: 999; /* Keeps it above main content */
+        z-index: 999;
     }
 
     .navbar-list li {
-        padding: 1.2rem 0; /* Adjusted for even spacing */
+        padding: 1.2rem 0;
         text-align: center;
-        width: 100%; /* Align each item centrally */
+        width: 100%;
     }
 
     .navbar-list li a {
         display: inline-block;
         color: #fff;
         padding: 10px 15px;
-        background-color: rgba(50, 0, 20, 0.8); /* Darker background color */
+        background-color: rgba(50, 0, 20, 0.8);
         border-radius: 5px;
         text-decoration: none;
-        width: 80%; /* Narrower width for central alignment */
+        width: 80%;
         text-align: center;
         transition: background-color 0.3s;
     }
 
     /* Hover effect with lighter background */
     .navbar-list li a:hover {
-        background-color: rgba(255, 255, 255, 0.4); /* Lighter mauve on hover */
-        padding: 10px 10px; /* Shorter width effect */
+        background-color: rgba(255, 255, 255, 0.4);
+        padding: 10px 10px;
     }
 
     .navbar-toggle {
-        display: block; /* Show the toggle button on mobile */
+        display: block;
         margin-top: 10px;
     }
 
@@ -281,6 +280,6 @@ p.message {
 
     /* Adjusted styling for open state */
     .navbar.open .navbar-toggle {
-        background-color: rgba(199, 140, 182, 0.9); /* Consistent mauve background */
+        background-color: rgba(199, 140, 182, 0.9);
     }
 }
