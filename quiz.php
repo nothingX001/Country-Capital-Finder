@@ -54,10 +54,11 @@ function normalize($string) {
 $quizQuestions = getQuizQuestions($conn);
 
 // Merge and normalize alias arrays for easier case-insensitive use
-$alias_map = array_merge(
-    array_change_key_case($country_aliases, CASE_LOWER),
-    array_change_key_case($capital_aliases, CASE_LOWER)
-);
+$country_aliases = array_change_key_case($country_aliases, CASE_LOWER);
+$capital_aliases = array_change_key_case($capital_aliases, CASE_LOWER);
+
+// Updated alias map combining both country and capital aliases
+$alias_map = array_merge($country_aliases, $capital_aliases);
 ?>
 
 <!DOCTYPE html>
