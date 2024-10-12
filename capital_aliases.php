@@ -117,6 +117,10 @@ $capital_aliases = [
     "lisbon" => "Lisbon",
     "lisboa" => "Lisbon", // Portuguese name for Lisbon
 
+    "port au prince" => "port-au-prince",
+
+    "NDjamena" => "N'Djamena",
+
     // Morocco (Rabat)
     "rabat" => "Rabat",
     "arribat" => "Rabat", // Arabic variant

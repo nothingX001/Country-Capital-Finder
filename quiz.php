@@ -20,7 +20,7 @@ function getQuizQuestions($conn) {
 $quizQuestions = getQuizQuestions($conn);
 
 // Merge alias arrays into one for easier JavaScript use
-$alias_map = array_merge($country_aliases, $capital_aliases);
+$alias_map = array_merge(array_change_key_case($country_aliases, CASE_LOWER), array_change_key_case($capital_aliases, CASE_LOWER));
 ?>
 
 <!DOCTYPE html>
@@ -59,11 +59,11 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 
 <script>
 // Alias map passed from PHP to JavaScript for use in normalization
-const aliasMap = <?php echo json_encode(array_change_key_case($alias_map, CASE_LOWER)); ?>;
+const aliasMap = <?php echo json_encode($alias_map); ?>;
 
-// Function to normalize user input by converting to lowercase and checking aliases
+// Function to normalize user input by converting to lowercase, removing "the", and checking aliases
 function normalizeInput(input) {
-    const lowerInput = input.toLowerCase().trim();
+    const lowerInput = input.toLowerCase().trim().replace(/^the\s+/i, '');
     return aliasMap[lowerInput] || lowerInput;  // Use alias if available, else return input
 }
 
@@ -104,23 +104,7 @@ function showNextQuestion() {
         const questionData = questions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
         
-        const countryPrefix = [
-            "United States",
-            "United Kingdom",
-            "Netherlands",
-            "Philippines",
-            "Bahamas",
-            "Gambia",
-            "Czech Republic",
-            "United Arab Emirates",
-            "Central African Republic",
-            "Republic of the Congo",
-            "Democratic Republic of the Congo",
-            "Maldives",
-            "Marshall Islands",
-            "Seychelles",
-            "Solomon Islands",
-            "Comoros"].includes(questionData.country_name) ? "the " : "";
+        const countryPrefix = ["United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas", "Gambia"].includes(questionData.country_name) ? "the " : "";
         const questionText = isCountryQuestion 
             ? `What is the capital of ${countryPrefix}${questionData.country_name}?`
             : `Of which country is ${questionData.capital_name} the capital?`;
