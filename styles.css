@@ -130,10 +130,11 @@ p.message {
 .navbar-toggle {
     font-size: 1.8rem;
     border: none;
-    color: #fff;
+    color: black;
     cursor: pointer;
     display: none;
     position: absolute;
+    margin-top: 10px;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
