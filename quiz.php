@@ -42,7 +42,7 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
-// Function to normalize strings for comparison
+// Function to normalize and standardize strings for comparison
 function normalize($string) {
     $string = strtolower($string);
     $string = str_replace(['ü', 'é', 'á', 'ö', 'ç'], ['u', 'e', 'a', 'o', 'c'], $string); // Replace special chars
