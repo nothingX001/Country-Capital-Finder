@@ -135,6 +135,7 @@ p.message {
     display: none;
     position: absolute;
     margin-top: 5px;
+    margin-bottom: 5px;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
