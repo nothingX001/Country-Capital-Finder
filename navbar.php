@@ -12,3 +12,9 @@
         </ul>
     </div>
 </nav>
+
+<script>
+document.getElementById('navbarToggle').addEventListener('click', function() {
+    document.getElementById('navbarList').classList.toggle('open');
+});
+</script>
