@@ -151,7 +151,7 @@ function showNextQuestion() {
         const isCountryQuestion = Math.random() > 0.5;
         const questionText = isCountryQuestion 
             ? `What is the capital of ${addThe(questionData.country_name)}?`
-            : `Of which country is ${addThe(questionData.capital_name)} the capital?`;
+            : `${addThe(questionData.capital_name)} is the capital of what country?`;
 
         userResponses.push({
             questionText: questionText,
