@@ -5,7 +5,7 @@ body {
     padding: 0;
     background: linear-gradient(135deg, #fceff9, #e0c3fc);
     text-align: center;
-    box-sizing: border-box;  /* Ensure everything respects box-sizing */
+    box-sizing: border-box; /* Ensure everything respects box-sizing */
 }
 
 /* Main Section */
@@ -55,7 +55,7 @@ form {
 }
 
 input[type="text"] {
-    width: 100%;  /* Full width for mobile responsiveness */
+    width: 100%; /* Full width for mobile responsiveness */
     padding: 12px;
     margin-top: 1rem;
     border-radius: 25px;
@@ -76,7 +76,7 @@ input[type="submit"], .seo-content button {
     cursor: pointer;
     margin-top: 1.5rem;
     transition: all 0.3s ease-in-out;
-    width: 100%;  /* Full width for mobile responsiveness */
+    width: 100%; /* Full width for mobile responsiveness */
     box-sizing: border-box;
 }
 
@@ -94,6 +94,23 @@ p.message {
     text-align: center;
 }
 
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.navbar-logo {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* NavBar List for Desktop */
 .navbar-list {
     list-style-type: none;
     padding: 0;
@@ -108,7 +125,7 @@ p.message {
 
 .navbar-list li a {
     text-decoration: none;
-    color: #333; /* Adjust color to fit the theme */
+    color: #333;
     font-weight: bold;
     padding: 10px 15px;
     border-radius: 5px;
@@ -120,6 +137,19 @@ p.message {
     color: #000;
 }
 
+/* Toggle Button for Mobile */
+.navbar-toggle {
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    display: none; /* Hidden on desktop */
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
 /* SEO Content Section */
 .seo-content {
     background: linear-gradient(135deg, #fff, #f0f0f0);
@@ -127,10 +157,10 @@ p.message {
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin: 50px auto;
-    width: 90%;  /* Full width for mobile responsiveness */
+    width: 90%; /* Full width for mobile responsiveness */
     max-width: 900px;
     text-align: left;
-    box-sizing: border-box;  /* Ensure padding is accounted for */
+    box-sizing: border-box; /* Ensure padding is accounted for */
 }
 
 /* Consistent Heading Styling */
@@ -181,10 +211,10 @@ p.message {
     color: #000; /* Black text for statistics labels */
 }
 
-/* Responsiveness */
+/* Mobile Styles */
 @media (max-width: 768px) {
     input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 95%;  /* Better padding on mobile */
+        width: 95%; /* Better padding on mobile */
     }
 
     .seo-content h2 {
@@ -192,13 +222,14 @@ p.message {
     }
 
     h1 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
     }
 
     .seo-content p, .seo-content li {
         font-size: 1.3rem;
     }
 
+    /* Navbar - Mobile Layout */
     .navbar-list {
         display: none; /* Hide the navbar list initially */
         flex-direction: column;
@@ -217,11 +248,19 @@ p.message {
         border-top: 1px solid #444;
     }
 
+    .navbar-list li a {
+        display: block;
+        color: #fff;
+        padding: 10px;
+        text-decoration: none;
+    }
+
     .navbar-toggle {
         display: block; /* Show the toggle button on mobile */
     }
 
+    /* Show the navbar list when the 'open' class is added */
     .navbar-list.open {
-        display: flex; /* Show navbar list when 'open' class is added */
+        display: flex;
     }
 }
