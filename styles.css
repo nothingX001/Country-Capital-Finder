@@ -134,7 +134,7 @@ p.message {
     cursor: pointer;
     display: none;
     position: absolute;
-    margin-top: 10px;
+    margin-top: 5px;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
