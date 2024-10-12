@@ -90,7 +90,7 @@ p.message {
 
 /* NavBar Styling */
 .navbar {
-    margin-top: 20px; /* Adds space between search box and NavBar */
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -135,8 +135,9 @@ p.message {
     cursor: pointer;
     display: none;
     position: absolute;
-    right: 1rem;
-    top: 1rem;
+    top: 0; /* Centered in the top middle */
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* SEO Content Section */
