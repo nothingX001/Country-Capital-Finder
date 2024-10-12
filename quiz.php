@@ -23,7 +23,6 @@ $quizQuestions = getQuizQuestions($conn);
 <head>
     <meta charset="UTF-8">
     <title>Country Capital Quiz</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
@@ -86,10 +85,17 @@ function startTimer() {
 function showNextQuestion() {
     if (currentQuestionIndex < questions.length) {
         const questionData = questions[currentQuestionIndex];
-        const questionType = Math.random() > 0.5 ? 'country' : 'capital';
-        const questionText = questionType === 'country' 
+        const isCountryQuestion = Math.random() > 0.5;
+        const questionText = isCountryQuestion 
             ? `What is the capital of "${questionData.country_name}"?`
             : `Of which country is "${questionData.capital_name}" the capital?`;
+
+        // Store the question text and correct answer
+        userResponses.push({
+            questionText: questionText,
+            correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
+            isCountryQuestion: isCountryQuestion
+        });
 
         document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
         document.getElementById('userAnswer').value = '';
@@ -125,28 +131,22 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
     const questionData = questions[currentQuestionIndex];
-    const isCountryQuestion = currentQuestionIndex % 2 === 0;
-    const correctAnswer = isCountryQuestion 
+    const response = userResponses[currentQuestionIndex]; // Access current question's response data
+
+    // Get the correct answer based on question type
+    const correctAnswer = response.isCountryQuestion 
         ? questionData.capital_name.toLowerCase()
         : questionData.country_name.toLowerCase();
 
     // Check if user answer matches any correct option
     const isCorrect = checkAnswer(userAnswer, correctAnswer);
-    const questionText = isCountryQuestion 
-        ? `What is the capital of "${questionData.country_name}"?`
-        : `Of which country is "${questionData.capital_name}" the capital?`;
-
     if (isCorrect) {
         score++;
     }
 
-    // Record user response
-    userResponses.push({
-        questionText: questionText,
-        isCorrect: isCorrect,
-        correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
-        userAnswer: userAnswer
-    });
+    // Update the response with user answer and result
+    response.userAnswer = userAnswer;
+    response.isCorrect = isCorrect;
 
     currentQuestionIndex++;
     showNextQuestion();
