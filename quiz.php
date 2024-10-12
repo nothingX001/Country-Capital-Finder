@@ -16,6 +16,20 @@ function getQuizQuestions($conn) {
 
 // Fetch the initial questions
 $quizQuestions = getQuizQuestions($conn);
+
+// Define aliases for common country and capital variations
+$alias_map = [
+    "USA" => "United States",
+    "US" => "United States",
+    "America" => "United States",
+    "U.S.A." => "United States",
+    "UK" => "United Kingdom",
+    "Britain" => "United Kingdom",
+    "Washington DC" => "Washington, D.C.",
+    "Amsterdam" => "Amsterdam / The Hague",
+    "The Hague" => "Amsterdam / The Hague",
+    // Add more aliases as needed
+];
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +71,26 @@ let score = 0;
 let timer;
 let timeElapsed = 0;
 let userResponses = []; // Track each user’s response and correct answers
+
+// Aliases map for variations in country/capital names
+const aliasMap = {
+    "usa": "united states",
+    "us": "united states",
+    "america": "united states",
+    "u.s.a.": "united states",
+    "uk": "united kingdom",
+    "britain": "united kingdom",
+    "washington dc": "washington, d.c.",
+    "the hague": "amsterdam / the hague",
+    "netherlands": "the netherlands",
+    // Additional aliases as needed
+};
+
+// Normalize user input by converting to lowercase and checking aliases
+function normalizeInput(input) {
+    const lowerInput = input.toLowerCase().trim();
+    return aliasMap[lowerInput] || lowerInput;  // Use alias if available, else return input
+}
 
 // Function to start the quiz
 function startQuiz() {
@@ -106,8 +140,9 @@ function showNextQuestion() {
 
 // Function to check if answer matches any capital option
 function checkAnswer(userAnswer, correctAnswer) {
-    const answers = correctAnswer.toLowerCase().split('/').map(answer => answer.trim());
-    return answers.includes(userAnswer);
+    const normalizedAnswer = normalizeInput(userAnswer);
+    const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
+    return correctOptions.includes(normalizedAnswer);
 }
 
 // Function to end the quiz
@@ -132,14 +167,14 @@ function endQuiz() {
 // Function to handle answer submission
 document.getElementById('answerForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
+    const userAnswer = document.getElementById('userAnswer').value.trim();
     const questionData = questions[currentQuestionIndex];
     const response = userResponses[currentQuestionIndex]; // Access current question's response data
 
     // Get the correct answer based on question type
     const correctAnswer = response.isCountryQuestion 
-        ? questionData.capital_name.toLowerCase()
-        : questionData.country_name.toLowerCase();
+        ? questionData.capital_name
+        : questionData.country_name;
 
     // Check if user answer matches any correct option
     const isCorrect = checkAnswer(userAnswer, correctAnswer);
@@ -155,14 +190,9 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     showNextQuestion();
 });
 
-// Function to reload the page with new questions
+// Function to reload the quiz with new questions
 function reloadQuiz() {
-    fetch('quiz.php')
-        .then(response => response.json())
-        .then(newQuestions => {
-            questions = newQuestions;
-            startQuiz();
-        });
+    location.reload();  // Reload the page to fetch new questions and start fresh
 }
 
 // Event listener to start the quiz
