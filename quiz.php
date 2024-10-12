@@ -120,8 +120,11 @@ function endQuiz() {
     // Generate detailed results
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
-        const resultText = response.isCorrect ? "Correct" : "Incorrect";
-        resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}. The answer was "${response.correctAnswer}". You put "${response.userAnswer}".</p>`;
+        const resultText = response.isCorrect 
+            ? `Correct. The answer was "${response.correctAnswer}".` 
+            : `Incorrect. The answer was "${response.correctAnswer}". You put "${response.userAnswer}".`;
+
+        resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>`;
     });
     document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
