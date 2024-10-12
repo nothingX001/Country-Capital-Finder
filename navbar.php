@@ -1,7 +1,6 @@
 <!-- navbar.php -->
 <nav class="navbar">
     <div class="navbar-container">
-        <a href="index.php" class="navbar-logo">Home</a>
         <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
             &#9776; <!-- Hamburger icon -->
         </button>
@@ -13,10 +12,3 @@
         </ul>
     </div>
 </nav>
-
-<script>
-// Toggle the visibility of the navbar list on mobile
-document.getElementById('navbarToggle').addEventListener('click', function() {
-    document.getElementById('navbarList').classList.toggle('open');
-});
-</script>
