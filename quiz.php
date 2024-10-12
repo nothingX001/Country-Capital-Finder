@@ -19,15 +19,17 @@ function getQuizQuestions($conn) {
 // Fetch the initial questions
 $quizQuestions = getQuizQuestions($conn);
 
-// Merge alias arrays into one for easier JavaScript use
-$alias_map = array_merge(array_change_key_case($country_aliases, CASE_LOWER), array_change_key_case($capital_aliases, CASE_LOWER));
+// Merge and normalize alias arrays for easier case-insensitive use in JavaScript
+$alias_map = array_merge(
+    array_change_key_case($country_aliases, CASE_LOWER),
+    array_change_key_case($capital_aliases, CASE_LOWER)
+);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
@@ -42,7 +44,7 @@ $alias_map = array_merge(array_change_key_case($country_aliases, CASE_LOWER), ar
 
     <div id="quizContainer" style="display: none;">
         <div id="timer">Time: 0:00</div>
-        <div id="questionContainer" style="margin-top: 20px; font-weight: bold;"></div>
+        <div id="questionContainer"></div>
         <form id="answerForm">
             <input type="text" id="userAnswer" placeholder="Type your answer here" required>
             <button type="submit">Submit Answer</button>
@@ -61,10 +63,10 @@ $alias_map = array_merge(array_change_key_case($country_aliases, CASE_LOWER), ar
 // Alias map passed from PHP to JavaScript for use in normalization
 const aliasMap = <?php echo json_encode($alias_map); ?>;
 
-// Function to normalize user input by converting to lowercase, removing "the", and checking aliases
+// Function to normalize user input by converting to lowercase and checking aliases
 function normalizeInput(input) {
-    const lowerInput = input.toLowerCase().trim().replace(/^the\s+/i, '');
-    return aliasMap[lowerInput] || lowerInput;  // Use alias if available, else return input
+    const lowerInput = input.toLowerCase().trim();
+    return aliasMap[lowerInput] || lowerInput;
 }
 
 // Initialize variables for the quiz
@@ -103,12 +105,11 @@ function showNextQuestion() {
     if (currentQuestionIndex < questions.length) {
         const questionData = questions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
-        
-        const countryPrefix = ["United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas", "Gambia"].includes(questionData.country_name) ? "the " : "";
         const questionText = isCountryQuestion 
-            ? `What is the capital of ${countryPrefix}${questionData.country_name}?`
+            ? `What is the capital of ${questionData.country_name}?`
             : `Of which country is ${questionData.capital_name} the capital?`;
 
+        // Store the question text and correct answer
         userResponses.push({
             questionText: questionText,
             correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
@@ -153,18 +154,20 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim();
     const questionData = questions[currentQuestionIndex];
-    const response = userResponses[currentQuestionIndex]; 
+    const response = userResponses[currentQuestionIndex]; // Access current question's response data
 
     // Get the correct answer based on question type
     const correctAnswer = response.isCountryQuestion 
         ? questionData.capital_name
         : questionData.country_name;
 
+    // Check if user answer matches any correct option
     const isCorrect = checkAnswer(userAnswer, correctAnswer);
     if (isCorrect) {
         score++;
     }
 
+    // Update the response with user answer and result
     response.userAnswer = userAnswer;
     response.isCorrect = isCorrect;
 
