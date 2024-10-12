@@ -245,18 +245,26 @@ p.message {
     }
 
     .navbar-list li {
-        padding: 1.5rem 0; /* Increased padding for even spacing */
+        padding: 1.2rem 0; /* Slightly reduced for even spacing */
         text-align: center;
-        width: 100%;
+        width: 80%; /* Centering with background */
     }
 
     .navbar-list li a {
-        display: block;
+        display: inline-block; /* Inline-block for text centering */
         color: #fff;
-        padding: 10px;
+        padding: 10px 15px; /* Adjust padding for background hover effect */
         text-decoration: none;
         width: 100%;
         text-align: center;
+        background-color: rgba(255, 255, 255, 0.2); /* Background color for each item */
+        border-radius: 5px; /* Rounded corners for each item */
+    }
+
+    /* Hover effect for each item */
+    .navbar-list li a:hover {
+        background-color: rgba(255, 255, 255, 0.5); /* Shorter hover width */
+        padding: 10px 10px; /* Reduced padding on hover for shorter width effect */
     }
 
     .navbar-toggle {
