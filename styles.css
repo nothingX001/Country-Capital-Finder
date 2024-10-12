@@ -5,7 +5,7 @@ body {
     padding: 0;
     background: linear-gradient(135deg, #fceff9, #e0c3fc);
     text-align: center;
-    box-sizing: border-box; /* Ensure everything respects box-sizing */
+    box-sizing: border-box;
 }
 
 /* Main Section */
@@ -15,7 +15,7 @@ body {
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 90%; /* Adjust for responsive width */
+    width: 90%;
     max-width: 900px;
     box-sizing: border-box;
 }
@@ -97,10 +97,10 @@ p.message {
 /* NavBar Container */
 .navbar-container {
     display: flex;
-    justify-content: center; /* Center align on all screens */
+    justify-content: center;
     align-items: center;
     max-width: 900px;
-    margin: 30px auto; /* Centered and even spacing on desktop */
+    margin: 30px auto;
     position: relative;
 }
 
@@ -111,7 +111,7 @@ p.message {
     display: flex;
     gap: 20px;
     margin: 0;
-    justify-content: center; /* Center items within the container */
+    justify-content: center;
 }
 
 .navbar-list li a {
@@ -137,9 +137,9 @@ p.message {
     cursor: pointer;
     display: none;
     position: relative;
-    padding: 8px 12px;
+    padding: 6px 10px; /* Reduced padding */
     border-radius: 5px;
-    margin-top: 10px;
+    margin-top: 5px; /* Reduced margin */
     z-index: 1000;
 }
 
@@ -270,7 +270,7 @@ p.message {
 
     .navbar-toggle {
         display: block;
-        margin-top: 10px;
+        margin-top: 5px; /* Reduced margin for closer spacing */
     }
 
     /* Show the navbar list when the 'open' class is added */
