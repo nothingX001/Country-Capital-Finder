@@ -1,36 +1,82 @@
 <?php
-// Include necessary files
+// Include necessary files for aliases and configuration
 include 'config.php';
 include 'country_aliases.php';
 include 'capital_aliases.php';
 
-// Array of countries that should include "the"
+// Function to get 10 random country-capital pairs
+function getQuizQuestions($conn) {
+    $questions = [];
+    $query = "SELECT country_name, capital_name FROM countries ORDER BY RAND() LIMIT 10";
+    $result = $conn->query($query);
+
+    while ($row = $result->fetch_assoc()) {
+        $questions[] = $row;
+    }
+    return $questions;
+}
+
+// Fetch the initial questions
+$quizQuestions = getQuizQuestions($conn);
+
+// Merge alias arrays into one for easier JavaScript use
+$alias_map = array_merge($country_aliases, $capital_aliases);
+
+// Array of countries that should be preceded by "the"
 $the_countries = [
-    "United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas",
-    "Gambia", "Czech Republic", "United Arab Emirates", "Central African Republic",
-    "Republic of the Congo", "Democratic Republic of the Congo", "Maldives", 
-    "Marshall Islands", "Seychelles", "Solomon Islands", "Comoros"
+    "United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas", "Gambia", 
+    "Czech Republic", "United Arab Emirates", "Central African Republic", "Republic of the Congo", 
+    "Democratic Republic of the Congo", "Maldives", "Marshall Islands", "Seychelles", 
+    "Solomon Islands", "Comoros"
 ];
 
-// Function to prefix "the" where needed
+// Function to handle "the" prefix for applicable countries
 function addThe($country) {
     global $the_countries;
     return in_array($country, $the_countries) ? "the $country" : $country;
 }
 
-// Fetch quiz questions
-function getQuizQuestions($conn) {
-    $query = "SELECT country_name, capital_name FROM countries ORDER BY RAND() LIMIT 10";
-    return $conn->query($query)->fetch_all(MYSQLI_ASSOC);
+// Function to normalize the input, handle aliases, and ignore case differences
+function normalizeInput($input) {
+    global $alias_map;
+    $input = strtolower(trim($input));
+    return $alias_map[$input] ?? ucwords($input);
 }
 
-// Normalize and standardize for alias matching
-function normalize($string) {
-    return strtolower(preg_replace('/[^a-z0-9]/', '', $string));
-}
+// Initialize quiz state and variables
+$score = 0;
+$currentQuestionIndex = 0;
+$userResponses = [];
+$quizResults = [];
+$timeElapsed = 0;
 
-// Combine aliases into a case-insensitive map
-$alias_map = array_change_key_case(array_merge($country_aliases, $capital_aliases), CASE_LOWER);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    foreach ($_POST['answers'] as $index => $userAnswer) {
+        $questionData = $quizQuestions[$index];
+        $isCountryQuestion = rand(0, 1) > 0.5;
+        
+        // Determine the question format
+        if ($isCountryQuestion) {
+            $correctAnswer = normalizeInput($questionData['country_name']);
+            $userAnswer = normalizeInput($userAnswer);
+            $questionText = "Of which country is {$questionData['capital_name']} the capital?";
+        } else {
+            $correctAnswer = normalizeInput($questionData['capital_name']);
+            $userAnswer = normalizeInput($userAnswer);
+            $questionText = "What is the capital of " . addThe($questionData['country_name']) . "?";
+        }
+
+        $isCorrect = strcasecmp($userAnswer, $correctAnswer) === 0;
+        if ($isCorrect) $score++;
+
+        $quizResults[] = [
+            'question' => $questionText,
+            'userAnswer' => $userAnswer,
+            'correctAnswer' => $correctAnswer,
+            'isCorrect' => $isCorrect,
+        ];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,142 +88,64 @@ $alias_map = array_change_key_case(array_merge($country_aliases, $capital_aliase
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
-<?php include 'navbar.php'; ?>
 
+<?php include 'navbar.php'; ?>
 <section id="main-quiz">
     <h1>Country Capital Quiz</h1>
-    <button id="startQuizBtn">Start Quiz</button>
-    <div id="quizContainer" style="display: none;">
-        <div id="timer">Time: 0:00</div>
-        <div id="questionContainer"></div>
-        <form id="answerForm">
-            <input type="text" id="userAnswer" placeholder="Type your answer" required>
-            <button type="submit">Submit Answer</button>
+    <p>Test your knowledge of country capitals!</p>
+
+    <?php if ($_SERVER["REQUEST_METHOD"] != "POST"): ?>
+        <form action="quiz.php" method="POST" id="quizForm">
+            <?php foreach ($quizQuestions as $index => $questionData): ?>
+                <div class="quiz-question">
+                    <?php 
+                        $isCountryQuestion = rand(0, 1) > 0.5;
+                        $questionText = $isCountryQuestion 
+                            ? "Of which country is <strong>{$questionData['capital_name']}</strong> the capital?"
+                            : "What is the capital of <strong>" . addThe($questionData['country_name']) . "</strong>?";
+                    ?>
+                    <p><strong>Question <?php echo $index + 1; ?>:</strong> <?php echo $questionText; ?></p>
+                    <input type="text" name="answers[<?php echo $index; ?>]" required>
+                </div>
+            <?php endforeach; ?>
+            <button type="submit">Submit Quiz</button>
         </form>
-    </div>
-    <div id="resultContainer" style="display: none;">
+    <?php else: ?>
         <h2>Quiz Results</h2>
-        <p id="score"></p>
-        <div id="detailedResults"></div>
-        <button id="redoQuizBtn">Redo Quiz</button>
-    </div>
+        <p>You scored <?php echo $score; ?> out of <?php echo count($quizQuestions); ?>.</p>
+        <?php foreach ($quizResults as $index => $result): ?>
+            <div class="quiz-result">
+                <p><strong>Question <?php echo $index + 1; ?>:</strong> <?php echo $result['question']; ?></p>
+                <p>
+                    <?php if ($result['isCorrect']): ?>
+                        <span style="color: green;">Correct. The answer was <?php echo $result['correctAnswer']; ?>.</span>
+                    <?php else: ?>
+                        <span style="color: red;">Incorrect. The answer was <?php echo $result['correctAnswer']; ?>. You put "<?php echo $result['userAnswer']; ?>".</span>
+                    <?php endif; ?>
+                </p>
+            </div>
+        <?php endforeach; ?>
+        <button onclick="window.location.href='quiz.php'">Try Again</button>
+    <?php endif; ?>
 </section>
 
 <script>
-const aliasMap = <?php echo json_encode($alias_map); ?>;
-const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
+    // JavaScript to handle displaying of quiz elements
+    const quizForm = document.getElementById("quizForm");
+    const quizContainer = document.getElementById("main-quiz");
+    const resultsContainer = document.getElementById("quiz-results");
 
-// Helper to add "the" prefix
-function addThe(country) {
-    return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
-}
-
-// Normalize function to account for capitalization and aliases
-function normalizeInput(input) {
-    input = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    input = input.replace(/[^a-z0-9]/g, '');
-    return aliasMap[input] || input;
-}
-
-let questions = <?php echo json_encode(getQuizQuestions($conn)); ?>;
-let currentQuestionIndex = 0;
-let score = 0;
-let timer;
-let timeElapsed = 0;
-let userResponses = [];
-
-// Start Quiz
-function startQuiz() {
-    document.getElementById('startQuizBtn').style.display = 'none';
-    document.getElementById('resultContainer').style.display = 'none';
-    document.getElementById('quizContainer').style.display = 'block';
-    score = 0;
-    userResponses = [];
-    currentQuestionIndex = 0;
-    startTimer();
-    showNextQuestion();
-}
-
-// Start Timer
-function startTimer() {
-    timer = setInterval(() => {
-        timeElapsed++;
-        document.getElementById('timer').textContent = `Time: ${Math.floor(timeElapsed / 60)}:${timeElapsed % 60}`;
-    }, 1000);
-}
-
-// Show Next Question
-function showNextQuestion() {
-    if (currentQuestionIndex < questions.length) {
-        const questionData = questions[currentQuestionIndex];
-        const isCountryQuestion = Math.random() > 0.5;
-        const questionText = isCountryQuestion
-            ? `What is the capital of ${addThe(questionData.country_name)}?`
-            : `Of which country is ${addThe(questionData.capital_name)} the capital?`;
-
-        userResponses.push({
-            questionText: questionText,
-            correctAnswer: isCountryQuestion ? questionData.capital_name : questionData.country_name,
-            isCountryQuestion: isCountryQuestion
-        });
-
-        document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
-        document.getElementById('userAnswer').value = '';
-    } else {
-        endQuiz();
+    // Function to toggle the visibility of form sections as the quiz progresses
+    function showResults() {
+        quizForm.style.display = "none";
+        resultsContainer.style.display = "block";
     }
-}
 
-// Check if the answer is correct using aliases
-function checkAnswer(userAnswer, correctAnswer) {
-    const normalizedAnswer = normalizeInput(userAnswer);
-    const correctOptions = correctAnswer.toLowerCase().split('/').map(opt => normalizeInput(opt.trim()));
-    return correctOptions.includes(normalizedAnswer);
-}
-
-// End Quiz
-function endQuiz() {
-    clearInterval(timer);
-    document.getElementById('quizContainer').style.display = 'none';
-    document.getElementById('resultContainer').style.display = 'block';
-    document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
-
-    let resultsHTML = '';
-    userResponses.forEach((response, index) => {
-        const resultText = response.isCorrect 
-            ? `Correct. The answer was ${addThe(response.correctAnswer)}.`
-            : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You put "${response.userAnswer}".`;
-        resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>`;
+    // Event listener for the form submission
+    quizForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        showResults();
     });
-    document.getElementById('detailedResults').innerHTML = resultsHTML;
-}
-
-// Handle answer submission
-document.getElementById('answerForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const userAnswer = document.getElementById('userAnswer').value.trim();
-    const questionData = questions[currentQuestionIndex];
-    const response = userResponses[currentQuestionIndex];
-
-    const correctAnswer = response.isCountryQuestion 
-        ? questionData.capital_name
-        : questionData.country_name;
-
-    const isCorrect = checkAnswer(userAnswer, correctAnswer);
-    if (isCorrect) {
-        score++;
-    }
-
-    response.userAnswer = userAnswer;
-    response.isCorrect = isCorrect;
-
-    currentQuestionIndex++;
-    showNextQuestion();
-});
-
-document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
-document.getElementById('redoQuizBtn').addEventListener('click', () => location.reload());
 </script>
-
 </body>
 </html>
