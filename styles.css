@@ -87,7 +87,7 @@ p.message {
 /* Navbar Container */
 .navbar-container {
     display: flex;
-    justify-content: center; /* Center navbar on desktop */
+    justify-content: center;
     align-items: center;
     max-width: 900px;
 }
@@ -142,18 +142,6 @@ p.message {
 
 /* Mobile-Only Styles */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2.2rem;
-    }
-
-    .main {
-        margin-top: 20px;
-    }
-
-    input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 95%;
-    }
-
     /* Navbar - Mobile Layout */
     .navbar-list {
         display: none;
@@ -196,10 +184,5 @@ p.message {
     /* Show the navbar list when the 'open' class is added */
     .navbar-list.open {
         display: flex;
-    }
-
-    /* Consistent Position of Navbar */
-    .navbar.open .navbar-toggle {
-        background-color: rgba(199, 140, 182, 0.9);
     }
 }
