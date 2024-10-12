@@ -21,67 +21,12 @@ $quizQuestions = getQuizQuestions($conn);
 
 // Merge alias arrays into one for easier JavaScript use
 $alias_map = array_merge($country_aliases, $capital_aliases);
-
-// List of countries that typically start with "the"
-$the_countries = ["United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas", "Gambia", "Czech Republic", "United Arab Emirates", "Central African Republic", "Republic of the Congo", "Democratic Republic of the Congo", "Maldives", "Marshall Islands", "Seychelles", "Solomon Islands", "Comoros"];
-
-// Normalize user input to account for "the" and aliases
-function normalizeInput($input) {
-    global $alias_map;
-    $lowerInput = strtolower(trim($input));
-
-    // Remove "the" at the start of the input if it exists
-    if (strpos($lowerInput, "the ") === 0) {
-        $lowerInput = substr($lowerInput, 4);
-    }
-    return $alias_map[$lowerInput] ?? $lowerInput;  // Use alias if available, else return input
-}
-
-// Format country names with "the" for specific countries in questions and results
-function formatCountryName($country) {
-    global $the_countries;
-    return in_array($country, $the_countries) ? "the $country" : $country;
-}
-
-// Function to generate question text with formatted country name
-function getQuestionText($country, $capital, $isCountryQuestion) {
-    $formattedCountry = formatCountryName($country);
-    if ($isCountryQuestion) {
-        return "What is the capital of $formattedCountry?";
-    } else {
-        return "Of which country is $capital the capital?";
-    }
-}
-
-// Handle form submission and check answers
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $country_input = $_POST['country'];
-    $country = normalizeInput($country_input);
-
-    $stmt = $conn->prepare("SELECT id, capital_name FROM countries WHERE LOWER(country_name) = LOWER(?)");
-    $stmt->bind_param("s", $country);
-    $stmt->execute();
-    $stmt->bind_result($country_id, $capital);
-    $stmt->fetch();
-    $stmt->close();
-
-    if ($capital) {
-        $flag_emoji = get_flag_emoji($country);
-        $country_name_with_the = formatCountryName($country);
-        $message = "The capital of $country_name_with_the is $capital. $flag_emoji";
-
-        // Update search tracking (omitted here for brevity)
-    } else {
-        $message = "Sorry, the country you entered is not in our list.";
-    }
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
@@ -96,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div id="quizContainer" style="display: none;">
         <div id="timer">Time: 0:00</div>
-        <div id="questionContainer"></div>
+        <div id="questionContainer" style="margin-top: 20px; font-weight: bold;"></div>
         <form id="answerForm">
             <input type="text" id="userAnswer" placeholder="Type your answer here" required>
             <button type="submit">Submit Answer</button>
@@ -114,20 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script>
 // Alias map passed from PHP to JavaScript for use in normalization
 const aliasMap = <?php echo json_encode(array_change_key_case($alias_map, CASE_LOWER)); ?>;
-const theCountries = <?php echo json_encode($the_countries); ?>;
 
-// Normalize user input by handling "the" and checking aliases
+// Function to normalize user input by converting to lowercase and checking aliases
 function normalizeInput(input) {
-    let lowerInput = input.toLowerCase().trim();
-    if (lowerInput.startsWith("the ")) {
-        lowerInput = lowerInput.slice(4);
-    }
-    return aliasMap[lowerInput] || lowerInput;
-}
-
-// Add "the" in the question if needed
-function formatCountryName(country) {
-    return theCountries.includes(country) ? `the ${country}` : country;
+    const lowerInput = input.toLowerCase().trim();
+    return aliasMap[lowerInput] || lowerInput;  // Use alias if available, else return input
 }
 
 // Initialize variables for the quiz
@@ -136,7 +72,7 @@ let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 let timeElapsed = 0;
-let userResponses = [];
+let userResponses = []; // Track each user’s response and correct answers
 
 // Function to start the quiz
 function startQuiz() {
@@ -151,7 +87,7 @@ function startQuiz() {
     showNextQuestion();
 }
 
-// Start timer function
+// Function to start the timer
 function startTimer() {
     timer = setInterval(() => {
         timeElapsed++;
@@ -161,13 +97,15 @@ function startTimer() {
     }, 1000);
 }
 
-// Show the next question
+// Function to show the next question
 function showNextQuestion() {
     if (currentQuestionIndex < questions.length) {
         const questionData = questions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
+        
+        const countryPrefix = ["United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas", "Gambia"].includes(questionData.country_name) ? "the " : "";
         const questionText = isCountryQuestion 
-            ? `What is the capital of ${formatCountryName(questionData.country_name)}?`
+            ? `What is the capital of ${countryPrefix}${questionData.country_name}?`
             : `Of which country is ${questionData.capital_name} the capital?`;
 
         userResponses.push({
@@ -183,20 +121,21 @@ function showNextQuestion() {
     }
 }
 
-// Check the user's answer
+// Function to check if answer matches any capital option
 function checkAnswer(userAnswer, correctAnswer) {
     const normalizedAnswer = normalizeInput(userAnswer);
     const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
     return correctOptions.includes(normalizedAnswer);
 }
 
-// End the quiz
+// Function to end the quiz
 function endQuiz() {
     clearInterval(timer);
     document.getElementById('quizContainer').style.display = 'none';
     document.getElementById('resultContainer').style.display = 'block';
     document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
 
+    // Generate detailed results
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect 
@@ -208,13 +147,14 @@ function endQuiz() {
     document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
 
-// Submit answer
+// Function to handle answer submission
 document.getElementById('answerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim();
     const questionData = questions[currentQuestionIndex];
-    const response = userResponses[currentQuestionIndex];
+    const response = userResponses[currentQuestionIndex]; 
 
+    // Get the correct answer based on question type
     const correctAnswer = response.isCountryQuestion 
         ? questionData.capital_name
         : questionData.country_name;
@@ -231,15 +171,15 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     showNextQuestion();
 });
 
-// Reload the quiz with new questions
+// Function to reload the quiz with new questions
 function reloadQuiz() {
-    location.reload();
+    location.reload();  // Reload the page to fetch new questions and start fresh
 }
 
-// Start quiz event
+// Event listener to start the quiz
 document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
 
-// Redo quiz event
+// Event listener for "Redo Quiz" button
 document.getElementById('redoQuizBtn').addEventListener('click', reloadQuiz);
 
 </script>
