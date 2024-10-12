@@ -1,6 +1,8 @@
 <?php
-// Include database connection
+// Include database connection and alias files
 include 'config.php';
+include 'country_aliases.php';
+include 'capital_aliases.php';
 
 // Function to get 10 random country-capital pairs
 function getQuizQuestions($conn) {
@@ -17,19 +19,8 @@ function getQuizQuestions($conn) {
 // Fetch the initial questions
 $quizQuestions = getQuizQuestions($conn);
 
-// Define aliases for common country and capital variations
-$alias_map = [
-    "USA" => "United States",
-    "US" => "United States",
-    "America" => "United States",
-    "U.S.A." => "United States",
-    "UK" => "United Kingdom",
-    "Britain" => "United Kingdom",
-    "Washington DC" => "Washington, D.C.",
-    "Amsterdam" => "Amsterdam / The Hague",
-    "The Hague" => "Amsterdam / The Hague",
-    // Add more aliases as needed
-];
+// Merge alias arrays into one for easier JavaScript use
+$alias_map = array_merge($country_aliases, $capital_aliases);
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +55,15 @@ $alias_map = [
 </div>
 
 <script>
+// Alias map passed from PHP to JavaScript for use in normalization
+const aliasMap = <?php echo json_encode(array_change_key_case($alias_map, CASE_LOWER)); ?>;
+
+// Function to normalize user input by converting to lowercase and checking aliases
+function normalizeInput(input) {
+    const lowerInput = input.toLowerCase().trim();
+    return aliasMap[lowerInput] || lowerInput;  // Use alias if available, else return input
+}
+
 // Initialize variables for the quiz
 let questions = <?php echo json_encode($quizQuestions); ?>;
 let currentQuestionIndex = 0;
@@ -71,26 +71,6 @@ let score = 0;
 let timer;
 let timeElapsed = 0;
 let userResponses = []; // Track each user’s response and correct answers
-
-// Aliases map for variations in country/capital names
-const aliasMap = {
-    "usa": "united states",
-    "us": "united states",
-    "america": "united states",
-    "u.s.a.": "united states",
-    "uk": "united kingdom",
-    "britain": "united kingdom",
-    "washington dc": "washington, d.c.",
-    "the hague": "amsterdam / the hague",
-    "netherlands": "the netherlands",
-    // Additional aliases as needed
-};
-
-// Normalize user input by converting to lowercase and checking aliases
-function normalizeInput(input) {
-    const lowerInput = input.toLowerCase().trim();
-    return aliasMap[lowerInput] || lowerInput;  // Use alias if available, else return input
-}
 
 // Function to start the quiz
 function startQuiz() {
