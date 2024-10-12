@@ -27,8 +27,10 @@
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     transition: all 0.3s ease-in-out;
     width: 100%; /* Full width for mobile responsiveness */
     box-sizing: border-box;
 }
+
+@media (max-width: 768px) {}
