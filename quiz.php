@@ -42,10 +42,18 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
+// Function to normalize strings for comparison
+function normalize($string) {
+    $string = strtolower($string);
+    $string = str_replace(['ü', 'é', 'á', 'ö', 'ç'], ['u', 'e', 'a', 'o', 'c'], $string); // Replace special chars
+    $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove all non-alphanumeric characters
+    return $string;
+}
+
 // Fetch the initial questions
 $quizQuestions = getQuizQuestions($conn);
 
-// Merge and normalize alias arrays for easier case-insensitive use in JavaScript
+// Merge and normalize alias arrays for easier case-insensitive use
 $alias_map = array_merge(
     array_change_key_case($country_aliases, CASE_LOWER),
     array_change_key_case($capital_aliases, CASE_LOWER)
@@ -97,10 +105,11 @@ function addThe(country) {
     return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
 }
 
-// Function to normalize user input by converting to lowercase and checking aliases
+// Function to normalize user input by converting to lowercase, replacing special characters, and removing spaces
 function normalizeInput(input) {
-    const lowerInput = input.toLowerCase().trim();
-    return aliasMap[lowerInput] || lowerInput;
+    let normalized = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Remove accents
+    normalized = normalized.replace(/[^a-z0-9]/g, ''); // Remove non-alphanumeric chars
+    return aliasMap[normalized] || normalized;
 }
 
 // Initialize variables for the quiz
