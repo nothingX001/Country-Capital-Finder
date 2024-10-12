@@ -270,9 +270,18 @@ p.message {
     }
 
     .navbar-toggle {
-        display: block;
+        font-size: 1.6rem;
+        border: none;
+        color: white;
+        background-color: rgba(50, 0, 20, 0.8);
+        cursor: pointer;
+        display: none;
+        position: relative;
+        padding: 12px; /* Increased padding for a square appearance */
+        border-radius: 5px;
         margin-top: 3px;
         margin-bottom: 3px;
+        z-index: 1000;
     }
 
     /* Show the navbar list when the 'open' class is added */
