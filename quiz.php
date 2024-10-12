@@ -45,8 +45,8 @@ function getQuizQuestions($conn) {
 // Function to normalize input by removing accents, punctuation, and capitalization
 function normalize($string) {
     $string = strtolower($string);
-    $string = str_replace(['ü', 'é', 'á', 'ö', 'ç', 'ñ', 'ã', 'í'], ['u', 'e', 'a', 'o', 'c', 'n', 'a', 'i'], $string); // Replace accented chars
-    $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove non-alphanumeric characters
+    $string = str_replace(['ü', 'é', 'á', 'ö', 'ç', 'ñ', 'ã', 'í'], ['u', 'e', 'a', 'o', 'c', 'n', 'a', 'i'], $string);
+    $string = preg_replace('/[^a-z0-9]/', '', $string);
     return $string;
 }
 
