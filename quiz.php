@@ -34,26 +34,27 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 <body>
 
 <?php include 'navbar.php'; ?>
+<section id="main-quiz">
+    <h1>Country Capital Quiz</h1>
+    <p>Test your knowledge of country capitals!</p>
+    <button id="startQuizBtn">Start Quiz</button>
 
-<h1>Country Capital Quiz</h1>
-<p>Test your knowledge of country capitals!</p>
-<button id="startQuizBtn">Start Quiz</button>
+    <div id="quizContainer" style="display: none;">
+        <div id="timer">Time: 0:00</div>
+        <div id="questionContainer"></div>
+        <form id="answerForm">
+            <input type="text" id="userAnswer" placeholder="Type your answer here" required>
+            <button type="submit">Submit Answer</button>
+        </form>
+    </div>
 
-<div id="quizContainer" style="display: none;">
-    <div id="timer">Time: 0:00</div>
-    <div id="questionContainer"></div>
-    <form id="answerForm">
-        <input type="text" id="userAnswer" placeholder="Type your answer here" required>
-        <button type="submit">Submit Answer</button>
-    </form>
-</div>
-
-<div id="resultContainer" style="display: none;">
-    <h2>Quiz Results</h2>
-    <p id="score"></p>
-    <div id="detailedResults"></div>
-    <button id="redoQuizBtn">Redo Quiz</button>
-</div>
+    <div id="resultContainer" style="display: none;">
+        <h2>Quiz Results</h2>
+        <p id="score"></p>
+        <div id="detailedResults"></div>
+        <button id="redoQuizBtn">Redo Quiz</button>
+    </div>
+</section>
 
 <script>
 // Alias map passed from PHP to JavaScript for use in normalization
