@@ -104,7 +104,23 @@ function showNextQuestion() {
         const questionData = questions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
         
-        const countryPrefix = ["United States", "United Kingdom", "Netherlands", "Philippines", "Bahamas", "Gambia"].includes(questionData.country_name) ? "the " : "";
+        const countryPrefix = [
+            "United States",
+            "United Kingdom",
+            "Netherlands",
+            "Philippines",
+            "Bahamas",
+            "Gambia",
+            "Czech Republic",
+            "United Arab Emirates",
+            "Central African Republic",
+            "Republic of the Congo",
+            "Democratic Republic of the Congo",
+            "Maldives",
+            "Marshall Islands",
+            "Seychelles",
+            "Solomon Islands",
+            "Comoros"].includes(questionData.country_name) ? "the " : "";
         const questionText = isCountryQuestion 
             ? `What is the capital of ${countryPrefix}${questionData.country_name}?`
             : `Of which country is ${questionData.capital_name} the capital?`;
