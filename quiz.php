@@ -42,9 +42,10 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
-// Normalize function to handle case-insensitivity and special characters
+// Normalize function to handle case-insensitivity, remove "the" prefix, and normalize special characters
 function normalize($string) {
-    $string = mb_strtolower($string); // Handle case-insensitivity
+    $string = mb_strtolower($string); // Convert to lowercase
+    $string = preg_replace('/^the\s+/', '', $string); // Remove "the" prefix if present
     $string = str_replace(['ü', 'é', 'á', 'ö', 'ç', 'ñ', 'ã', 'í'], ['u', 'e', 'a', 'o', 'c', 'n', 'a', 'i'], $string);
     $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove non-alphanumeric characters
     return $string;
@@ -110,6 +111,7 @@ function addThe(country) {
 // Normalize function to handle case-insensitive matching
 function normalizeInput(input) {
     let normalized = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    normalized = normalized.replace(/^the\s+/, ''); // Remove "the" if present
     normalized = normalized.replace(/[^a-z0-9]/g, ''); // Remove non-alphanumeric chars
     return aliasMap[normalized] || normalized;
 }
