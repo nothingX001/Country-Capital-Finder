@@ -166,8 +166,8 @@ function showNextQuestion() {
         const questionData = questions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
         const questionText = isCountryQuestion 
-            ? `What is the capital of "${formatCountryName(questionData.country_name)}"?`
-            : `Of which country is "${questionData.capital_name}" the capital?`;
+            ? `What is the capital of ${formatCountryName(questionData.country_name)}?`
+            : `Of which country is ${questionData.capital_name} the capital?`;
 
         userResponses.push({
             questionText: questionText,
