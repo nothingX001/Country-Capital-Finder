@@ -42,7 +42,7 @@ function getQuizQuestions($conn) {
     return $questions;
 }
 
-// Normalize function to handle case-insensitivity, remove "the" prefix, and normalize special characters
+// Normalize function to handle case-insensitive, remove "the" prefix, and normalize special characters
 function normalize($string) {
     $string = mb_strtolower($string); // Convert to lowercase
     $string = preg_replace('/^the\s+/', '', $string); // Remove "the" prefix if present
