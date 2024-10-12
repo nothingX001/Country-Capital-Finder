@@ -138,7 +138,6 @@ p.message {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px 15px;
     border-radius: 5px;
 }
 
@@ -219,6 +218,11 @@ p.message {
 
     .seo-content p, .seo-content li {
         font-size: 1.3rem;
+    }
+
+    .navbar {
+        margin-top: 0px;
+        text-align: center;
     }
 
     /* Navbar - Mobile Layout */
