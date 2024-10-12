@@ -19,7 +19,7 @@
 }
 
 /* Country List Styling */
-ul {
+#main-country-profiles ul {
     list-style: none; /* Removes default bullets */
     padding: 0;
     text-align: left; /* Aligns the list items to the left */
@@ -27,7 +27,7 @@ ul {
     max-width: 560px;
 }
 
-ul li a {
+#main-country-profiles ul li a {
     text-decoration: none;
     font-size: 1.5rem;
     color: #333;
@@ -36,6 +36,6 @@ ul li a {
     transition: color 0.3s;
 }
 
-ul li a:hover {
+#main-country-profiles ul li a:hover {
     color: #b155c3; /* Hover color for links */
 }
