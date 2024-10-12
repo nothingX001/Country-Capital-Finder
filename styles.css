@@ -94,16 +94,17 @@ p.message {
     text-align: center;
 }
 
+/* NavBar Container */
 .navbar-container {
     display: flex;
-    justify-content: center; /* Center align on desktop */
+    justify-content: center; /* Center align on all screens */
     align-items: center;
     max-width: 900px;
-    margin: 0;
+    margin: 0 auto;
     position: relative;
 }
 
-/* NavBar List for Desktop */
+/* NavBar List */
 .navbar-list {
     list-style-type: none;
     padding: 0;
@@ -130,17 +131,16 @@ p.message {
 .navbar-toggle {
     font-size: 1.8rem;
     border: none;
-    color: black;
+    color: white;
+    background-color: #333;
     cursor: pointer;
     display: none;
-    position: relative;
-    top: 0;
+    position: absolute;
+    top: 15px;
     left: 50%;
     transform: translateX(-50%);
     padding: 10px 15px;
     border-radius: 5px;
-    background-color: #333;
-    color: white;
 }
 
 /* SEO Content Section */
@@ -206,9 +206,8 @@ p.message {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
-    /* Add spacing to push down the main section */
     .main {
-        margin-top: 40px;
+        margin-top: 80px; /* Adjust spacing between navbar and main section */
     }
 
     input[type="text"], input[type="submit"], .main, .seo-content {
@@ -260,7 +259,7 @@ p.message {
 
     .navbar-toggle {
         display: block; /* Show the toggle button on mobile */
-        margin-top: 10px;
+        top: 15px; /* Consistent spacing from the top */
     }
 
     /* Show the navbar list when the 'open' class is added */
