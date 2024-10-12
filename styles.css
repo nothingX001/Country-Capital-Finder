@@ -100,7 +100,7 @@ p.message {
     justify-content: center; /* Center align on all screens */
     align-items: center;
     max-width: 900px;
-    margin: 0 auto;
+    margin: 30px 0; /* Even spacing for top and bottom on desktop */
     position: relative;
 }
 
