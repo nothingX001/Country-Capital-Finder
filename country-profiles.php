@@ -223,7 +223,7 @@ $country_map = $country_map = [
 
     <section id="main-country-profiles">
         <h1>Country Profiles</h1>
-        <p>Select a country to view its profile.</p>
+        <p>This is a complete list of countries in our database. Select a country to view its profile.</p>
         <p>(Access to profiles are still a work in progress.)</p>
         <ul>
             <?php foreach ($country_map as $country => $flag): ?>
