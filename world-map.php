@@ -7,12 +7,23 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
     <style>
         body { margin: 0; padding: 0; }
-        #map { width: 100%; height: 100vh; }
+        .map-container {
+            width: 80%; /* Adjust width as needed */
+            height: 500px; /* Set a specific height for the map */
+            margin: auto; /* Center the map container */
+            border: 1px solid #ccc; /* Optional: adds a border around the map */
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
 
-<div id="map"></div>
+<div class="map-container">
+    <div id="map"></div>
+</div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
 <script>
