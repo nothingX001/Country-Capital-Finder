@@ -1,40 +1,32 @@
-<?php
-// world-map.php
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Map</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="world-map-styles.css">
-    <!-- Mapbox CSS -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <title>World Map with Capitals</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { width: 100%; height: 100vh; }
+    </style>
 </head>
 <body>
 
-    <?php include 'navbar.php'; ?> <!-- Include your NavBar -->
-    <section id="main-world-map">
-        <h1>Explore the World</h1>
-        <div id="map" style="width: 100%; height: 400px;"></div>
-    </section>
+<div id="map"></div>
 
-    <!-- Mapbox JavaScript -->
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
-    <script>
-        // Set up Mapbox access token and initialize the map
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
-        const map = new mapboxgl.Map({
-            container: 'map', // ID of the map div
-            style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Custom Mapbox style URL
-            center: [0, 20], // Center of the map [longitude, latitude]
-            zoom: 2 // Starting zoom level
-        });
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+<script>
+    // Set up Mapbox access token and initialize the map
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo',
+        center: [0, 20], // Centered on the globe
+        zoom: 1.5 // Zoom level
+    });
 
-        // Sample markers for capitals (replace with dynamic data if needed)
-        const countries = [
+    // Array of countries with capitals, coordinates, and flags
+    const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
     { country: "Albania", capitals: ["Tirana"], coordinates: [[19.8189, 41.3275]], flag: "🇦🇱" },
     { country: "Algeria", capitals: ["Algiers"], coordinates: [[3.0588, 36.7372]], flag: "🇩🇿" },
@@ -233,13 +225,17 @@
     { country: "Zimbabwe", capitals: ["Harare"], coordinates: [[31.0530, -17.8292]], flag: "🇿🇼" }
 ];
 
-        capitals.forEach(location => {
+    // Loop through the countries array to add markers for each capital
+    countries.forEach(country => {
+        country.capitals.forEach((capital, index) => {
+            const [lng, lat] = country.coordinates[index];
             new mapboxgl.Marker()
-                .setLngLat(location.coordinates)
-                .setPopup(new mapboxgl.Popup().setHTML(`<strong>${location.capital}</strong><br>${location.country}`))
+                .setLngLat([lng, lat])
+                .setPopup(new mapboxgl.Popup().setText(`${country.flag} ${country.country} - ${capital}`))
                 .addTo(map);
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>
