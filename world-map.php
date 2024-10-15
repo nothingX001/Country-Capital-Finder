@@ -31,7 +31,6 @@
     });
 
     map.on('style.load', () => {
-        map.setFog({}); // Adds atmospheric effect for depth perception on the globe
     });
 
     const countries = [
@@ -84,7 +83,7 @@
     { country: "Denmark", capitals: ["Copenhagen"], coordinates: [[12.5683, 55.6761]], flag: "🇩🇰" },
     { country: "Djibouti", capitals: ["Djibouti"], coordinates: [[43.1450, 11.5721]], flag: "🇩🇯" },
     { country: "Dominica", capitals: ["Roseau"], coordinates: [[-61.3870, 15.2976]], flag: "🇩🇲" },
-    { country: "Dominican Republic", capitals: ["Santo Domingo"], coordinates: [[-69.9312, 18.4861]], flag: "🇩🇴" }, 
+    { country: "Dominican Republic", capitals: ["Santo Domingo"], coordinates: [[-69.9312, 18.4861]], flag: "🇩🇴" },
     { country: "Ecuador", capitals: ["Quito"], coordinates: [[-78.4678, -0.1807]], flag: "🇪🇨" },
     { country: "Egypt", capitals: ["Cairo"], coordinates: [[31.2357, 30.0444]], flag: "🇪🇬" },
     { country: "El Salvador", capitals: ["San Salvador"], coordinates: [[-89.2182, 13.6929]], flag: "🇸🇻" },
