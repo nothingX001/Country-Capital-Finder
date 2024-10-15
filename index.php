@@ -555,7 +555,8 @@ $unique_countries_stmt->close();
     <?php include 'navbar.php'; ?>
     <div class="main">
         <h2 class="header-flags">🇺🇸🇪🇺🇷🇺🇨🇳</h2>
-        <h1>FIND THE CAPITAL OF YOUR COUNTRY:</h1>
+        <h1>CAPITAL FINDER</h1>
+        <h3>FIND THE CAPITAL OF YOUR COUNTRY:</h3>
         <form action="index.php" method="post">
             <label>Enter a country: </label>
             <input type="text" name="country" required>
