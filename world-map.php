@@ -24,13 +24,14 @@
 
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/standard-satellite', // Updated to use the standard satellite style
+        style: 'mapbox://styles/mapbox/satellite-streets-v11', // Using satellite-streets for compatibility with globe
         center: [0, 20],
         zoom: 1.5,
         projection: 'globe' // Enables the 3D globe view
     });
 
     map.on('style.load', () => {
+        map.setFog({}); // Adds atmospheric effect for depth perception on the globe
     });
 
     const countries = [
@@ -83,8 +84,8 @@
     { country: "Denmark", capitals: ["Copenhagen"], coordinates: [[12.5683, 55.6761]], flag: "🇩🇰" },
     { country: "Djibouti", capitals: ["Djibouti"], coordinates: [[43.1450, 11.5721]], flag: "🇩🇯" },
     { country: "Dominica", capitals: ["Roseau"], coordinates: [[-61.3870, 15.2976]], flag: "🇩🇲" },
-    { country: "Dominican Republic", capitals: ["Santo Domingo"], coordinates: [[-69.9312, 18.4861]], flag: "🇩🇴" },
-    { country: "Ecuador", capitals: ["Quito"], coordinates: [[-78.4678, -0.1807]], flag: "🇪🇨" },
+    { country: "Dominican Republic", capitals: ["Santo Domingo"], coordinates: [[-69.9312, 18.4861]], flag: "🇩🇴" }, 
+   { country: "Ecuador", capitals: ["Quito"], coordinates: [[-78.4678, -0.1807]], flag: "🇪🇨" },
     { country: "Egypt", capitals: ["Cairo"], coordinates: [[31.2357, 30.0444]], flag: "🇪🇬" },
     { country: "El Salvador", capitals: ["San Salvador"], coordinates: [[-89.2182, 13.6929]], flag: "🇸🇻" },
     { country: "Equatorial Guinea", capitals: ["Malabo", "Oyala"], coordinates: [[8.7832, 3.7500], [10.5654, 1.5889]], flag: "🇬🇶" },
@@ -136,7 +137,7 @@
     { country: "Libya", capitals: ["Tripoli"], coordinates: [[13.1913, 32.8872]], flag: "🇱🇾" },
     { country: "Liechtenstein", capitals: ["Vaduz"], coordinates: [[9.5215, 47.1410]], flag: "🇱🇮" },
     { country: "Lithuania", capitals: ["Vilnius"], coordinates: [[25.2797, 54.6872]], flag: "🇱🇹" },
-    { country: "Luxembourg", capitals: ["Luxembourg"], coordinates: [[6.1319, 49.6116]], flag: "🇱🇺" },
+      { country: "Luxembourg", capitals: ["Luxembourg"], coordinates: [[6.1319, 49.6116]], flag: "🇱🇺" },
     { country: "Madagascar", capitals: ["Antananarivo"], coordinates: [[47.5162, -18.8792]], flag: "🇲🇬" },
     { country: "Malawi", capitals: ["Lilongwe"], coordinates: [[33.7741, -13.9626]], flag: "🇲🇼" },
     { country: "Malaysia", capitals: ["Kuala Lumpur", "Putrajaya"], coordinates: [[101.6869, 3.1390], [101.6947, 2.9264]], flag: "🇲🇾" },
