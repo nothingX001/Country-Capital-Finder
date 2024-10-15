@@ -69,7 +69,7 @@ input[type="submit"], .seo-content button {
     background: linear-gradient(90deg, #f7797d, #FBD786);
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 8px;
     padding: 12px 25px;
     font-size: 1.1rem;
     font-weight: bold;
