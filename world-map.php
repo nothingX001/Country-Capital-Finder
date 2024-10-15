@@ -234,7 +234,7 @@
             const [lng, lat] = country.coordinates[index];
             new mapboxgl.Marker()
                 .setLngLat([lng, lat])
-                .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.flag} ${country.country}`))
+                .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.country} ${country.flag}`))
                 .addTo(map);
         });
     });
