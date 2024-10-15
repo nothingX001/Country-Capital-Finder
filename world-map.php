@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Map with Capitals</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
     <link href="world-map-styles.css" rel="stylesheet"> <!-- Link to your custom CSS -->
 </head>
 <body>
