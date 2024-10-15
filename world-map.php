@@ -13,6 +13,8 @@
             margin-bottom: 15px;
         }
         #search-bar {
+            margin: 0;
+            padding: 0;
             width: 50%;
             font-size: 16px;
             border-radius: 8px;
@@ -23,16 +25,16 @@
             margin-top: 15px;
         }
         #reset-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            background-color: #007bff;
+            background: linear-gradient(90deg, #f7797d, #FBD786);
             color: white;
             border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
             cursor: pointer;
-        }
-        #reset-button:hover {
-            background-color: #0056b3;
+            transition: all 0.3s ease-in-out;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -43,14 +45,14 @@
 <div id="main-world-map">
     <h1>World Map of Capitals</h1>
     <p>Explore the capitals of countries around the world.</p>
-    
+
     <!-- Search Bar for Finding Capitals -->
     <div class="search-bar-container">
         <input type="text" id="search-bar" placeholder="Search for a country or capital...">
     </div>
-    
+
     <div id="map" style="height: 500px; border-radius: 15px;"></div>
-    
+
     <!-- Reset View Button -->
     <div class="reset-button-container">
         <button id="reset-button">Reset View</button>
