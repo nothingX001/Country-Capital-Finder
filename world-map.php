@@ -23,22 +23,16 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
     const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Temporary test with a default style
-    center: [0, 20],
-    zoom: 1.5,
-    projection: 'globe'
+        container: 'map',
+        style: 'mapbox://styles/mapbox/standard-satellite', // Updated to use the standard satellite style
+        center: [0, 20],
+        zoom: 1.5,
+        projection: 'globe' // Enables the 3D globe view
     });
 
-    map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 }); // Optional, if you have a DEM source for terrain
-    map.setFog({
-    color: 'rgba(135, 206, 235, 0.5)', // Adjust this to set the desired atmospheric effect
-    "high-color": 'rgba(255, 255, 255, 0.5)',
-    "horizon-blend": 0.3, // Softens the horizon line for a more realistic view
-    "space-color": 'rgba(0, 0, 0, 1)',
-    "star-intensity": 0.2 // Set to control star visibility
+    map.on('style.load', () => {
+        map.setFog({}); // Adds atmospheric effect for depth perception on the globe
     });
-
 
     const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
