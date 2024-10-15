@@ -19,6 +19,22 @@
             border-radius: 8px;
             border: 1px solid #ddd;
         }
+        .reset-button-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+        #reset-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #reset-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -35,25 +51,39 @@
     </div>
     
     <div id="map" style="height: 500px; border-radius: 15px;"></div>
+    
+    <!-- Reset View Button -->
+    <div class="reset-button-container">
+        <button id="reset-button">Reset View</button>
+    </div>
 </div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
+    // Initial map settings
+    const initialCenter = [0, 20];
+    const initialZoom = 1.5;
+
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/satellite-streets-v11',
-        center: [0, 20],
-        zoom: 1.5,
+        center: initialCenter,
+        zoom: initialZoom,
         projection: 'globe'
     });
 
     map.on('style.load', () => {
-        map.setFog({});
+        map.setFog({
+            color: 'rgba(135, 206, 235, 0.15)',
+            "high-color": 'rgba(255, 255, 255, 0.1)',
+            "horizon-blend": 0.1,
+            "space-color": 'rgba(0, 0, 0, 1)',
+            "star-intensity": 0.2
+        });
     });
 
-    // Array of countries with capitals, coordinates, and flags
     const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
     { country: "Albania", capitals: ["Tirana"], coordinates: [[19.8189, 41.3275]], flag: "🇦🇱" },
@@ -253,27 +283,19 @@
     { country: "Zimbabwe", capitals: ["Harare"], coordinates: [[31.0530, -17.8292]], flag: "🇿🇼" }
 ];
 
-    // Object to store markers for easy access
     const markers = {};
-
-    // Create a map marker for each capital and store them in the markers object
     countries.forEach(country => {
         country.capitals.forEach((capital, index) => {
             const [lng, lat] = country.coordinates[index];
             const marker = new mapboxgl.Marker({ color: "blue" })
                 .setLngLat([lng, lat])
                 .setPopup(new mapboxgl.Popup().setText(`${country.flag} ${country.country} - ${capital}`));
-
-            // Store marker with key as "Country - Capital" for easy access
             markers[`${country.country.toLowerCase()} - ${capital.toLowerCase()}`] = marker;
         });
     });
 
-    // Function to search for a country or capital
     document.getElementById('search-bar').addEventListener('input', function() {
         const searchQuery = this.value.toLowerCase();
-
-        // Find matching country or capital
         const match = countries.find(country => 
             country.country.toLowerCase() === searchQuery || 
             country.capitals.some(capital => capital.toLowerCase() === searchQuery)
@@ -282,11 +304,7 @@
         if (match) {
             const [lng, lat] = match.coordinates[0];
             map.flyTo({ center: [lng, lat], zoom: 5 });
-
-            // Remove any previously displayed markers
             Object.values(markers).forEach(marker => marker.remove());
-
-            // Add the marker for the matched location
             match.capitals.forEach(capital => {
                 const key = `${match.country.toLowerCase()} - ${capital.toLowerCase()}`;
                 if (markers[key]) {
@@ -294,6 +312,12 @@
                 }
             });
         }
+    });
+
+    // Reset view to initial center and zoom when Reset View button is clicked
+    document.getElementById('reset-button').addEventListener('click', () => {
+        map.flyTo({ center: initialCenter, zoom: initialZoom });
+        Object.values(markers).forEach(marker => marker.remove()); // Remove all markers
     });
 </script>
 
