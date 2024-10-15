@@ -24,7 +24,7 @@
 
     const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/standard-satellite', // Temporary test with a default style
+    style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Temporary test with a default style
     center: [0, 20],
     zoom: 1.5,
     projection: 'globe'
