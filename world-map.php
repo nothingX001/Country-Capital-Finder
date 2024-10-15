@@ -7,36 +7,6 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <link href="world-map-styles.css" rel="stylesheet">
-    <style>
-        .search-bar-container {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        #search-bar {
-            margin: 0;
-            padding: 8px;
-            width: 50%;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        .reset-button-container {
-            text-align: center;
-            margin-top: 15px;
-        }
-        #reset-button {
-            background: linear-gradient(90deg, #f7797d, #FBD786);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-sizing: border-box;
-        }
-    </style>
 </head>
 <body>
 
