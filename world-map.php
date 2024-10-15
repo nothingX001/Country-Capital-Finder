@@ -30,6 +30,16 @@
     projection: 'globe'
     });
 
+    map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 }); // Optional, if you have a DEM source for terrain
+    map.setFog({
+    color: 'rgba(135, 206, 235, 0.5)', // Adjust this to set the desired atmospheric effect
+    "high-color": 'rgba(255, 255, 255, 0.5)',
+    "horizon-blend": 0.3, // Softens the horizon line for a more realistic view
+    "space-color": 'rgba(0, 0, 0, 1)',
+    "star-intensity": 0.2 // Set to control star visibility
+    });
+
+
     const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
     { country: "Albania", capitals: ["Tirana"], coordinates: [[19.8189, 41.3275]], flag: "🇦🇱" },
