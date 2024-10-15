@@ -29,6 +29,5 @@ button {
     cursor: pointer;
     margin-top: 1rem;
     transition: all 0.3s ease-in-out;
-    width: 100%; /* Full width for mobile responsiveness */
     box-sizing: border-box;
 }
