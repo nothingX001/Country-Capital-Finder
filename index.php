@@ -547,6 +547,7 @@ $unique_countries_stmt->close();
     <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
     <meta name="author" content="country capital finder">
     <title>Country Capital Finder</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
