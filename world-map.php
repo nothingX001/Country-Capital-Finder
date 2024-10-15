@@ -14,7 +14,7 @@
         }
         #search-bar {
             margin: 0;
-            padding: 0;
+            padding: 8px;
             width: 50%;
             font-size: 16px;
             border-radius: 8px;
