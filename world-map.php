@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Map of Capitals</title>
+    <title>World Map with Capitals</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <link href="world-map-styles.css" rel="stylesheet">
@@ -253,16 +253,21 @@
     { country: "Zimbabwe", capitals: ["Harare"], coordinates: [[31.0530, -17.8292]], flag: "🇿🇼" }
 ];
 
-    // Create a map marker for each capital, but do not display them initially
-    const markers = countries.map(country => {
-        return country.capitals.map((capital, index) => {
+    // Object to store markers for easy access
+    const markers = {};
+
+    // Create a map marker for each capital and store them in the markers object
+    countries.forEach(country => {
+        country.capitals.forEach((capital, index) => {
             const [lng, lat] = country.coordinates[index];
             const marker = new mapboxgl.Marker({ color: "blue" })
                 .setLngLat([lng, lat])
                 .setPopup(new mapboxgl.Popup().setText(`${country.flag} ${country.country} - ${capital}`));
-            return marker;
+
+            // Store marker with key as "Country - Capital" for easy access
+            markers[`${country.country.toLowerCase()} - ${capital.toLowerCase()}`] = marker;
         });
-    }).flat(); // Flatten array of arrays into a single array of markers
+    });
 
     // Function to search for a country or capital
     document.getElementById('search-bar').addEventListener('input', function() {
@@ -276,11 +281,18 @@
 
         if (match) {
             const [lng, lat] = match.coordinates[0];
-            map.flyTo({ center: [lng, lat], zoom: 5 }); // Fly to the matched location
-            markers.forEach(marker => marker.remove()); // Remove any previously displayed markers
-            markers
-                .filter(marker => marker.getPopup().getText().includes(match.country)) // Filter markers for the matched country
-                .forEach(marker => marker.addTo(map)); // Add matching markers to map
+            map.flyTo({ center: [lng, lat], zoom: 5 });
+
+            // Remove any previously displayed markers
+            Object.values(markers).forEach(marker => marker.remove());
+
+            // Add the marker for the matched location
+            match.capitals.forEach(capital => {
+                const key = `${match.country.toLowerCase()} - ${capital.toLowerCase()}`;
+                if (markers[key]) {
+                    markers[key].addTo(map);
+                }
+            });
         }
     });
 </script>
