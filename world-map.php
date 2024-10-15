@@ -30,11 +30,6 @@
     projection: 'globe'
     });
 
-
-    map.on('style.load', () => {
-        map.setFog({}); // Adds atmospheric effect for depth perception on the globe
-    });
-
     const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
     { country: "Albania", capitals: ["Tirana"], coordinates: [[19.8189, 41.3275]], flag: "🇦🇱" },
