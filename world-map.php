@@ -23,12 +23,13 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
     const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo',
-        center: [0, 20],
-        zoom: 1.5,
-        projection: 'globe' // Enables the 3D globe view
+    container: 'map',
+    style: 'mapbox://styles/mapbox/satellite-v9', // Temporary test with a default style
+    center: [0, 20],
+    zoom: 1.5,
+    projection: 'globe'
     });
+
 
     map.on('style.load', () => {
         map.setFog({}); // Adds atmospheric effect for depth perception on the globe
