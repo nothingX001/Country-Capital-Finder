@@ -10,6 +10,8 @@
 </head>
 <body>
 
+<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+
 <div id="main-world-map">
     <h1>World Map of Capitals</h1>
     <p>Explore the capitals of countries around the world.</p>
