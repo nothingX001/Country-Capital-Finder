@@ -6,29 +6,34 @@
     <title>World Map with Capitals</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-    <link href="world-map-styles.css" rel="stylesheet"> <!-- Link to your custom CSS -->
+    <link href="world-map-styles.css" rel="stylesheet">
 </head>
 <body>
 
-<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+<?php include 'navbar.php'; ?>
 
 <div id="main-world-map">
     <h1>World Map of Capitals</h1>
     <p>Explore the capitals of countries around the world.</p>
-    <div id="map" style="height: 500px; border-radius: 15px;"></div> <!-- Set map height here -->
+    <div id="map" style="height: 500px; border-radius: 15px;"></div>
 </div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
+
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Your Mapbox style
+        style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo',
         center: [0, 20],
-        zoom: 1.5
+        zoom: 1.5,
+        projection: 'globe' // Enables the 3D globe view
     });
 
-    // Array of countries with capitals, coordinates, and flags
+    map.on('style.load', () => {
+        map.setFog({}); // Adds atmospheric effect for depth perception on the globe
+    });
+
     const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
     { country: "Albania", capitals: ["Tirana"], coordinates: [[19.8189, 41.3275]], flag: "🇦🇱" },
@@ -228,7 +233,6 @@
     { country: "Zimbabwe", capitals: ["Harare"], coordinates: [[31.0530, -17.8292]], flag: "🇿🇼" }
 ];
 
-    // Loop through countries to add markers
     countries.forEach(country => {
         country.capitals.forEach((capital, index) => {
             const [lng, lat] = country.coordinates[index];
