@@ -1,19 +1,20 @@
 <?php
 // country-detail.php
 
-include 'config.php';
+include 'config.php'; // Include database connection and configurations
+include 'mapbox.php'; // Assuming there's a file to handle Mapbox API integration
 
 // Get the country from the URL parameter
 $country_name = $_GET['country'] ?? null;
 
-// Ensure the country name is valid
+// Validate the country and fetch relevant details from the database
 if ($country_name && array_key_exists($country_name, $country_map)) {
-    // Query the database for country-specific information if available
-    // For simplicity, we’ll just display the name and flag here
     $flag = $country_map[$country_name];
+    $query = $db->prepare("SELECT capital, language, founding_date, spoken_languages FROM countries WHERE name = ?");
+    $query->execute([$country_name]);
+    $country_info = $query->fetch(PDO::FETCH_ASSOC);
 } else {
-    // Redirect to the main profile page if no valid country is found
-    header("Location: country-profile.php");
+    header("Location: country-profiles.php");
     exit;
 }
 ?>
@@ -26,14 +27,33 @@ if ($country_name && array_key_exists($country_name, $country_map)) {
     <title><?php echo htmlspecialchars($country_name); ?> Profile</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css' rel='stylesheet' />
 </head>
 <body>
 
-<?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+<?php include 'navbar.php'; ?>
 
-<h1><?php echo htmlspecialchars($country_name); ?></h1>
-<p>Flag: <?php echo $flag; ?></p>
-<!-- Additional country information could go here, queried from the database -->
+<section id="country-profile">
+    <h1><?php echo htmlspecialchars($country_name); ?></h1>
+    <p>Flag: <?php echo $flag; ?></p>
+    <p>Capital: <?php echo htmlspecialchars($country_info['capital']); ?></p>
+    <p>Language: <?php echo htmlspecialchars($country_info['language']); ?></p>
+    <p>Founding Date: <?php echo htmlspecialchars($country_info['founding_date']); ?></p>
+    <p>Spoken Languages: <?php echo htmlspecialchars($country_info['spoken_languages']); ?></p>
+
+    <!-- Mapbox Integration -->
+    <div id="map" style="width: 100%; height: 300px;"></div>
+    <script>
+        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [longitude, latitude], // Set to the country's central coordinates
+            zoom: 5
+        });
+    </script>
+</section>
 
 </body>
 </html>
