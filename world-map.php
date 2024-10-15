@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Map with Capitals</title>
+    <title>World Map of Capitals</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <link href="world-map-styles.css" rel="stylesheet">
+    <style>
+        .search-bar-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        #search-bar {
+            width: 50%;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,6 +28,12 @@
 <div id="main-world-map">
     <h1>World Map of Capitals</h1>
     <p>Explore the capitals of countries around the world.</p>
+    
+    <!-- Search Bar for Finding Capitals -->
+    <div class="search-bar-container">
+        <input type="text" id="search-bar" placeholder="Search for a country or capital...">
+    </div>
+    
     <div id="map" style="height: 500px; border-radius: 15px;"></div>
 </div>
 
@@ -24,12 +43,17 @@
 
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/satellite-streets-v11', // Using satellite-streets for compatibility with globe
+        style: 'mapbox://styles/mapbox/satellite-streets-v11',
         center: [0, 20],
         zoom: 1.5,
-        projection: 'globe' // Enables the 3D globe view
+        projection: 'globe'
     });
 
+    map.on('style.load', () => {
+        map.setFog({});
+    });
+
+    // Array of countries with capitals, coordinates, and flags
     const countries = [
     { country: "Afghanistan", capitals: ["Kabul", "Kandahar"], coordinates: [[69.1833, 34.5167], [65.7101, 31.6136]], flag: "🇦🇫" },
     { country: "Albania", capitals: ["Tirana"], coordinates: [[19.8189, 41.3275]], flag: "🇦🇱" },
@@ -229,14 +253,35 @@
     { country: "Zimbabwe", capitals: ["Harare"], coordinates: [[31.0530, -17.8292]], flag: "🇿🇼" }
 ];
 
-    countries.forEach(country => {
-        country.capitals.forEach((capital, index) => {
+    // Create a map marker for each capital, but do not display them initially
+    const markers = countries.map(country => {
+        return country.capitals.map((capital, index) => {
             const [lng, lat] = country.coordinates[index];
-            new mapboxgl.Marker()
+            const marker = new mapboxgl.Marker({ color: "blue" })
                 .setLngLat([lng, lat])
-                .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.country} ${country.flag}`))
-                .addTo(map);
+                .setPopup(new mapboxgl.Popup().setText(`${country.flag} ${country.country} - ${capital}`));
+            return marker;
         });
+    }).flat(); // Flatten array of arrays into a single array of markers
+
+    // Function to search for a country or capital
+    document.getElementById('search-bar').addEventListener('input', function() {
+        const searchQuery = this.value.toLowerCase();
+
+        // Find matching country or capital
+        const match = countries.find(country => 
+            country.country.toLowerCase() === searchQuery || 
+            country.capitals.some(capital => capital.toLowerCase() === searchQuery)
+        );
+
+        if (match) {
+            const [lng, lat] = match.coordinates[0];
+            map.flyTo({ center: [lng, lat], zoom: 5 }); // Fly to the matched location
+            markers.forEach(marker => marker.remove()); // Remove any previously displayed markers
+            markers
+                .filter(marker => marker.getPopup().getText().includes(match.country)) // Filter markers for the matched country
+                .forEach(marker => marker.addTo(map)); // Add matching markers to map
+        }
     });
 </script>
 
