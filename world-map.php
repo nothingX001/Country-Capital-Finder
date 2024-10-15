@@ -260,7 +260,7 @@
             const [lng, lat] = country.coordinates[index];
             const marker = new mapboxgl.Marker({ color: "blue" })
                 .setLngLat([lng, lat])
-                .setPopup(new mapboxgl.Popup().setText(`${country.flag} ${country.country} - ${capital}`));
+                .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.flag} ${country.country}`));
             markers[`${country.country.toLowerCase()} - ${capital.toLowerCase()}`] = marker;
         });
     });
