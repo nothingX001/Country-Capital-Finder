@@ -83,7 +83,26 @@ body {
     }
     .about-section {
         width: 90%; /* Further adjustment for mobile centering */
-        margin: 20px auto;
+        margin: 10px auto;
         padding: 1.5rem;
     }
+}
+
+/* Button Styling (Optional) */
+button {
+    display: inline-block;
+    background: #991f3c;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #991f3c;
 }
