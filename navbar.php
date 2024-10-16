@@ -9,6 +9,7 @@
             <li><a href="country-profiles.php">Country Profiles</a></li>
             <li><a href="quiz.php">Quiz</a></li>
             <li><a href="world-map.php">World Map</a></li>
+            <li><a href="about.php">About</a></li>
         </ul>
     </div>
 </nav>
