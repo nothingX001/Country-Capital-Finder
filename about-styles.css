@@ -1,6 +1,5 @@
 /* General Styling */
 body {
-    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
@@ -84,26 +83,7 @@ body {
     }
     .about-section {
         width: 90%; /* Further adjustment for mobile centering */
-        margin: 10px auto;
+        margin: 20px auto;
         padding: 1.5rem;
     }
-}
-
-/* Button Styling (Optional) */
-button {
-    display: inline-block;
-    background: linear-gradient(90deg, #f7797d, #FBD786);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 12px 25px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: all 0.3s ease-in-out;
-}
-
-button:hover {
-    background: #f68a9e;
 }
