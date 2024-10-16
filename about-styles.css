@@ -1,0 +1,84 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+    box-sizing: border-box;
+}
+
+/* Main Section */
+.about-section {
+    max-width: 900px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Heading Styles */
+.about-section h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1a202c;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 1.8rem;
+    color: #2d3748;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #4a5568;
+    padding-bottom: 0.3rem;
+}
+
+/* Paragraph Styles */
+.about-section p {
+    font-size: 1.1rem;
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* Bold Keyword Styling */
+.about-section strong {
+    color: #2b6cb0;
+    font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .about-section h1 {
+        font-size: 2rem;
+    }
+    .about-section h2 {
+        font-size: 1.5rem;
+    }
+    .about-section p {
+        font-size: 1rem;
+    }
+}
+
+/* Button Styling (Optional) */
+button {
+    display: inline-block;
+    background: linear-gradient(90deg, #f7797d, #FBD786);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #f68a9e;
+}
