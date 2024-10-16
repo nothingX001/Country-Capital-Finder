@@ -1,5 +1,6 @@
 /* General Styling */
 body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
@@ -9,7 +10,7 @@ body {
 /* Main Section */
 .about-section {
     max-width: 900px;
-    width: 90%;
+    width: 95%; /* Adjusted width for better centering on mobile */
     margin: 20px auto;
     padding: 2rem;
     background-color: #ffffff;
@@ -50,6 +51,26 @@ body {
     font-weight: bold;
 }
 
+/* Navbar Menu Button for Mobile */
+.navbar-toggle {
+    font-size: 1.6rem;
+    color: white;
+    background-color: #800020; /* Maroon color */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: block;
+    margin-top: 5px;
+    position: relative;
+    z-index: 1000;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-toggle:hover {
+    background-color: #991f3c; /* Slightly lighter maroon on hover */
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .about-section h1 {
@@ -60,6 +81,11 @@ body {
     }
     .about-section p {
         font-size: 1rem;
+    }
+    .about-section {
+        width: 90%; /* Further adjustment for mobile centering */
+        margin: 10px auto;
+        padding: 1.5rem;
     }
 }
 
