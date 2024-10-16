@@ -16,6 +16,7 @@
     <meta name="twitter:description" content="Learn and memorize world capitals with our fun and easy geography quiz.">
     <meta name="twitter:image" content="https://www.yoursite.com/images/country-capital-quiz.png">
     <title>About | Country Capital Finder</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
