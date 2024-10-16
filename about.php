@@ -18,6 +18,7 @@
     <title>About | Country Capital Finder</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="about-styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
