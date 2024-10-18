@@ -76,7 +76,7 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 <?php include 'navbar.php'; ?>
 <section id="main-quiz">
     <h1>COUNTRY CAPITAL QUIZ</h1>
-    <p>Test your knowledge of country capitals!</p>
+    <p>Test your knowledge of country capitals.</p>
     <button id="startQuizBtn">START QUIZ</button>
 
     <div id="quizContainer" style="display: none;">
