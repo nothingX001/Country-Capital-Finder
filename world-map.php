@@ -26,7 +26,7 @@
 
     <!-- Reset View Button -->
     <div class="reset-button-container">
-        <button id="reset-button">Reset View</button>
+        <button id="reset-button">RESET VIEW</button>
     </div>
 </div>
 

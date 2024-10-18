@@ -77,14 +77,14 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 <section id="main-quiz">
     <h1>COUNTRY CAPITAL QUIZ</h1>
     <p>Test your knowledge of country capitals!</p>
-    <button id="startQuizBtn">Start Quiz</button>
+    <button id="startQuizBtn">START QUIZ</button>
 
     <div id="quizContainer" style="display: none;">
         <div id="timer">Time: 0:00</div>
         <div id="questionContainer"></div>
         <form id="answerForm">
             <input type="text" id="userAnswer" placeholder="Type your answer here" required>
-            <button type="submit">Submit Answer</button>
+            <button type="submit">SUBMIT ANSWER</button>
         </form>
     </div>
 
@@ -92,7 +92,7 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
         <h2>Quiz Results</h2>
         <p id="score"></p>
         <div id="detailedResults"></div>
-        <button id="redoQuizBtn">Redo Quiz</button>
+        <button id="redoQuizBtn">REDO QUIZ</button>
     </div>
 </section>
 
