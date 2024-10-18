@@ -38,7 +38,7 @@
         <h2>Fun and Easy Geography Practice</h2>
         <p>Offering an enjoyable, accessible approach to <strong>learning world capitals</strong>, the Country Capital Finder also includes <strong>world capital learning games</strong> and quizzes that transform traditional study methods into something engaging and memorable. Every question in the <strong>capitals of the world quiz</strong> is designed to enhance memory retention, making it perfect for a <strong>geography bee prep tool</strong> or just for <strong>learning capitals by memory</strong>.</p>
 
-        <p>Whether you’re aiming to learn for fun, education, or competition, the Country Capital Finder brings the world’s capitals into easy reach, fostering learning and exploration across borders. Dive into our quizzes today and experience <strong>an application where you can find a country’s capital</strong> while testing your geography knowledge in new, interactive ways!</p>
+        <p>Whether you’re aiming to learn for fun, education, or competition, the Country Capital Finder brings the world’s capitals into easy reach, fostering learning and exploration across borders. Dive into our quizzes today and experience <strong>an application where you can find a country’s capital</strong> while testing your geography knowledge in new interactive ways.</p>
     </section>
 
     <?php include 'footer.php'; ?>
