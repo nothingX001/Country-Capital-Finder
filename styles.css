@@ -127,7 +127,6 @@ p.message {
     font-weight: bold;
     padding: 10px 15px;
     border-radius: 5px;
-    transition: background-color 0.1s, color 0.1s;
 }
 
 .navbar-list li a:hover {
@@ -267,7 +266,6 @@ p.message {
         text-decoration: none;
         width: 80%;
         text-align: center;
-        transition: background-color 0.1s;
     }
 
     /* Hover effect with lighter background */
