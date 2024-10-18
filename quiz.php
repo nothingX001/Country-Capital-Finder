@@ -68,7 +68,6 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
@@ -76,7 +75,7 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 
 <?php include 'navbar.php'; ?>
 <section id="main-quiz">
-    <h1>Country Capital Quiz</h1>
+    <h1>COUNTRY CAPITAL QUIZ</h1>
     <p>Test your knowledge of country capitals!</p>
     <button id="startQuizBtn">Start Quiz</button>
 
