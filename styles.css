@@ -127,7 +127,7 @@ p.message {
 }
 
 .navbar-list li a:hover {
-    background-color: rgba(50, 0, 20, 0.8);
+    background-color: #2b6cb0;
     color: white;
 }
 
@@ -136,7 +136,7 @@ p.message {
     font-size: 1.6rem;
     border: none;
     color: white;
-    background-color: rgba(50, 0, 20, 0.8);
+    background-color: #2b6cb0;
     cursor: pointer;
     display: none;
     position: relative;

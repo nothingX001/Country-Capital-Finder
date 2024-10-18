@@ -556,9 +556,9 @@ $unique_countries_stmt->close();
         <h1>CAPITAL FINDER</h1>
         <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
         <form action="index.php" method="post">
-            <label>Enter a country: </label>
+            <label>ENTER A COUNTRY: </label>
             <input type="text" name="country" required>
-            <input type="submit" value="Submit">
+            <input type="submit" value="SUBMIT">
         </form>
 
         <?php if (isset($message)) { ?>
@@ -569,16 +569,16 @@ $unique_countries_stmt->close();
     <div class="seo-content">
     <!-- Site Statistics Section inside SEO Content -->
         <section id="site-stats">
-            <h2>📊 Site Statistics</h2>
-            <p><strong>🔝 Most Searched Country:</strong> <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
-            <p><strong>🕒 Most Recent Search:</strong> 
+            <h2>📊 SITE STATISTICS</h2>
+            <p><strong>🔝 MOST SEARCHED COUNTRY:</strong> <?php echo $most_searched_country ?? "No data yet"; ?> with <?php echo $most_searches ?? 0; ?> searches.</p>
+            <p><strong>🕒 MOST RECENT SEARCH:</strong> 
                 <span id="recent-search-time" data-country="<?php echo $most_recent_search ?? 'N/A'; ?>" data-utc="<?php echo $formatted_search_time; ?>">
                     <?php echo $formatted_search_time; ?>
                 </span>
             </p>
-            <p><strong>🔢 Total Searches:</strong> <?php echo $total_searches ?? 0; ?></p>
-            <p><strong>📅 Searches Today:</strong> <?php echo $searches_today ?? 0; ?></p>
-            <p><strong>🌍 Unique Countries Searched:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
+            <p><strong>🔢 TOTAL SEARCHES:</strong> <?php echo $total_searches ?? 0; ?></p>
+            <p><strong>📅 SEARCHES TODAY:</strong> <?php echo $searches_today ?? 0; ?></p>
+            <p><strong>🌍 UNIQUE COUNTRIES SEARCHED:</strong> <?php echo $unique_countries_searched ?? 0; ?></p>
         </section>
     </div>
 
