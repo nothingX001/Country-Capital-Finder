@@ -16,7 +16,6 @@
     <meta name="twitter:description" content="Learn and memorize world capitals with our fun and easy geography quiz.">
     <meta name="twitter:image" content="https://www.yoursite.com/images/country-capital-quiz.png">
     <title>About | Country Capital Finder</title>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="about-styles.css">
 </head>
@@ -24,7 +23,7 @@
     <?php include 'navbar.php'; ?>
 
     <section class="about-section">
-        <h1>About the Country Capital Finder</h1>
+        <h1>ABOUT THE COUNTRY CAPITAL FINDER</h1>
         <p>Welcome to the <strong>Country Capital Finder</strong>—an intuitive application where you can <strong>find any country’s capital</strong> with ease. Created to support learners of all levels, from students to trivia enthusiasts, our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong> designed to make memorizing capitals both engaging and effective. Ideal for <strong>geography bee prep</strong>, this tool is perfect for anyone looking to improve their knowledge of world geography.</p>
 
         <h2>An Interactive Learning Tool</h2>

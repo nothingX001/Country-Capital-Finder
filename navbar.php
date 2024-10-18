@@ -5,11 +5,11 @@
             &#9776; <!-- Hamburger icon -->
         </button>
         <ul class="navbar-list" id="navbarList">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="country-profiles.php">Country Profiles</a></li>
-            <li><a href="quiz.php">Quiz</a></li>
-            <li><a href="world-map.php">World Map</a></li>
-            <li><a href="about.php">About</a></li>
+            <li><a href="index.php">HOME</a></li>
+            <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
+            <li><a href="quiz.php">QUIZ</a></li>
+            <li><a href="world-map.php">WORLD MAP</a></li>
+            <li><a href="about.php">ABOUT</a></li>
         </ul>
     </div>
 </nav>

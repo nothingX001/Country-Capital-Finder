@@ -215,7 +215,6 @@ $country_map = $country_map = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Profiles</title>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="country-profiles-styles.css">
 </head>
@@ -224,7 +223,7 @@ $country_map = $country_map = [
     <?php include 'navbar.php'; ?> <!-- Include your NavBar -->
 
     <section id="main-country-profiles">
-        <h1>Country Profiles</h1>
+        <h1>COUNTRY PROFILES</h1>
         <p>This is a complete list of countries in our database. Select a country to view its profile.</p>
         <p>(Access to profiles are still a work in progress.)</p>
         <ul>

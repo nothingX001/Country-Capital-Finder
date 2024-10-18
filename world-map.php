@@ -14,7 +14,7 @@
 <?php include 'navbar.php'; ?>
 
 <div id="main-world-map">
-    <h1>World Map of Capitals</h1>
+    <h1>WORLD MAP OF CAPITALS</h1>
     <p>Explore the capitals of countries around the world.</p>
 
     <!-- Search Bar for Finding Capitals -->
