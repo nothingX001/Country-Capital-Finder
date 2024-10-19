@@ -270,8 +270,9 @@ p.message {
 
     /* Hover effect with lighter background */
     .navbar-list li a:hover {
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: rgba(255, 255, 255, 0.689);
         padding: 10px 10px;
+        color: #333;
     }
 
     .navbar-toggle {
