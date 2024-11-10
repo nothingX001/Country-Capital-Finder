@@ -1,21 +1,12 @@
 <?php
-// Parse ClearDB connection information from the environment variable
-$cleardb_url = getenv('CLEARDB_DATABASE_URL');
-if ($cleardb_url) {
-    $cleardb_url_parts = parse_url($cleardb_url);
+$hostname = getenv('DB_HOST') ?: 'mysql';
+$username = getenv('DB_USER') ?: 'root';
+$password = getenv('DB_PASSWORD') ?: 'root';
+$database = getenv('DB_NAME') ?: 'capital_finder';
 
-    $host = $cleardb_url_parts["host"];
-    $user = $cleardb_url_parts["user"];
-    $pass = $cleardb_url_parts["pass"];
-    $db   = substr($cleardb_url_parts["path"], 1);
-
-    // Create connection
-    $conn = new mysqli($host, $user, $pass, $db);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-} else {
-    die("CLEARDB_DATABASE_URL is not set");
+// Create connection
+$mysqli = new mysqli('mysql', 'root', 'root', 'capital_finder');
+if ($mysqli->connect_error) {
+    die('Connection failed: ' . $mysqli->connect_error);
 }
+?>
