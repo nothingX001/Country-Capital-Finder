@@ -16,12 +16,10 @@ $password = $dbopts["pass"];
 $dbname = ltrim($dbopts["path"], '/');
 
 try {
-    // Create a new PDO instance
-    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected to the database successfully!";
+    // Create a new PDO instance and assign it to $conn
+    $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo "Database connection failed: " . $e->getMessage();
-    exit();
+    die("Connection failed: " . $e->getMessage());
 }
 ?>
