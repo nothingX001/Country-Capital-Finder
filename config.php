@@ -13,10 +13,10 @@ $host = $dbopts["host"];
 $port = $dbopts["port"];
 $user = $dbopts["user"];
 $password = $dbopts["pass"];
-$dbname = ltrim($dbopts["path"], '/');
+$dbname = ltrim($dbopts["path"], '/'); // Should be 'country_capital_finder_postgresql' without the extra underscore
 
 try {
-    // Create a new PDO instance and assign it to $conn
+    // Create a new PDO instance
     $conn = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
