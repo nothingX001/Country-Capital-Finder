@@ -1,17 +1,27 @@
 <?php
-$host = getenv('DB_HOST');
-$db   = getenv('DB_NAME');
-$user = getenv('DB_USER');
-$pass = getenv('DB_PASSWORD');
-$port = getenv('DB_PORT') ?: 3306;  // Defaults to 3306 if not set
+// Get the DATABASE_URL environment variable
+$databaseUrl = getenv('DATABASE_URL');
 
-// Set up the Data Source Name (DSN) for MySQL connection
-$dsn = "mysql:host=$host;dbname=$db;port=$port;charset=utf8mb4";
+if (!$databaseUrl) {
+    die("DATABASE_URL environment variable not set.");
+}
+
+// Parse the DATABASE_URL
+$dbopts = parse_url($databaseUrl);
+
+$host = $dbopts["host"];
+$port = $dbopts["port"];
+$user = $dbopts["user"];
+$password = $dbopts["pass"];
+$dbname = ltrim($dbopts["path"], '/');
 
 try {
-    $pdo = new PDO($dsn, $user, $pass);
+    // Create a new PDO instance
+    $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected to the database successfully!";
 } catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
+    echo "Database connection failed: " . $e->getMessage();
+    exit();
 }
 ?>
