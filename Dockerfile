@@ -1,17 +1,13 @@
-# Use the official PHP image with Apache
+# Dockerfile
 FROM php:8.3-apache
 
-# Install MySQL and PDO extensions
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable mysqli pdo pdo_mysql
+# Install PostgreSQL PDO driver
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo_pgsql
 
-# Set the working directory
-WORKDIR /var/www/html
+# Enable the extension
+RUN docker-php-ext-enable pdo_pgsql
 
-# Copy application files to the working directory
+# Copy application files
 COPY . /var/www/html
-
-# Set permissions (optional)
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
-
-# Expose port 80 for web traffic
-EXPOSE 80
