@@ -33,10 +33,10 @@ function addThe($country) {
 // Function to get 10 random country-capital pairs
 function getQuizQuestions($conn) {
     $questions = [];
-    $query = "SELECT country_name, capital_name FROM countries ORDER BY RAND() LIMIT 10";
-    $result = $conn->query($query);
+    $query = "SELECT country_name, capital_name FROM countries ORDER BY RANDOM() LIMIT 10";
+    $stmt = $conn->query($query);
 
-    while ($row = $result->fetch_assoc()) {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $questions[] = $row;
     }
     return $questions;
