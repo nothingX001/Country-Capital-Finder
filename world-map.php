@@ -1,3 +1,8 @@
+<?php
+// Include database connection
+include 'config.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -56,62 +61,52 @@
         });
     });
 
-    // Pass PHP country data directly to JavaScript
-    const countries = <?php
-        include 'config.php';
-        $stmt = $conn->prepare("SELECT country_name, capital_name AS capitals, coordinates, flag_emoji FROM countries");
-        $stmt->execute();
-        $data = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $data[] = [
-                'country_name' => $row['country_name'],
-                'capitals' => $row['capitals'],
-                'coordinates' => $row['coordinates'],
-                'flag_emoji' => $row['flag_emoji']
-            ];
-        }
-        echo json_encode($data);
-    ?>;
+    // Fetch country data from the database using an API endpoint
+    fetch('fetch-country-data.php')
+        .then(response => response.json())
+        .then(countries => {
+            const markers = {};
 
-    const markers = {};
-    countries.forEach(country => {
-        const capitals = country.capitals.split(',');
-        const coordinates = JSON.parse(country.coordinates);
-        capitals.forEach((capital, index) => {
-            const [lng, lat] = coordinates[index];
-            const marker = new mapboxgl.Marker({ color: "blue" })
-                .setLngLat([lng, lat])
-                .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.country_name} ${country.flag_emoji}`));
-            markers[`${country.country_name.toLowerCase()} - ${capital.toLowerCase()}`] = marker;
-        });
-    });
+            countries.forEach(country => {
+                const capitals = country.capitals.split(','); // Handle multiple capitals
+                const coordinates = JSON.parse(country.coordinates); // Parse JSON coordinates
+                capitals.forEach((capital, index) => {
+                    const [lng, lat] = coordinates[index];
+                    const marker = new mapboxgl.Marker({ color: "blue" })
+                        .setLngLat([lng, lat])
+                        .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.country_name} ${country.flag_emoji}`));
+                    markers[`${country.country_name.toLowerCase()} - ${capital.toLowerCase()}`] = marker;
+                });
+            });
 
-    document.getElementById('search-bar').addEventListener('input', function() {
-        const searchQuery = this.value.toLowerCase();
-        const match = countries.find(country =>
-            country.country_name.toLowerCase() === searchQuery ||
-            country.capitals.toLowerCase().includes(searchQuery)
-        );
+            document.getElementById('search-bar').addEventListener('input', function() {
+                const searchQuery = this.value.toLowerCase();
+                const match = countries.find(country =>
+                    country.country_name.toLowerCase() === searchQuery ||
+                    country.capitals.toLowerCase().includes(searchQuery)
+                );
 
-        if (match) {
-            const coordinates = JSON.parse(match.coordinates);
-            const [lng, lat] = coordinates[0];
-            map.flyTo({ center: [lng, lat], zoom: 5 });
-            Object.values(markers).forEach(marker => marker.remove());
-            match.capitals.split(',').forEach(capital => {
-                const key = `${match.country_name.toLowerCase()} - ${capital.toLowerCase()}`;
-                if (markers[key]) {
-                    markers[key].addTo(map);
+                if (match) {
+                    const coordinates = JSON.parse(match.coordinates);
+                    const [lng, lat] = coordinates[0];
+                    map.flyTo({ center: [lng, lat], zoom: 5 });
+                    Object.values(markers).forEach(marker => marker.remove());
+                    match.capitals.split(',').forEach(capital => {
+                        const key = `${match.country_name.toLowerCase()} - ${capital.toLowerCase()}`;
+                        if (markers[key]) {
+                            markers[key].addTo(map);
+                        }
+                    });
                 }
             });
-        }
-    });
 
-    // Reset view to initial center and zoom when Reset View button is clicked
-    document.getElementById('reset-button').addEventListener('click', () => {
-        map.flyTo({ center: initialCenter, zoom: initialZoom });
-        Object.values(markers).forEach(marker => marker.remove());
-    });
+            // Reset view to initial center and zoom when Reset View button is clicked
+            document.getElementById('reset-button').addEventListener('click', () => {
+                map.flyTo({ center: initialCenter, zoom: initialZoom });
+                Object.values(markers).forEach(marker => marker.remove()); // Remove all markers
+            });
+        })
+        .catch(error => console.error('Error fetching country data:', error));
 </script>
 
 </body>
