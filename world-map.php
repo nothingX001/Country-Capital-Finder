@@ -1,7 +1,22 @@
 <?php
-// Fetch map data using the fetch-country-data.php API
-$url = 'fetch-country-data.php?type=map';
-$response = file_get_contents($url);
+include 'config.php';
+
+// Fetch map data using fetch-country-data.php API
+function fetchData($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FAILONERROR, true);
+    $result = curl_exec($ch);
+    if (curl_errno($ch)) {
+        die("cURL error: " . curl_error($ch));
+    }
+    curl_close($ch);
+    return $result;
+}
+
+$url = './fetch-country-data.php?type=map';
+$response = fetchData($url);
 $map_data = json_decode($response, true);
 ?>
 
