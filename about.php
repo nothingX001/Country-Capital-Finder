@@ -40,7 +40,5 @@
 
         <p>Whether you’re aiming to learn for fun, education, or competition, the Country Capital Finder brings the world’s capitals into easy reach, fostering learning and exploration across borders. Dive into our quizzes today and experience <strong>an application where you can find a country’s capital</strong> while testing your geography knowledge in new interactive ways.</p>
     </section>
-
-    <?php include 'footer.php'; ?>
 </body>
 </html>
