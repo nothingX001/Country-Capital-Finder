@@ -1,6 +1,8 @@
 <?php
-// Include database connection
-include 'config.php';
+// Fetch map data using the fetch-country-data.php API
+$url = 'fetch-country-data.php?type=map';
+$response = file_get_contents($url);
+$map_data = json_decode($response, true);
 ?>
 
 <!DOCTYPE html>
@@ -10,9 +12,8 @@ include 'config.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Map with Capitals</title>
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-    <link href="styles.css" rel="stylesheet">
-    <link href="world-map-styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="world-map-styles.css">
 </head>
 <body>
 
@@ -21,92 +22,30 @@ include 'config.php';
 <div id="main-world-map">
     <h1>WORLD MAP OF CAPITALS</h1>
     <p>Explore the capitals of countries around the world.</p>
-
-    <!-- Search Bar for Finding Capitals -->
-    <div class="search-bar-container">
-        <input type="text" id="search-bar" placeholder="Search for a country or capital...">
-    </div>
-
     <div id="map" style="height: 500px; border-radius: 15px;"></div>
-
-    <!-- Reset View Button -->
-    <div class="reset-button-container">
-        <button id="reset-button">RESET VIEW</button>
-    </div>
 </div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
 <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
-
-    // Initial map settings
-    const initialCenter = [0, 20];
-    const initialZoom = 1.5;
-
+    mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/satellite-streets-v11',
-        center: initialCenter,
-        zoom: initialZoom,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [0, 20],
+        zoom: 1.5,
         projection: 'globe'
     });
 
-    map.on('style.load', () => {
-        map.setFog({
-            color: 'rgba(135, 206, 235, 0.15)',
-            "high-color": 'rgba(255, 255, 255, 0.1)',
-            "horizon-blend": 0.1,
-            "space-color": 'rgba(0, 0, 0, 1)',
-            "star-intensity": 0.2
-        });
+    const mapData = <?php echo json_encode($map_data); ?>;
+    mapData.forEach(country => {
+        const marker = new mapboxgl.Marker()
+            .setLngLat([country.longitude, country.latitude])
+            .setPopup(new mapboxgl.Popup().setHTML(`
+                <strong>${country.capital_name}</strong><br>
+                ${country.country_name} ${country.flag_emoji}
+            `))
+            .addTo(map);
     });
-
-    // Fetch country data from the database using an API endpoint
-    fetch('fetch-country-data.php')
-        .then(response => response.json())
-        .then(countries => {
-            const markers = {};
-
-            countries.forEach(country => {
-                const capitals = country.capitals.split(','); // Handle multiple capitals
-                const coordinates = JSON.parse(country.coordinates); // Parse JSON coordinates
-                capitals.forEach((capital, index) => {
-                    const [lng, lat] = coordinates[index];
-                    const marker = new mapboxgl.Marker({ color: "blue" })
-                        .setLngLat([lng, lat])
-                        .setPopup(new mapboxgl.Popup().setText(`${capital} - ${country.country_name} ${country.flag_emoji}`));
-                    markers[`${country.country_name.toLowerCase()} - ${capital.toLowerCase()}`] = marker;
-                });
-            });
-
-            document.getElementById('search-bar').addEventListener('input', function() {
-                const searchQuery = this.value.toLowerCase();
-                const match = countries.find(country =>
-                    country.country_name.toLowerCase() === searchQuery ||
-                    country.capitals.toLowerCase().includes(searchQuery)
-                );
-
-                if (match) {
-                    const coordinates = JSON.parse(match.coordinates);
-                    const [lng, lat] = coordinates[0];
-                    map.flyTo({ center: [lng, lat], zoom: 5 });
-                    Object.values(markers).forEach(marker => marker.remove());
-                    match.capitals.split(',').forEach(capital => {
-                        const key = `${match.country_name.toLowerCase()} - ${capital.toLowerCase()}`;
-                        if (markers[key]) {
-                            markers[key].addTo(map);
-                        }
-                    });
-                }
-            });
-
-            // Reset view to initial center and zoom when Reset View button is clicked
-            document.getElementById('reset-button').addEventListener('click', () => {
-                map.flyTo({ center: initialCenter, zoom: initialZoom });
-                Object.values(markers).forEach(marker => marker.remove()); // Remove all markers
-            });
-        })
-        .catch(error => console.error('Error fetching country data:', error));
 </script>
 
 </body>
