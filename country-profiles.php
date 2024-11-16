@@ -1,13 +1,8 @@
 <?php
-include 'config.php'; // Include the database configuration
-
-try {
-    // Fetch all countries from the database
-    $query = $conn->query("SELECT country_name, flag_emoji FROM countries ORDER BY country_name ASC");
-    $countries = $query->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error fetching countries: " . $e->getMessage());
-}
+// Fetch all countries using the fetch-country-data.php API
+$url = 'fetch-country-data.php?type=all';
+$response = file_get_contents($url);
+$countries = json_decode($response, true);
 ?>
 
 <!DOCTYPE html>
@@ -21,21 +16,21 @@ try {
 </head>
 <body>
 
-    <?php include 'navbar.php'; ?> <!-- Include your NavBar -->
+<?php include 'navbar.php'; ?>
 
-    <section id="main-country-profiles">
-        <h1>COUNTRY PROFILES</h1>
-        <p>Select a country to view its profile.</p>
-        <ul>
-            <?php foreach ($countries as $country): ?>
-                <li>
-                    <a href="country-detail.php?country=<?php echo urlencode($country['country_name']); ?>">
-                        <?php echo htmlspecialchars($country['country_name']) . " " . htmlspecialchars($country['flag_emoji']); ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </section>
+<section id="main-country-profiles">
+    <h1>COUNTRY PROFILES</h1>
+    <p>This is a complete list of countries in our database. Select a country to view its profile.</p>
+    <ul>
+        <?php foreach ($countries as $country): ?>
+            <li>
+                <a href="country-detail.php?country=<?php echo urlencode($country['country_name']); ?>">
+                    <?php echo htmlspecialchars($country['country_name']) . " " . $country['flag_emoji']; ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>
 
 </body>
 </html>
