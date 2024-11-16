@@ -1,0 +1,47 @@
+#country-profile {
+    margin: 20px auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 90%; /* Adjust for responsive width */
+    max-width: 800px; /* Max width for larger screens */
+    box-sizing: border-box;
+}
+
+.profile-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card h1 {
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+    color: #333;
+}
+
+.profile-card .flag {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.profile-card p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.profile-card .country-image {
+    margin-top: 1.5rem;
+}
+
+.profile-card .country-image img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
