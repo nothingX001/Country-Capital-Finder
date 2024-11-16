@@ -1,13 +1,11 @@
 <?php
-// country-profiles.php
-
-include 'config.php'; // Include database connection
+include 'config.php'; // Include the database configuration
 
 try {
     // Fetch all countries from the database
-    $query = $db->query("SELECT country_name, flag_emoji FROM countries ORDER BY country_name ASC");
+    $query = $conn->query("SELECT country_name, flag_emoji FROM countries ORDER BY country_name ASC");
     $countries = $query->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
+} catch (PDOException $e) {
     die("Error fetching countries: " . $e->getMessage());
 }
 ?>
@@ -27,7 +25,7 @@ try {
 
     <section id="main-country-profiles">
         <h1>COUNTRY PROFILES</h1>
-        <p>This is a complete list of countries in our database. Select a country to view its profile.</p>
+        <p>Select a country to view its profile.</p>
         <ul>
             <?php foreach ($countries as $country): ?>
                 <li>

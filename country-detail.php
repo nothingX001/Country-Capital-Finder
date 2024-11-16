@@ -1,9 +1,7 @@
 <?php
-// country-detail.php
+include 'config.php'; // Include the database configuration
 
-include 'config.php'; // Include database connection
-
-// Get the country from the URL parameter
+// Get the country name from the URL parameter
 $country_name = $_GET['country'] ?? null;
 
 if (!$country_name) {
@@ -13,15 +11,16 @@ if (!$country_name) {
 
 try {
     // Fetch country details from the database
-    $query = $db->prepare("SELECT * FROM countries WHERE country_name = ?");
-    $query->execute([$country_name]);
+    $query = $conn->prepare("SELECT * FROM countries WHERE country_name = :country_name");
+    $query->bindParam(':country_name', $country_name, PDO::PARAM_STR);
+    $query->execute();
     $country_info = $query->fetch(PDO::FETCH_ASSOC);
 
     if (!$country_info) {
         header("Location: country-profiles.php");
         exit;
     }
-} catch (Exception $e) {
+} catch (PDOException $e) {
     die("Error fetching country details: " . $e->getMessage());
 }
 ?>
