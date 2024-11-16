@@ -8,7 +8,7 @@ $questions = json_decode($data, true);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Quiz</title>
+    <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
@@ -39,7 +39,70 @@ $questions = json_decode($data, true);
 
     <script>
         const questions = <?php echo json_encode($questions); ?>;
-        // The rest of your JavaScript code remains unchanged...
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeElapsed = 0;
+
+        function startQuiz() {
+            document.getElementById('startQuizBtn').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('quizContainer').style.display = 'block';
+            score = 0;
+            timeElapsed = 0;
+            currentQuestionIndex = 0;
+            startTimer();
+            showNextQuestion();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeElapsed++;
+                const minutes = Math.floor(timeElapsed / 60);
+                const seconds = timeElapsed % 60;
+                document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }, 1000);
+        }
+
+        function showNextQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const question = questions[currentQuestionIndex];
+                const isCountryQuestion = Math.random() > 0.5;
+                const questionText = isCountryQuestion
+                    ? `What is the capital of ${question.country_name}?`
+                    : `${question.capital_name} is the capital of which country?`;
+
+                document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
+                document.getElementById('userAnswer').value = '';
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            clearInterval(timer);
+            document.getElementById('quizContainer').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
+        }
+
+        document.getElementById('answerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
+            const correctAnswer = questions[currentQuestionIndex].capital_name.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            }
+            currentQuestionIndex++;
+            showNextQuestion();
+        });
+
+        document.getElementById('redoQuizBtn').addEventListener('click', () => {
+            location.reload();
+        });
+
+        document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
     </script>
 </body>
 </html>
