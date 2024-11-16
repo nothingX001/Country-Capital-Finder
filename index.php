@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country_input = $_POST['country'];
     $country = normalize_country_input($country_input);
 
-    // Search for the country and its flag in the database
+    // Search for the country, capital, and flag emoji in the database
     $stmt = $conn->prepare("SELECT capital_name, flag_emoji FROM countries WHERE LOWER(country_name) = LOWER(?)");
     $stmt->execute([$country]); // Parameterized query for security
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -36,19 +36,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
+    <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
+    <meta name="author" content="Country Capital Finder">
     <title>Country Capital Finder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
 </head>
 <body>
-    <h1>Country Capital Finder</h1>
-    <form action="" method="post">
-        <label for="country">Enter a Country:</label>
-        <input type="text" id="country" name="country" required>
-        <button type="submit">Find Capital</button>
-    </form>
+    <!-- Include Navbar -->
+    <?php include 'navbar.php'; ?>
 
-    <?php if (isset($message)) { ?>
-        <p><?php echo htmlspecialchars($message); ?></p>
-    <?php } ?>
+    <div class="main">
+        <h1>CAPITAL FINDER</h1>
+        <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
+        <form action="index.php" method="post">
+            <label>ENTER A COUNTRY: </label>
+            <input type="text" name="country" required>
+            <input type="submit" value="SUBMIT">
+        </form>
+
+        <?php if (isset($message)) { ?>
+            <p class="message"><?php echo htmlspecialchars($message); ?></p>
+        <?php } ?>
+    </div>
 </body>
 </html>
