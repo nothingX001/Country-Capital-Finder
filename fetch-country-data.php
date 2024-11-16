@@ -1,43 +1,38 @@
 <?php
+// fetch-country-data.php
 include 'config.php';
 
-// Get query parameters
+// Get the request type and additional parameters
 $type = $_GET['type'] ?? '';
-$limit = intval($_GET['limit'] ?? 0);
-$country = $_GET['country'] ?? '';
+$limit = $_GET['limit'] ?? null;
 
-// Initialize response
-$response = [];
+header('Content-Type: application/json');
 
 try {
     if ($type === 'all') {
         // Fetch all countries
-        $stmt = $conn->query("SELECT country_name, flag_emoji FROM countries");
-        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } elseif ($type === 'detail' && $country) {
-        // Fetch details for a specific country
-        $stmt = $conn->prepare("SELECT * FROM countries WHERE country_name = :country");
-        $stmt->execute([':country' => $country]);
-        $response = $stmt->fetch(PDO::FETCH_ASSOC);
-    } elseif ($type === 'random' && $limit > 0) {
-        // Fetch random countries
-        $stmt = $conn->query("SELECT country_name, capital_name FROM countries ORDER BY RANDOM() LIMIT $limit");
-        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } elseif ($type === 'map') {
-        // Fetch countries with coordinates for the map
-        $stmt = $conn->query("SELECT country_name, capital_name, latitude, longitude, flag_emoji FROM countries");
-        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        // Invalid type or missing parameters
-        http_response_code(400);
-        $response = ['error' => 'Invalid type or missing parameters'];
-    }
-} catch (Exception $e) {
-    http_response_code(500);
-    $response = ['error' => 'Server error: ' . $e->getMessage()];
-}
+        $query = $conn->query("SELECT country_name, capital_name, latitude, longitude, flag_emoji, map_image_url FROM countries ORDER BY country_name ASC");
+        $countries = $query->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($countries);
 
-// Output as JSON
-header('Content-Type: application/json');
-echo json_encode($response);
+    } elseif ($type === 'random') {
+        // Fetch a random set of countries
+        $limit = is_numeric($limit) ? (int)$limit : 10;
+        $query = $conn->query("SELECT country_name, capital_name, latitude, longitude, flag_emoji FROM countries ORDER BY RANDOM() LIMIT $limit");
+        $randomCountries = $query->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($randomCountries);
+
+    } elseif ($type === 'map') {
+        // Fetch data for map visualization
+        $query = $conn->query("SELECT country_name, capital_name, latitude, longitude, flag_emoji FROM countries WHERE latitude IS NOT NULL AND longitude IS NOT NULL");
+        $mapData = $query->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($mapData);
+
+    } else {
+        // Invalid type
+        echo json_encode(['error' => 'Invalid request type']);
+    }
+} catch (PDOException $e) {
+    echo json_encode(['error' => $e->getMessage()]);
+}
 ?>
