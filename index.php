@@ -1,5 +1,5 @@
 <?php
-// Enable error reporting for debugging
+// Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country_input = $_POST['country'];
     $country = normalize_country_input($country_input);
 
-    // Search for the country, capital, and flag emoji in the database
+    // Search for the country in the database
     $stmt = $conn->prepare("SELECT capital_name, flag_emoji FROM countries WHERE LOWER(country_name) = LOWER(?)");
     $stmt->execute([$country]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,32 +26,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $flag = $result['flag_emoji'] ?? '';
         $message = "The capital of {$country} is {$capital}. {$flag}";
 
-        // Log the search into the site_statistics table
+        // Update site statistics
         try {
-            // Check if the country already exists in site_statistics
-            $checkStmt = $conn->prepare("SELECT id FROM site_statistics WHERE LOWER(country_name) = LOWER(?)");
-            $checkStmt->execute([$country]);
-            $exists = $checkStmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($exists) {
-                // Update existing record
-                $updateStmt = $conn->prepare("
-                    UPDATE site_statistics 
-                    SET search_count = search_count + 1, last_searched_at = NOW() 
-                    WHERE LOWER(country_name) = LOWER(?)
-                ");
-                $updateStmt->execute([$country]);
-            } else {
-                // Insert new record
-                $insertStmt = $conn->prepare("
-                    INSERT INTO site_statistics (country_name, search_count, last_searched_at) 
-                    VALUES (?, 1, NOW())
-                ");
-                $insertStmt->execute([$country]);
-            }
-        } catch (PDOException $e) {
-            error_log("Error updating site statistics: " . $e->getMessage());
-            // Do not show this message to users; fail gracefully
+            $stats_stmt = $conn->prepare("
+                INSERT INTO site_statistics (country_name, search_count, last_searched_at) 
+                VALUES (?, 1, NOW())
+                ON CONFLICT (country_name) 
+                DO UPDATE SET 
+                    search_count = site_statistics.search_count + 1,
+                    last_searched_at = NOW()
+            ");
+            $stats_stmt->execute([$country]);
+        } catch (Exception $e) {
+            // Log error silently; do not show to users
         }
     } else {
         $message = "Sorry, the country you entered is not in our database.";
@@ -64,11 +51,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
+    <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
+    <meta name="author" content="Country Capital Finder">
     <title>Country Capital Finder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
 </head>
 <body>
+    <!-- Include Navbar -->
     <?php include 'navbar.php'; ?>
+
     <div class="main">
         <h1>CAPITAL FINDER</h1>
         <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
