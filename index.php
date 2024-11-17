@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $flag = $result['flag_emoji'] ?? ''; // Use flag from the database
         $message = "The capital of {$country} is {$capital}. {$flag}";
 
-        // Attempt to update the site statistics table
+        // Update the site statistics
         try {
             $conn->beginTransaction();
 
@@ -57,6 +57,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute([$updated_unique_countries]);
             }
 
+            // Update most searched countries
+            $stmt = $conn->query("SELECT country_name, COUNT(*) as search_count FROM searches GROUP BY country_name ORDER BY search_count DESC LIMIT 1");
+            $most_searched_country = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($most_searched_country) {
+                $stmt = $conn->prepare("UPDATE site_statistics SET most_searched_countries = ?");
+                $stmt->execute([$most_searched_country['country_name']]);
+            }
+
             $conn->commit();
         } catch (Exception $e) {
             $conn->rollBack(); // Log the error internally without showing it to the user
@@ -67,34 +76,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
-    <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
-    <meta name="author" content="Country Capital Finder">
-    <title>Country Capital Finder</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
-</head>
-<body>
-    <!-- Include Navbar -->
-    <?php include 'navbar.php'; ?>
-
-    <div class="main">
-        <h1>CAPITAL FINDER</h1>
-        <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
-        <form action="index.php" method="post">
-            <label>ENTER A COUNTRY: </label>
-            <input type="text" name="country" required>
-            <input type="submit" value="SUBMIT">
-        </form>
-
-        <?php if (isset($message)) { ?>
-            <p class="message"><?php echo htmlspecialchars($message); ?></p>
-        <?php } ?>
-    </div>
-</body>
-</html>
