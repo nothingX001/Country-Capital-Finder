@@ -34,8 +34,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($capitals) {
             $capital_names = implode(' / ', $capitals);
             $capital_count = count($capitals);
-            $capital_word = $capital_count > 1 ? 'capitals are' : 'capital is';
-            $message = "The {$capital_word} {$capital_names} of {$country}. {$flag}";
+            $capital_word = $capital_count > 1 ? 'capitals of' : 'capital of';
+            $verb = $capital_count > 1 ? 'are' : 'is';
+            $message = "The {$capital_word} {$country} {$verb} {$capital_names}. {$flag}";
         } else {
             $message = "No capitals found for {$country}.";
         }
