@@ -31,7 +31,7 @@ if ($country_id) {
     <!-- [Meta tags and stylesheets as before] -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($country['country_name']); ?> Details</title>
+    <title><?php echo htmlspecialchars($country['country_name'] ?? 'Unknown Country'); ?> Details</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="country-detail-styles.css">
 </head>
@@ -40,18 +40,18 @@ if ($country_id) {
 
     <div id="country-detail-card">
         <div class="card-header">
-            <h1><?php echo htmlspecialchars($country['country_name']); ?> <span><?php echo htmlspecialchars($country['flag_emoji']); ?></span></h1>
+            <h1><?php echo htmlspecialchars($country['country_name'] ?? 'Unknown Country'); ?> <span><?php echo htmlspecialchars($country['flag_emoji'] ?? ''); ?></span></h1>
         </div>
         <div class="card-content">
             <div class="country-image">
-                <img src="<?php echo htmlspecialchars($country['map_image_url']); ?>" alt="Map of <?php echo htmlspecialchars($country['country_name']); ?>">
+                <img src="<?php echo htmlspecialchars($country['map_image_url'] ?? 'default-image.jpg'); ?>" alt="Map of <?php echo htmlspecialchars($country['country_name'] ?? 'Unknown Country'); ?>">
             </div>
             <div class="country-info">
                 <?php
                 if ($capitals) {
                     $capital_names = array_map(function($capital) {
-                        $capital_name = htmlspecialchars($capital['capital_name']);
-                        $capital_type = htmlspecialchars($capital['capital_type']);
+                        $capital_name = htmlspecialchars($capital['capital_name'] ?? 'N/A');
+                        $capital_type = htmlspecialchars($capital['capital_type'] ?? '');
                         return $capital_type ? "{$capital_name} ({$capital_type})" : $capital_name;
                     }, $capitals);
                     $capital_list = implode(' / ', $capital_names);
