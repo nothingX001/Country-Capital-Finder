@@ -7,10 +7,18 @@ error_reporting(E_ALL);
 include 'config.php'; // Database connection
 
 // Fetch site statistics
-$data = file_get_contents('http://localhost/fetch-country-data.php?type=statistics');
-$statistics = json_decode($data, true);
+try {
+    $data = file_get_contents('http://localhost/fetch-country-data.php?type=statistics');
+    if ($data === false) {
+        throw new Exception("Failed to fetch statistics.");
+    }
 
-if (!$statistics || isset($statistics['error'])) {
+    $statistics = json_decode($data, true);
+
+    if (!$statistics || isset($statistics['error'])) {
+        throw new Exception("Statistics data unavailable.");
+    }
+} catch (Exception $e) {
     $statistics = [
         'most_searched_countries' => 'Data unavailable',
         'total_searches' => 'Data unavailable',
@@ -47,21 +55,7 @@ if (!$statistics || isset($statistics['error'])) {
 
     <section class="about-section">
         <h1>ABOUT THE COUNTRY CAPITAL FINDER</h1>
-        <p>Welcome to the <strong>Country Capital Finder</strong>—an intuitive application where you can <strong>find any country’s capital</strong> with ease. Created to support learners of all levels, from students to trivia enthusiasts, our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong> designed to make memorizing capitals both engaging and effective. Ideal for <strong>geography bee prep</strong>, this tool is perfect for anyone looking to improve their knowledge of world geography.</p>
-
-        <h2>An Interactive Learning Tool</h2>
-        <p>The Country Capital Finder isn’t just a <strong>country capital quiz</strong>; it’s a comprehensive <strong>study tool for capitals and countries</strong> that helps users <strong>memorize capitals easily</strong>. With options for <strong>memory-focused capital quizzes</strong> and <strong>easy quizzes for world capitals</strong>, learners can test their recall while exploring new ways to retain information. Our <strong>capitals by country finder</strong> and <strong>geography quiz app for learners</strong> also allow for quick lookups and enjoyable self-paced study sessions.</p>
-
-        <h2>Geography Quiz Practice</h2>
-        <p>For students and trivia fans alike, our <strong>country capital quiz based on search</strong> offers an easy-to-navigate platform to <strong>test your geography knowledge</strong>. With each use, you’ll encounter fresh challenges that cover every <strong>country and capital</strong> worldwide. Whether you're practicing for a <strong>geography bee</strong> or simply brushing up on capitals, our app’s <strong>interactive learning for capitals</strong> feature ensures a fun and thorough review of the world’s capitals.</p>
-
-        <h2>Perfect for Students and Geography Enthusiasts</h2>
-        <p>Designed to support geography students, teachers, and curious minds, the <strong>Country Capital Finder</strong> is ideal for building a strong foundation in world geography. With our <strong>quiz tool for geography students</strong>, users can prep for exams, quizzes, and trivia contests using real-world questions and reliable information. The <strong>geography bee prep tool</strong> is particularly useful for honing recall and reinforcing knowledge through timed challenges, <strong>geography trivia for students</strong>, and in-depth questions.</p>
-
-        <h2>Fun and Easy Geography Practice</h2>
-        <p>Offering an enjoyable, accessible approach to <strong>learning world capitals</strong>, the Country Capital Finder also includes <strong>world capital learning games</strong> and quizzes that transform traditional study methods into something engaging and memorable. Every question in the <strong>capitals of the world quiz</strong> is designed to enhance memory retention, making it perfect for a <strong>geography bee prep tool</strong> or just for <strong>learning capitals by memory</strong>.</p>
-
-        <p>Whether you’re aiming to learn for fun, education, or competition, the Country Capital Finder brings the world’s capitals into easy reach, fostering learning and exploration across borders. Dive into our quizzes today and experience <strong>an application where you can find a country’s capital</strong> while testing your geography knowledge in new interactive ways.</p>
+        <p>Welcome to the <strong>Country Capital Finder</strong>—an intuitive application where you can <strong>find any country’s capital</strong> with ease. Created to support learners of all levels, from students to trivia enthusiasts, our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong> designed to make memorizing capitals both engaging and effective.</p>
 
         <h2>Site Statistics</h2>
         <ul>
