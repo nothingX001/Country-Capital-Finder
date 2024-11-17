@@ -40,7 +40,7 @@ if ($country_id) {
 
     <div id="country-detail-card">
         <div class="card-header">
-            <h1><?php echo htmlspecialchars($country['country_name'] ?? 'Unknown Country'); ?> <span><?php echo htmlspecialchars($country['flag_emoji'] ?? ''); ?></span></h1>
+            <h1><?php echo htmlspecialchars($country['country_name'] ?? 'Unknown Country'); ?></h1>
         </div>
         <div class="card-content">
             <div class="country-image">
@@ -63,6 +63,7 @@ if ($country_id) {
                 }
                 ?>
                 <p><strong><?php echo $capital_label; ?>:</strong> <?php echo $capital_list; ?></p>
+                <p><strong>Flag:</strong> <?php echo htmlspecialchars($country['flag_emoji'] ?? 'N/A'); ?></p>
                 <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['language'] ?? 'N/A'); ?></p>
                 <p><strong>Alternate Names:</strong> <?php echo htmlspecialchars($country['alternate_names'] ?? 'N/A'); ?></p>
             </div>
