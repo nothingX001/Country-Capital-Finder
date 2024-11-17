@@ -18,14 +18,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country = normalize_country_input($country_input);
 
     // Search for the country in the database
-    $stmt = $conn->prepare("SELECT capital_name, flag_emoji FROM countries WHERE LOWER(country_name) = LOWER(?)");
+    $stmt = $conn->prepare("SELECT id, flag_emoji FROM countries WHERE LOWER(country_name) = LOWER(?)");
     $stmt->execute([$country]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $country_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result) {
-        $capital = $result['capital_name'];
-        $flag = $result['flag_emoji'] ?? '';
-        $message = "The capital of {$country} is {$capital}. {$flag}";
+    if ($country_result) {
+        $country_id = $country_result['id'];
+        $flag = $country_result['flag_emoji'] ?? '';
+
+        // Fetch all capitals associated with the country
+        $stmt = $conn->prepare("SELECT capital_name FROM capitals WHERE country_id = ?");
+        $stmt->execute([$country_id]);
+        $capitals = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        if ($capitals) {
+            $capital_names = implode(' / ', $capitals);
+            $capital_count = count($capitals);
+            $capital_word = $capital_count > 1 ? 'capitals are' : 'capital is';
+            $message = "The {$capital_word} {$capital_names} of {$country}. {$flag}";
+        } else {
+            $message = "No capitals found for {$country}.";
+        }
 
         // Update site statistics
         try {

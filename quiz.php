@@ -2,7 +2,7 @@
 include 'config.php';
 include 'the-countries.php'; // Contains normalizeInput()
 
-// Fetch 10 random country-capital pairs from fetch-country-data.php
+// Fetch 10 random country IDs
 $data = json_decode(file_get_contents('http://localhost/fetch-country-data.php?type=random&limit=10'), true);
 
 if (!$data || isset($data['error'])) {
@@ -13,16 +13,27 @@ if (!$data || isset($data['error'])) {
 // Prepare quiz questions
 $quizQuestions = [];
 foreach ($data as $row) {
-    $quizQuestions[] = [
-        'country' => $row['country_name'],
-        'capital' => $row['capital_name'],
-    ];
+    $country_id = $row['id'];
+    $country_name = $row['country_name'];
+
+    // Fetch all capitals for the country
+    $stmt = $conn->prepare("SELECT capital_name FROM capitals WHERE country_id = ?");
+    $stmt->execute([$country_id]);
+    $capitals = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if ($capitals) {
+        $quizQuestions[] = [
+            'country' => $country_name,
+            'capitals' => $capitals,
+        ];
+    }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- [Meta tags and stylesheets as before] -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
@@ -102,11 +113,11 @@ foreach ($data as $row) {
                 const isCountryQuestion = Math.random() > 0.5;
                 const questionText = isCountryQuestion 
                     ? `What is the capital of ${addThe(questionData.country)}?`
-                    : `${addThe(questionData.capital)} is the capital of which country?`;
+                    : `${addThe(questionData.capitals.join(' / '))} is the capital of which country?`;
 
                 userResponses.push({
                     questionText,
-                    correctAnswer: isCountryQuestion ? questionData.capital : questionData.country,
+                    correctAnswers: isCountryQuestion ? questionData.capitals : [questionData.country],
                     userAnswer: "",
                     isCorrect: false
                 });
@@ -118,10 +129,12 @@ foreach ($data as $row) {
             }
         }
 
-        function checkAnswer(userAnswer, correctAnswer) {
+        function checkAnswer(userAnswer, correctAnswers) {
             const normalizedAnswer = normalizeInput(userAnswer);
-            const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
-            return correctOptions.includes(normalizedAnswer);
+            return correctAnswers.some(correctAnswer => {
+                const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
+                return correctOptions.includes(normalizedAnswer);
+            });
         }
 
         function endQuiz() {
@@ -130,12 +143,12 @@ foreach ($data as $row) {
             document.getElementById('resultContainer').style.display = 'block';
             document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
 
-            // Display detailed results in original format
+            // Display detailed results
             let resultsHTML = '';
             userResponses.forEach((response, index) => {
                 const resultText = response.isCorrect 
-                    ? `Correct. The answer was ${addThe(response.correctAnswer)}.`
-                    : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You answered "${response.userAnswer}".`;
+                    ? `Correct. The answer was ${addThe(response.correctAnswers.join(' / '))}.`
+                    : `Incorrect. The answer was ${addThe(response.correctAnswers.join(' / '))}. You answered "${response.userAnswer}".`;
 
                 resultsHTML += `
                     <p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>
@@ -148,7 +161,7 @@ foreach ($data as $row) {
             event.preventDefault();
             const userAnswer = document.getElementById('userAnswer').value.trim();
             const response = userResponses[currentQuestionIndex];
-            const isCorrect = checkAnswer(userAnswer, response.correctAnswer);
+            const isCorrect = checkAnswer(userAnswer, response.correctAnswers);
 
             response.userAnswer = userAnswer;
             response.isCorrect = isCorrect;
