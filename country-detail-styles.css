@@ -1,56 +1,51 @@
-/* Overall container for the country detail card */
+/* country-detail-styles.css */
+
+/* Style for the country detail card */
 #country-detail-card {
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: #fff;
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    display: flex;
-    flex-direction: row; /* Horizontal layout */
-    align-items: flex-start;
-    gap: 20px;
-}
-
-/* Card Header */
-.card-header {
-    flex-basis: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-bottom: 20px;
-}
-.card-header h1 {
-    font-size: 2rem;
-    color: #333;
-}
-.card-header span {
-    font-size: 2.5rem;
-    vertical-align: middle;
+    overflow: hidden;
 }
 
-/* Country Image */
-.country-image {
-    flex: 1;
-    max-width: 300px;
+.card-header {
+    background-color: #f7f7f7;
+    padding: 20px;
 }
+
+.card-header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.card-header span {
+    font-size: 1.5em;
+    margin-left: 10px;
+}
+
+.country-image {
+    position: relative;
+    width: 100%;
+}
+
 .country-image img {
     width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: auto;
+    display: block;
 }
 
-/* Country Info */
 .country-info {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    text-align: left;
+    padding: 20px;
 }
+
 .country-info p {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #333;
+    margin: 10px 0;
 }
+
 .country-info strong {
     font-weight: bold;
-    color: #555;
 }
