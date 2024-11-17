@@ -61,6 +61,7 @@ foreach ($data as $row) {
         let score = 0;
         let timeElapsed = 0;
         let timer;
+        let userResponses = [];
 
         // Function to add "the" for countries that require it
         function addThe(country) {
@@ -81,6 +82,7 @@ foreach ($data as $row) {
             score = 0;
             timeElapsed = 0;
             currentQuestionIndex = 0;
+            userResponses = [];
             startTimer();
             showNextQuestion();
         }
@@ -101,6 +103,13 @@ foreach ($data as $row) {
                 const questionText = isCountryQuestion 
                     ? `What is the capital of ${addThe(questionData.country)}?`
                     : `${addThe(questionData.capital)} is the capital of which country?`;
+
+                userResponses.push({
+                    questionText,
+                    correctAnswer: isCountryQuestion ? questionData.capital : questionData.country,
+                    userAnswer: "",
+                    isCorrect: false
+                });
 
                 document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
                 document.getElementById('userAnswer').value = '';
@@ -123,12 +132,15 @@ foreach ($data as $row) {
 
             // Display detailed results
             let resultsHTML = '';
-            questions.forEach((question, index) => {
-                const isCorrect = index < currentQuestionIndex;
-                const resultText = isCorrect
-                    ? `Correct. The answer was ${addThe(question.capital)}.`
-                    : `Incorrect. The answer was ${addThe(question.capital)}.`;
-                resultsHTML += `<p><strong>Question ${index + 1}: ${resultText}</strong></p>`;
+            userResponses.forEach((response, index) => {
+                resultsHTML += `
+                    <div>
+                        <p><strong>Question ${index + 1}:</strong> ${response.questionText}</p>
+                        <p>${response.isCorrect ? "Correct" : "Incorrect"}.
+                        Correct Answer: ${response.correctAnswer}.
+                        Your Answer: ${response.userAnswer || "No answer"}</p>
+                    </div>
+                `;
             });
             document.getElementById('detailedResults').innerHTML = resultsHTML;
         }
@@ -136,10 +148,11 @@ foreach ($data as $row) {
         document.getElementById('answerForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const userAnswer = document.getElementById('userAnswer').value.trim();
-            const questionData = questions[currentQuestionIndex];
-            const isCorrect = currentQuestionIndex % 2 === 0 
-                ? checkAnswer(userAnswer, questionData.capital) 
-                : checkAnswer(userAnswer, questionData.country);
+            const response = userResponses[currentQuestionIndex];
+            const isCorrect = checkAnswer(userAnswer, response.correctAnswer);
+
+            response.userAnswer = userAnswer;
+            response.isCorrect = isCorrect;
 
             if (isCorrect) {
                 score++;
