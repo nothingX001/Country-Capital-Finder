@@ -33,30 +33,34 @@ try {
         $response = $stmt->fetch(PDO::FETCH_ASSOC);
 
     } elseif ($type === 'statistics') {
-        // Fetch site statistics
-        $stmt = $conn->query("
-            SELECT 
-                country_name AS most_searched_countries,
-                MAX(search_count) AS total_searches,
-                MAX(last_searched_at) AS most_recent_search,
-                COUNT(*) AS unique_countries_searched,
-                SUM(search_count) AS searches_today
-            FROM site_statistics
-        ");
-        $statistics = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Initialize response array
+        $response = [];
 
-        // Ensure all statistics are retrieved
-        if ($statistics) {
-            $response = [
-                'most_searched_countries' => $statistics['most_searched_countries'] ?? 'N/A',
-                'total_searches' => $statistics['total_searches'] ?? 0,
-                'most_recent_search' => $statistics['most_recent_search'] ?? 'N/A',
-                'searches_today' => $statistics['searches_today'] ?? 0,
-                'unique_countries_searched' => $statistics['unique_countries_searched'] ?? 0
-            ];
-        } else {
-            $response = ['error' => 'No statistics found.'];
-        }
+        // 1. Most Searched Country
+        $stmt = $conn->query("SELECT country_name FROM site_statistics ORDER BY search_count DESC LIMIT 1");
+        $most_searched_country = $stmt->fetch(PDO::FETCH_ASSOC);
+        $response['most_searched_countries'] = $most_searched_country['country_name'] ?? 'Data unavailable';
+
+        // 2. Total Searches
+        $stmt = $conn->query("SELECT SUM(search_count) AS total_searches FROM site_statistics");
+        $total_searches = $stmt->fetch(PDO::FETCH_ASSOC);
+        $response['total_searches'] = $total_searches['total_searches'] ?? 'Data unavailable';
+
+        // 3. Most Recent Search
+        $stmt = $conn->query("SELECT country_name FROM site_statistics ORDER BY last_searched_at DESC LIMIT 1");
+        $most_recent_search = $stmt->fetch(PDO::FETCH_ASSOC);
+        $response['most_recent_search'] = $most_recent_search['country_name'] ?? 'Data unavailable';
+
+        // 4. Searches Today
+        $stmt = $conn->query("SELECT SUM(search_count) AS searches_today FROM site_statistics WHERE DATE(last_searched_at) = CURRENT_DATE");
+        $searches_today = $stmt->fetch(PDO::FETCH_ASSOC);
+        $response['searches_today'] = $searches_today['searches_today'] ?? 'Data unavailable';
+
+        // 5. Unique Countries Searched
+        $stmt = $conn->query("SELECT COUNT(*) AS unique_countries_searched FROM site_statistics");
+        $unique_countries_searched = $stmt->fetch(PDO::FETCH_ASSOC);
+        $response['unique_countries_searched'] = $unique_countries_searched['unique_countries_searched'] ?? 'Data unavailable';
+
     } else {
         // Invalid or missing type parameter
         http_response_code(400);
