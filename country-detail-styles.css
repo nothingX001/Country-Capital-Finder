@@ -24,25 +24,29 @@
 .country-image {
     position: relative;
     width: 100%;
-    padding: 20px; /* Added padding around the image */
-    box-sizing: border-box; /* Ensure padding doesn't exceed container width */
+    padding: 20px 20px 15px 20px; /* Adjusted padding-bottom */
+    box-sizing: border-box;
 }
 
 .country-image img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 10px; /* Optional: add slight rounding to image corners */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional: add slight shadow */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .country-info {
     text-align: left;
-    padding: 20px;
+    padding: 15px 20px 20px 20px; /* Adjusted padding-top */
 }
 
 .country-info p {
     margin: 10px 0;
+}
+
+.country-info p:first-child {
+    margin-top: 0;
 }
 
 .country-info strong {
