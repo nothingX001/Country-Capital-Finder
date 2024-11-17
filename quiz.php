@@ -1,12 +1,11 @@
 <?php
 include 'config.php';
-include 'fetch-country-data.php';
 include 'the-countries.php';
 
 // Fetch 10 random country-capital pairs
-$data = json_decode(file_get_contents('fetch-country-data.php?type=random&limit=10'), true);
+$data = json_decode(file_get_contents('http://localhost/fetch-country-data.php?type=random&limit=10'), true);
 
-if (!$data) {
+if (isset($data['error']) || !$data) {
     echo "Error fetching quiz data.";
     exit;
 }
