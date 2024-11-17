@@ -1,14 +1,15 @@
 <?php
-// Enable error reporting
+// Enable error reporting (optional, for development purposes)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include 'config.php'; // Database connection
+// Include database connection
+include 'config.php';
 
 // Function to normalize country input
 function normalize_country_input($input) {
-    return ucwords(strtolower(trim($input))); // Capitalizes first letters
+    return ucwords(strtolower(trim($input))); // Capitalizes the first letter of each word
 }
 
 // Handle form submission
@@ -38,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ");
             $stats_stmt->execute([$country]);
         } catch (Exception $e) {
-            // Log error silently; do not show to users
+            // Optionally log the error; do not display to users
+            // error_log("Error updating site statistics: " . $e->getMessage());
         }
     } else {
         $message = "Sorry, the country you entered is not in our database.";
@@ -49,13 +51,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for SEO and responsiveness -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Capital Finder</title>
     <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
     <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
     <meta name="author" content="Country Capital Finder">
-    <title>Country Capital Finder</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Include Navbar -->
@@ -74,5 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="message"><?php echo htmlspecialchars($message); ?></p>
         <?php } ?>
     </div>
+
+    <!-- Optional JavaScript files -->
+    <!-- <script src="script.js"></script> -->
 </body>
 </html>
