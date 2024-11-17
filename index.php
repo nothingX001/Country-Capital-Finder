@@ -1,10 +1,10 @@
 <?php
-// Enable error reporting for debugging
+// Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include 'config.php'; // Include database connection
+include 'config.php'; // Database connection
 
 // Function to normalize country input
 function normalize_country_input($input) {
@@ -13,9 +13,7 @@ function normalize_country_input($input) {
 
 // Initialize variables
 $message = "";
-$statistics_update_failed = false;
 
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country_input = $_POST['country'];
     $country = normalize_country_input($country_input);
@@ -26,12 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($result) {
-        // Country exists, display the result
         $capital = $result['capital_name'];
         $flag = $result['flag_emoji'] ?? ''; // Use flag from the database
         $message = "The capital of {$country} is {$capital}. {$flag}";
 
-        // Log the search into the site_statistics table
+        // Update site_statistics
         try {
             $conn->beginTransaction();
 
@@ -47,10 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("UPDATE site_statistics SET searches_today = searches_today + 1");
             $stmt->execute();
 
-            // Update unique_countries_searched
+            // Handle unique countries
             $stmt = $conn->query("SELECT unique_countries_searched FROM site_statistics LIMIT 1");
             $current_data = $stmt->fetch(PDO::FETCH_ASSOC);
-
             $unique_countries = $current_data['unique_countries_searched'] ?? '';
             $unique_countries_array = $unique_countries ? explode(',', $unique_countries) : [];
 
@@ -70,10 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } catch (Exception $e) {
             $conn->rollBack();
             error_log("Failed to update site statistics: " . $e->getMessage());
-            $statistics_update_failed = true;
         }
     } else {
-        // Country not found
         $message = "Sorry, the country you entered is not in our database.";
     }
 }
