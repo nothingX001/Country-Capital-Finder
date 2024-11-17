@@ -41,21 +41,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("UPDATE site_statistics SET searches_today = searches_today + 1");
             $stmt->execute();
 
-            // Add country to unique countries searched if not already present
-            $stmt = $conn->prepare("SELECT most_searched_countries FROM site_statistics");
+            // Update unique countries searched
+            $stmt = $conn->prepare("SELECT unique_countries_searched FROM site_statistics");
             $stmt->execute();
             $current_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $most_searched = $current_data['most_searched_countries'];
-            $most_searched_array = explode(',', $most_searched);
-            $country = strtolower($country);
+            $unique_countries = $current_data['unique_countries_searched'];
+            $unique_countries_array = explode(',', $unique_countries);
 
-            if (!in_array($country, $most_searched_array)) {
-                $most_searched_array[] = $country;
-                $updated_most_searched = implode(',', $most_searched_array);
+            if (!in_array($country, $unique_countries_array)) {
+                $unique_countries_array[] = $country;
+                $updated_unique_countries = implode(',', $unique_countries_array);
 
-                $stmt = $conn->prepare("UPDATE site_statistics SET most_searched_countries = ?");
-                $stmt->execute([$updated_most_searched]);
+                $stmt = $conn->prepare("UPDATE site_statistics SET unique_countries_searched = ?");
+                $stmt->execute([$updated_unique_countries]);
             }
 
             $conn->commit();
@@ -68,3 +67,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
+    <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
+    <meta name="author" content="Country Capital Finder">
+    <title>Country Capital Finder</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your stylesheet -->
+</head>
+<body>
+    <!-- Include Navbar -->
+    <?php include 'navbar.php'; ?>
+
+    <div class="main">
+        <h1>CAPITAL FINDER</h1>
+        <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
+        <form action="index.php" method="post">
+            <label>ENTER A COUNTRY: </label>
+            <input type="text" name="country" required>
+            <input type="submit" value="SUBMIT">
+        </form>
+
+        <?php if (isset($message)) { ?>
+            <p class="message"><?php echo htmlspecialchars($message); ?></p>
+        <?php } ?>
+    </div>
+</body>
+</html>
