@@ -1,65 +1,25 @@
 <?php
-// Include database connection and alias files
-include 'config.php';
-include 'country_aliases.php';
-include 'capital_aliases.php';
+// Include the 'the-countries.php' file for normalization
+include 'the-countries.php';
 
-// Array of countries that should be preceded by "the"
-$the_countries = [
-    "United States",
-    "United Kingdom",
-    "Netherlands",
-    "Philippines",
-    "Bahamas",
-    "Gambia",
-    "Czech Republic",
-    "United Arab Emirates",
-    "Central African Republic",
-    "Republic of the Congo",
-    "Democratic Republic of the Congo",
-    "Maldives",
-    "Marshall Islands",
-    "Seychelles",
-    "Solomon Islands",
-    "Comoros"
-];
+// Fetch quiz data from the `fetch-country-data.php` file
+function fetchQuizQuestions() {
+    $url = 'fetch-country-data.php?type=random&limit=10';
+    $response = file_get_contents($url);
+    return json_decode($response, true);
+}
 
-// Function to add "the" to countries that require it
-function addThe($country) {
+// Normalize function to handle "the" countries
+function normalizeInput($input) {
     global $the_countries;
-    return in_array($country, $the_countries) ? "the $country" : $country;
+    $input = strtolower(trim($input));
+    $input = preg_replace('/^the\s+/i', '', $input); // Remove "the" if present
+    return in_array($input, array_map('strtolower', $the_countries)) ? "the $input" : $input;
 }
 
-// Function to get 10 random country-capital pairs
-function getQuizQuestions($conn) {
-    $questions = [];
-    $query = "SELECT country_name, capital_name FROM countries ORDER BY RANDOM() LIMIT 10";
-    $result = $conn->query($query);
+// Fetch questions
+$quizQuestions = fetchQuizQuestions();
 
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $questions[] = $row;
-    }
-    return $questions;
-}
-
-// Normalize function to handle case-insensitive, remove "the" prefix, and normalize special characters
-function normalize($string) {
-    $string = mb_strtolower($string); // Convert to lowercase
-    $string = preg_replace('/^the\s+/', '', $string); // Remove "the" prefix if present
-    $string = str_replace(['ü', 'é', 'á', 'ö', 'ç', 'ñ', 'ã', 'í'], ['u', 'e', 'a', 'o', 'c', 'n', 'a', 'i'], $string);
-    $string = preg_replace('/[^a-z0-9]/', '', $string); // Remove non-alphanumeric characters
-    return $string;
-}
-
-// Fetch initial questions
-$quizQuestions = getQuizQuestions($conn);
-
-// Lowercase alias maps for consistent normalization
-$country_aliases = array_change_key_case($country_aliases, CASE_LOWER);
-$capital_aliases = array_change_key_case($capital_aliases, CASE_LOWER);
-
-// Combined alias map
-$alias_map = array_merge($country_aliases, $capital_aliases);
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +32,6 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
-
 <?php include 'navbar.php'; ?>
 <section id="main-quiz">
     <h1>COUNTRY CAPITAL QUIZ</h1>
@@ -97,32 +56,21 @@ $alias_map = array_merge($country_aliases, $capital_aliases);
 </section>
 
 <script>
-// Alias map from PHP to JavaScript
-const aliasMap = <?php echo json_encode($alias_map); ?>;
-
-// Array of countries requiring "the"
-const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
-
-// Function to add "the" for countries that require it
-function addThe(country) {
-    return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
-}
-
-// Normalize function to handle case-insensitive matching
-function normalizeInput(input) {
-    let normalized = input.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    normalized = normalized.replace(/^the\s+/, ''); // Remove "the" if present
-    normalized = normalized.replace(/[^a-z0-9]/g, ''); // Remove non-alphanumeric chars
-    return aliasMap[normalized] || normalized;
-}
-
-// Initialize quiz variables
-let questions = <?php echo json_encode($quizQuestions); ?>;
+// Fetch quiz data from PHP
+const quizQuestions = <?php echo json_encode($quizQuestions); ?>;
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 let timeElapsed = 0;
 let userResponses = [];
+
+// Normalize function for JavaScript
+const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
+function normalizeInput(input) {
+    input = input.toLowerCase().trim();
+    input = input.replace(/^the\s+/i, '');
+    return theCountries.includes(input) ? `the ${input}` : input;
+}
 
 // Start quiz function
 function startQuiz() {
@@ -149,12 +97,12 @@ function startTimer() {
 
 // Show the next question
 function showNextQuestion() {
-    if (currentQuestionIndex < questions.length) {
-        const questionData = questions[currentQuestionIndex];
+    if (currentQuestionIndex < quizQuestions.length) {
+        const questionData = quizQuestions[currentQuestionIndex];
         const isCountryQuestion = Math.random() > 0.5;
         const questionText = isCountryQuestion 
-            ? `What is the capital of ${addThe(questionData.country_name)}?`
-            : `${addThe(questionData.capital_name)} is the capital of what country?`;
+            ? `What is the capital of ${questionData.country_name}?`
+            : `${questionData.capital_name} is the capital of what country?`;
 
         userResponses.push({
             questionText: questionText,
@@ -172,8 +120,7 @@ function showNextQuestion() {
 // Check if the answer is correct
 function checkAnswer(userAnswer, correctAnswer) {
     const normalizedAnswer = normalizeInput(userAnswer);
-    const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
-    return correctOptions.includes(normalizedAnswer);
+    return normalizedAnswer === normalizeInput(correctAnswer);
 }
 
 // End quiz function
@@ -181,35 +128,31 @@ function endQuiz() {
     clearInterval(timer);
     document.getElementById('quizContainer').style.display = 'none';
     document.getElementById('resultContainer').style.display = 'block';
-    document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
+    document.getElementById('score').textContent = `You scored ${score} out of ${quizQuestions.length}.`;
 
-    // Display detailed results
     let resultsHTML = '';
     userResponses.forEach((response, index) => {
         const resultText = response.isCorrect 
-            ? `Correct. The answer was ${addThe(response.correctAnswer)}.`
-            : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You put "${response.userAnswer}".`;
+            ? `Correct. The answer was ${response.correctAnswer}.`
+            : `Incorrect. The answer was ${response.correctAnswer}. You put "${response.userAnswer}".`;
 
         resultsHTML += `<p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>`;
     });
     document.getElementById('detailedResults').innerHTML = resultsHTML;
 }
 
-// Answer submission handler
+// Handle answer submission
 document.getElementById('answerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const userAnswer = document.getElementById('userAnswer').value.trim();
-    const questionData = questions[currentQuestionIndex];
     const response = userResponses[currentQuestionIndex];
 
     const correctAnswer = response.isCountryQuestion 
-        ? questionData.capital_name
-        : questionData.country_name;
+        ? quizQuestions[currentQuestionIndex].capital_name
+        : quizQuestions[currentQuestionIndex].country_name;
 
     const isCorrect = checkAnswer(userAnswer, correctAnswer);
-    if (isCorrect) {
-        score++;
-    }
+    if (isCorrect) score++;
 
     response.userAnswer = userAnswer;
     response.isCorrect = isCorrect;
@@ -218,18 +161,10 @@ document.getElementById('answerForm').addEventListener('submit', function(event)
     showNextQuestion();
 });
 
-// Redo quiz function
-function reloadQuiz() {
-    location.reload();
-}
-
-// Start button event listener
+// Redo quiz
+document.getElementById('redoQuizBtn').addEventListener('click', () => location.reload());
 document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
 
-// Redo button event listener
-document.getElementById('redoQuizBtn').addEventListener('click', reloadQuiz);
-
 </script>
-
 </body>
 </html>
