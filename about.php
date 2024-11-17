@@ -1,10 +1,5 @@
 <?php
-// Enable error reporting
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'config.php'; // Database connection
+include 'config.php'; // Include database connection
 
 // Fetch site statistics
 try {
@@ -21,6 +16,7 @@ try {
         ];
     }
 } catch (Exception $e) {
+    error_log("Failed to fetch statistics: " . $e->getMessage());
     $statistics = [
         'most_searched_countries' => 'Data unavailable',
         'total_searches' => 'Data unavailable',
@@ -28,7 +24,6 @@ try {
         'searches_today' => 'Data unavailable',
         'unique_countries_searched' => 'Data unavailable'
     ];
-    error_log("Error fetching statistics: " . $e->getMessage());
 }
 ?>
 
@@ -37,18 +32,9 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Country Capital Finder is a unique application where you can find any country’s capital. Take an interactive quiz and test your geography knowledge with ease. Perfect for geography bees and learners.">
-    <meta name="keywords" content="find country's capital, country capital quiz, countries and capitals quiz, geography bee prep, interactive capital quiz, world capital learning game, easy geography quiz">
-    <meta name="author" content="Country Capital Finder Team">
-    <meta property="og:title" content="Country Capital Finder | Interactive Country Capital Quiz">
-    <meta property="og:description" content="An interactive platform to find any country’s capital. Test your knowledge with a world capitals quiz and prep for geography bees.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yoursite.com/about">
-    <meta property="og:image" content="https://www.yoursite.com/images/country-capital-quiz.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Country Capital Finder">
-    <meta name="twitter:description" content="Learn and memorize world capitals with our fun and easy geography quiz.">
-    <meta name="twitter:image" content="https://www.yoursite.com/images/country-capital-quiz.png">
+    <meta name="description" content="Learn about the Country Capital Finder and explore fun features like site statistics, quizzes, and geography tools.">
+    <meta name="keywords" content="about country capital finder, site statistics, country capitals, geography quiz tools">
+    <meta name="author" content="Country Capital Finder">
     <title>About | Country Capital Finder</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="about-styles.css">
@@ -58,7 +44,7 @@ try {
 
     <section class="about-section">
         <h1>ABOUT THE COUNTRY CAPITAL FINDER</h1>
-        <p>Welcome to the <strong>Country Capital Finder</strong>...</p>
+        <p>Welcome to the Country Capital Finder...</p>
 
         <h2>Site Statistics</h2>
         <ul>
