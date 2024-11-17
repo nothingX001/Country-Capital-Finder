@@ -1,21 +1,14 @@
 <?php
 include 'config.php';
-include 'the-countries.php';
+include 'fetch-country-data.php';
+include 'the-countries.php'; // Contains normalizeInput()
 
 // Fetch 10 random country-capital pairs
-$data = json_decode(file_get_contents('http://localhost/fetch-country-data.php?type=random&limit=10'), true);
+$data = json_decode(file_get_contents('fetch-country-data.php?type=random&limit=10'), true);
 
-if (isset($data['error']) || !$data) {
+if (!$data) {
     echo "Error fetching quiz data.";
     exit;
-}
-
-// Normalize function to handle case-insensitive matches and "the" countries
-function normalizeInput($input) {
-    global $the_countries;
-    $input = strtolower(trim($input));
-    $input = preg_replace('/^the\s+/i', '', $input); // Remove "the" if present
-    return $input;
 }
 
 // Prepare quiz questions
