@@ -2,6 +2,16 @@
 // Fetch site statistics
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=statistics');
 $statistics = json_decode($data, true);
+
+if (!$statistics || isset($statistics['error'])) {
+    $statistics = [
+        'most_searched_countries' => 'Data unavailable',
+        'total_searches' => 'Data unavailable',
+        'most_recent_search' => 'Data unavailable',
+        'searches_today' => 'Data unavailable',
+        'unique_countries_searched' => 'Data unavailable'
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -46,17 +56,14 @@ $statistics = json_decode($data, true);
 
         <p>Whether you’re aiming to learn for fun, education, or competition, the Country Capital Finder brings the world’s capitals into easy reach, fostering learning and exploration across borders. Dive into our quizzes today and experience <strong>an application where you can find a country’s capital</strong> while testing your geography knowledge in new interactive ways.</p>
 
-        <!-- Site Statistics Section -->
-        <section class="site-statistics">
-            <h2>SITE STATISTICS</h2>
-            <p>Check out some key highlights from our platform:</p>
-            <ul>
-                <li><strong>Most searched country:</strong> <?php echo htmlspecialchars($statistics['most_searched_country'] ?? 'N/A'); ?></li>
-                <li><strong>Most searched capital:</strong> <?php echo htmlspecialchars($statistics['most_searched_capital'] ?? 'N/A'); ?></li>
-                <li><strong>Total quizzes completed:</strong> <?php echo htmlspecialchars($statistics['total_quizzes_completed'] ?? 'N/A'); ?></li>
-                <li><strong>Last search:</strong> <?php echo htmlspecialchars($statistics['last_search'] ?? 'N/A'); ?></li>
-            </ul>
-        </section>
+        <h2>Site Statistics</h2>
+        <ul>
+            <li><strong>Most Searched Countries:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?></li>
+            <li><strong>Total Searches:</strong> <?php echo htmlspecialchars($statistics['total_searches']); ?></li>
+            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?></li>
+            <li><strong>Searches Today:</strong> <?php echo htmlspecialchars($statistics['searches_today']); ?></li>
+            <li><strong>Unique Countries Searched:</strong> <?php echo htmlspecialchars($statistics['unique_countries_searched']); ?></li>
+        </ul>
     </section>
 </body>
 </html>
