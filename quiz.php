@@ -130,16 +130,15 @@ foreach ($data as $row) {
             document.getElementById('resultContainer').style.display = 'block';
             document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
 
-            // Display detailed results
+            // Display detailed results in original format
             let resultsHTML = '';
             userResponses.forEach((response, index) => {
+                const resultText = response.isCorrect 
+                    ? `Correct. The answer was ${addThe(response.correctAnswer)}.`
+                    : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You put "${response.userAnswer}".`;
+
                 resultsHTML += `
-                    <div>
-                        <p><strong>Question ${index + 1}:</strong> ${response.questionText}</p>
-                        <p>${response.isCorrect ? "Correct" : "Incorrect"}.
-                        Correct Answer: ${response.correctAnswer}.
-                        Your Answer: ${response.userAnswer || "No answer"}</p>
-                    </div>
+                    <p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>
                 `;
             });
             document.getElementById('detailedResults').innerHTML = resultsHTML;
