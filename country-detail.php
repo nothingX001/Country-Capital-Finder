@@ -47,20 +47,22 @@ if ($country_id) {
                 <img src="<?php echo htmlspecialchars($country['map_image_url']); ?>" alt="Map of <?php echo htmlspecialchars($country['country_name']); ?>">
             </div>
             <div class="country-info">
-                <p><strong>Capitals:</strong>
-                    <?php
-                    if ($capitals) {
-                        $capital_list = array_map(function($capital) {
-                            $capital_name = htmlspecialchars($capital['capital_name']);
-                            $capital_type = htmlspecialchars($capital['capital_type']);
-                            return $capital_type ? "{$capital_name} ({$capital_type})" : $capital_name;
-                        }, $capitals);
-                        echo implode(' / ', $capital_list);
-                    } else {
-                        echo 'N/A';
-                    }
-                    ?>
-                </p>
+                <?php
+                if ($capitals) {
+                    $capital_names = array_map(function($capital) {
+                        $capital_name = htmlspecialchars($capital['capital_name']);
+                        $capital_type = htmlspecialchars($capital['capital_type']);
+                        return $capital_type ? "{$capital_name} ({$capital_type})" : $capital_name;
+                    }, $capitals);
+                    $capital_list = implode(' / ', $capital_names);
+                    $capital_count = count($capitals);
+                    $capital_label = $capital_count > 1 ? 'Capitals' : 'Capital';
+                } else {
+                    $capital_list = 'N/A';
+                    $capital_label = 'Capital';
+                }
+                ?>
+                <p><strong><?php echo $capital_label; ?>:</strong> <?php echo $capital_list; ?></p>
                 <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['language'] ?? 'N/A'); ?></p>
                 <p><strong>Alternate Names:</strong> <?php echo htmlspecialchars($country['alternate_names'] ?? 'N/A'); ?></p>
             </div>

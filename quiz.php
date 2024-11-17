@@ -111,9 +111,14 @@ foreach ($data as $row) {
             if (currentQuestionIndex < questions.length) {
                 const questionData = questions[currentQuestionIndex];
                 const isCountryQuestion = Math.random() > 0.5;
+                const capitalNames = questionData.capitals.join(' / ');
+                const capitalCount = questionData.capitals.length;
+                const capitalWord = capitalCount > 1 ? 'capitals' : 'capital';
+                const verb = capitalCount > 1 ? 'are' : 'is';
+
                 const questionText = isCountryQuestion 
-                    ? `What is the capital of ${addThe(questionData.country)}?`
-                    : `${addThe(questionData.capitals.join(' / '))} is the capital of which country?`;
+                    ? `What ${capitalWord} ${verb} of ${addThe(questionData.country)}?`
+                    : `The ${capitalWord} of ${addThe(questionData.country)} ${verb} ${capitalNames}. What is the country?`;
 
                 userResponses.push({
                     questionText,
@@ -146,9 +151,10 @@ foreach ($data as $row) {
             // Display detailed results
             let resultsHTML = '';
             userResponses.forEach((response, index) => {
+                const correctAnswerText = response.correctAnswers.join(' / ');
                 const resultText = response.isCorrect 
-                    ? `Correct. The answer was ${addThe(response.correctAnswers.join(' / '))}.`
-                    : `Incorrect. The answer was ${addThe(response.correctAnswers.join(' / '))}. You answered "${response.userAnswer}".`;
+                    ? `Correct. The answer was ${addThe(correctAnswerText)}.`
+                    : `Incorrect. The answer was ${addThe(correctAnswerText)}. You answered "${response.userAnswer}".`;
 
                 resultsHTML += `
                     <p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>
