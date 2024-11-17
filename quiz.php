@@ -135,7 +135,7 @@ foreach ($data as $row) {
             userResponses.forEach((response, index) => {
                 const resultText = response.isCorrect 
                     ? `Correct. The answer was ${addThe(response.correctAnswer)}.`
-                    : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You put "${response.userAnswer}".`;
+                    : `Incorrect. The answer was ${addThe(response.correctAnswer)}. You answered "${response.userAnswer}".`;
 
                 resultsHTML += `
                     <p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>
