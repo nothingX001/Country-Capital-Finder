@@ -8,15 +8,17 @@ include 'config.php'; // Database connection
 
 // Fetch site statistics
 try {
-    $data = file_get_contents('http://localhost/fetch-country-data.php?type=statistics');
-    if ($data === false) {
-        throw new Exception("Failed to fetch statistics.");
-    }
+    $stmt = $conn->query("SELECT * FROM site_statistics LIMIT 1");
+    $statistics = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $statistics = json_decode($data, true);
-
-    if (!$statistics || isset($statistics['error'])) {
-        throw new Exception("Statistics data unavailable.");
+    if (!$statistics) {
+        $statistics = [
+            'most_searched_countries' => 'Data unavailable',
+            'total_searches' => 'Data unavailable',
+            'most_recent_search' => 'Data unavailable',
+            'searches_today' => 'Data unavailable',
+            'unique_countries_searched' => 'Data unavailable'
+        ];
     }
 } catch (Exception $e) {
     $statistics = [
@@ -26,6 +28,7 @@ try {
         'searches_today' => 'Data unavailable',
         'unique_countries_searched' => 'Data unavailable'
     ];
+    error_log("Error fetching statistics: " . $e->getMessage());
 }
 ?>
 
@@ -55,7 +58,7 @@ try {
 
     <section class="about-section">
         <h1>ABOUT THE COUNTRY CAPITAL FINDER</h1>
-        <p>Welcome to the <strong>Country Capital Finder</strong>—an intuitive application where you can <strong>find any country’s capital</strong> with ease. Created to support learners of all levels, from students to trivia enthusiasts, our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong> designed to make memorizing capitals both engaging and effective.</p>
+        <p>Welcome to the <strong>Country Capital Finder</strong>...</p>
 
         <h2>Site Statistics</h2>
         <ul>
