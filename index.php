@@ -9,7 +9,9 @@ include 'config.php';
 
 // Function to normalize country input
 function normalize_country_input($input) {
-    return ucwords(strtolower(trim($input))); // Capitalizes the first letter of each word
+    $input = strtolower(trim($input));
+    // Include additional delimiters: hyphen (-), parentheses ( and ), apostrophe ('), slash (/)
+    return ucwords($input, " \t\r\n\f\v-()/'");
 }
 
 // Handle form submission
@@ -34,9 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($capitals) {
             $capital_names = implode(' / ', $capitals);
             $capital_count = count($capitals);
-            $capital_word = $capital_count > 1 ? 'capitals of' : 'capital of';
+            $capital_word = $capital_count > 1 ? 'capitals' : 'capital';
             $verb = $capital_count > 1 ? 'are' : 'is';
-            $message = "The {$capital_word} {$country} {$verb} {$capital_names}. {$flag}";
+            $message = "The {$capital_word} of {$country} {$verb} {$capital_names}. {$flag}";
         } else {
             $message = "No capitals found for {$country}.";
         }
