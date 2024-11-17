@@ -31,6 +31,28 @@ try {
         $stmt = $conn->prepare("SELECT country_name, capital_name, flag_emoji, language, alternate_names, map_image_url FROM countries WHERE id = ?");
         $stmt->execute([$id]);
         $response = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    } elseif ($type === 'statistics') {
+        // Fetch site statistics
+        $stmtMostSearchedCountry = $conn->query("SELECT country_name FROM countries ORDER BY searches DESC LIMIT 1");
+        $mostSearchedCountry = $stmtMostSearchedCountry->fetch(PDO::FETCH_ASSOC)['country_name'] ?? 'N/A';
+
+        $stmtMostSearchedCapital = $conn->query("SELECT capital_name FROM countries ORDER BY searches DESC LIMIT 1");
+        $mostSearchedCapital = $stmtMostSearchedCapital->fetch(PDO::FETCH_ASSOC)['capital_name'] ?? 'N/A';
+
+        $stmtTotalQuizzes = $conn->query("SELECT COUNT(*) AS total FROM quizzes");
+        $totalQuizzes = $stmtTotalQuizzes->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+        $stmtLastSearch = $conn->query("SELECT last_search FROM searches ORDER BY timestamp DESC LIMIT 1");
+        $lastSearch = $stmtLastSearch->fetch(PDO::FETCH_ASSOC)['last_search'] ?? 'N/A';
+
+        $response = [
+            'most_searched_country' => $mostSearchedCountry,
+            'most_searched_capital' => $mostSearchedCapital,
+            'total_quizzes_completed' => $totalQuizzes,
+            'last_search' => $lastSearch
+        ];
+
     } else {
         // Invalid or missing type parameter
         http_response_code(400);
