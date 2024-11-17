@@ -1,12 +1,11 @@
 <?php
 include 'config.php';
-include 'fetch-country-data.php';
 include 'the-countries.php'; // Contains normalizeInput()
 
-// Fetch 10 random country-capital pairs
-$data = json_decode(file_get_contents('fetch-country-data.php?type=random&limit=10'), true);
+// Fetch 10 random country-capital pairs from fetch-country-data.php
+$data = json_decode(file_get_contents('http://localhost/fetch-country-data.php?type=random&limit=10'), true);
 
-if (!$data) {
+if (!$data || isset($data['error'])) {
     echo "Error fetching quiz data.";
     exit;
 }
@@ -121,6 +120,17 @@ foreach ($data as $row) {
             document.getElementById('quizContainer').style.display = 'none';
             document.getElementById('resultContainer').style.display = 'block';
             document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
+
+            // Display detailed results
+            let resultsHTML = '';
+            questions.forEach((question, index) => {
+                const isCorrect = index < currentQuestionIndex;
+                const resultText = isCorrect
+                    ? `Correct. The answer was ${addThe(question.capital)}.`
+                    : `Incorrect. The answer was ${addThe(question.capital)}.`;
+                resultsHTML += `<p><strong>Question ${index + 1}: ${resultText}</strong></p>`;
+            });
+            document.getElementById('detailedResults').innerHTML = resultsHTML;
         }
 
         document.getElementById('answerForm').addEventListener('submit', function(event) {
