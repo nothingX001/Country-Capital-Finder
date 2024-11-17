@@ -34,15 +34,17 @@ try {
 
     } elseif ($type === 'statistics') {
         // Fetch site statistics
-        $stmt = $conn->query("SELECT * FROM site_statistics LIMIT 1");
+        $stmt = $conn->query("
+            SELECT 
+                country_name AS most_searched_countries,
+                search_count AS total_searches,
+                last_searched_at AS most_recent_search,
+                SUM(search_count) AS searches_today,
+                COUNT(DISTINCT country_name) AS unique_countries_searched
+            FROM site_statistics
+        ");
         $statistics = $stmt->fetch(PDO::FETCH_ASSOC);
-        $response = [
-            'most_searched_countries' => $statistics['most_searched_countries'],
-            'total_searches' => $statistics['total_searches'],
-            'most_recent_search' => $statistics['most_recent_search'],
-            'searches_today' => $statistics['searches_today'],
-            'unique_countries_searched' => $statistics['unique_countries_searched']
-        ];
+        $response = $statistics;
     } else {
         // Invalid or missing type parameter
         http_response_code(400);
