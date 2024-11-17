@@ -78,7 +78,7 @@ if ($country_id) {
     <!-- Mapbox Initialization Script -->
     <script>
         // Replace 'YOUR_MAPBOX_ACCESS_TOKEN' with your actual Mapbox access token
-        mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
         // Create a new map instance
         const map = new mapboxgl.Map({
