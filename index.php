@@ -19,13 +19,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country_input = $_POST['country'];
     $country = normalize_country_input($country_input);
 
-    // Search for the country in the database
-    $stmt = $conn->prepare("SELECT id, flag_emoji FROM countries WHERE LOWER(country_name) = LOWER(?)");
-    $stmt->execute([$country]);
+    // Prepare the search query to check both country_name and alternate_name
+    $stmt = $conn->prepare("
+        SELECT c.id, c.country_name, c.flag_emoji
+        FROM countries c
+        LEFT JOIN country_alternate_names can ON c.id = can.country_id
+        WHERE LOWER(c.country_name) = LOWER(?) OR LOWER(can.alternate_name) = LOWER(?)
+        LIMIT 1
+    ");
+    $stmt->execute([$country, $country]);
     $country_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($country_result) {
         $country_id = $country_result['id'];
+        $country_name = $country_result['country_name']; // Use the official country name
         $flag = $country_result['flag_emoji'] ?? '';
 
         // Fetch all capitals associated with the country
@@ -38,9 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $capital_count = count($capitals);
             $capital_word = $capital_count > 1 ? 'capitals' : 'capital';
             $verb = $capital_count > 1 ? 'are' : 'is';
-            $message = "The {$capital_word} of {$country} {$verb} {$capital_names}. {$flag}";
+            $message = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. {$flag}";
         } else {
-            $message = "No capitals found for {$country}.";
+            $message = "No capitals found for {$country_name}.";
         }
 
         // Update site statistics
@@ -53,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     search_count = site_statistics.search_count + 1,
                     last_searched_at = NOW()
             ");
-            $stats_stmt->execute([$country]);
+            $stats_stmt->execute([$country_name]);
         } catch (Exception $e) {
             // Optionally log the error; do not display to users
             // error_log("Error updating site statistics: " . $e->getMessage());

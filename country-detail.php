@@ -7,7 +7,7 @@ $country_id = $_GET['id'] ?? null;
 
 if ($country_id) {
     // Fetch country info
-    $stmt = $conn->prepare("SELECT country_name, flag_emoji, language, alternate_names FROM countries WHERE id = ?");
+    $stmt = $conn->prepare("SELECT country_name, flag_emoji, language FROM countries WHERE id = ?");
     $stmt->execute([$country_id]);
     $country = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -16,9 +16,20 @@ if ($country_id) {
     }
 
     // Fetch all capitals and their coordinates
-    $stmt = $conn->prepare("SELECT capital_name, capital_type, latitude, longitude FROM capitals WHERE country_id = ?");
-    $stmt->execute([$country_id]);
-    $capitals = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt_capitals = $conn->prepare("SELECT capital_name, capital_type, latitude, longitude FROM capitals WHERE country_id = ?");
+    $stmt_capitals->execute([$country_id]);
+    $capitals = $stmt_capitals->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch alternate names
+    $stmt_alt = $conn->prepare("SELECT alternate_name FROM country_alternate_names WHERE country_id = ? ORDER BY alternate_name");
+    $stmt_alt->execute([$country_id]);
+    $alternate_names_array = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
+
+    if ($alternate_names_array) {
+        $alternate_names_list = implode(', ', $alternate_names_array);
+    } else {
+        $alternate_names_list = 'N/A';
+    }
 
 } else {
     die("Invalid country ID.");
@@ -70,7 +81,7 @@ if ($country_id) {
                 <p><strong><?php echo $capital_label; ?>:</strong> <?php echo $capital_list; ?></p>
                 <p><strong>Flag:</strong> <?php echo htmlspecialchars($country['flag_emoji'] ?? 'N/A'); ?></p>
                 <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['language'] ?? 'N/A'); ?></p>
-                <p><strong>Alternate Names:</strong> <?php echo htmlspecialchars($country['alternate_names'] ?? 'N/A'); ?></p>
+                <p><strong>Alternate Names:</strong> <?php echo htmlspecialchars($alternate_names_list); ?></p>
             </div>
         </div>
     </div>
