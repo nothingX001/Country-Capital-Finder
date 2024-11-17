@@ -1,4 +1,5 @@
 <?php
+// Include database connection
 include 'config.php';
 
 // Initialize response array
@@ -36,14 +37,15 @@ try {
         $stmt = $conn->query("
             SELECT 
                 country_name AS most_searched_countries,
-                SUM(search_count) AS total_searches,
+                MAX(search_count) AS total_searches,
                 MAX(last_searched_at) AS most_recent_search,
-                COUNT(*) AS searches_today,
-                COUNT(DISTINCT country_name) AS unique_countries_searched
+                COUNT(*) AS unique_countries_searched,
+                SUM(search_count) AS searches_today
             FROM site_statistics
         ");
         $statistics = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Ensure all statistics are retrieved
         if ($statistics) {
             $response = [
                 'most_searched_countries' => $statistics['most_searched_countries'] ?? 'N/A',
@@ -53,14 +55,7 @@ try {
                 'unique_countries_searched' => $statistics['unique_countries_searched'] ?? 0
             ];
         } else {
-            // No statistics found
-            $response = [
-                'most_searched_countries' => 'N/A',
-                'total_searches' => 0,
-                'most_recent_search' => 'N/A',
-                'searches_today' => 0,
-                'unique_countries_searched' => 0
-            ];
+            $response = ['error' => 'No statistics found.'];
         }
     } else {
         // Invalid or missing type parameter
@@ -68,7 +63,7 @@ try {
         $response = ['error' => 'Invalid type or missing parameters.'];
     }
 } catch (Exception $e) {
-    // Handle any database or server errors
+    // Catch any errors
     http_response_code(500);
     $response = ['error' => $e->getMessage()];
 }
