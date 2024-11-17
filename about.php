@@ -1,4 +1,11 @@
 <?php
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include 'config.php'; // Database connection
+
 // Fetch site statistics
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=statistics');
 $statistics = json_decode($data, true);
