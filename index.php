@@ -26,9 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $flag = $result['flag_emoji'] ?? ''; // Use flag from the database
         $message = "The capital of {$country} is {$capital}. {$flag}";
 
-        // Update the site statistics table
-        $conn->beginTransaction();
+        // Attempt to update the site statistics table
         try {
+            $conn->beginTransaction();
+
             // Update most recent search
             $stmt = $conn->prepare("UPDATE site_statistics SET most_recent_search = ?");
             $stmt->execute([$country]);
@@ -42,12 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
 
             // Update unique countries searched
-            $stmt = $conn->prepare("SELECT unique_countries_searched FROM site_statistics");
-            $stmt->execute();
+            $stmt = $conn->query("SELECT unique_countries_searched FROM site_statistics LIMIT 1");
             $current_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $unique_countries = $current_data['unique_countries_searched'];
-            $unique_countries_array = explode(',', $unique_countries);
+            $unique_countries = $current_data['unique_countries_searched'] ?? '';
+            $unique_countries_array = $unique_countries ? explode(',', $unique_countries) : [];
 
             if (!in_array($country, $unique_countries_array)) {
                 $unique_countries_array[] = $country;
@@ -59,8 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $conn->commit();
         } catch (Exception $e) {
-            $conn->rollBack();
-            $message = "An error occurred while updating statistics.";
+            $conn->rollBack(); // Log the error internally without showing it to the user
+            error_log("Statistics update failed: " . $e->getMessage());
         }
     } else {
         $message = "Sorry, the country you entered is not in our database.";
