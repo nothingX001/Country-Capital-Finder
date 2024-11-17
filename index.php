@@ -1,40 +1,45 @@
 <?php
-// Enable error reporting
+// Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include 'config.php'; // Database connection
+include 'config.php'; // Include database connection
 
 // Function to normalize country input
 function normalize_country_input($input) {
     return ucwords(strtolower(trim($input))); // Capitalizes first letters
 }
 
+// Initialize variables
+$message = "";
+$statistics_update_failed = false;
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country_input = $_POST['country'];
     $country = normalize_country_input($country_input);
 
-    // Search for the country, capital, and flag emoji in the database
+    // Check if the country exists in the database
     $stmt = $conn->prepare("SELECT capital_name, flag_emoji FROM countries WHERE LOWER(country_name) = LOWER(?)");
-    $stmt->execute([$country]); // Parameterized query for security
+    $stmt->execute([$country]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($result) {
+        // Country exists, display the result
         $capital = $result['capital_name'];
         $flag = $result['flag_emoji'] ?? ''; // Use flag from the database
         $message = "The capital of {$country} is {$capital}. {$flag}";
 
-        // Update the site statistics
+        // Log the search into the site_statistics table
         try {
             $conn->beginTransaction();
 
-            // Update most recent search
+            // Update most_recent_search
             $stmt = $conn->prepare("UPDATE site_statistics SET most_recent_search = ?");
             $stmt->execute([$country]);
 
-            // Increment total searches
+            // Increment total_searches
             $stmt = $conn->prepare("UPDATE site_statistics SET total_searches = total_searches + 1");
             $stmt->execute();
 
@@ -42,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("UPDATE site_statistics SET searches_today = searches_today + 1");
             $stmt->execute();
 
-            // Update unique countries searched
+            // Update unique_countries_searched
             $stmt = $conn->query("SELECT unique_countries_searched FROM site_statistics LIMIT 1");
             $current_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -57,22 +62,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute([$updated_unique_countries]);
             }
 
-            // Update most searched countries
-            $stmt = $conn->query("SELECT country_name, COUNT(*) as search_count FROM searches GROUP BY country_name ORDER BY search_count DESC LIMIT 1");
-            $most_searched_country = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($most_searched_country) {
-                $stmt = $conn->prepare("UPDATE site_statistics SET most_searched_countries = ?");
-                $stmt->execute([$most_searched_country['country_name']]);
-            }
+            // Update most_searched_countries
+            $stmt = $conn->prepare("UPDATE site_statistics SET most_searched_countries = ?");
+            $stmt->execute([$country]);
 
             $conn->commit();
         } catch (Exception $e) {
-            $conn->rollBack(); // Log the error internally without showing it to the user
-            error_log("Statistics update failed: " . $e->getMessage());
+            $conn->rollBack();
+            error_log("Failed to update site statistics: " . $e->getMessage());
+            $statistics_update_failed = true;
         }
     } else {
+        // Country not found
         $message = "Sorry, the country you entered is not in our database.";
     }
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
+    <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
+    <meta name="author" content="Country Capital Finder">
+    <title>Country Capital Finder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <?php include 'navbar.php'; ?>
+
+    <div class="main">
+        <h1>CAPITAL FINDER</h1>
+        <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
+        <form action="index.php" method="post">
+            <label>ENTER A COUNTRY: </label>
+            <input type="text" name="country" required>
+            <input type="submit" value="SUBMIT">
+        </form>
+
+        <?php if ($message): ?>
+            <p class="message"><?php echo htmlspecialchars($message); ?></p>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
