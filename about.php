@@ -1,3 +1,9 @@
+<?php
+// Fetch site statistics
+$data = file_get_contents('http://localhost/fetch-country-data.php?type=statistics');
+$statistics = json_decode($data, true);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +45,18 @@
         <p>Offering an enjoyable, accessible approach to <strong>learning world capitals</strong>, the Country Capital Finder also includes <strong>world capital learning games</strong> and quizzes that transform traditional study methods into something engaging and memorable. Every question in the <strong>capitals of the world quiz</strong> is designed to enhance memory retention, making it perfect for a <strong>geography bee prep tool</strong> or just for <strong>learning capitals by memory</strong>.</p>
 
         <p>Whether you’re aiming to learn for fun, education, or competition, the Country Capital Finder brings the world’s capitals into easy reach, fostering learning and exploration across borders. Dive into our quizzes today and experience <strong>an application where you can find a country’s capital</strong> while testing your geography knowledge in new interactive ways.</p>
+
+        <!-- Site Statistics Section -->
+        <section class="site-statistics">
+            <h2>SITE STATISTICS</h2>
+            <p>Check out some key highlights from our platform:</p>
+            <ul>
+                <li><strong>Most searched country:</strong> <?php echo htmlspecialchars($statistics['most_searched_country'] ?? 'N/A'); ?></li>
+                <li><strong>Most searched capital:</strong> <?php echo htmlspecialchars($statistics['most_searched_capital'] ?? 'N/A'); ?></li>
+                <li><strong>Total quizzes completed:</strong> <?php echo htmlspecialchars($statistics['total_quizzes_completed'] ?? 'N/A'); ?></li>
+                <li><strong>Last search:</strong> <?php echo htmlspecialchars($statistics['last_search'] ?? 'N/A'); ?></li>
+            </ul>
+        </section>
     </section>
 </body>
 </html>
