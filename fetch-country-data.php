@@ -62,7 +62,7 @@ try {
             $formatted_date = $last_searched_at->format('F j, Y');
             $formatted_time = $last_searched_at->format('g:i A');
 
-            $response['most_recent_search'] = "$country_name, at $formatted_time on $formatted_date";
+            $response['most_recent_search'] = "$country_name: $formatted_time on $formatted_date.";
         } else {
             $response['most_recent_search'] = 'Data unavailable';
         }
