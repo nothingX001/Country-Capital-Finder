@@ -84,6 +84,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Site Stats Script -->
+    <script src="site-stats.js" defer></script>
 </head>
 <body>
     <!-- Include Navbar -->
@@ -101,6 +104,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if (isset($message)) { ?>
             <p class="message"><?php echo htmlspecialchars($message); ?></p>
         <?php } ?>
+
+        <!-- Site Statistics Section -->
+        <div id="site-stats">
+            <h2>Site Statistics</h2>
+            <p id="most-recent-search">Loading most recent search...</p>
+        </div>
     </div>
 
     <!-- Optional JavaScript files -->

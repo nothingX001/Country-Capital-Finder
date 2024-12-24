@@ -46,10 +46,26 @@ try {
         $total_searches = $stmt->fetch(PDO::FETCH_ASSOC);
         $response['total_searches'] = $total_searches['total_searches'] ?? 'Data unavailable';
 
-        // 3. Most Recent Search
-        $stmt = $conn->query("SELECT country_name FROM site_statistics ORDER BY last_searched_at DESC LIMIT 1");
+        // 3. Most Recent Search with Timestamp
+        $stmt = $conn->query("SELECT country_name, last_searched_at FROM site_statistics ORDER BY last_searched_at DESC LIMIT 1");
         $most_recent_search = $stmt->fetch(PDO::FETCH_ASSOC);
-        $response['most_recent_search'] = $most_recent_search['country_name'] ?? 'Data unavailable';
+
+        if ($most_recent_search) {
+            $country_name = $most_recent_search['country_name'];
+            $last_searched_at = new DateTime($most_recent_search['last_searched_at'], new DateTimeZone('UTC'));
+
+            // Convert to user's timezone (default example: Eastern Time)
+            $user_timezone = new DateTimeZone('America/New_York'); // Replace dynamically if needed
+            $last_searched_at->setTimezone($user_timezone);
+
+            // Format the date and time
+            $formatted_date = $last_searched_at->format('F j, Y');
+            $formatted_time = $last_searched_at->format('g:i A');
+
+            $response['most_recent_search'] = "$country_name, at $formatted_time on $formatted_date";
+        } else {
+            $response['most_recent_search'] = 'Data unavailable';
+        }
 
         // 4. Searches Today
         $stmt = $conn->query("SELECT SUM(search_count) AS searches_today FROM site_statistics WHERE DATE(last_searched_at) = CURRENT_DATE");
