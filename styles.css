@@ -179,7 +179,7 @@ p.message {
     list-style: none; /* Removes bullet points */
     margin: 0;
     padding: 5px 0; /* Adds spacing between items */
-    background: rgba(128, 128, 128, 0.7); /* Transparent grey background */
+    background: rgba(128, 128, 128, 0.9); /* Less transparent grey background */
     border: 1px solid #ccc;
     border-radius: 15px; /* Match the search bar */
     max-height: 200px; /* Limits the height */

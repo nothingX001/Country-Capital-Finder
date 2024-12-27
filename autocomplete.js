@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach((item, i) => {
             item.classList.toggle('active', i === index);
         });
+
+        // Scroll to keep the active item visible
+        if (index >= 0 && index < items.length) {
+            const activeItem = items[index];
+            activeItem.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
     }
 
     // Handle typing in the input field
