@@ -70,6 +70,7 @@ input[type="text"] {
     font-size: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     box-sizing: border-box;
+    position: relative;
 }
 
 input[type="submit"], .seo-content button {
@@ -143,7 +144,7 @@ p.message {
     cursor: pointer;
     display: none;
     position: relative;
-    padding: 8px 12px 8px 12px; /* Even padding all around */
+    padding: 8px 12px;
     border-radius: 5px;
     margin-top: 5px;
     z-index: 1000;
@@ -173,132 +174,11 @@ p.message {
     margin-top: 1rem;
 }
 
-/* Remove bullets from FAQ section */
-#faq ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-#faq ul li {
-    margin-bottom: 1.5rem;
-}
-
-#faq ul li p {
-    font-size: 1.3rem;
-    color: #555;
-    line-height: 1.6;
-    margin: 0.5rem 0;
-}
-
-/* Bullet points visible only in the Why Use section */
-#why-use ul {
-    list-style: disc;
-    padding-left: 40px;
-}
-
-#why-use ul li {
-    margin-bottom: 1.5rem;
-}
-
-#site-stats p {
-    font-size: 1.3rem;
-    color: #555;
-    margin-bottom: 1rem;
-}
-
-#site-stats p strong {
-    color: #000;
-}
-
-/* Mobile Styles */
-@media (max-width: 768px) {
-    /* Align main section closer to hamburger menu */
-    .main {
-        margin-top: 20px;
-    }
-
-    input[type="text"], input[type="submit"], .main, .seo-content {
-        width: 95%;
-    }
-
-    .seo-content h2 {
-        font-size: 1.8rem;
-    }
-
-    h1 {
-        font-size: 2.2rem;
-    }
-
-    .seo-content p, .seo-content li {
-        font-size: 1.3rem;
-    }
-
-    /* Navbar - Mobile Layout */
-    .navbar-list {
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: #2b6cb0;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 0;
-        margin: 0;
-        z-index: 999;
-    }
-
-    .navbar-list li {
-        padding: 1.2rem 0;
-        text-align: center;
-        width: 100%;
-    }
-
-    .navbar-list li a {
-        display: inline-block;
-        color: #fff;
-        padding: 10px 15px;
-        background-color: #2b6cb0;
-        border-radius: 5px;
-        text-decoration: none;
-        width: 80%;
-        text-align: center;
-    }
-
-    /* Hover effect with lighter background */
-    .navbar-list li a:hover {
-        background-color: rgba(255, 255, 255, 0.689);
-        padding: 10px 10px;
-        color: #333;
-    }
-
-    .navbar-toggle {
-        display: block;
-        margin-top: 3px;
-        margin-bottom: 3px;
-    }
-
-    /* Show the navbar list when the 'open' class is added */
-    .navbar-list.open {
-        display: flex;
-    }
-
-    /* Adjusted styling for open state */
-    .navbar.open .navbar-toggle {
-        background-color: #2b6cb0;
-    }
-}
-
-/* autocomplete dropdown in search */
-
 /* Autocomplete Dropdown Styling */
 .autocomplete-dropdown {
     list-style: none; /* Removes bullet points */
     margin: 0;
-    padding: 0;
+    padding: 5px 0; /* Adds spacing between items */
     background: rgba(128, 128, 128, 0.7); /* Transparent grey background */
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -306,11 +186,11 @@ p.message {
     overflow-y: auto; /* Enables scrolling for long lists */
     position: absolute;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Softer shadow */
 }
 
 .autocomplete-dropdown li {
-    padding: 10px;
+    padding: 10px 15px; /* Space within each item */
     cursor: pointer;
     text-align: left; /* Aligns text to the left */
     font-size: 1rem;
@@ -319,5 +199,6 @@ p.message {
 }
 
 .autocomplete-dropdown li:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Slightly darker hover background */
+    background-color: rgba(0, 0, 0, 0.2); /* Darker hover background */
+    color: white; /* Change text color on hover */
 }
