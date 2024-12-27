@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
         <form action="index.php" method="post">
             <label>ENTER A COUNTRY: </label>
-            <input type="text" name="country" required>
+            <input type="text" name="country" autocomplete="off" required>
             <input type="submit" value="SUBMIT">
         </form>
 
@@ -102,5 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="message"><?php echo htmlspecialchars($message); ?></p>
         <?php } ?>
     </div>
+
+    <!-- Autocomplete Script -->
+    <script src="autocomplete.js" defer></script>
 </body>
 </html>
