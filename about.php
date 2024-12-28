@@ -48,7 +48,10 @@ if (!$statistics || isset($statistics['error'])) {
     <section class="about-section">
         <h1>ABOUT THE COUNTRY CAPITAL FINDER</h1>
         <p>Welcome to the <strong>Country Capital Finder</strong>—an intuitive application where you can <strong>find any country’s capital</strong> with ease. Created to support learners of all levels, from students to trivia enthusiasts, our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong> designed to make memorizing capitals both engaging and effective. Ideal for <strong>geography bee prep</strong>, this tool is perfect for anyone looking to improve their knowledge of world geography.</p>
-
+        <h2>Social Media</h2>
+            <ul>
+                <li><strong>Instagram:</strong> @countrycapitalfinder</li>
+            </ul>
         <h2>Site Statistics</h2>
         <ul>
             <li><strong>Most Searched Country:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?></li>
