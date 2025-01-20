@@ -91,9 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="main">
         <h1>CAPITAL FINDER</h1>
-        <h3>🇺🇸🇪🇺🇷🇺🇨🇳</h3>
         <form action="index.php" method="post">
-            <label>ENTER A COUNTRY: </label>
+            <label>Find the capital of any country: </label>
             <input type="text" name="country" autocomplete="off" required>
             <input type="submit" value="SUBMIT">
         </form>
