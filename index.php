@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="main">
         <h1>CAPITAL FINDER</h1>
         <form action="index.php" method="post">
-            <label>Find the capital of any country: </label>
+            <label><h3>Find the capital of any country: </h3></label>
             <input type="text" name="country" autocomplete="off" required>
             <input type="submit" value="SUBMIT">
         </form>
