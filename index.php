@@ -90,9 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'navbar.php'; ?>
 
     <div class="main">
-        <h1>Find the capital of any country: </h1>
+        <h1>ExploreCapitals.com</h1>
         <form action="index.php" method="post">
-            <label><h3>Search</h3></label>
+            <label><h3>Search:</h3></label>
             <input type="text" name="country" autocomplete="off" required>
             <input type="submit" value="SUBMIT">
         </form>
