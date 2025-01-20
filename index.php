@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Meta tags for SEO and responsiveness -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Capital Finder</title>
+    <title>"CAPITAL FINDER"</title>
     <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
     <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
     <meta name="author" content="Country Capital Finder">
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="main">
         <h1>CAPITAL FINDER</h1>
-        <h3>🇺🇸🇪🇺 FIND THE CAPITAL OF YOUR COUNTRY 🇷🇺🇨🇳</h3>
+        <h3>🇺🇸🇪🇺🇷🇺🇨🇳</h3>
         <form action="index.php" method="post">
             <label>ENTER A COUNTRY: </label>
             <input type="text" name="country" autocomplete="off" required>
