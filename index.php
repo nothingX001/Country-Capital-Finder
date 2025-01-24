@@ -79,8 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExploreCapitals</title>
     <meta name="description" content="Discover capitals of countries around the world with our Country Capital Finder. Search over 195 capitals, explore fun facts, and learn geography with ease!">
-    <meta name="keywords" content="country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
-    <meta name="author" content="Country Capital Finder">
+    <meta name="keywords" content="explore capitals, country capital finder, find capitals, country capitals, capital search, world capitals, geography trivia, country capitals list">
+    <meta name="author" content="ExploreCapitals">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
