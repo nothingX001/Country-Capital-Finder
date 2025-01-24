@@ -91,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="main">
         <h1>ExploreCapitals.com</h1>
+        <h3>Type in any country or territory to search for its capital</h3>
         <form action="index.php" method="post">
             <label><h3>Search:</h3></label>
             <input type="text" name="country" autocomplete="off" required>
