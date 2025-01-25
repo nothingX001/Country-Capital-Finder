@@ -1,20 +1,14 @@
 <?php
 // fetch-country-data.php
 
-// Include database connection
 include 'config.php';
-
-// Return JSON
 header('Content-Type: application/json');
 
-// Identify which type of data is requested
 $type = $_GET['type'] ?? null;
-
-// Initialize a response array
 $response = [];
 
 try {
-    // 1) Fetch all main countries (member_state / observer_state)
+    // 1) All main only (member_state, observer_state)
     if ($type === 'all_main_only') {
         $stmt = $conn->query("
             SELECT id, country_name, flag_emoji
@@ -24,7 +18,27 @@ try {
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 2) Quiz: Random main (member/observer) states only
+    // 2) All territories
+    } elseif ($type === 'all_territories') {
+        $stmt = $conn->query("
+            SELECT id, country_name, flag_emoji
+            FROM countries
+            WHERE entity_type = 'territory'
+            ORDER BY country_name ASC
+        ");
+        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 3) All de facto states
+    } elseif ($type === 'all_de_facto') {
+        $stmt = $conn->query("
+            SELECT id, country_name, flag_emoji
+            FROM countries
+            WHERE entity_type = 'de_facto_state'
+            ORDER BY country_name ASC
+        ");
+        $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // 4) Quiz: random_main (member/observer)
     } elseif ($type === 'random_main' && isset($_GET['limit'])) {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
@@ -39,7 +53,7 @@ try {
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 3) Quiz: Random territories only
+    // 5) Quiz: random_territories
     } elseif ($type === 'random_territories' && isset($_GET['limit'])) {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
@@ -54,7 +68,7 @@ try {
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 4) [Optional Legacy] Quiz: random any country in DB
+    // (Optional) Legacy random
     } elseif ($type === 'random' && isset($_GET['limit'])) {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
@@ -68,13 +82,12 @@ try {
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 5) Map data
+    // 6) Map data
     } elseif ($type === 'map') {
-        // Return rows for each capital
         $stmt = $conn->query("
-            SELECT c.country_name, 
-                   cap.capital_name, 
-                   cap.latitude, 
+            SELECT c.country_name,
+                   cap.capital_name,
+                   cap.latitude,
                    cap.longitude,
                    c.flag_emoji
             FROM countries c
@@ -82,7 +95,7 @@ try {
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 6) Detailed info for a specific country (optional)
+    // 7) Detail
     } elseif ($type === 'detail' && isset($_GET['id'])) {
         $id = (int)$_GET['id'];
         $stmt = $conn->prepare("
@@ -93,12 +106,11 @@ try {
         $stmt->execute([$id]);
         $response = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 7) Site statistics
+    // 8) Statistics
     } elseif ($type === 'statistics') {
-        // Initialize array
         $response = [];
 
-        // Most searched country
+        // Most searched
         $stmt = $conn->query("
             SELECT country_name
             FROM site_statistics
@@ -126,14 +138,11 @@ try {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             $country_name   = $row['country_name'];
-            $last_searched  = new DateTime($row['last_searched_at'], new DateTimeZone('UTC'));
-            $user_timezone  = new DateTimeZone('America/New_York');
-            $last_searched->setTimezone($user_timezone);
-
-            $formatted_date = $last_searched->format('F j, Y');
-            $formatted_time = $last_searched->format('g:i A');
-
-            $response['most_recent_search'] = "$country_name, at $formatted_time on $formatted_date";
+            $dt             = new DateTime($row['last_searched_at'], new DateTimeZone('UTC'));
+            $user_tz        = new DateTimeZone('America/New_York');
+            $dt->setTimezone($user_tz);
+            $response['most_recent_search'] =
+                $country_name . ', at ' . $dt->format('g:i A') . ' on ' . $dt->format('F j, Y');
         } else {
             $response['most_recent_search'] = 'Data unavailable';
         }
@@ -147,7 +156,7 @@ try {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $response['searches_today'] = $row['searches_today'] ?? 'Data unavailable';
 
-        // Unique countries searched
+        // Unique
         $stmt = $conn->query("
             SELECT COUNT(*) AS unique_countries_searched
             FROM site_statistics
@@ -155,7 +164,7 @@ try {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $response['unique_countries_searched'] = $row['unique_countries_searched'] ?? 'Data unavailable';
 
-    // 8) Autocomplete logic
+    // 9) Autocomplete
     } elseif ($type === 'autocomplete' && isset($_GET['query'])) {
         $query = $_GET['query'] ?? '';
         $stmt = $conn->prepare("
@@ -169,15 +178,12 @@ try {
         $response = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     } else {
-        // If none of the above conditions match
         http_response_code(400);
         $response = ['error' => 'Invalid type or missing parameters.'];
     }
-
 } catch (Exception $e) {
     http_response_code(500);
     $response = ['error' => $e->getMessage()];
 }
 
-// Output as JSON
 echo json_encode($response);
