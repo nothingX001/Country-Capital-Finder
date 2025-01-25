@@ -1,10 +1,10 @@
 <?php
+// quiz.php
 include 'config.php';
-include 'the-countries.php'; // Contains normalizeInput()
+include 'the-countries.php'; // For the "the" countries array
 
-// Fetch 10 random country IDs
+// Fetch random countries + aggregated capitals
 $data = json_decode(file_get_contents('http://localhost/fetch-country-data.php?type=random&limit=10'), true);
-
 if (!$data || isset($data['error'])) {
     echo "Error fetching quiz data.";
     exit;
@@ -13,18 +13,15 @@ if (!$data || isset($data['error'])) {
 // Prepare quiz questions
 $quizQuestions = [];
 foreach ($data as $row) {
-    $country_id = $row['id'];
-    $country_name = $row['country_name'];
+    $country_id    = $row['id'];
+    $country_name  = $row['country_name'];
+    $capitalsArray = $row['capitals'] ?? []; // array of capital_name strings
 
-    // Fetch all capitals for the country
-    $stmt = $conn->prepare("SELECT capital_name FROM capitals WHERE country_id = ?");
-    $stmt->execute([$country_id]);
-    $capitals = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    if ($capitals) {
+    // Only if there's at least one capital
+    if (!empty($capitalsArray)) {
         $quizQuestions[] = [
-            'country' => $country_name,
-            'capitals' => $capitals,
+            'country'  => $country_name,
+            'capitals' => $capitalsArray,
         ];
     }
 }
@@ -32,7 +29,6 @@ foreach ($data as $row) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- [Meta tags and stylesheets as before] -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
@@ -46,7 +42,7 @@ foreach ($data as $row) {
         <p>Test your knowledge of country capitals.</p>
         <button id="startQuizBtn">START QUIZ</button>
 
-        <div id="quizContainer" style="display: none;">
+        <div id="quizContainer" style="display:none;">
             <div id="timer">Time: 0:00</div>
             <div id="questionContainer"></div>
             <form id="answerForm">
@@ -55,7 +51,7 @@ foreach ($data as $row) {
             </form>
         </div>
 
-        <div id="resultContainer" style="display: none;">
+        <div id="resultContainer" style="display:none;">
             <h2>Quiz Results</h2>
             <p id="score"></p>
             <div id="detailedResults"></div>
@@ -64,133 +60,132 @@ foreach ($data as $row) {
     </section>
 
     <script>
-        const questions = <?php echo json_encode($quizQuestions); ?>;
-        const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
+    const questions = <?php echo json_encode($quizQuestions); ?>;
+    const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let timeElapsed = 0;
-        let timer;
-        let userResponses = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timeElapsed = 0;
+    let timer;
+    let userResponses = [];
 
-        // Function to add "the" for countries that require it
-        function addThe(country) {
-            return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
-        }
+    function addThe(country) {
+        return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
+    }
 
-        // Normalize function to handle case-insensitive matching
-        function normalizeInput(input) {
-            let normalized = input.toLowerCase().trim();
-            normalized = normalized.replace(/^the\s+/i, ''); // Remove "the" if present
-            return normalized;
-        }
+    function normalizeInput(input) {
+        let norm = input.toLowerCase().trim();
+        norm = norm.replace(/^the\s+/i, '');
+        return norm;
+    }
 
-        function startQuiz() {
-            document.getElementById('startQuizBtn').style.display = 'none';
-            document.getElementById('resultContainer').style.display = 'none';
-            document.getElementById('quizContainer').style.display = 'block';
-            score = 0;
-            timeElapsed = 0;
-            currentQuestionIndex = 0;
-            userResponses = [];
-            startTimer();
-            showNextQuestion();
-        }
+    function startQuiz() {
+        document.getElementById('startQuizBtn').style.display = 'none';
+        document.getElementById('resultContainer').style.display = 'none';
+        document.getElementById('quizContainer').style.display = 'block';
+        score = 0;
+        timeElapsed = 0;
+        currentQuestionIndex = 0;
+        userResponses = [];
+        startTimer();
+        showNextQuestion();
+    }
 
-        function startTimer() {
-            timer = setInterval(() => {
-                timeElapsed++;
-                const minutes = Math.floor(timeElapsed / 60);
-                const seconds = timeElapsed % 60;
-                document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            }, 1000);
-        }
+    function startTimer() {
+        timer = setInterval(() => {
+            timeElapsed++;
+            const minutes = Math.floor(timeElapsed / 60);
+            const seconds = timeElapsed % 60;
+            document.getElementById('timer').textContent = `Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }, 1000);
+    }
 
-        function showNextQuestion() {
-            if (currentQuestionIndex < questions.length) {
-                const questionData = questions[currentQuestionIndex];
-                const isCountryQuestion = Math.random() > 0.5;
+    function showNextQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            const q = questions[currentQuestionIndex];
+            const isCountryQuestion = Math.random() > 0.5;
 
-                let questionText;
-                if (isCountryQuestion) {
-                    // Country to Capital question
-                    questionText = `What is the capital of ${addThe(questionData.country)}?`;
-                    userResponses.push({
-                        questionText,
-                        correctAnswers: questionData.capitals,
-                        userAnswer: "",
-                        isCorrect: false,
-                        correctAnswerText: questionData.capitals.join(' / ')
-                    });
-                } else {
-                    // Capital to Country question
-                    const capitalNames = questionData.capitals.join(' / ');
-                    const capitalCount = questionData.capitals.length;
-                    const verb = capitalCount > 1 ? 'are' : 'is';
-                    questionText = `${capitalNames} ${verb} the capital${capitalCount > 1 ? 's' : ''} of which country?`;
-                    userResponses.push({
-                        questionText,
-                        correctAnswers: [questionData.country],
-                        userAnswer: "",
-                        isCorrect: false,
-                        correctAnswerText: questionData.country
-                    });
-                }
-
-                document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
-                document.getElementById('userAnswer').value = '';
+            let questionText;
+            if (isCountryQuestion) {
+                // "What is the capital of X?"
+                questionText = `What is the capital of ${addThe(q.country)}?`;
+                userResponses.push({
+                    questionText,
+                    correctAnswers: q.capitals,
+                    userAnswer: "",
+                    isCorrect: false,
+                    correctAnswerText: q.capitals.join(' / ')
+                });
             } else {
-                endQuiz();
-            }
-        }
-
-        function checkAnswer(userAnswer, correctAnswers) {
-            const normalizedAnswer = normalizeInput(userAnswer);
-            return correctAnswers.some(correctAnswer => {
-                const correctOptions = correctAnswer.toLowerCase().split('/').map(option => normalizeInput(option.trim()));
-                return correctOptions.includes(normalizedAnswer);
-            });
-        }
-
-        function endQuiz() {
-            clearInterval(timer);
-            document.getElementById('quizContainer').style.display = 'none';
-            document.getElementById('resultContainer').style.display = 'block';
-            document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
-
-            // Display detailed results
-            let resultsHTML = '';
-            userResponses.forEach((response, index) => {
-                const resultText = response.isCorrect 
-                    ? `Correct. The answer was ${response.correctAnswerText}.`
-                    : `Incorrect. The answer was ${response.correctAnswerText}. You answered "${response.userAnswer}".`;
-
-                resultsHTML += `
-                    <p><strong>Question ${index + 1}: ${response.questionText}</strong><br>${resultText}</p>
-                `;
-            });
-            document.getElementById('detailedResults').innerHTML = resultsHTML;
-        }
-
-        document.getElementById('answerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const userAnswer = document.getElementById('userAnswer').value.trim();
-            const response = userResponses[currentQuestionIndex];
-            const isCorrect = checkAnswer(userAnswer, response.correctAnswers);
-
-            response.userAnswer = userAnswer;
-            response.isCorrect = isCorrect;
-
-            if (isCorrect) {
-                score++;
+                // "X is the capital of which country?"
+                const capCount = q.capitals.length;
+                const capitalNames = q.capitals.join(' / ');
+                const verb = capCount > 1 ? 'are' : 'is';
+                questionText = `${capitalNames} ${verb} the capital${capCount>1 ? 's' : ''} of which country?`;
+                userResponses.push({
+                    questionText,
+                    // The correct country is array, but we only have one real "country" name
+                    correctAnswers: [q.country],
+                    userAnswer: "",
+                    isCorrect: false,
+                    correctAnswerText: q.country
+                });
             }
 
-            currentQuestionIndex++;
-            showNextQuestion();
+            document.getElementById('questionContainer').textContent = `Question ${currentQuestionIndex + 1}: ${questionText}`;
+            document.getElementById('userAnswer').value = '';
+        } else {
+            endQuiz();
+        }
+    }
+
+    function checkAnswer(userAnswer, correctAnswers) {
+        const userNorm = normalizeInput(userAnswer);
+        return correctAnswers.some(ca => {
+            const variants = ca.split('/').map(s => normalizeInput(s.trim()));
+            return variants.includes(userNorm);
         });
+    }
 
-        document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
-        document.getElementById('redoQuizBtn').addEventListener('click', () => location.reload());
+    function endQuiz() {
+        clearInterval(timer);
+        document.getElementById('quizContainer').style.display = 'none';
+        document.getElementById('resultContainer').style.display = 'block';
+        document.getElementById('score').textContent = `You scored ${score} out of ${questions.length}.`;
+
+        let resultsHTML = '';
+        userResponses.forEach((resp, idx) => {
+            const resultText = resp.isCorrect
+              ? `Correct. The answer was ${resp.correctAnswerText}.`
+              : `Incorrect. The answer was ${resp.correctAnswerText}. You answered "${resp.userAnswer}".`;
+            resultsHTML += `
+                <p>
+                    <strong>Question ${idx+1}: ${resp.questionText}</strong><br>
+                    ${resultText}
+                </p>
+            `;
+        });
+        document.getElementById('detailedResults').innerHTML = resultsHTML;
+    }
+
+    document.getElementById('answerForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const userAnswer = document.getElementById('userAnswer').value.trim();
+        const resp = userResponses[currentQuestionIndex];
+        const isCorrect = checkAnswer(userAnswer, resp.correctAnswers);
+
+        resp.userAnswer = userAnswer;
+        resp.isCorrect = isCorrect;
+
+        if (isCorrect) {
+            score++;
+        }
+        currentQuestionIndex++;
+        showNextQuestion();
+    });
+
+    document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+    document.getElementById('redoQuizBtn').addEventListener('click', () => location.reload());
     </script>
 </body>
 </html>

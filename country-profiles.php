@@ -1,8 +1,8 @@
 <?php
-$data = file_get_contents('http://localhost/fetch-country-data.php?type=all');
+// country-profiles.php
+$data = file_get_contents('http://localhost/fetch-country-data.php?type=all_main_only');
 $countries = json_decode($data, true);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +17,7 @@ $countries = json_decode($data, true);
 
     <section id="main-country-profiles">
         <h1>COUNTRY PROFILES</h1>
-        <p>This is a complete list of countries in our database. Select a country to view its profile.</p>
+        <p>A list of recognized member and observer states in our database. Select a country to view its profile.</p>
         <ul>
             <?php foreach ($countries as $country): ?>
                 <li>
