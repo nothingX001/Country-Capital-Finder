@@ -1,8 +1,8 @@
 <?php
+// world-map.php
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
 $countries = json_decode($data, true);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +15,9 @@ $countries = json_decode($data, true);
 </head>
 <body>
     <?php include 'navbar.php'; ?>
-
     <div id="main-world-map">
         <h1>WORLD MAP OF CAPITALS</h1>
-        <p>Explore the capitals of countries around the world.</p>
+        <p>Explore capitals of countries, territories, and more around the world.</p>
         <div class="search-bar-container">
             <input type="text" id="search-bar" placeholder="Search for a country or capital...">
         </div>
@@ -28,17 +27,14 @@ $countries = json_decode($data, true);
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
-
-        // Initialize Mapbox map
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [0, 20], // Initial center (longitude, latitude)
+            center: [0, 20],
             zoom: 1.5,
             projection: 'globe'
         });
 
-        // Add fog for aesthetic effect
         map.on('style.load', () => {
             map.setFog({
                 range: [0.5, 10],
@@ -50,29 +46,31 @@ $countries = json_decode($data, true);
             });
         });
 
-        // Add markers for countries and capitals
         const countries = <?php echo json_encode($countries); ?>;
+
+        // Place markers for each capital record
         if (countries) {
-            countries.forEach(country => {
-                if (country.latitude && country.longitude) {
-                    const marker = new mapboxgl.Marker()
-                        .setLngLat([country.longitude, country.latitude])
+            countries.forEach(row => {
+                if (row.latitude && row.longitude) {
+                    new mapboxgl.Marker()
+                        .setLngLat([row.longitude, row.latitude])
                         .setPopup(new mapboxgl.Popup().setHTML(
-                            `<strong>${country.capital_name}</strong> - ${country.country_name} ${country.flag_emoji}`
+                            `<strong>${row.capital_name}</strong> - ${row.country_name} ${row.flag_emoji}`
                         ))
                         .addTo(map);
                 }
             });
         }
 
-        // Search functionality
-        document.getElementById('search-bar').addEventListener('input', function () {
+        // Search bar
+        const searchBar = document.getElementById('search-bar');
+        searchBar.addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            const match = countries.find(country => 
-                country.country_name.toLowerCase() === query || 
-                country.capital_name.toLowerCase() === query
+            // find match among countries
+            const match = countries.find(row =>
+                row.country_name && row.country_name.toLowerCase() === query
+                || row.capital_name && row.capital_name.toLowerCase() === query
             );
-
             if (match && match.latitude && match.longitude) {
                 map.flyTo({ center: [match.longitude, match.latitude], zoom: 5 });
             }
