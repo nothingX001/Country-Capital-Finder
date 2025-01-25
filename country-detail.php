@@ -1,5 +1,6 @@
 <?php
 // country-detail.php
+
 include 'config.php';
 
 $country_id = $_GET['id'] ?? null;
@@ -7,7 +8,7 @@ if (!$country_id) {
     die("Invalid country ID.");
 }
 
-// 1) Fetch the main country
+// 1) Fetch the main country record
 $stmt = $conn->prepare("
     SELECT country_name, flag_emoji, language,
            entity_type, disclaimer, parent_id,
@@ -23,7 +24,7 @@ if (!$country) {
     die("Country not found.");
 }
 
-// 2) Fetch capitals
+// 2) Fetch all capitals
 $stmt_capitals = $conn->prepare("
     SELECT capital_name, capital_type, latitude, longitude
     FROM capitals
@@ -43,7 +44,7 @@ $stmt_child_terr = $conn->prepare("
 $stmt_child_terr->execute([$country_id]);
 $child_territories = $stmt_child_terr->fetchAll(PDO::FETCH_ASSOC);
 
-// 4) Fetch child de_facto states
+// 4) Fetch child de facto states
 $stmt_child_defacto = $conn->prepare("
     SELECT id, country_name, flag_emoji, disclaimer
     FROM countries
@@ -54,7 +55,7 @@ $stmt_child_defacto = $conn->prepare("
 $stmt_child_defacto->execute([$country_id]);
 $child_de_factos = $stmt_child_defacto->fetchAll(PDO::FETCH_ASSOC);
 
-// 5) Fetch parent info (if territory or de_facto_state)
+// 5) If this is a territory or de_facto_state => fetch parent info
 $parentInfo = null;
 if (!empty($country['parent_id'])) {
     $stmt_parent = $conn->prepare("
@@ -66,7 +67,7 @@ if (!empty($country['parent_id'])) {
     $parentInfo = $stmt_parent->fetch(PDO::FETCH_ASSOC);
 }
 
-// 6) Fetch alternate names
+// 6) Fetch alternate names, but only display if not empty
 $stmt_alt = $conn->prepare("
     SELECT alternate_name
     FROM country_alternate_names
@@ -75,7 +76,6 @@ $stmt_alt = $conn->prepare("
 ");
 $stmt_alt->execute([$country_id]);
 $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
-$alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +86,7 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="country-detail-styles.css">
 
-    <!-- Mapbox CSS/JS -->
+    <!-- Mapbox CSS & JS -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
 </head>
@@ -102,27 +102,24 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
                 } ?>
             </h1>
         </div>
-
         <div class="card-content">
-            <!-- Map -->
+            <!-- Map area -->
             <div id="map" style="width: 100%; height: 400px; margin-bottom: 20px;"></div>
 
             <div class="country-info">
                 <?php
-                // Combine multiple capitals if needed
+                // Show capitals
                 if ($capitals) {
-                    $capItems = array_map(function($cap) {
+                    $capList = array_map(function($cap) {
                         $cName = htmlspecialchars($cap['capital_name'] ?? 'N/A');
                         $cType = htmlspecialchars($cap['capital_type'] ?? '');
                         return $cType ? "$cName ($cType)" : $cName;
                     }, $capitals);
-
-                    $capital_list  = implode(' / ', $capItems);
-                    $capital_count = count($capitals);
-                    $capital_label = ($capital_count > 1) ? 'Capitals' : 'Capital';
+                    $capital_label = (count($capitals) > 1) ? 'Capitals' : 'Capital';
+                    $capital_list  = implode(' / ', $capList);
                 } else {
-                    $capital_list  = 'N/A';
                     $capital_label = 'Capital';
+                    $capital_list  = 'N/A';
                 }
                 ?>
                 <p><strong><?php echo $capital_label; ?>:</strong> <?php echo $capital_list; ?></p>
@@ -136,11 +133,14 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
                 <?php endif; ?>
 
                 <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['language'] ?? 'N/A'); ?></p>
-                
-                <!-- CHANGED from 'Alternate Names' to 'Also Referred As' -->
-                <p><strong>Also Referred As:</strong> <?php echo htmlspecialchars($alternate_names_list); ?></p>
 
-                <!-- If territory => "Territory of" -->
+                <!-- Only show "Also Referred As:" if we actually have alternate names -->
+                <?php if (!empty($alts)): ?>
+                    <?php $altString = implode(', ', $alts); ?>
+                    <p><strong>Also Referred As:</strong> <?php echo htmlspecialchars($altString); ?></p>
+                <?php endif; ?>
+
+                <!-- If territory => display "Territory of" + disclaimers -->
                 <?php if ($country['entity_type'] === 'territory' && $parentInfo): ?>
                     <p>
                         <strong>Territory of:</strong>
@@ -148,13 +148,11 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
                             <?php echo htmlspecialchars($parentInfo['country_name']); ?>
                         </a>
                     </p>
-
-                    <!-- Move disclaimers here, specifically for territories -->
                     <?php if (!empty($country['disclaimer'])): ?>
                         <p><em><?php echo nl2br(htmlspecialchars($country['disclaimer'])); ?></em></p>
                     <?php endif; ?>
 
-                <!-- If de_facto_state => "Claimed by" -->
+                <!-- If de_facto_state => display "Claimed by" + disclaimers -->
                 <?php elseif ($country['entity_type'] === 'de_facto_state' && $parentInfo): ?>
                     <p>
                         <strong>Claimed by:</strong>
@@ -162,20 +160,18 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
                             <?php echo htmlspecialchars($parentInfo['country_name']); ?>
                         </a>
                     </p>
-
-                    <!-- For de_facto_states, you can keep disclaimers in the normal place -->
                     <?php if (!empty($country['disclaimer'])): ?>
                         <p><em><?php echo nl2br(htmlspecialchars($country['disclaimer'])); ?></em></p>
                     <?php endif; ?>
 
+                <!-- Otherwise (member_state, observer_state, or no parent) => disclaimers as usual -->
                 <?php else: ?>
-                    <!-- For normal countries or if no parent_id, disclaimers can appear as usual -->
                     <?php if (!empty($country['disclaimer'])): ?>
                         <p><em><?php echo nl2br(htmlspecialchars($country['disclaimer'])); ?></em></p>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <!-- If main country => show child territories / child de_facto -->
+                <!-- If this is a main country => show child territories & de facto states -->
                 <?php if (in_array($country['entity_type'], ['member_state','observer_state'])): ?>
                     <?php if (!empty($child_territories)): ?>
                         <h3>Territories Administered by <?php echo htmlspecialchars($country['country_name']); ?></h3>
@@ -215,7 +211,6 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
                         </ul>
                     <?php endif; ?>
                 <?php endif; ?>
-
             </div> <!-- .country-info -->
         </div> <!-- .card-content -->
     </div> <!-- #country-detail-card -->
@@ -229,7 +224,7 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
         zoom: 2
     });
 
-    // Attempt geocoding
+    // Attempt geocoding the country name from the DB
     fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/<?php echo urlencode($country['country_name']); ?>.json?access_token=${mapboxgl.accessToken}&limit=1`)
       .then(r => r.json())
       .then(data => {
@@ -245,8 +240,10 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
             usedGeocode = true;
           }
         }
+
+        // Fallback if geocode fails
         if (!usedGeocode) {
-          console.warn('Geocode failed. Using capital coords fallback.');
+          console.warn('Mapbox geocoding failed. Using capital coords fallback.');
           <?php if (!empty($capitals)):
               $first = $capitals[0];
               if (!empty($first['latitude']) && !empty($first['longitude'])) {
@@ -261,7 +258,7 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
           <?php } endif; ?>
         }
 
-        // Add markers
+        // Add markers for each capital
         <?php foreach ($capitals as $cap) {
             if (!empty($cap['latitude']) && !empty($cap['longitude'])) {
                 $safeName = htmlspecialchars($cap['capital_name'], ENT_QUOTES);
@@ -273,7 +270,8 @@ $alternate_names_list = $alts ? implode(', ', $alts) : 'N/A';
         <?php } } ?>
       })
       .catch(err => {
-        console.error('Mapbox error:', err);
+        console.error('Mapbox geocoding error:', err);
+        // Hard fallback
         <?php if (!empty($capitals)):
             $first = $capitals[0];
             if (!empty($first['latitude']) && !empty($first['longitude'])) {
