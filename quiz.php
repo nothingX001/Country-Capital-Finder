@@ -1,29 +1,25 @@
 <?php
 // quiz.php
 include 'config.php';
-include 'the-countries.php'; // Contains $the_countries array + normalizeInput() function
+include 'the-countries.php'; // For "the" prefix logic
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
-
     <section id="main-quiz">
         <h1>COUNTRY CAPITAL QUIZ</h1>
         <p>Select a quiz type to begin.</p>
 
-        <!-- TWO QUIZ CHOICES: MEMBER/OBSERVER vs. TERRITORIES -->
         <button id="startMainQuizBtn">Start Member/Observer States Quiz</button>
         <button id="startTerritoriesQuizBtn">Start Territories Quiz</button>
 
-        <!-- QUIZ UI Hidden Initially -->
         <div id="quizContainer" style="display: none;">
             <div id="timer">Time: 0:00</div>
             <div id="questionContainer"></div>
@@ -33,8 +29,7 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
             </form>
         </div>
 
-        <!-- RESULTS UI Hidden Initially -->
-        <div id="resultContainer" style="display: none;">
+        <div id="resultContainer" style="display:none;">
             <h2>Quiz Results</h2>
             <p id="score"></p>
             <div id="detailedResults"></div>
@@ -43,45 +38,61 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
     </section>
 
     <script>
-    // The same quiz logic, but data is loaded dynamically upon user choice
+    // We'll store quiz data here
     let questions = [];
     const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
+    
     let currentQuestionIndex = 0;
     let score = 0;
     let timeElapsed = 0;
     let timer;
     let userResponses = [];
 
-    // Utility: Some countries require "the" prefix (United States -> "the United States")
     function addThe(country) {
         return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
     }
 
     function normalizeInput(input) {
         let norm = input.toLowerCase().trim();
+        // remove leading "the" if present
         norm = norm.replace(/^the\s+/i, '');
         return norm;
     }
 
-    // Called by "Start Member/Observer" or "Start Territories"
+    // Called when user clicks a quiz start button
     function startQuiz(quizType) {
-        // Fetch 10 random from either random_main or random_territories
+        console.log('Starting quiz with type =', quizType);
         fetch(`fetch-country-data.php?type=${quizType}&limit=10`)
-            .then(r => r.json())
-            .then(data => {
+            .then(async response => {
+                if (!response.ok) {
+                    // HTTP error, e.g. 404 or 500
+                    let text = await response.text();
+                    console.error('Response not OK:', response.status, text);
+                    alert('Unable to load quiz data.');
+                    return;
+                }
+                let data = await response.json();
+                console.log('Quiz data fetched:', data);
+
+                // if data has an error property
                 if (!data || data.error) {
-                    alert('Error fetching quiz data.');
+                    console.error('Quiz data error:', data.error || data);
+                    alert('Unable to load quiz data.');
+                    return;
+                }
+                // if it's an empty array, no results
+                if (!Array.isArray(data) || data.length === 0) {
+                    alert('No quiz data found. Possibly no matching entries in DB.');
                     return;
                 }
                 prepareQuestions(data);
             })
             .catch(err => {
-                console.error('Quiz fetch error:', err);
+                console.error('Fetch error:', err);
                 alert('Unable to load quiz data.');
             });
     }
 
-    // Once we fetch the data, build the question set
     function prepareQuestions(data) {
         questions = [];
         data.forEach(row => {
@@ -94,11 +105,11 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
         });
 
         if (questions.length === 0) {
-            alert('No quiz data available. Possibly no capitals found.');
+            alert('No valid quiz entries (no capitals).');
             return;
         }
 
-        // Show the quiz container
+        // Show quiz
         document.getElementById('quizContainer').style.display = 'block';
         document.getElementById('resultContainer').style.display = 'none';
         document.getElementById('startMainQuizBtn').style.display = 'none';
@@ -116,12 +127,13 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
 
     function startTimer() {
         clearInterval(timer);
+        timeElapsed = 0;
         document.getElementById('timer').textContent = 'Time: 0:00';
         timer = setInterval(() => {
             timeElapsed++;
             const mins = Math.floor(timeElapsed / 60);
             const secs = timeElapsed % 60;
-            document.getElementById('timer').textContent = 
+            document.getElementById('timer').textContent =
                 `Time: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }, 1000);
     }
@@ -136,20 +148,20 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
                 questionText = `What is the capital of ${addThe(qData.country)}?`;
                 userResponses.push({
                     questionText,
-                    correctAnswers: qData.capitals, 
-                    userAnswer: '',
+                    correctAnswers: qData.capitals,
+                    userAnswer: "",
                     isCorrect: false,
                     correctAnswerText: qData.capitals.join(' / ')
                 });
             } else {
-                const cCount = qData.capitals.length;
-                const capitalNames = qData.capitals.join(' / ');
-                const verb = cCount > 1 ? 'are' : 'is';
-                questionText = `${capitalNames} ${verb} the capital${cCount>1 ? 's' : ''} of which country?`;
+                const capCount = qData.capitals.length;
+                const capStr = qData.capitals.join(' / ');
+                const verb = capCount > 1 ? 'are' : 'is';
+                questionText = `${capStr} ${verb} the capital${capCount>1 ? 's' : ''} of which country?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: [qData.country],
-                    userAnswer: '',
+                    userAnswer: "",
                     isCorrect: false,
                     correctAnswerText: qData.country
                 });
@@ -165,9 +177,9 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
 
     function checkAnswer(userAnswer, correctAnswers) {
         const userNorm = normalizeInput(userAnswer);
-        return correctAnswers.some(cAnswer => {
-            // Each correct answer could be multiple capitals separated by slash
-            const variants = cAnswer.toLowerCase().split('/').map(x => normalizeInput(x.trim()));
+        // each correctAnswers item might have multiple slash-separated options
+        return correctAnswers.some(ca => {
+            const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
             return variants.includes(userNorm);
         });
     }
@@ -176,44 +188,42 @@ include 'the-countries.php'; // Contains $the_countries array + normalizeInput()
         clearInterval(timer);
         document.getElementById('quizContainer').style.display = 'none';
         document.getElementById('resultContainer').style.display = 'block';
-
-        document.getElementById('score').textContent = 
+        document.getElementById('score').textContent =
             `You scored ${score} out of ${questions.length}.`;
 
-        let resultsHTML = '';
+        let detailHTML = '';
         userResponses.forEach((resp, idx) => {
             const resultText = resp.isCorrect
-              ? `Correct. The answer was ${resp.correctAnswerText}.`
-              : `Incorrect. The answer was ${resp.correctAnswerText}. You answered "${resp.userAnswer}".`;
-            resultsHTML += `
-                <p><strong>Question ${idx+1}:</strong> ${resp.questionText}<br>${resultText}</p>
+                ? `Correct. The answer was ${resp.correctAnswerText}.`
+                : `Incorrect. The answer was ${resp.correctAnswerText}. You answered "${resp.userAnswer}".`;
+            detailHTML += `
+                <p>
+                    <strong>Question ${idx+1}:</strong> ${resp.questionText}<br>
+                    ${resultText}
+                </p>
             `;
         });
-        document.getElementById('detailedResults').innerHTML = resultsHTML;
+        document.getElementById('detailedResults').innerHTML = detailHTML;
     }
 
-    // On Submit, check the user's typed answer
     document.getElementById('answerForm').addEventListener('submit', e => {
         e.preventDefault();
         const userAnswer = document.getElementById('userAnswer').value.trim();
-        const resp = userResponses[currentQuestionIndex];
-        const isCorrect = checkAnswer(userAnswer, resp.correctAnswers);
+        const currentResp = userResponses[currentQuestionIndex];
 
-        resp.userAnswer = userAnswer;
-        resp.isCorrect  = isCorrect;
-        if (isCorrect) {
-            score++;
-        }
+        const isCorrect = checkAnswer(userAnswer, currentResp.correctAnswers);
+        currentResp.userAnswer = userAnswer;
+        currentResp.isCorrect  = isCorrect;
+        if (isCorrect) score++;
         currentQuestionIndex++;
         showNextQuestion();
     });
 
-    // For redoing the quiz, just reload the page
     document.getElementById('redoQuizBtn').addEventListener('click', () => {
         location.reload();
     });
 
-    // Hooks for the 2 quiz choice buttons
+    // Button event listeners
     document.getElementById('startMainQuizBtn').addEventListener('click', () => {
         startQuiz('random_main');
     });
