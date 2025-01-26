@@ -10,7 +10,7 @@ $terrData = file_get_contents('http://localhost/fetch-country-data.php?type=all_
 $territories = json_decode($terrData, true) ?: [];
 
 // 3) Fetch De Facto States
-$deFactoData = file_get_contents('http://localhost/fetch-country-data.php?type=all_de_facto');
+$deFactoData = file_get_contents('http://localhost/fetch-country-data.php?type=all_de_facto_states'); // Corrected type
 $deFactoStates = json_decode($deFactoData, true) ?: [];
 ?>
 <!DOCTYPE html>
