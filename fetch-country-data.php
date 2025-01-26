@@ -160,11 +160,10 @@ try {
     // 9. Site Statistics
     // ============================
     elseif ($type === 'statistics') {
-        // Fetch most searched countries
+        // Fetch most searched country
         $stmt = $conn->query("
-            SELECT country_name, COUNT(*) AS search_count
-            FROM searches
-            GROUP BY country_name
+            SELECT country_name
+            FROM site_statistics
             ORDER BY search_count DESC
             LIMIT 1
         ");
@@ -172,20 +171,24 @@ try {
         $most_searched_countries = $most_searched ? $most_searched['country_name'] : 'No data';
 
         // Fetch total searches
-        $stmt = $conn->query("SELECT COUNT(*) AS total_searches FROM searches");
-        $total_searches = $stmt->fetch(PDO::FETCH_ASSOC)['total_searches'];
+        $stmt = $conn->query("SELECT SUM(search_count) AS total_searches FROM site_statistics");
+        $total_searches = $stmt->fetch(PDO::FETCH_ASSOC)['total_searches'] ?? 0;
 
         // Fetch most recent search
-        $stmt = $conn->query("SELECT country_name FROM searches ORDER BY search_time DESC LIMIT 1");
+        $stmt = $conn->query("SELECT country_name FROM site_statistics ORDER BY last_searched_at DESC LIMIT 1");
         $most_recent_search = $stmt->fetch(PDO::FETCH_ASSOC)['country_name'] ?? 'No data';
 
         // Fetch searches today
-        $stmt = $conn->query("SELECT COUNT(*) AS searches_today FROM searches WHERE DATE(search_time) = CURDATE()");
-        $searches_today = $stmt->fetch(PDO::FETCH_ASSOC)['searches_today'];
+        $stmt = $conn->query("
+            SELECT SUM(search_count) AS searches_today
+            FROM site_statistics
+            WHERE last_searched_at::date = CURRENT_DATE
+        ");
+        $searches_today = $stmt->fetch(PDO::FETCH_ASSOC)['searches_today'] ?? 0;
 
         // Fetch unique countries searched
-        $stmt = $conn->query("SELECT COUNT(DISTINCT country_name) AS unique_countries_searched FROM searches");
-        $unique_countries_searched = $stmt->fetch(PDO::FETCH_ASSOC)['unique_countries_searched'];
+        $stmt = $conn->query("SELECT COUNT(DISTINCT country_name) AS unique_countries_searched FROM site_statistics");
+        $unique_countries_searched = $stmt->fetch(PDO::FETCH_ASSOC)['unique_countries_searched'] ?? 0;
 
         $response = [
             'most_searched_countries' => $most_searched_countries,
@@ -206,7 +209,8 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    $response = ['error' => $e->getMessage()];
+    error_log("Error in fetch-country-data.php: " . $e->getMessage()); // Log the error
+    $response = ['error' => 'An internal server error occurred.'];
 }
 
 echo json_encode($response);

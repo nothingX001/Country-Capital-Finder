@@ -38,7 +38,7 @@ if (!$statistics || isset($statistics['error'])) {
         <h1>ABOUT EXPLORECAPITALS.COM</h1>
         <p>
             Welcome to <strong>ExploreCapitals.com</strong>—an intuitive application where you can 
-            <strong>find any country or territory’s capital</strong> with ease. Created to support learners of all levels, 
+            <strong>find any capital</strong> with ease. Created to support learners of all levels, 
             our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong>.
         </p>
         <h2>Social Media</h2>
