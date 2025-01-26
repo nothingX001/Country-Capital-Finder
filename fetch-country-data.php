@@ -157,7 +157,47 @@ try {
     }
 
     // ============================
-    // 9. Invalid or Missing Type
+    // 9. Site Statistics
+    // ============================
+    elseif ($type === 'statistics') {
+        // Fetch most searched countries
+        $stmt = $conn->query("
+            SELECT country_name, COUNT(*) AS search_count
+            FROM searches
+            GROUP BY country_name
+            ORDER BY search_count DESC
+            LIMIT 1
+        ");
+        $most_searched = $stmt->fetch(PDO::FETCH_ASSOC);
+        $most_searched_countries = $most_searched ? $most_searched['country_name'] : 'No data';
+
+        // Fetch total searches
+        $stmt = $conn->query("SELECT COUNT(*) AS total_searches FROM searches");
+        $total_searches = $stmt->fetch(PDO::FETCH_ASSOC)['total_searches'];
+
+        // Fetch most recent search
+        $stmt = $conn->query("SELECT country_name FROM searches ORDER BY search_time DESC LIMIT 1");
+        $most_recent_search = $stmt->fetch(PDO::FETCH_ASSOC)['country_name'] ?? 'No data';
+
+        // Fetch searches today
+        $stmt = $conn->query("SELECT COUNT(*) AS searches_today FROM searches WHERE DATE(search_time) = CURDATE()");
+        $searches_today = $stmt->fetch(PDO::FETCH_ASSOC)['searches_today'];
+
+        // Fetch unique countries searched
+        $stmt = $conn->query("SELECT COUNT(DISTINCT country_name) AS unique_countries_searched FROM searches");
+        $unique_countries_searched = $stmt->fetch(PDO::FETCH_ASSOC)['unique_countries_searched'];
+
+        $response = [
+            'most_searched_countries' => $most_searched_countries,
+            'total_searches' => $total_searches,
+            'most_recent_search' => $most_recent_search,
+            'searches_today' => $searches_today,
+            'unique_countries_searched' => $unique_countries_searched
+        ];
+    }
+
+    // ============================
+    // 10. Invalid or Missing Type
     // ============================
     else {
         http_response_code(400);
