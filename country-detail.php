@@ -85,10 +85,6 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
     <title><?php echo htmlspecialchars($country['country_name']); ?> Details</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="country-detail-styles.css">
-
-    <!-- Mapbox CSS & JS -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -103,9 +99,6 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
             </h1>
         </div>
         <div class="card-content">
-            <!-- Map area -->
-            <div id="map" style="width: 100%; height: 400px; margin-bottom: 20px;"></div>
-
             <div class="country-info">
                 <?php
                 // Show capitals
@@ -214,77 +207,5 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
             </div> <!-- .country-info -->
         </div> <!-- .card-content -->
     </div> <!-- #country-detail-card -->
-
-    <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [0, 0],
-        zoom: 2
-    });
-
-    // Attempt geocoding the country name from the DB
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/<?php echo urlencode($country['country_name']); ?>.json?access_token=${mapboxgl.accessToken}&limit=1`)
-      .then(r => r.json())
-      .then(data => {
-        let usedGeocode = false;
-        if (data.features && data.features.length > 0) {
-          const feat = data.features[0];
-          if (feat.bbox) {
-            map.fitBounds(feat.bbox, { padding: 20 });
-            usedGeocode = true;
-          } else if (feat.center && feat.center.length === 2) {
-            map.setCenter(feat.center);
-            map.setZoom(4);
-            usedGeocode = true;
-          }
-        }
-
-        // Fallback if geocode fails
-        if (!usedGeocode) {
-          console.warn('Mapbox geocoding failed. Using capital coords fallback.');
-          <?php if (!empty($capitals)):
-              $first = $capitals[0];
-              if (!empty($first['latitude']) && !empty($first['longitude'])) {
-                  $lat = $first['latitude'];
-                  $lng = $first['longitude'];
-          ?>
-          map.setCenter([<?php echo $lng; ?>, <?php echo $lat; ?>]);
-          map.setZoom(6);
-          <?php } else { ?>
-          map.setCenter([0, 0]);
-          map.setZoom(2);
-          <?php } endif; ?>
-        }
-
-        // Add markers for each capital
-        <?php foreach ($capitals as $cap) {
-            if (!empty($cap['latitude']) && !empty($cap['longitude'])) {
-                $safeName = htmlspecialchars($cap['capital_name'], ENT_QUOTES);
-        ?>
-        new mapboxgl.Marker()
-          .setLngLat([<?php echo $cap['longitude']; ?>, <?php echo $cap['latitude']; ?>])
-          .setPopup(new mapboxgl.Popup().setHTML('<h3><?php echo $safeName; ?></h3>'))
-          .addTo(map);
-        <?php } } ?>
-      })
-      .catch(err => {
-        console.error('Mapbox geocoding error:', err);
-        // Hard fallback
-        <?php if (!empty($capitals)):
-            $first = $capitals[0];
-            if (!empty($first['latitude']) && !empty($first['longitude'])) {
-                $lat = $first['latitude'];
-                $lng = $first['longitude'];
-        ?>
-        map.setCenter([<?php echo $lng; ?>, <?php echo $lat; ?>]);
-        map.setZoom(6);
-        <?php } else { ?>
-        map.setCenter([0, 0]);
-        map.setZoom(2);
-        <?php } endif; ?>
-      });
-    </script>
 </body>
 </html>
