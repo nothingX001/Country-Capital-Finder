@@ -7,14 +7,14 @@ include 'the-countries.php'; // For "the" prefix logic
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Country Capital Quiz</title>
+    <title>ExploreCapitals Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
     <section id="main-quiz">
-        <h1>COUNTRY CAPITAL QUIZ</h1>
+        <h1>ExploreCapitals Quiz</h1>
         <p>Select a quiz type to begin.</p>
 
         <button id="startMainQuizBtn">Start Member/Observer States Quiz</button>
@@ -94,36 +94,39 @@ include 'the-countries.php'; // For "the" prefix logic
     }
 
     function prepareQuestions(data) {
-        questions = [];
-        data.forEach(row => {
-            if (row.capitals && row.capitals.length > 0) {
-                questions.push({
-                    country: row.country_name,
-                    capitals: row.capitals
-                });
-            }
-        });
-
-        if (questions.length === 0) {
-            alert('No valid quiz entries (no capitals).');
-            return;
+    questions = [];
+    data.forEach(row => {
+        if (row.capitals && row.capitals.length > 0) {
+            questions.push({
+                country: row.country_name,
+                capitals: row.capitals
+            });
         }
+    });
 
-        // Show quiz
-        document.getElementById('quizContainer').style.display = 'block';
-        document.getElementById('resultContainer').style.display = 'none';
-        document.getElementById('startMainQuizBtn').style.display = 'none';
-        document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
-
-        // Reset
-        score = 0;
-        timeElapsed = 0;
-        currentQuestionIndex = 0;
-        userResponses = [];
-
-        startTimer();
-        showNextQuestion();
+    if (questions.length === 0) {
+        alert('No valid quiz entries (no capitals).');
+        return;
     }
+
+    // Hide the "Select a quiz type to begin." text
+    document.querySelector('#main-quiz p').style.display = 'none';
+
+    // Show quiz
+    document.getElementById('quizContainer').style.display = 'block';
+    document.getElementById('resultContainer').style.display = 'none';
+    document.getElementById('startMainQuizBtn').style.display = 'none';
+    document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
+
+    // Reset
+    score = 0;
+    timeElapsed = 0;
+    currentQuestionIndex = 0;
+    userResponses = [];
+
+    startTimer();
+    showNextQuestion();
+}
 
     function startTimer() {
         clearInterval(timer);
@@ -176,35 +179,51 @@ include 'the-countries.php'; // For "the" prefix logic
     }
 
     function checkAnswer(userAnswer, correctAnswers) {
-        const userNorm = normalizeInput(userAnswer);
-        // each correctAnswers item might have multiple slash-separated options
-        return correctAnswers.some(ca => {
-            const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
-            return variants.includes(userNorm);
-        });
-    }
+    const userNorm = normalizeInput(userAnswer);
+
+    // Check if the user's answer matches any of the correct answers (including variants)
+    return correctAnswers.some(ca => {
+        const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
+        return variants.includes(userNorm);
+    });
+}
+
+function normalizeInput(input) {
+    let norm = input.toLowerCase().trim();
+
+    // Remove leading/trailing whitespace and any non-alphanumeric characters (except spaces)
+    norm = norm.replace(/^the\s+/i, ''); // Remove leading "the"
+    norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation
+    norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
+
+    return norm;
+}
 
     function endQuiz() {
-        clearInterval(timer);
-        document.getElementById('quizContainer').style.display = 'none';
-        document.getElementById('resultContainer').style.display = 'block';
-        document.getElementById('score').textContent =
-            `You scored ${score} out of ${questions.length}.`;
+    clearInterval(timer);
+    document.getElementById('quizContainer').style.display = 'none';
+    document.getElementById('resultContainer').style.display = 'block';
+    document.getElementById('score').textContent =
+        `You scored ${score} out of ${questions.length}.`;
 
-        let detailHTML = '';
-        userResponses.forEach((resp, idx) => {
-            const resultText = resp.isCorrect
-                ? `Correct. The answer was ${resp.correctAnswerText}.`
-                : `Incorrect. The answer was ${resp.correctAnswerText}. You answered "${resp.userAnswer}".`;
-            detailHTML += `
-                <p>
-                    <strong>Question ${idx+1}:</strong> ${resp.questionText}<br>
-                    ${resultText}
-                </p>
-            `;
-        });
-        document.getElementById('detailedResults').innerHTML = detailHTML;
-    }
+    let detailHTML = '';
+    userResponses.forEach((resp, idx) => {
+        const correctAnswerText = `"${resp.correctAnswerText}"`; // Wrap correct answer in quotes
+        const userAnswerText = resp.userAnswer ? `"${resp.userAnswer}"` : '""'; // Wrap user answer in quotes
+
+        const resultText = resp.isCorrect
+            ? `Correct. The answer was ${correctAnswerText}.`
+            : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
+
+        detailHTML += `
+            <p>
+                <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
+                ${resultText}
+            </p>
+        `;
+    });
+    document.getElementById('detailedResults').innerHTML = detailHTML;
+}
 
     document.getElementById('answerForm').addEventListener('submit', e => {
         e.preventDefault();
