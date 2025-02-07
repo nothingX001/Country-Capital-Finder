@@ -158,7 +158,7 @@ include 'the-countries.php'; // For "the" prefix logic
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: `"${qData.capitals.join(' / ')}"` // Wrap correct answer in quotes
+                    correctAnswerText: qData.capitals.join(' / ') // Do not wrap in quotes here
                 });
             } else {
                 const capCount = qData.capitals.length;
@@ -170,7 +170,7 @@ include 'the-countries.php'; // For "the" prefix logic
                     correctAnswers: [qData.country],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: `"${qData.country}"` // Wrap correct answer in quotes
+                    correctAnswerText: qData.country // Do not wrap in quotes here
                 });
             }
 
@@ -201,7 +201,7 @@ include 'the-countries.php'; // For "the" prefix logic
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `"${resp.correctAnswerText}"`; // Wrap correct answer in quotes
+            const correctAnswerText = `"${resp.correctAnswerText}"`; // Wrap correct answer in quotes here
             const userAnswerText = resp.userAnswer ? `"${resp.userAnswer}"` : '""'; // Wrap user answer in quotes
 
             const resultText = resp.isCorrect
