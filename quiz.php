@@ -7,14 +7,14 @@ include 'the-countries.php'; // For "the" prefix logic
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ExploreCapitals Quiz</title>
+    <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
     <section id="main-quiz">
-        <h1>ExploreCapitals Quiz</h1>
+        <h1>COUNTRY CAPITAL QUIZ</h1>
         <p>Select a quiz type to begin.</p>
 
         <button id="startMainQuizBtn">Start Member/Observer States Quiz</button>
@@ -41,7 +41,7 @@ include 'the-countries.php'; // For "the" prefix logic
     // We'll store quiz data here
     let questions = [];
     const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
-    
+
     let currentQuestionIndex = 0;
     let score = 0;
     let timeElapsed = 0;
@@ -54,8 +54,12 @@ include 'the-countries.php'; // For "the" prefix logic
 
     function normalizeInput(input) {
         let norm = input.toLowerCase().trim();
-        // remove leading "the" if present
-        norm = norm.replace(/^the\s+/i, '');
+
+        // Remove leading/trailing whitespace and any non-alphanumeric characters (except spaces)
+        norm = norm.replace(/^the\s+/i, ''); // Remove leading "the"
+        norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation
+        norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
+
         return norm;
     }
 
@@ -94,39 +98,39 @@ include 'the-countries.php'; // For "the" prefix logic
     }
 
     function prepareQuestions(data) {
-    questions = [];
-    data.forEach(row => {
-        if (row.capitals && row.capitals.length > 0) {
-            questions.push({
-                country: row.country_name,
-                capitals: row.capitals
-            });
+        questions = [];
+        data.forEach(row => {
+            if (row.capitals && row.capitals.length > 0) {
+                questions.push({
+                    country: row.country_name,
+                    capitals: row.capitals
+                });
+            }
+        });
+
+        if (questions.length === 0) {
+            alert('No valid quiz entries (no capitals).');
+            return;
         }
-    });
 
-    if (questions.length === 0) {
-        alert('No valid quiz entries (no capitals).');
-        return;
+        // Hide the "Select a quiz type to begin." text
+        document.querySelector('#main-quiz p').style.display = 'none';
+
+        // Show quiz
+        document.getElementById('quizContainer').style.display = 'block';
+        document.getElementById('resultContainer').style.display = 'none';
+        document.getElementById('startMainQuizBtn').style.display = 'none';
+        document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
+
+        // Reset
+        score = 0;
+        timeElapsed = 0;
+        currentQuestionIndex = 0;
+        userResponses = [];
+
+        startTimer();
+        showNextQuestion();
     }
-
-    // Hide the "Select a quiz type to begin." text
-    document.querySelector('#main-quiz p').style.display = 'none';
-
-    // Show quiz
-    document.getElementById('quizContainer').style.display = 'block';
-    document.getElementById('resultContainer').style.display = 'none';
-    document.getElementById('startMainQuizBtn').style.display = 'none';
-    document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
-
-    // Reset
-    score = 0;
-    timeElapsed = 0;
-    currentQuestionIndex = 0;
-    userResponses = [];
-
-    startTimer();
-    showNextQuestion();
-}
 
     function startTimer() {
         clearInterval(timer);
@@ -148,25 +152,25 @@ include 'the-countries.php'; // For "the" prefix logic
 
             let questionText;
             if (isCountryQuestion) {
-                questionText = `What is the capital of ${addThe(qData.country)}?`;
+                questionText = `What is the capital of "${addThe(qData.country)}"?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.capitals.join(' / ')
+                    correctAnswerText: `"${qData.capitals.join(' / ')}"` // Wrap correct answer in quotes
                 });
             } else {
                 const capCount = qData.capitals.length;
-                const capStr = qData.capitals.join(' / ');
+                const capStr = qData.capitals.map(cap => `"${cap}"`).join(' / '); // Wrap capitals in quotes
                 const verb = capCount > 1 ? 'are' : 'is';
-                questionText = `${capStr} ${verb} the capital${capCount>1 ? 's' : ''} of which country?`;
+                questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: [qData.country],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.country
+                    correctAnswerText: `"${qData.country}"` // Wrap correct answer in quotes
                 });
             }
 
@@ -179,51 +183,40 @@ include 'the-countries.php'; // For "the" prefix logic
     }
 
     function checkAnswer(userAnswer, correctAnswers) {
-    const userNorm = normalizeInput(userAnswer);
+        const userNorm = normalizeInput(userAnswer);
 
-    // Check if the user's answer matches any of the correct answers (including variants)
-    return correctAnswers.some(ca => {
-        const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
-        return variants.includes(userNorm);
-    });
-}
-
-function normalizeInput(input) {
-    let norm = input.toLowerCase().trim();
-
-    // Remove leading/trailing whitespace and any non-alphanumeric characters (except spaces)
-    norm = norm.replace(/^the\s+/i, ''); // Remove leading "the"
-    norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation
-    norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
-
-    return norm;
-}
+        // Check if the user's answer matches any of the correct answers (including variants)
+        return correctAnswers.some(ca => {
+            const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
+            return variants.includes(userNorm);
+        });
+    }
 
     function endQuiz() {
-    clearInterval(timer);
-    document.getElementById('quizContainer').style.display = 'none';
-    document.getElementById('resultContainer').style.display = 'block';
-    document.getElementById('score').textContent =
-        `You scored ${score} out of ${questions.length}.`;
+        clearInterval(timer);
+        document.getElementById('quizContainer').style.display = 'none';
+        document.getElementById('resultContainer').style.display = 'block';
+        document.getElementById('score').textContent =
+            `You scored ${score} out of ${questions.length}.`;
 
-    let detailHTML = '';
-    userResponses.forEach((resp, idx) => {
-        const correctAnswerText = `"${resp.correctAnswerText}"`; // Wrap correct answer in quotes
-        const userAnswerText = resp.userAnswer ? `"${resp.userAnswer}"` : '""'; // Wrap user answer in quotes
+        let detailHTML = '';
+        userResponses.forEach((resp, idx) => {
+            const correctAnswerText = `"${resp.correctAnswerText}"`; // Wrap correct answer in quotes
+            const userAnswerText = resp.userAnswer ? `"${resp.userAnswer}"` : '""'; // Wrap user answer in quotes
 
-        const resultText = resp.isCorrect
-            ? `Correct. The answer was ${correctAnswerText}.`
-            : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
+            const resultText = resp.isCorrect
+                ? `Correct. The answer was ${correctAnswerText}.`
+                : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
 
-        detailHTML += `
-            <p>
-                <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
-                ${resultText}
-            </p>
-        `;
-    });
-    document.getElementById('detailedResults').innerHTML = detailHTML;
-}
+            detailHTML += `
+                <p>
+                    <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
+                    ${resultText}
+                </p>
+            `;
+        });
+        document.getElementById('detailedResults').innerHTML = detailHTML;
+    }
 
     document.getElementById('answerForm').addEventListener('submit', e => {
         e.preventDefault();
