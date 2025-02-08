@@ -80,17 +80,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ExploreCapitals</title>
     <meta name="description" content="Discover capitals of countries, territories, and de facto states.">
     <meta name="keywords" content="explore capitals, find capitals, countries and capitals">
     <meta name="author" content="ExploreCapitals">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <div class="main">
+    <!-- Use a common container class .page-content + optional .home -->
+    <div class="page-content home">
         <h1>EXPLORE CAPITALS</h1>
         <h3>Search for any country or territory to find its capital.</h3>
         <form action="index.php" method="post">

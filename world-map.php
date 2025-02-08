@@ -7,26 +7,26 @@ $countries = json_decode($data, true);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>World Map</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="world-map-styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
-    <div id="main-world-map">
+
+    <!-- Common container .page-content + .world-map, keep the ID if you like -->
+    <section class="page-content world-map" id="main-world-map">
         <h1>WORLD MAP OF CAPITALS</h1>
         <p>Explore capitals of countries, territories, and more around the world.</p>
         <div class="search-bar-container">
             <input type="text" id="search-bar" placeholder="Search for a country or capital...">
         </div>
         <div id="map" style="height: 500px; border-radius: 15px;"></div>
-    </div>
+    </section>
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
+        mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN_HERE';
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
@@ -68,8 +68,8 @@ $countries = json_decode($data, true);
             const query = this.value.toLowerCase();
             // find match among countries
             const match = countries.find(row =>
-                row.country_name && row.country_name.toLowerCase() === query
-                || row.capital_name && row.capital_name.toLowerCase() === query
+                (row.country_name && row.country_name.toLowerCase() === query) ||
+                (row.capital_name && row.capital_name.toLowerCase() === query)
             );
             if (match && match.latitude && match.longitude) {
                 map.flyTo({ center: [match.longitude, match.latitude], zoom: 5 });

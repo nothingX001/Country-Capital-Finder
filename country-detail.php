@@ -81,15 +81,14 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($country['country_name']); ?> Details</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="country-detail-styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <div id="country-detail-card">
+    <!-- Use .page-content + .country-detail for unique styling, keep the existing ID if needed -->
+    <section class="page-content country-detail" id="country-detail-card">
         <div class="card-header">
             <h1>
                 <?php echo htmlspecialchars($country['country_name']); ?>
@@ -206,6 +205,6 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
                 <?php endif; ?>
             </div> <!-- .country-info -->
         </div> <!-- .card-content -->
-    </div> <!-- #country-detail-card -->
+    </section> <!-- .page-content.country-detail -->
 </body>
 </html>

@@ -10,22 +10,21 @@ $terrData = file_get_contents('http://localhost/fetch-country-data.php?type=all_
 $territories = json_decode($terrData, true) ?: [];
 
 // 3) Fetch De Facto States
-$deFactoData = file_get_contents('http://localhost/fetch-country-data.php?type=all_de_facto_states'); // Corrected type
+$deFactoData = file_get_contents('http://localhost/fetch-country-data.php?type=all_de_facto_states');
 $deFactoStates = json_decode($deFactoData, true) ?: [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Profiles</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="country-profiles-styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <section id="main-country-profiles">
+    <!-- .page-content + .country-profiles -->
+    <section class="page-content country-profiles" id="main-country-profiles">
         <h1>COUNTRY PROFILES</h1>
         <p>Explore member/observer states, territories, and de facto states in our database.</p>
 
