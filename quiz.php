@@ -17,15 +17,15 @@ include 'the-countries.php'; // For "the" prefix logic
         <h1>COUNTRY CAPITAL QUIZ</h1>
         <p>Select a quiz type to begin.</p>
 
-        <button id="startMainQuizBtn">Start Member/Observer States Quiz</button>
-        <button id="startTerritoriesQuizBtn">Start Territories Quiz</button>
+        <button id="startMainQuizBtn" class="button">Start Member/Observer States Quiz</button>
+        <button id="startTerritoriesQuizBtn" class="button">Start Territories Quiz</button>
 
         <div id="quizContainer" style="display: none;">
             <div id="timer">Time: 0:00</div>
             <div id="questionContainer"></div>
             <form id="answerForm">
                 <input type="text" id="userAnswer" placeholder="Type your answer here" required>
-                <button type="submit">SUBMIT ANSWER</button>
+                <button type="submit" class="button">SUBMIT ANSWER</button>
             </form>
         </div>
 
@@ -33,7 +33,7 @@ include 'the-countries.php'; // For "the" prefix logic
             <h2>Quiz Results</h2>
             <p id="score"></p>
             <div id="detailedResults"></div>
-            <button id="redoQuizBtn">REDO QUIZ</button>
+            <button id="redoQuizBtn" class="button">REDO QUIZ</button>
         </div>
     </section>
 
