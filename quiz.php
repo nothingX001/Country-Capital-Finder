@@ -7,13 +7,14 @@ include 'the-countries.php'; // For "the" prefix logic
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Country Capital Quiz</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Ensure this path is correct -->
+    <link rel="stylesheet" href="quiz-styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
     <section id="main-quiz">
-        <h1>COUNTRY-CAPITAL QUIZ</h1>
+        <h1>COUNTRY CAPITAL QUIZ</h1>
         <p>Select a quiz type to begin.</p>
 
         <button id="startMainQuizBtn" class="button">Start Member/Observer States Quiz</button>
