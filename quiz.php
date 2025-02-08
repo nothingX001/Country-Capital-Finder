@@ -146,41 +146,41 @@ include 'the-countries.php'; // For "the" prefix logic
     }
 
     function showNextQuestion() {
-        if (currentQuestionIndex < questions.length) {
-            const qData = questions[currentQuestionIndex];
-            const isCountryQuestion = Math.random() > 0.5;
+    if (currentQuestionIndex < questions.length) {
+        const qData = questions[currentQuestionIndex];
+        const isCountryQuestion = Math.random() > 0.5;
 
-            let questionText;
-            if (isCountryQuestion) {
-                questionText = `What is the capital of <strong>${addThe(qData.country)}</strong>?`;
-                userResponses.push({
-                    questionText,
-                    correctAnswers: qData.capitals,
-                    userAnswer: "",
-                    isCorrect: false,
-                    correctAnswerText: qData.capitals.join(' / ') // Do not wrap in quotes here
-                });
-            } else {
-                const capCount = qData.capitals.length;
-                const capStr = qData.capitals.map(cap => `<strong>${cap}</strong>`).join(' / '); // Bold capitals
-                const verb = capCount > 1 ? 'are' : 'is';
-                questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
-                userResponses.push({
-                    questionText,
-                    correctAnswers: [qData.country],
-                    userAnswer: "",
-                    isCorrect: false,
-                    correctAnswerText: qData.country // Do not wrap in quotes here
-                });
-            }
-
-            document.getElementById('questionContainer').innerHTML =
-                `<p>Question ${currentQuestionIndex + 1}:<br>${questionText}</p>`;
-            document.getElementById('userAnswer').value = '';
+        let questionText;
+        if (isCountryQuestion) {
+            questionText = `What is the capital of <strong>${addThe(qData.country)}</strong>?`;
+            userResponses.push({
+                questionText,
+                correctAnswers: qData.capitals,
+                userAnswer: "",
+                isCorrect: false,
+                correctAnswerText: qData.capitals.join(' / ') // No quotes here
+            });
         } else {
-            endQuiz();
+            const capCount = qData.capitals.length;
+            const capStr = qData.capitals.map(cap => `<strong>${cap}</strong>`).join(' / '); // Bold capitals
+            const verb = capCount > 1 ? 'are' : 'is';
+            questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
+            userResponses.push({
+                questionText,
+                correctAnswers: [qData.country],
+                userAnswer: "",
+                isCorrect: false,
+                correctAnswerText: qData.country // No quotes here
+            });
         }
+
+        document.getElementById('questionContainer').innerHTML =
+            `<p>Question ${currentQuestionIndex + 1}:<br>${questionText}</p>`;
+        document.getElementById('userAnswer').value = '';
+    } else {
+        endQuiz();
     }
+}
 
     function checkAnswer(userAnswer, correctAnswers) {
         const userNorm = normalizeInput(userAnswer);

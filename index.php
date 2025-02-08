@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h3>Search for any country or territory to find its capital.</h3>
         <form action="index.php" method="post">
             <input type="text" name="country" autocomplete="off" placeholder="Search..." required>
-            <input type="submit" value="SUBMIT">
+            <input type="submit" value="SUBMIT" class="button">
         </form>
 
         <?php if (isset($message)): ?>
