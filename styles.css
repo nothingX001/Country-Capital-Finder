@@ -5,12 +5,8 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Start below the navbar */
-    min-height: 100vh;
-    text-align: center;
+    /* Removed display:flex so that .main can easily push away from fixed navbar */
+    /* text-align:center is removed so you have more flexibility (optional) */
 }
 
 /* Navbar styles */
@@ -85,17 +81,33 @@ body {
     }
 }
 
-/* Main content styles */
+/* Main content container (for all pages, or just your homepage) */
 .main {
-    margin-top: 80px; /* Space for the navbar */
+    /* Provide enough top margin so the content starts below the fixed navbar */
+    margin-top: 100px;
     width: 100%;
     max-width: 600px;
     padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center; /* If you want all text centered within .main */
 }
 
-/* Button styles */
+/* Enlarge and style text inputs (like search boxes) */
+input[type="text"] {
+    width: 100%;
+    max-width: 100%; /* Expand to the container's width */
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+/* Button styles (general) */
 .button {
-    display: inline-block;
+    display: inline-block; /* Keep them inline-block by default */
     padding: 15px 40px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -109,7 +121,7 @@ body {
                 0 6px 12px rgba(0, 0, 0, 0.2); /* Outer shadow for depth */
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    margin-top: 10px; /* Space between input and button */
+    margin-top: 10px; /* Space above the button */
 }
 
 .button:hover {
@@ -122,6 +134,19 @@ body {
     transform: translateY(2px);
 }
 
+/* Make sure the SUBMIT button is on its own line under the text input in forms */
+form input[type="submit"].button {
+    display: block;
+    margin: 10px auto; /* Center horizontally */
+}
+
+/* Quiz page: stack quiz buttons vertically */
+.quiz .button {
+    display: block;      /* ensures each button is on a separate line */
+    width: 60%;         /* optional, if you want them narrower than 100% */
+    margin: 10px auto;  /* center them and add space between */
+}
+
 /* Message styles */
 .message {
     text-align: center;
@@ -131,3 +156,9 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+/* 
+  If you have additional page containers (e.g., .page-content, .about, etc.),
+  you can similarly add margin-top if they're also overshadowed by the navbar,
+  or unify them all with a single container style that has margin-top:100px.
+*/
