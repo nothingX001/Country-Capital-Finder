@@ -7,13 +7,14 @@ include 'the-countries.php'; // For "the" prefix logic
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the main stylesheet -->
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
-    <section id="main-quiz">
+
+    <!-- .page-content + .quiz -->
+    <section class="page-content quiz" id="main-quiz">
         <h1>COUNTRY CAPITAL QUIZ</h1>
         <p>Select a quiz type to begin.</p>
 
@@ -55,7 +56,7 @@ include 'the-countries.php'; // For "the" prefix logic
     function normalizeInput(input) {
         let norm = input.toLowerCase().trim();
 
-        // Remove leading/trailing whitespace and any non-alphanumeric characters (except spaces)
+        // Remove leading/trailing whitespace, punctuation, etc.
         norm = norm.replace(/^the\s+/i, ''); // Remove leading "the"
         norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation
         norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
@@ -65,28 +66,21 @@ include 'the-countries.php'; // For "the" prefix logic
 
     // Called when user clicks a quiz start button
     function startQuiz(quizType) {
-        console.log('Starting quiz with type =', quizType);
         fetch(`fetch-country-data.php?type=${quizType}&limit=10`)
             .then(async response => {
                 if (!response.ok) {
-                    // HTTP error, e.g. 404 or 500
                     let text = await response.text();
                     console.error('Response not OK:', response.status, text);
                     alert('Unable to load quiz data.');
                     return;
                 }
                 let data = await response.json();
-                console.log('Quiz data fetched:', data);
-
-                // if data has an error property
                 if (!data || data.error) {
-                    console.error('Quiz data error:', data.error || data);
                     alert('Unable to load quiz data.');
                     return;
                 }
-                // if it's an empty array, no results
                 if (!Array.isArray(data) || data.length === 0) {
-                    alert('No quiz data found. Possibly no matching entries in DB.');
+                    alert('No quiz data found.');
                     return;
                 }
                 prepareQuestions(data);
@@ -116,13 +110,13 @@ include 'the-countries.php'; // For "the" prefix logic
         // Hide the "Select a quiz type to begin." text
         document.querySelector('#main-quiz p').style.display = 'none';
 
-        // Show quiz
+        // Show quiz container
         document.getElementById('quizContainer').style.display = 'block';
         document.getElementById('resultContainer').style.display = 'none';
         document.getElementById('startMainQuizBtn').style.display = 'none';
         document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
 
-        // Reset
+        // Reset everything
         score = 0;
         timeElapsed = 0;
         currentQuestionIndex = 0;
@@ -146,46 +140,44 @@ include 'the-countries.php'; // For "the" prefix logic
     }
 
     function showNextQuestion() {
-    if (currentQuestionIndex < questions.length) {
-        const qData = questions[currentQuestionIndex];
-        const isCountryQuestion = Math.random() > 0.5;
+        if (currentQuestionIndex < questions.length) {
+            const qData = questions[currentQuestionIndex];
+            const isCountryQuestion = Math.random() > 0.5;
 
-        let questionText;
-        if (isCountryQuestion) {
-            questionText = `What is the capital of <strong>${addThe(qData.country)}</strong>?`;
-            userResponses.push({
-                questionText,
-                correctAnswers: qData.capitals,
-                userAnswer: "",
-                isCorrect: false,
-                correctAnswerText: qData.capitals.join(' / ') // No quotes here
-            });
+            let questionText;
+            if (isCountryQuestion) {
+                questionText = `What is the capital of <strong>${addThe(qData.country)}</strong>?`;
+                userResponses.push({
+                    questionText,
+                    correctAnswers: qData.capitals,
+                    userAnswer: "",
+                    isCorrect: false,
+                    correctAnswerText: qData.capitals.join(' / ')
+                });
+            } else {
+                const capCount = qData.capitals.length;
+                const capStr = qData.capitals.map(cap => `<strong>${cap}</strong>`).join(' / ');
+                const verb = capCount > 1 ? 'are' : 'is';
+                questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
+                userResponses.push({
+                    questionText,
+                    correctAnswers: [qData.country],
+                    userAnswer: "",
+                    isCorrect: false,
+                    correctAnswerText: qData.country
+                });
+            }
+
+            document.getElementById('questionContainer').innerHTML =
+                `<p>Question ${currentQuestionIndex + 1}:<br>${questionText}</p>`;
+            document.getElementById('userAnswer').value = '';
         } else {
-            const capCount = qData.capitals.length;
-            const capStr = qData.capitals.map(cap => `<strong>${cap}</strong>`).join(' / '); // Bold capitals
-            const verb = capCount > 1 ? 'are' : 'is';
-            questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
-            userResponses.push({
-                questionText,
-                correctAnswers: [qData.country],
-                userAnswer: "",
-                isCorrect: false,
-                correctAnswerText: qData.country // No quotes here
-            });
+            endQuiz();
         }
-
-        document.getElementById('questionContainer').innerHTML =
-            `<p>Question ${currentQuestionIndex + 1}:<br>${questionText}</p>`;
-        document.getElementById('userAnswer').value = '';
-    } else {
-        endQuiz();
     }
-}
 
     function checkAnswer(userAnswer, correctAnswers) {
         const userNorm = normalizeInput(userAnswer);
-
-        // Check if the user's answer matches any of the correct answers (including variants)
         return correctAnswers.some(ca => {
             const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
             return variants.includes(userNorm);
@@ -201,8 +193,8 @@ include 'the-countries.php'; // For "the" prefix logic
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong>`; // Bold correct answer
-            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""'; // Bold user answer
+            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong>`;
+            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
 
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`
@@ -222,7 +214,6 @@ include 'the-countries.php'; // For "the" prefix logic
         e.preventDefault();
         const userAnswer = document.getElementById('userAnswer').value.trim();
         const currentResp = userResponses[currentQuestionIndex];
-
         const isCorrect = checkAnswer(userAnswer, currentResp.correctAnswers);
         currentResp.userAnswer = userAnswer;
         currentResp.isCorrect  = isCorrect;
@@ -235,7 +226,7 @@ include 'the-countries.php'; // For "the" prefix logic
         location.reload();
     });
 
-    // Button event listeners
+    // Start quiz buttons
     document.getElementById('startMainQuizBtn').addEventListener('click', () => {
         startQuiz('random_main');
     });
