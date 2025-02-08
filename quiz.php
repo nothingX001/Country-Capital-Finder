@@ -7,67 +7,9 @@ include 'the-countries.php'; // For "the" prefix logic
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Capital Quiz</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Ensure this path is correct -->
-    <link rel="stylesheet" href="quiz-styles.css">
-    <style>
-        /* Center everything */
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-
-        #main-quiz {
-            width: 100%;
-            max-width: 600px;
-        }
-
-        #quizContainer, #resultContainer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        #timer {
-            font-size: 1.5rem;
-            margin: 20px 0;
-        }
-
-        #questionContainer {
-            font-size: 1.2rem;
-            margin: 20px 0;
-        }
-
-        #answerForm {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #userAnswer {
-            width: 100%;
-            max-width: 300px;
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 50px;
-            text-align: center;
-        }
-
-        .button {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the main stylesheet -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
