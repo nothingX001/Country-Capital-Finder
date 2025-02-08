@@ -10,6 +10,64 @@ include 'the-countries.php'; // For "the" prefix logic
     <title>Country Capital Quiz</title>
     <link rel="stylesheet" href="styles.css"> <!-- Ensure this path is correct -->
     <link rel="stylesheet" href="quiz-styles.css">
+    <style>
+        /* Center everything */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        #main-quiz {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        #quizContainer, #resultContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #timer {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+
+        #questionContainer {
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        #answerForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #userAnswer {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            text-align: center;
+        }
+
+        .button {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -152,7 +210,7 @@ include 'the-countries.php'; // For "the" prefix logic
 
             let questionText;
             if (isCountryQuestion) {
-                questionText = `What is the capital of "${addThe(qData.country)}"?`;
+                questionText = `What is the capital of <strong>${addThe(qData.country)}</strong>?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: qData.capitals,
@@ -162,7 +220,7 @@ include 'the-countries.php'; // For "the" prefix logic
                 });
             } else {
                 const capCount = qData.capitals.length;
-                const capStr = qData.capitals.map(cap => `"${cap}"`).join(' / '); // Wrap capitals in quotes
+                const capStr = qData.capitals.map(cap => `<strong>${cap}</strong>`).join(' / '); // Bold capitals
                 const verb = capCount > 1 ? 'are' : 'is';
                 questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
                 userResponses.push({
@@ -174,8 +232,8 @@ include 'the-countries.php'; // For "the" prefix logic
                 });
             }
 
-            document.getElementById('questionContainer').textContent =
-                `Question ${currentQuestionIndex + 1}: ${questionText}`;
+            document.getElementById('questionContainer').innerHTML =
+                `<p>Question ${currentQuestionIndex + 1}:<br>${questionText}</p>`;
             document.getElementById('userAnswer').value = '';
         } else {
             endQuiz();
@@ -201,8 +259,8 @@ include 'the-countries.php'; // For "the" prefix logic
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `"${resp.correctAnswerText}"`; // Wrap correct answer in quotes here
-            const userAnswerText = resp.userAnswer ? `"${resp.userAnswer}"` : '""'; // Wrap user answer in quotes
+            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong>`; // Bold correct answer
+            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""'; // Bold user answer
 
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`
