@@ -5,37 +5,131 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
-}
-
-/* Header styles */
-h1 {
-    color: #333;
-    text-align: center;
-    margin-top: 20px;
-}
-
-h3 {
-    color: #555;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Start below the navbar */
+    min-height: 100vh;
     text-align: center;
 }
 
-/* Form styles */
-form {
-    text-align: center;
-    margin-top: 20px;
+/* Navbar styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    z-index: 1000;
 }
 
-input[type="text"] {
-    padding: 15px;
-    width: 300px;
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.navbar-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-list li {
+    margin: 0 10px;
+}
+
+.navbar-list a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+/* Mobile styles for navbar */
+@media (max-width: 768px) {
+    .navbar-toggle {
+        display: block;
+    }
+
+    .navbar-list {
+        display: none;
+        flex-direction: column;
+        background-color: #333;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+    }
+
+    .navbar-list.open {
+        display: flex;
+    }
+
+    .navbar-list li {
+        margin: 10px 0;
+    }
+}
+
+/* Quiz page styles */
+#main-quiz {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 80px; /* Space for the navbar */
+}
+
+#quizContainer, #resultContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#timer {
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+#questionContainer {
+    font-size: 1.2rem;
+    margin: 20px 0;
+}
+
+#answerForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#userAnswer {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 50px;
-    font-size: 1rem;
-    outline: none;
-    margin-bottom: 10px; /* Space between input and button */
+    text-align: center;
 }
 
-input[type="submit"] {
+/* Button styles */
+.button {
+    display: inline-block;
     padding: 15px 40px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -51,11 +145,11 @@ input[type="submit"] {
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
+.button:hover {
     background: linear-gradient(180deg, #55aaff, #2288ee);
 }
 
-input[type="submit"]:active {
+.button:active {
     box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.2), /* Pressed effect */
                 0 3px 6px rgba(0, 0, 0, 0.1);
     transform: translateY(2px);
