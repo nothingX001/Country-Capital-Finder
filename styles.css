@@ -1,28 +1,30 @@
-/* Basic Reset */
+/* 1) Basic Reset */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* Body */
+/* 2) Body Defaults */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    /* Remove any forced layout like display:flex; let the content flow normally. */
 }
 
-/* FIXED NAVBAR */
+/* 3) Navbar */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #333;
-    color: white;
+    color: #fff;
     padding: 10px 0;
-    z-index: 9999; /* so it stays on top */
+    z-index: 9999; /* ensures it stays above content */
 }
+
 .navbar-container {
     display: flex;
     justify-content: space-between;
@@ -31,29 +33,32 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
+
 .navbar-toggle {
     display: none;
     background: none;
     border: none;
-    color: white;
+    color: #fff;
     font-size: 1.5rem;
     cursor: pointer;
 }
+
 .navbar-list {
     list-style: none;
     display: flex;
-    margin: 0;
 }
+
 .navbar-list li {
     margin: 0 10px;
 }
+
 .navbar-list a {
-    color: white;
+    color: #fff;
     text-decoration: none;
     font-size: 1rem;
 }
 
-/* Mobile navbar */
+/* 4) Mobile Navbar */
 @media (max-width: 768px) {
     .navbar-toggle {
         display: block;
@@ -63,7 +68,7 @@ body {
         flex-direction: column;
         background-color: #333;
         position: absolute;
-        top: 50px;
+        top: 50px; 
         left: 0;
         width: 100%;
     }
@@ -75,49 +80,54 @@ body {
     }
 }
 
-/* MAIN CONTAINER BELOW NAVBAR */
-.main {
-    /* Large top margin ensures the content starts well below the navbar */
-    margin-top: 180px;
-
-    /* Center the container itself */
+/* 5) Main Page Container ( .page-content ) */
+.page-content {
+    /* A tall top margin to push content down from the fixed navbar */
+    margin-top: 150px;
+    
+    /* Center the container horizontally, set max width */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+
+    /* Some interior padding */
     padding: 20px;
-
-    /* Center text in this container */
+    
+    /* Center all text in this container */
     text-align: center;
 }
 
-/* HEADINGS */
+/* 6) Headings */
 h1 {
-    margin-bottom: 20px; /* space under the heading */
-    font-size: 2rem;     /* adjust as you like */
+    margin-bottom: 20px; 
+    font-size: 2rem;  
     text-align: center;
 }
 
-.tagline {
-    margin-bottom: 20px;
-    font-size: 1.2rem;
+h3 {
+    margin-bottom: 20px; 
+    font-size: 1.25rem; 
+    text-align: center;
 }
 
-/* SEARCH BOX */
+/* 7) Search Input */
 input[type="text"] {
-    width: 300px;     /* narrower than full page */
-    max-width: 80%;   /* fallback for smaller screens */
+    /* narrower than container, but still decent size */
+    width: 300px;        
+    max-width: 80%;      
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-
+    
+    /* Center horizontally, margin below */
     display: block;
-    margin: 0 auto 15px auto; /* center horizontally, add bottom margin */
+    margin: 0 auto 15px auto;
 }
 
-/* BUTTON */
+/* 8) Buttons */
 .button {
-    display: inline-block; 
+    display: inline-block;
     padding: 15px 40px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -128,34 +138,35 @@ input[type="text"] {
     border-radius: 50px;
     background: linear-gradient(180deg, #66b3ff, #3399ff);
     box-shadow:
-        inset 0 3px 6px rgba(255, 255, 255, 0.6),
-        0 6px 12px rgba(0, 0, 0, 0.2);
+        inset 0 3px 6px rgba(255,255,255,0.6),
+        0 6px 12px rgba(0,0,0,0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     margin-top: 10px;
 }
+
 .button:hover {
     background: linear-gradient(180deg, #55aaff, #2288ee);
 }
+
 .button:active {
     box-shadow:
-        inset 0 6px 12px rgba(0, 0, 0, 0.2),
-        0 3px 6px rgba(0, 0, 0, 0.1);
+        inset 0 6px 12px rgba(0,0,0,0.2),
+        0 3px 6px rgba(0,0,0,0.1);
     transform: translateY(2px);
 }
 
-/* Make the submit button appear below the search field */
+/* Ensure the SUBMIT button is on a separate line below the text field */
 form input[type="submit"].button {
     display: block;
     margin: 10px auto 0 auto;
 }
 
-/* MESSAGE STYLES */
+/* 9) Flash messages, etc. */
 .message {
     margin-top: 20px;
     padding: 10px;
     background-color: #e0e0e0;
     border: 1px solid #ccc;
     border-radius: 4px;
-    text-align: center;
 }
