@@ -170,3 +170,14 @@ form input[type="submit"].button {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+
+/* Example: Country Profiles left-aligned list */
+.country-profiles ul {
+    /* ensures bullet points and text are left-aligned */
+    text-align: left;
+    /* optional: position the bullets outside the text (common default) */
+    list-style-position: outside; 
+    /* optional: add left margin so it doesn't butt against the container edge */
+    margin-left: 20px; 
+}
