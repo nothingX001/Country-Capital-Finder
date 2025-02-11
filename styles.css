@@ -171,6 +171,21 @@ form input[type="submit"].button {
     border-radius: 4px;
 }
 
+/* Sitewide lists: left-aligned with bullets on the left */
+ul, ol {
+    text-align: left;           /* forces text and bullets to align left */
+    list-style-position: outside;
+    margin-left: 30px;          /* indent the whole list from the left */
+    margin-right: auto;
+    margin-top: 1em;            /* some space above the list */
+    margin-bottom: 1em;         /* some space below the list */
+    padding-left: 0;            /* no extra padding if you prefer purely margin-based indentation */
+}
+
+ul li, ol li {
+    margin: 0.5em 0; /* spacing between list items */
+}
+
 
 /* Example: Country Profiles left-aligned list */
 .country-profiles ul {
