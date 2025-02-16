@@ -1,7 +1,5 @@
 <?php
-// index.php
-
-// Enable error reporting (optional for dev)
+// Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -26,8 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         SELECT c.id, c.country_name, c.flag_emoji
         FROM countries c
         LEFT JOIN country_alternate_names can ON c.id = can.country_id
-        WHERE LOWER(c.country_name) = LOWER(?) 
-           OR LOWER(can.alternate_name) = LOWER(?)
+        WHERE c.country_name ILIKE ?
+           OR can.alternate_name ILIKE ?
         LIMIT 1
     ");
     $stmt->execute([$country, $country]);
@@ -84,12 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="Discover capitals of countries, territories, and de facto states.">
     <meta name="keywords" content="explore capitals, find capitals, countries and capitals">
     <meta name="author" content="ExploreCapitals">
-    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <!-- Use a common container class .page-content + optional .home -->
     <div class="page-content home">
         <h1>EXPLORE CAPITALS</h1>
         <h3>Search for any country or territory to find its capital.</h3>
