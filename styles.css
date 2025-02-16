@@ -10,7 +10,6 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
-    /* Remove any forced layout like display:flex; let the content flow normally. */
 }
 
 /* 3) Navbar */
@@ -22,7 +21,7 @@ body {
     background-color: #333;
     color: #fff;
     padding: 10px 0;
-    z-index: 9999; /* ensures it stays above content */
+    z-index: 9999;
 }
 
 .navbar-container {
@@ -68,7 +67,7 @@ body {
         flex-direction: column;
         background-color: #333;
         position: absolute;
-        top: 50px; 
+        top: 50px;
         left: 0;
         width: 100%;
     }
@@ -82,45 +81,35 @@ body {
 
 /* 5) Main Page Container ( .page-content ) */
 .page-content {
-    /* A tall top margin to push content down from the fixed navbar */
     margin-top: 150px;
-    
-    /* Center the container horizontally, set max width */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-
-    /* Some interior padding */
     padding: 20px;
-    
-    /* Center all text in this container */
     text-align: center;
 }
 
 /* 6) Headings */
 h1 {
-    margin-bottom: 20px; 
-    font-size: 2rem;  
+    margin-bottom: 20px;
+    font-size: 2rem;
     text-align: center;
 }
 
 h3 {
-    margin-bottom: 20px; 
-    font-size: 1.25rem; 
+    margin-bottom: 20px;
+    font-size: 1.25rem;
     text-align: center;
 }
 
 /* 7) Search Input */
 input[type="text"] {
-    /* narrower than container, but still decent size */
-    width: 300px;        
-    max-width: 80%;      
+    width: 300px;
+    max-width: 80%;
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    
-    /* Center horizontally, margin below */
     display: block;
     margin: 0 auto 15px auto;
 }
@@ -156,7 +145,6 @@ input[type="text"] {
     transform: translateY(2px);
 }
 
-/* Ensure the SUBMIT button is on a separate line below the text field */
 form input[type="submit"].button {
     display: block;
     margin: 10px auto 0 auto;
@@ -171,28 +159,53 @@ form input[type="submit"].button {
     border-radius: 4px;
 }
 
-/* Sitewide lists: left-aligned with bullets on the left */
-ul, ol {
-    text-align: left;           /* forces text and bullets to align left */
-    list-style-position: outside;
-    margin-left: 30px;          /* indent the whole list from the left */
-    margin-right: auto;
-    margin-top: 1em;            /* some space above the list */
-    margin-bottom: 1em;         /* some space below the list */
-    padding-left: 0;            /* no extra padding if you prefer purely margin-based indentation */
+/* 10) Autocomplete Dropdown */
+.autocomplete-dropdown {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+    width: 100%;
 }
 
-ul li, ol li {
-    margin: 0.5em 0; /* spacing between list items */
-}
-
-
-/* Example: Country Profiles left-aligned list */
-.country-profiles ul {
-    /* ensures bullet points and text are left-aligned */
+.autocomplete-dropdown li {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    list-style: none;
     text-align: left;
-    /* optional: position the bullets outside the text (common default) */
-    list-style-position: outside; 
-    /* optional: add left margin so it doesn't butt against the container edge */
-    margin-left: 20px; 
+}
+
+.autocomplete-dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.autocomplete-dropdown li.active {
+    background-color: #66b3ff;
+    color: #fff;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }
