@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.addEventListener('click', () => {
                     input.value = country;
                     dropdown.style.display = 'none';
+                    input.form.submit(); // Submit the form when an item is clicked
                 });
                 dropdown.appendChild(item);
             });
@@ -78,6 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (activeIndex >= 0 && activeIndex < items.length) {
                 e.preventDefault(); // Prevent form submission
                 items[activeIndex].click(); // Trigger click on the active item
+            } else {
+                // If no item is selected, submit the form
+                e.preventDefault();
+                input.form.submit();
             }
         }
     });
