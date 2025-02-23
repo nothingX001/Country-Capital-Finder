@@ -10,6 +10,15 @@ $countries = json_decode($data, true);
     <title>World Map</title>
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <style>
+        /* Ensure the map container has a defined height */
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -21,20 +30,24 @@ $countries = json_decode($data, true);
         <div class="search-bar-container">
             <input type="text" id="search-bar" placeholder="Search for a country or capital...">
         </div>
-        <div id="map" style="height: 500px; border-radius: 15px;"></div>
+        <div id="map"></div>
     </section>
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script>
-        mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN_HERE';
+        // Replace with your actual Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
+
+        // Initialize the map with your custom style
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Your custom Mapbox style
             center: [0, 20],
             zoom: 1.5,
             projection: 'globe'
         });
 
+        // Add fog effect for a globe-like appearance
         map.on('style.load', () => {
             map.setFog({
                 range: [0.5, 10],
@@ -46,27 +59,25 @@ $countries = json_decode($data, true);
             });
         });
 
+        // Load country data from PHP
         const countries = <?php echo json_encode($countries); ?>;
 
-        // Place markers for each capital record
+        // Place markers for each capital record (without popups)
         if (countries) {
             countries.forEach(row => {
                 if (row.latitude && row.longitude) {
                     new mapboxgl.Marker()
                         .setLngLat([row.longitude, row.latitude])
-                        .setPopup(new mapboxgl.Popup().setHTML(
-                            `<strong>${row.capital_name}</strong> - ${row.country_name} ${row.flag_emoji}`
-                        ))
-                        .addTo(map);
+                        .addTo(map); // No popup
                 }
             });
         }
 
-        // Search bar
+        // Search bar functionality
         const searchBar = document.getElementById('search-bar');
         searchBar.addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            // find match among countries
+            // Find match among countries
             const match = countries.find(row =>
                 (row.country_name && row.country_name.toLowerCase() === query) ||
                 (row.capital_name && row.capital_name.toLowerCase() === query)
