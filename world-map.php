@@ -59,6 +59,12 @@ $countries = json_decode($data, true);
             });
         });
 
+        // Handle map errors
+        map.on('error', (e) => {
+            console.error('Map error:', e.error);
+            alert('Failed to load the map. Please check the console for details.');
+        });
+
         // Load country data from PHP
         const countries = <?php echo json_encode($countries); ?>;
 
