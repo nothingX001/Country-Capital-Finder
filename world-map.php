@@ -50,12 +50,12 @@ $countries = json_decode($data, true);
         // Add fog effect for a globe-like appearance
         map.on('style.load', () => {
             map.setFog({
-                range: [0.5, 10],
-                color: 'rgba(135, 206, 235, 0.15)',
-                "high-color": 'rgba(255, 255, 255, 0.1)',
-                "horizon-blend": 0.1,
-                "space-color": 'rgba(0, 0, 0, 1)',
-                "star-intensity": 0.1
+                range: [0.5, 10], // Valid range for fog
+                color: 'rgba(135, 206, 235, 0.15)', // Fog color
+                "high-color": 'rgba(255, 255, 255, 0.1)', // High-altitude color
+                "space-color": 'rgba(0, 0, 0, 1)', // Space color
+                "horizon-blend": 0.1, // Horizon blend
+                "star-intensity": 0.1 // Star intensity
             });
         });
 
