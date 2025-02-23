@@ -38,13 +38,44 @@ $countries = json_decode($data, true);
         // Replace with your actual Mapbox access token
         mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
-        // Initialize the map with a default style
+        // Initialize the map with your custom style
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11', // Default Mapbox style
+            style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Your custom Mapbox style
             center: [0, 20],
             zoom: 1.5,
             projection: 'globe'
+        });
+
+        // Add fog effect for a globe-like appearance
+        map.on('style.load', () => {
+            map.setFog({
+                range: [0.5, 10], // Valid range for fog
+                color: 'rgba(135, 206, 235, 0.15)', // Fog color
+                "high-color": 'rgba(255, 255, 255, 0.1)', // High-altitude color
+                "space-color": 'rgba(0, 0, 0, 1)', // Space color
+                "horizon-blend": 0.1, // Horizon blend
+                "star-intensity": 0.1 // Star intensity
+            });
+
+            // Add a source for country borders
+            map.addSource('country-borders', {
+                type: 'vector',
+                url: 'mapbox://mapbox.country-boundaries-v1'
+            });
+
+            // Add a layer to highlight country borders
+            map.addLayer({
+                id: 'country-borders-highlight',
+                type: 'line',
+                source: 'country-borders',
+                'source-layer': 'country_boundaries',
+                paint: {
+                    'line-color': '#FF0000', // Red border color
+                    'line-width': 2 // Border width
+                },
+                filter: ['==', 'iso_3166_1', ''] // Initially no country selected
+            });
         });
 
         // Handle map errors
@@ -56,17 +87,6 @@ $countries = json_decode($data, true);
         // Load country data from PHP
         const countries = <?php echo json_encode($countries); ?>;
 
-        // Place markers for each capital record (without popups)
-        if (countries) {
-            countries.forEach(row => {
-                if (row.latitude && row.longitude) {
-                    new mapboxgl.Marker()
-                        .setLngLat([row.longitude, row.latitude])
-                        .addTo(map); // No popup
-                }
-            });
-        }
-
         // Search bar functionality
         const searchBar = document.getElementById('search-bar');
         searchBar.addEventListener('input', function() {
@@ -77,7 +97,16 @@ $countries = json_decode($data, true);
                 (row.capital_name && row.capital_name.toLowerCase() === query)
             );
             if (match && match.latitude && match.longitude) {
+                // Fly to the location
                 map.flyTo({ center: [match.longitude, match.latitude], zoom: 5 });
+
+                // Highlight the country borders
+                if (match.iso_code) { // Ensure the country has an ISO code
+                    map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', match.iso_code]);
+                }
+            } else {
+                // Clear the border highlight if no match is found
+                map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
             }
         });
     </script>
