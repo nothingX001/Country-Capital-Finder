@@ -38,25 +38,13 @@ $countries = json_decode($data, true);
         // Replace with your actual Mapbox access token
         mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
-        // Initialize the map with your custom style
+        // Initialize the map with a default style
         const map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/dcho2001/cm2amde1g001b01qqhve88jlo', // Your custom Mapbox style
+            style: 'mapbox://styles/mapbox/streets-v11', // Default Mapbox style
             center: [0, 20],
             zoom: 1.5,
             projection: 'globe'
-        });
-
-        // Add fog effect for a globe-like appearance
-        map.on('style.load', () => {
-            map.setFog({
-                range: [0.5, 10], // Valid range for fog
-                color: 'rgba(135, 206, 235, 0.15)', // Fog color
-                "high-color": 'rgba(255, 255, 255, 0.1)', // High-altitude color
-                "space-color": 'rgba(0, 0, 0, 1)', // Space color
-                "horizon-blend": 0.1, // Horizon blend
-                "star-intensity": 0.1 // Star intensity
-            });
         });
 
         // Handle map errors
