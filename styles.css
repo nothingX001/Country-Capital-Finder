@@ -18,7 +18,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: linear-gradient(180deg, #66b3ff, #3399ff);
+    background: linear-gradient(180deg, #66b3ff, #3399ff);
     color: #fff;
     padding: 10px 0;
     z-index: 9999;
