@@ -168,7 +168,7 @@ form input[type="submit"].button {
     z-index: 1000;
     margin-top: 5px;
     width: 300px; /* Match the width of the search input */
-    left: 50%; /* Center the dropdown */
+    left: 50%; /* Center the dropdown relative to the search input */
     transform: translateX(-50%); /* Adjust for perfect alignment */
     padding: 0; /* Remove padding to ensure hover states fill the width */
 }
