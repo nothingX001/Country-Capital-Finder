@@ -81,7 +81,7 @@ body {
 
 /* 5) Main Page Container ( .page-content ) */
 .page-content {
-    margin-top: 200px; /* Increased space above the quiz */
+    margin-top: 150px; /* Adjusted space above the quiz */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -114,7 +114,7 @@ input[type="text"] {
 
 /* 8) Buttons */
 .button {
-    display: inline-block;
+    display: block; /* Make buttons block-level to center them */
     padding: 15px 40px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -227,7 +227,8 @@ ul li, ol li {
 /* 11) Quiz Section */
 .quiz {
     text-align: left; /* Align quiz content to the left */
-    margin-top: 250px; /* Increased space above the quiz */
+    margin-top: 150px; /* Adjusted space above the quiz */
+    margin-bottom: 50px; /* Added space below the quiz */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
