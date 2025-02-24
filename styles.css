@@ -225,3 +225,86 @@ ul li, ol li {
     text-align: left; /* Align list item text to the left */
     margin: 0.5em 0; /* Spacing between list items */
 }
+
+/* 11) Quiz Section */
+.quiz {
+    text-align: left; /* Align quiz content to the left */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz h1 {
+    text-align: left; /* Align quiz heading to the left */
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.quiz p {
+    text-align: left; /* Align quiz instructions to the left */
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+#quizContainer {
+    margin-top: 20px;
+}
+
+#timer {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#questionContainer {
+    margin-bottom: 20px;
+}
+
+#questionContainer p {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#userAnswer {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+#resultContainer {
+    margin-top: 20px;
+}
+
+#resultContainer h2 {
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+}
+
+#score {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#detailedResults {
+    margin-top: 20px;
+}
+
+#detailedResults p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+#redoQuizBtn {
+    margin-top: 20px;
+}
