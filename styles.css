@@ -10,6 +10,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* 3) Navbar */
@@ -82,11 +85,11 @@ body {
 /* 5) Main Page Container ( .page-content ) */
 .page-content {
     margin-top: 150px; /* Adjusted space above the quiz */
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%; /* Ensure the container fills the screen width */
     padding: 20px;
-    text-align: center; /* Center-align all content in .page-content */
+    background-color: #fff; /* Add background color to fill the screen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+    min-height: calc(100vh - 150px); /* Ensure the container fills the screen height */
 }
 
 /* 6) Headings */
