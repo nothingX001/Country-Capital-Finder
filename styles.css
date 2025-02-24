@@ -288,6 +288,7 @@ ul li, ol li {
     text-align: center; /* Center-align results heading */
     margin-bottom: 20px;
     font-size: 1.75rem;
+    color: #333; /* Darker color for better contrast */
 }
 
 #score {
@@ -295,17 +296,41 @@ ul li, ol li {
     margin-bottom: 20px;
     color: #333;
     text-align: center; /* Center-align score */
+    font-weight: bold; /* Make the score stand out */
 }
 
 #detailedResults {
     margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 #detailedResults p {
     font-size: 1rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Increased spacing between results */
     color: #555;
     text-align: left; /* Left-align detailed results */
+    line-height: 1.6; /* Improve readability */
+    padding: 10px;
+    border-left: 4px solid #66b3ff; /* Accent border for each result */
+    background-color: #fff; /* White background for each result */
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for each result */
+}
+
+#detailedResults p strong {
+    color: #333; /* Darker color for emphasis */
+    font-weight: bold;
+}
+
+#detailedResults p.correct {
+    border-left-color: #4caf50; /* Green accent for correct answers */
+}
+
+#detailedResults p.incorrect {
+    border-left-color: #f44336; /* Red accent for incorrect answers */
 }
 
 #redoQuizBtn {
