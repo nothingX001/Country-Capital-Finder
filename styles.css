@@ -168,8 +168,7 @@ form input[type="submit"].button {
     z-index: 1000;
     margin-top: 5px;
     width: 300px; /* Match the width of the search input */
-    left: 50%; /* Center the dropdown relative to the search input */
-    transform: translateX(-50%); /* Adjust for perfect alignment */
+    left: 0; /* Align with the search input */
     padding: 0; /* Remove padding to ensure hover states fill the width */
 }
 
@@ -209,22 +208,6 @@ form input[type="submit"].button {
 
 .autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
     background: #999;
-}
-
-/* Ensure lists are left-aligned and bullets are outside */
-ul, ol {
-    text-align: left; /* Align text to the left */
-    list-style-position: outside; /* Place bullets outside the text */
-    margin-left: 30px; /* Add left margin for proper indentation */
-    padding-left: 20px; /* Add padding to align bullets properly */
-    margin-top: 1em; /* Space above the list */
-    margin-bottom: 1em; /* Space below the list */
-}
-
-/* Ensure list items are left-aligned */
-ul li, ol li {
-    text-align: left; /* Align list item text to the left */
-    margin: 0.5em 0; /* Spacing between list items */
 }
 
 /* 11) Quiz Section */
@@ -341,4 +324,66 @@ ul li, ol li {
     display: block;
     margin-left: auto;
     margin-right: auto; /* Center-align redo button */
+}
+
+/* 12) Country Profiles Section */
+.country-profiles {
+    text-align: left; /* Align content to the left */
+    margin-top: 150px; /* Adjusted space above the section */
+    margin-bottom: 50px; /* Added space below the section */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.country-profiles h1 {
+    text-align: center; /* Center-align heading */
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.country-profiles p {
+    text-align: center; /* Center-align description */
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.country-profiles h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.country-profiles ul {
+    list-style: none; /* Remove default bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.country-profiles ul li {
+    margin: 10px 0; /* Spacing between list items */
+    padding: 10px;
+    background-color: #f9f9f9; /* Light background for each item */
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.country-profiles ul li:hover {
+    background-color: #f0f0f0; /* Grey hover effect */
+}
+
+.country-profiles ul li a {
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Dark text color */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between flag and country name */
+}
+
+.country-profiles ul li a:hover {
+    color: #66b3ff; /* Blue hover color */
 }
