@@ -58,7 +58,7 @@ include 'the-countries.php'; // For "the" prefix logic
 
         // Remove leading/trailing whitespace, punctuation, etc.
         norm = norm.replace(/^the\s+/i, ''); // Remove leading "the"
-        norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation
+        norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation (including quotes)
         norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
 
         return norm;
@@ -152,7 +152,7 @@ include 'the-countries.php'; // For "the" prefix logic
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.capitals.join(' / ')
+                    correctAnswerText: qData.capitals.join(' / ') // No quotes here
                 });
             } else {
                 const capCount = qData.capitals.length;
@@ -164,7 +164,7 @@ include 'the-countries.php'; // For "the" prefix logic
                     correctAnswers: [qData.country],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.country
+                    correctAnswerText: qData.country // No quotes here
                 });
             }
 
@@ -193,8 +193,8 @@ include 'the-countries.php'; // For "the" prefix logic
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong>`;
-            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
+            const correctAnswerText = `<strong>${resp.correctAnswerText.replace(/"/g, '')}</strong>`; // Remove quotes
+            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer.replace(/"/g, '')}</strong>` : '""'; // Remove quotes
 
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`

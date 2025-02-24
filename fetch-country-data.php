@@ -69,6 +69,9 @@ try {
         foreach ($rows as &$row) {
             if (!empty($row['capitals']) && is_string($row['capitals'])) {
                 $row['capitals'] = array_map('trim', explode(',', trim($row['capitals'], '{}')));
+                $row['capitals'] = array_map(function($capital) {
+                    return str_replace('"', '', $capital); // Remove quotes
+                }, $row['capitals']);
             } else {
                 $row['capitals'] = [];
             }
@@ -98,6 +101,9 @@ try {
         foreach ($rows as &$row) {
             if (!empty($row['capitals']) && is_string($row['capitals'])) {
                 $row['capitals'] = array_map('trim', explode(',', trim($row['capitals'], '{}')));
+                $row['capitals'] = array_map(function($capital) {
+                    return str_replace('"', '', $capital); // Remove quotes
+                }, $row['capitals']);
             } else {
                 $row['capitals'] = [];
             }
