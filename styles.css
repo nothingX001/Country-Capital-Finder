@@ -161,14 +161,15 @@ form input[type="submit"].button {
 .autocomplete-dropdown {
     position: absolute;
     background-color: #fff;
-    border-radius: 4px; /* Removed border */
+    border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 100%; /* Match the width of the search input */
-    left: 0; /* Align with the search input */
+    width: 300px; /* Match the width of the search input */
+    left: 50%; /* Center the dropdown */
+    transform: translateX(-50%); /* Adjust for perfect alignment */
     padding: 0; /* Remove padding to ensure hover states fill the width */
 }
 
