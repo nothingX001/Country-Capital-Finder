@@ -15,11 +15,11 @@ include 'the-countries.php'; // For "the" prefix logic
 
     <!-- .page-content + .quiz -->
     <section class="page-content quiz" id="main-quiz">
-        <h1>EXPLORECAPITALS QUIZZES</h1>
+        <h1>EXPLORE CAPITALS QUIZ</h1>
         <p>Select a quiz type to begin.</p>
 
-        <button id="startMainQuizBtn" class="button">Start Country-to-Capitals Quiz</button>
-        <button id="startTerritoriesQuizBtn" class="button">Start Territories-to-Capitals Quiz</button>
+        <button id="startMainQuizBtn" class="button">Countries Quiz</button>
+        <button id="startTerritoriesQuizBtn" class="button">Territories Quiz</button>
 
         <div id="quizContainer" style="display: none;">
             <div id="timer">Time: 0:00</div>
