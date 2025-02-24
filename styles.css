@@ -81,25 +81,23 @@ body {
 
 /* 5) Main Page Container ( .page-content ) */
 .page-content {
-    margin-top: 150px;
+    margin-top: 200px; /* Increased space above the quiz */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
-    text-align: center;
+    text-align: center; /* Center-align all content in .page-content */
 }
 
 /* 6) Headings */
-h1 {
+h1, h2, h3 {
     margin-bottom: 20px;
     font-size: 2rem;
-    text-align: center;
+    text-align: center; /* Center-align all headings */
 }
 
 h3 {
-    margin-bottom: 20px;
     font-size: 1.25rem;
-    text-align: center;
 }
 
 /* 7) Search Input */
@@ -147,7 +145,7 @@ input[type="text"] {
 
 form input[type="submit"].button {
     display: block;
-    margin: 10px auto 0 auto;
+    margin: 10px auto 0 auto; /* Center-align form buttons */
 }
 
 /* 9) Flash messages, etc. */
@@ -229,7 +227,7 @@ ul li, ol li {
 /* 11) Quiz Section */
 .quiz {
     text-align: left; /* Align quiz content to the left */
-    margin-top: 20px;
+    margin-top: 40px; /* Increased space above the quiz */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -237,13 +235,13 @@ ul li, ol li {
 }
 
 .quiz h1 {
-    text-align: left; /* Align quiz heading to the left */
+    text-align: center; /* Center-align quiz heading */
     margin-bottom: 20px;
     font-size: 2rem;
 }
 
 .quiz p {
-    text-align: left; /* Align quiz instructions to the left */
+    text-align: center; /* Center-align quiz instructions */
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
@@ -258,6 +256,7 @@ ul li, ol li {
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
+    text-align: center; /* Center-align timer */
 }
 
 #questionContainer {
@@ -268,6 +267,7 @@ ul li, ol li {
     font-size: 1.25rem;
     margin-bottom: 10px;
     color: #333;
+    text-align: center; /* Center-align question text */
 }
 
 #userAnswer {
@@ -284,7 +284,7 @@ ul li, ol li {
 }
 
 #resultContainer h2 {
-    text-align: left;
+    text-align: center; /* Center-align results heading */
     margin-bottom: 20px;
     font-size: 1.75rem;
 }
@@ -293,6 +293,7 @@ ul li, ol li {
     font-size: 1.25rem;
     margin-bottom: 20px;
     color: #333;
+    text-align: center; /* Center-align score */
 }
 
 #detailedResults {
@@ -303,8 +304,12 @@ ul li, ol li {
     font-size: 1rem;
     margin-bottom: 10px;
     color: #555;
+    text-align: left; /* Left-align detailed results */
 }
 
 #redoQuizBtn {
     margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Center-align redo button */
 }
