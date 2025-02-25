@@ -201,10 +201,9 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 300px; /* Match the width of the search input */
-    left: 50%; /* Center the dropdown */
-    transform: translateX(-50%); /* Adjust for perfect alignment */
-    padding: 0; /* Remove padding to ensure hover states fill the width */
+    width: 100%; /* Match the width of the search input */
+    left: 0; /* Align with the left edge of the parent container */
+    padding: 0; /* Remove padding */
 }
 
 .autocomplete-dropdown li {
@@ -514,21 +513,22 @@ form input[type="submit"].button {
 /* Search bar container */
 .search-bar-container {
     text-align: center;
-    margin-bottom: 20px;
-    padding: 0; /* Ensure no padding interferes */
-    position: relative; /* Ensure the dropdown is positioned relative to this container */
+    margin: 0 auto; /* Center the container */
+    padding: 0; /* Remove padding */
+    max-width: 300px; /* Match the width of the search input */
+    position: relative; /* Make the dropdown position relative to this container */
 }
 
 /* Search input styling */
 #search-bar {
-    width: 100%;
-    max-width: 300px;
+    width: 100%; /* Take up full width of the parent container */
+    max-width: 300px; /* Match the width of the dropdown */
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 0 auto;
     display: block;
+    margin: 0 auto; /* Center the search input */
 }
 
 /* Map container styling */
