@@ -10,6 +10,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* 3) Navbar */
@@ -40,11 +41,17 @@ body {
     color: #fff;
     font-size: 1.5rem;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.navbar-toggle.active {
+    transform: rotate(90deg); /* Rotate the hamburger icon when active */
 }
 
 .navbar-list {
     list-style: none;
     display: flex;
+    transition: transform 0.3s ease-in-out;
 }
 
 .navbar-list li {
@@ -55,6 +62,11 @@ body {
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.navbar-list a:hover {
+    color: #ffdd57; /* Highlight color on hover */
 }
 
 /* 4) Mobile Navbar */
@@ -62,6 +74,7 @@ body {
     .navbar-toggle {
         display: block;
     }
+
     .navbar-list {
         display: none;
         flex-direction: column;
@@ -70,12 +83,33 @@ body {
         top: 50px;
         left: 0;
         width: 100%;
+        padding: 10px 0;
+        transform: translateX(-100%); /* Start off-screen */
+        opacity: 0;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     }
+
     .navbar-list.open {
         display: flex;
+        transform: translateX(0); /* Slide in from the left */
+        opacity: 1;
     }
+
     .navbar-list li {
         margin: 10px 0;
+        text-align: center;
+    }
+
+    .navbar-list a {
+        font-size: 1.2rem;
+        padding: 10px;
+        display: block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-list a:hover {
+        background-color: #444; /* Add a hover effect for mobile */
+        color: #ffdd57;
     }
 }
 
@@ -102,8 +136,8 @@ h3 {
 
 /* 7) Search Input */
 input[type="text"] {
-    width: 300px;
-    max-width: 80%;
+    width: 100%;
+    max-width: 300px;
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -167,8 +201,10 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 300px; /* Match the width of the search input */
-    left: 0; /* Align with the search input */
+    width: 100%;
+    max-width: 300px;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 0; /* Remove padding to ensure hover states fill the width */
 }
 
@@ -484,8 +520,8 @@ form input[type="submit"].button {
 
 /* Search input styling */
 #search-bar {
-    width: 300px;
-    max-width: 80%;
+    width: 100%;
+    max-width: 300px;
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #ccc;
@@ -501,4 +537,31 @@ form input[type="submit"].button {
     border-radius: 15px;
     margin-top: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to match other sections */
+}
+
+/* 15) Mobile Responsiveness */
+@media (max-width: 768px) {
+    .page-content {
+        margin-top: 100px; /* Reduce top margin for mobile */
+        padding: 10px;
+    }
+
+    h1, h2, h3 {
+        font-size: 1.5rem; /* Reduce heading size for mobile */
+    }
+
+    .button {
+        font-size: 1.2rem; /* Reduce button font size for mobile */
+        padding: 10px 20px;
+    }
+
+    .quiz, .country-profiles, .about, .world-map {
+        margin-top: 100px; /* Reduce top margin for mobile */
+        margin-bottom: 30px; /* Reduce bottom margin for mobile */
+        padding: 15px;
+    }
+
+    #map {
+        height: 300px; /* Reduce map height for mobile */
+    }
 }
