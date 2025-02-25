@@ -452,3 +452,53 @@ form input[type="submit"].button {
 .about ul li a:hover {
     color: #3399ff; /* Darker blue hover color */
 }
+
+/* 14) World Map Section */
+.world-map {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 150px; /* Adjusted space above the section */
+    margin-bottom: 50px; /* Added space below the section */
+    text-align: center; /* Center-align content */
+}
+
+.world-map h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.world-map p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Search bar container */
+.search-bar-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Search input styling */
+#search-bar {
+    width: 300px;
+    max-width: 80%;
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Map container styling */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to match other sections */
+}
