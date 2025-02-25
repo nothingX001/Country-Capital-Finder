@@ -42,7 +42,10 @@ if (!$statistics || isset($statistics['error'])) {
         </p>
         <h2>Social Media</h2>
         <ul>
-            <li><strong>Instagram:</strong> @explorecapitals</li>
+            <li><strong>Instagram:</strong> <a href="https://www.instagram.com/explorecapitals" target="_blank">@explorecapitals</a></li>
+            <li><strong>Facebook:</strong> <a href="https://www.facebook.com/me/" target="_blank">Anaximander Miletus</a></li>
+            <li><strong>Twitter:</strong> <a href="https://twitter.com/explorecapitals" target="_blank">@explorecapitals</a></li>
+            <li><strong>Email:</strong> <a href="mailto:anaximanderomiletus@gmail.com">anaximanderomiletus@gmail.com</a></li>
         </ul>
 
         <h2>Site Statistics</h2>
