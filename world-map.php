@@ -25,8 +25,8 @@ $countries = json_decode($data, true);
 
     <!-- Common container .page-content + .world-map, keep the ID if you like -->
     <section class="page-content world-map" id="main-world-map">
-        <h1>WORLD MAP OF CAPITALS</h1>
-        <p>Explore capitals of countries, territories, and more around the world.</p>
+        <h1>WORLD MAP OF COUNTRIES</h1>
+        <p>Explore countries and their capitals around the world.</p>
         <div class="search-bar-container">
             <input type="text" id="search-bar" placeholder="Search for a country or capital...">
         </div>
@@ -96,9 +96,11 @@ $countries = json_decode($data, true);
                 (row.country_name && row.country_name.toLowerCase() === query) ||
                 (row.capital_name && row.capital_name.toLowerCase() === query)
             );
-            if (match && match.latitude && match.longitude) {
-                // Fly to the location
-                map.flyTo({ center: [match.longitude, match.latitude], zoom: 5 });
+            if (match) {
+                // Fly to the country's center
+                if (match.latitude && match.longitude) {
+                    map.flyTo({ center: [match.longitude, match.latitude], zoom: 5 });
+                }
 
                 // Highlight the country borders
                 if (match.iso_code) { // Ensure the country has an ISO code
