@@ -115,7 +115,7 @@ body {
 
 /* 5) Main Page Container ( .page-content ) */
 .page-content {
-    margin-top: 150px; /* Adjusted space above the quiz */
+    margin-top: 80px; /* Reduced space above the content */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -201,10 +201,9 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 100%;
-    max-width: 300px;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 300px; /* Match the width of the search input */
+    left: 50%; /* Center the dropdown */
+    transform: translateX(-50%); /* Adjust for perfect alignment */
     padding: 0; /* Remove padding to ensure hover states fill the width */
 }
 
@@ -249,7 +248,7 @@ form input[type="submit"].button {
 /* 11) Quiz Section */
 .quiz {
     text-align: left; /* Align quiz content to the left */
-    margin-top: 150px; /* Adjusted space above the quiz */
+    margin-top: 80px; /* Reduced space above the quiz */
     margin-bottom: 50px; /* Added space below the quiz */
     padding: 20px;
     background-color: #fff;
@@ -365,7 +364,7 @@ form input[type="submit"].button {
 /* 12) Country Profiles Section */
 .country-profiles {
     text-align: left; /* Align content to the left */
-    margin-top: 150px; /* Adjusted space above the section */
+    margin-top: 80px; /* Reduced space above the section */
     margin-bottom: 50px; /* Added space below the section */
     padding: 20px;
     background-color: #fff;
@@ -427,7 +426,7 @@ form input[type="submit"].button {
 /* 13) About Section */
 .about {
     text-align: left; /* Align content to the left */
-    margin-top: 150px; /* Adjusted space above the section */
+    margin-top: 80px; /* Reduced space above the section */
     margin-bottom: 50px; /* Added space below the section */
     padding: 20px;
     background-color: #fff;
@@ -495,7 +494,7 @@ form input[type="submit"].button {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 150px; /* Adjusted space above the section */
+    margin-top: 80px; /* Reduced space above the section */
     margin-bottom: 50px; /* Added space below the section */
     text-align: center; /* Center-align content */
 }
@@ -542,7 +541,7 @@ form input[type="submit"].button {
 /* 15) Mobile Responsiveness */
 @media (max-width: 768px) {
     .page-content {
-        margin-top: 100px; /* Reduce top margin for mobile */
+        margin-top: 60px; /* Further reduced top margin for mobile */
         padding: 10px;
     }
 
@@ -556,7 +555,7 @@ form input[type="submit"].button {
     }
 
     .quiz, .country-profiles, .about, .world-map {
-        margin-top: 100px; /* Reduce top margin for mobile */
+        margin-top: 60px; /* Further reduced top margin for mobile */
         margin-bottom: 30px; /* Reduce bottom margin for mobile */
         padding: 15px;
     }
