@@ -515,6 +515,8 @@ form input[type="submit"].button {
 .search-bar-container {
     text-align: center;
     margin-bottom: 20px;
+    padding: 0; /* Ensure no padding interferes */
+    position: relative; /* Ensure the dropdown is positioned relative to this container */
 }
 
 /* Search input styling */
