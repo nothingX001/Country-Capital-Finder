@@ -10,9 +10,6 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* 3) Navbar */
@@ -84,22 +81,19 @@ body {
 
 /* 5) Main Page Container ( .page-content ) */
 .page-content {
-    margin-top: 80px; /* Reduced space above the main content */
-    max-width: 1200px; /* Limit width and center content */
+    margin-top: 150px; /* Adjusted space above the quiz */
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    min-height: calc(100vh - 80px); /* Adjusted height */
-    margin-bottom: 50px; /* Added spacing at the bottom */
+    text-align: center; /* Center-align all content in .page-content */
 }
 
 /* 6) Headings */
 h1, h2, h3 {
     margin-bottom: 20px;
     font-size: 2rem;
-    text-align: center;
+    text-align: center; /* Center-align all headings */
 }
 
 h3 {
@@ -120,7 +114,7 @@ input[type="text"] {
 
 /* 8) Buttons */
 .button {
-    display: block;
+    display: block; /* Make buttons block-level to center them */
     padding: 15px 40px;
     font-size: 1.5rem;
     font-weight: bold;
@@ -135,7 +129,7 @@ input[type="text"] {
         0 6px 12px rgba(0,0,0,0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    margin: 10px auto;
+    margin: 10px auto; /* Center-align buttons */
 }
 
 .button:hover {
@@ -151,7 +145,7 @@ input[type="text"] {
 
 form input[type="submit"].button {
     display: block;
-    margin: 10px auto 0 auto;
+    margin: 10px auto 0 auto; /* Center-align form buttons */
 }
 
 /* 9) Flash messages, etc. */
@@ -159,8 +153,8 @@ form input[type="submit"].button {
     margin-top: 20px;
     padding: 10px;
     background-color: #e0e0e0;
-    border: none !important;
-    margin-bottom: 0 !important;
+    border: none !important; /* Remove any borders */
+    margin-bottom: 0 !important; /* Remove extra margin */
 }
 
 /* 10) Autocomplete Dropdown */
@@ -173,9 +167,9 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 300px;
-    left: 0;
-    padding: 0;
+    width: 300px; /* Match the width of the search input */
+    left: 0; /* Align with the search input */
+    padding: 0; /* Remove padding to ensure hover states fill the width */
 }
 
 .autocomplete-dropdown li {
@@ -186,15 +180,15 @@ form input[type="submit"].button {
     transition: background-color 0.2s ease;
     list-style: none;
     text-align: left;
-    margin: 0;
+    margin: 0; /* Remove margin to ensure hover states fill the width */
 }
 
 .autocomplete-dropdown li:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Grey hover for mouse */
 }
 
 .autocomplete-dropdown li.active {
-    background-color: #66b3ff;
+    background-color: #66b3ff; /* Blue hover for arrow keys */
     color: #fff;
 }
 
@@ -218,12 +212,9 @@ form input[type="submit"].button {
 
 /* 11) Quiz Section */
 .quiz {
-    text-align: left;
-    margin-top: 80px; /* Reduced space above the quiz */
-    margin-bottom: 50px; /* Added spacing at the bottom */
-    max-width: 1200px; /* Limit width and center content */
-    margin-left: auto;
-    margin-right: auto;
+    text-align: left; /* Align quiz content to the left */
+    margin-top: 150px; /* Adjusted space above the quiz */
+    margin-bottom: 50px; /* Added space below the quiz */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -231,13 +222,13 @@ form input[type="submit"].button {
 }
 
 .quiz h1 {
-    text-align: center;
+    text-align: center; /* Center-align quiz heading */
     margin-bottom: 20px;
     font-size: 2rem;
 }
 
 .quiz p {
-    text-align: center;
+    text-align: center; /* Center-align quiz instructions */
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
@@ -252,7 +243,7 @@ form input[type="submit"].button {
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
-    text-align: center;
+    text-align: center; /* Center-align timer */
 }
 
 #questionContainer {
@@ -263,7 +254,7 @@ form input[type="submit"].button {
     font-size: 1.25rem;
     margin-bottom: 10px;
     color: #333;
-    text-align: center;
+    text-align: center; /* Center-align question text */
 }
 
 #userAnswer {
@@ -280,69 +271,66 @@ form input[type="submit"].button {
 }
 
 #resultContainer h2 {
-    text-align: center;
+    text-align: center; /* Center-align results heading */
     margin-bottom: 20px;
     font-size: 1.75rem;
-    color: #333;
+    color: #333; /* Darker color for better contrast */
 }
 
 #score {
     font-size: 1.25rem;
     margin-bottom: 20px;
     color: #333;
-    text-align: center;
-    font-weight: bold;
+    text-align: center; /* Center-align score */
+    font-weight: bold; /* Make the score stand out */
 }
 
 #detailedResults {
     margin-top: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Light background for contrast */
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 #detailedResults p {
     font-size: 1rem;
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Increased spacing between results */
     color: #555;
-    text-align: left;
-    line-height: 1.6;
+    text-align: left; /* Left-align detailed results */
+    line-height: 1.6; /* Improve readability */
     padding: 10px;
-    border-left: 4px solid #66b3ff;
-    background-color: #fff;
+    border-left: 4px solid #66b3ff; /* Accent border for each result */
+    background-color: #fff; /* White background for each result */
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for each result */
 }
 
 #detailedResults p strong {
-    color: #333;
+    color: #333; /* Darker color for emphasis */
     font-weight: bold;
 }
 
 #detailedResults p.correct {
-    border-left-color: #4caf50;
+    border-left-color: #4caf50; /* Green accent for correct answers */
 }
 
 #detailedResults p.incorrect {
-    border-left-color: #f44336;
+    border-left-color: #f44336; /* Red accent for incorrect answers */
 }
 
 #redoQuizBtn {
     margin-top: 20px;
     display: block;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; /* Center-align redo button */
 }
 
 /* 12) Country Profiles Section */
 .country-profiles {
-    text-align: left;
-    margin-top: 80px; /* Reduced space above the section */
-    margin-bottom: 50px; /* Added spacing at the bottom */
-    max-width: 1200px; /* Limit width and center content */
-    margin-left: auto;
-    margin-right: auto;
+    text-align: left; /* Align content to the left */
+    margin-top: 150px; /* Adjusted space above the section */
+    margin-bottom: 50px; /* Added space below the section */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -350,13 +338,13 @@ form input[type="submit"].button {
 }
 
 .country-profiles h1 {
-    text-align: center;
+    text-align: center; /* Center-align heading */
     margin-bottom: 20px;
     font-size: 2rem;
 }
 
 .country-profiles p {
-    text-align: center;
+    text-align: center; /* Center-align description */
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
@@ -370,44 +358,41 @@ form input[type="submit"].button {
 }
 
 .country-profiles ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none; /* Remove default bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
 }
 
 .country-profiles ul li {
-    margin: 10px 0;
+    margin: 10px 0; /* Spacing between list items */
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Light background for each item */
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
 .country-profiles ul li:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Grey hover effect */
 }
 
 .country-profiles ul li a {
-    text-decoration: none;
-    color: #333;
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Dark text color */
     font-size: 1rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 10px; /* Space between flag and country name */
 }
 
 .country-profiles ul li a:hover {
-    color: #66b3ff;
+    color: #66b3ff; /* Blue hover color */
 }
 
 /* 13) About Section */
 .about {
-    text-align: left;
-    margin-top: 80px; /* Reduced space above the section */
-    margin-bottom: 50px; /* Added spacing at the bottom */
-    max-width: 1200px; /* Limit width and center content */
-    margin-left: auto;
-    margin-right: auto;
+    text-align: left; /* Align content to the left */
+    margin-top: 150px; /* Adjusted space above the section */
+    margin-bottom: 50px; /* Added space below the section */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -415,7 +400,7 @@ form input[type="submit"].button {
 }
 
 .about h1 {
-    text-align: center;
+    text-align: center; /* Center-align heading */
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
@@ -423,7 +408,7 @@ form input[type="submit"].button {
 
 .about p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.6; /* Improve readability */
     color: #555;
     margin-bottom: 20px;
 }
@@ -436,34 +421,34 @@ form input[type="submit"].button {
 }
 
 .about ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    list-style: none; /* Remove default bullets */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
 }
 
 .about ul li {
-    margin: 10px 0;
+    margin: 10px 0; /* Spacing between list items */
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* Light background for each item */
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
 .about ul li:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Grey hover effect */
 }
 
 .about ul li strong {
-    color: #333;
+    color: #333; /* Dark text color */
     font-weight: bold;
 }
 
 .about ul li a {
-    text-decoration: none;
-    color: #66b3ff;
+    text-decoration: none; /* Remove underline */
+    color: #66b3ff; /* Blue link color */
     transition: color 0.2s ease;
 }
 
 .about ul li a:hover {
-    color: #3399ff;
+    color: #3399ff; /* Darker blue hover color */
 }
