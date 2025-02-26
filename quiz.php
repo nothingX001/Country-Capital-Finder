@@ -8,7 +8,7 @@ include 'the-countries.php'; // For "the" prefix logic
 <head>
     <meta charset="UTF-8">
     <title>Country Capital Quiz</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+    <link rel="stylesheet" href="styles.css"> <!-- Link to the updated styles.css -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -206,12 +206,10 @@ include 'the-countries.php'; // For "the" prefix logic
                 : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
 
             detailHTML += `
-                <div class="result-item ${resp.isCorrect ? 'correct' : 'incorrect'}">
-                    <p>
-                        <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
-                        ${resultText}
-                    </p>
-                </div>
+                <p class="${resp.isCorrect ? 'correct' : 'incorrect'}">
+                    <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
+                    ${resultText}
+                </p>
             `;
         });
         document.getElementById('detailedResults').innerHTML = detailHTML;
