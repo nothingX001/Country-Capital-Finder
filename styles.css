@@ -334,7 +334,7 @@ form input[type="submit"].button {
     text-align: left; /* Left-align detailed results */
     line-height: 1.6; /* Improve readability */
     padding: 10px;
-    border-left: 4px solid #66b3ff; /* Accent border for each result */
+    border-left: 4px solid #66b3ff; /* Blue accent border for each result */
     background-color: #fff; /* White background for each result */
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for each result */
@@ -347,20 +347,20 @@ form input[type="submit"].button {
 }
 
 #detailedResults p.correct {
-    border-left-color: #4caf50; /* Green accent for correct answers */
+    border-left-color: #66b3ff; /* Blue accent for correct answers */
 }
 
 #detailedResults p.incorrect {
-    border-left-color: #f44336; /* Red accent for incorrect answers */
+    border-left-color: #66b3ff; /* Blue accent for incorrect answers */
 }
 
 /* Hover effects for result sidebars */
 #detailedResults p.correct:hover {
-    border-left-color: #388e3c; /* Darker green on hover */
+    border-left-color: #4caf50; /* Green on hover for correct answers */
 }
 
 #detailedResults p.incorrect:hover {
-    border-left-color: #d32f2f; /* Darker red on hover */
+    border-left-color: #f44336; /* Red on hover for incorrect answers */
 }
 
 #redoQuizBtn {
