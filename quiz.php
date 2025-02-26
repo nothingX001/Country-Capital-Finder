@@ -61,6 +61,9 @@ include 'the-countries.php'; // For "the" prefix logic
         norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation (including quotes)
         norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
 
+        // Handle abbreviations (e.g., "St. George" -> "saint george")
+        norm = norm.replace(/\bst\.?\b/gi, 'saint');
+
         return norm;
     }
 
@@ -95,9 +98,11 @@ include 'the-countries.php'; // For "the" prefix logic
         questions = [];
         data.forEach(row => {
             if (row.capitals && row.capitals.length > 0) {
+                // Ensure "Washington, D.C." is treated as one capital
+                const capitals = row.capitals.map(capital => capital.replace(/\s*\/\s*/, ', '));
                 questions.push({
                     country: row.country_name,
-                    capitals: row.capitals
+                    capitals: capitals
                 });
             }
         });
@@ -201,10 +206,12 @@ include 'the-countries.php'; // For "the" prefix logic
                 : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
 
             detailHTML += `
-                <p>
-                    <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
-                    ${resultText}
-                </p>
+                <div class="result-item ${resp.isCorrect ? 'correct' : 'incorrect'}">
+                    <p>
+                        <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
+                        ${resultText}
+                    </p>
+                </div>
             `;
         });
         document.getElementById('detailedResults').innerHTML = detailHTML;

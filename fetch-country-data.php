@@ -56,7 +56,7 @@ try {
         $stmt = $conn->query("
             SELECT c.id, 
                    c.country_name, 
-                   array_agg(cap.capital_name) AS capitals
+                   array_agg(REPLACE(cap.capital_name, ' / ', ', ')) AS capitals
             FROM countries c
             JOIN capitals cap ON c.id = cap.country_id
             WHERE c.entity_type IN ('member_state', 'observer_state')
@@ -88,7 +88,7 @@ try {
         $stmt = $conn->query("
             SELECT c.id, 
                    c.country_name, 
-                   array_agg(cap.capital_name) AS capitals
+                   array_agg(REPLACE(cap.capital_name, ' / ', ', ')) AS capitals
             FROM countries c
             JOIN capitals cap ON c.id = cap.country_id
             WHERE c.entity_type = 'territory'
