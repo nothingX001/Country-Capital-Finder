@@ -338,6 +338,7 @@ form input[type="submit"].button {
     background-color: #fff; /* White background for each result */
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for each result */
+    transition: border-left-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 #detailedResults p strong {
@@ -351,6 +352,15 @@ form input[type="submit"].button {
 
 #detailedResults p.incorrect {
     border-left-color: #f44336; /* Red accent for incorrect answers */
+}
+
+/* Hover effects for result sidebars */
+#detailedResults p.correct:hover {
+    border-left-color: #388e3c; /* Darker green on hover */
+}
+
+#detailedResults p.incorrect:hover {
+    border-left-color: #d32f2f; /* Darker red on hover */
 }
 
 #redoQuizBtn {
@@ -565,20 +575,4 @@ form input[type="submit"].button {
     #map {
         height: 300px; /* Reduce map height for mobile */
     }
-}
-
-/* Add hover effects for result sidebars */
-.result-item {
-    padding: 10px;
-    margin: 5px 0;
-    border-left: 5px solid transparent;
-    transition: border-left-color 0.3s ease;
-}
-
-.result-item.correct:hover {
-    border-left-color: green;
-}
-
-.result-item.incorrect:hover {
-    border-left-color: red;
 }
