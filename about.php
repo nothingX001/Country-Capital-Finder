@@ -37,15 +37,15 @@ if (!$statistics || isset($statistics['error'])) {
     <section class="page-content about">
         <h1>About ExploreCapitals</h1>
         <p>
-            ExploreCapitals</strong>—is an intuitive application where you can
+            ExploreCapitals</strong> is an intuitive application where you can
             <strong>find any capital</strong> with ease. Created to support learners of all levels, 
-            our platform offers an <strong>interactive capital quiz</strong>,<strong>a world map</strong>, and an extensive <strong>database of country profiles</strong>.
+            our platform offers an interactive <strong>capital quiz</strong>,<strong> a world map</strong>, and an extensive database of<strong> country profiles</strong>.
         </p>
-        <h2>Connect with us!</h2>
+        <h2>Connect with Us!</h2>
         <ul>
             <li><strong>Instagram:</strong> <a href="https://www.instagram.com/explorecapitals" target="_blank">@explorecapitals</a></li>
             <li><strong>Facebook:</strong> <a href="https://www.facebook.com/me/" target="_blank">Anaximander Miletus</a></li>
-            <li><strong>Twitter:</strong> <a href="https://twitter.com/explorecapitals" target="_blank">@explorecapitals</a></li>
+            <li><strong>Twitter/X:</strong> <a href="https://twitter.com/explorecapitals" target="_blank">@explorecapitals</a></li>
             <li><strong>Email:</strong> <a href="mailto:anaximanderomiletus@gmail.com">anaximanderomiletus@gmail.com</a></li>
         </ul>
 
