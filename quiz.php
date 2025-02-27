@@ -7,7 +7,9 @@ include 'the-countries.php'; // For "the" prefix logic
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Country Capital Quiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Take the capitals quiz!">
+    <title>Quiz | Explore Capitals</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to the updated styles.css -->
 </head>
 <body>

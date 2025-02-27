@@ -24,6 +24,7 @@ if (!$statistics || isset($statistics['error'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | ExploreCapitals</title>
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory’s capital.">
     <meta name="author" content="ExploreCapitals">
