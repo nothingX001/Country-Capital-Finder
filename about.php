@@ -39,9 +39,9 @@ if (!$statistics || isset($statistics['error'])) {
         <p>
             ExploreCapitals</strong>—is an intuitive application where you can
             <strong>find any capital</strong> with ease. Created to support learners of all levels, 
-            our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong>.
+            our platform offers an <strong>interactive capital quiz</strong>,<strong>a world map</strong>, and an extensive <strong>database of country profiles</strong>.
         </p>
-        <h2>Social Media</h2>
+        <h2>Connect with us!</h2>
         <ul>
             <li><strong>Instagram:</strong> <a href="https://www.instagram.com/explorecapitals" target="_blank">@explorecapitals</a></li>
             <li><strong>Facebook:</strong> <a href="https://www.facebook.com/me/" target="_blank">Anaximander Miletus</a></li>
