@@ -83,24 +83,28 @@ body {
 
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
+    /* Move hamburger icon further left */
     .navbar-container {
-        justify-content: flex-start; /* Move hamburger left */
+        justify-content: flex-start;
     }
     .navbar-toggle {
         display: block;
-        margin-right: 20px; 
+        margin-right: 20px;
     }
     .navbar-list {
         display: none;       /* Hidden unless .open is toggled */
         position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
         flex-direction: column;
-        justify-content: flex-start; /* Place items near top */
+        /* Place items near the top */
+        justify-content: flex-start;
         align-items: center;
         background-color: #3399ff;
         z-index: 999;
-        padding-top: 80px; /* Gap below navbar so links start lower */
+        padding-top: 80px;   /* Gap below navbar before links start */
     }
     .navbar-list.open {
         display: flex;
@@ -121,17 +125,17 @@ body {
 }
 
 /* 5) Main Page Containers 
-   Thin margin on *all* screens to match your "thin" request:
-   about ~20px of space from navbar, same as side margins on mobile.
+   Restored original vertical spacing:
+   80px from the navbar (top) and 50px at the bottom.
 */
 .page-content,
 .quiz,
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 20px;   /* Reduced top space from the navbar */
-    margin-bottom: 20px;/* Matching bottom spacing */
-    max-width: 600px; 
+    margin-top: 80px;
+    margin-bottom: 50px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
@@ -345,7 +349,6 @@ form input[type="submit"].button {
 #detailedResults p.incorrect {
     border-left-color: #66b3ff;
 }
-/* Hover effects for result sidebars */
 #detailedResults p.correct:hover {
     border-left-color: #4caf50;
 }
@@ -499,7 +502,7 @@ form input[type="submit"].button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* 15) Home Page Intro (optional) */
+/* 15) Home Page Intro (if relevant) */
 .home-intro {
     font-size: 1rem;
     font-weight: normal;
@@ -507,17 +510,16 @@ form input[type="submit"].button {
     margin-bottom: 20px;
 }
 
-/* 16) Mobile-Only: Keep thin side margin if you prefer even on large phones */
+/* 16) Mobile-Only: Thin Side Margins */
 @media (max-width: 768px) {
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        width: 95%; /* Leaves ~2.5% grey margin each side */
+        width: 95%; /* Leaves a thin grey margin on the sides */
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
-        /* margin-top: 20px, margin-bottom: 20px inherited from desktop rules */
     }
 }
