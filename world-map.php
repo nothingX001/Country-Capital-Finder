@@ -9,7 +9,7 @@ $countries = json_decode($data, true);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
-    <title>World Map | Explore Capitals</title>
+    <title>World Map | ExploreCapitals</title>
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
     <style>
