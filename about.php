@@ -35,9 +35,9 @@ if (!$statistics || isset($statistics['error'])) {
 
     <!-- Common container class plus .about -->
     <section class="page-content about">
-        <h1>ABOUT EXPLORE CAPITALS</h1>
+        <h1>About ExploreCapitals</h1>
         <p>
-            Welcome to <strong>ExploreCapitals.com</strong>—an intuitive application where you can 
+            ExploreCapitals</strong>—is an intuitive application where you can
             <strong>find any capital</strong> with ease. Created to support learners of all levels, 
             our platform offers an <strong>interactive capital quiz</strong> and an extensive <strong>capitals of the world quiz</strong>.
         </p>

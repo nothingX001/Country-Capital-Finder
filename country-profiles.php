@@ -19,7 +19,7 @@ $deFactoStates = json_decode($deFactoData, true) ?: [];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Discover profiles of countries, territories, and more!">
-    <title>Country Profiles | Explore Capitals</title>
+    <title>Country Profiles | ExploreCapitals</title>
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
 <body>
@@ -31,7 +31,7 @@ $deFactoStates = json_decode($deFactoData, true) ?: [];
         <p>Explore member/observer states, territories, and de facto states in our database.</p>
 
         <!-- 1) Member/Observer States -->
-        <h2>Member/Observer States</h2>
+        <h2>Countries</h2>
         <?php if (!empty($mainCountries)): ?>
             <ul>
                 <?php foreach ($mainCountries as $c): ?>

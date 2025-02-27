@@ -9,7 +9,7 @@ include 'the-countries.php'; // For "the" prefix logic
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Take the capitals quiz!">
-    <title>Quiz | Explore Capitals</title>
+    <title>Quiz | ExploreCapitals</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to the updated styles.css -->
 </head>
 <body>
@@ -17,11 +17,11 @@ include 'the-countries.php'; // For "the" prefix logic
 
     <!-- .page-content + .quiz -->
     <section class="page-content quiz" id="main-quiz">
-        <h1>EXPLORE CAPITALS QUIZ</h1>
+        <h1>ExploreCapitals Quiz</h1>
         <p>Select a quiz type to begin.</p>
 
-        <button id="startMainQuizBtn" class="button">Countries Quiz</button>
-        <button id="startTerritoriesQuizBtn" class="button">Territories Quiz</button>
+        <button id="startMainQuizBtn" class="button">COUNTRIES QUIZ</button>
+        <button id="startTerritoriesQuizBtn" class="button">TERRITORIES QUIZ</button>
 
         <div id="quizContainer" style="display: none;">
             <div id="timer">Time: 0:00</div>
