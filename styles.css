@@ -38,7 +38,7 @@ body {
 /* Hamburger Menu (Desktop Hidden) */
 .navbar-toggle {
     position: relative;
-    display: none;  /* Shows on mobile only */
+    display: none; /* Visible on mobile only */
     width: 30px;
     height: 30px;
     background: none;
@@ -85,38 +85,38 @@ body {
 
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
-    /* Move hamburger icon further left */
+    /* Move hamburger icon to the left (start) */
     .navbar-container {
-        justify-content: flex-start; /* hamburger to the left, any brand text can follow */
+        justify-content: flex-start;
     }
 
     .navbar-toggle {
         display: block;
-        margin-right: 20px; /* Adjust as needed if you want more space between icon & any text */
+        margin-right: 20px; /* If you need space between it & any text/logo */
     }
 
     .navbar-list {
-        display: none;       /* Hidden by default; shown on .open */
+        display: none;       /* Hidden by default; displayed when .open is toggled */
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
         flex-direction: column;
-        justify-content: center; /* center them vertically */
-        align-items: center;     /* center them horizontally */
+        /* Place items near top, not center */
+        justify-content: flex-start;
+        align-items: center; 
         background-color: #3399ff;
         z-index: 999;
+        padding-top: 80px;   /* Gap below navbar before links start */
     }
 
     .navbar-list.open {
         display: flex;
     }
 
-    /* Center each link in the menu, space them out a bit */
     .navbar-list li {
         margin: 15px 0;
-        width: auto; /* or 100% if you want them to stretch across the screen */
     }
 
     .navbar-list li a {
@@ -132,15 +132,17 @@ body {
     }
 }
 
-/* 5) Main Page Containers (Desktop) */
+/* 5) Main Page Containers 
+   Restore your “perfect” top/bottom spacing: 80px from the navbar, 50px bottom
+   Keep max-width so it doesn't expand too wide on large screens
+*/
 .page-content,
 .quiz,
 .country-profiles,
 .about,
 .world-map {
-    /* Desktop: fixed max-width, centered box, perfect spacing up top */
-    margin-top: 70px;
-    margin-bottom: 20px;
+    margin-top: 80px;   /* Original “perfect” top spacing */
+    margin-bottom: 50px;
     max-width: 600px; 
     margin-left: auto;
     margin-right: auto;
@@ -151,14 +153,13 @@ body {
     text-align: center;
 }
 
-/* 6) Headings (Desktop defaults) */
+/* 6) Headings */
 h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
     word-wrap: break-word;
     line-height: 1.2;
 }
-
 h1 {
     font-size: 2rem;
 }
@@ -181,7 +182,7 @@ input[type="text"] {
     margin: 0 auto 15px auto;
 }
 
-/* 8) Buttons - Centered */
+/* 8) Buttons */
 .button {
     display: block;
     margin: 15px auto;
@@ -369,7 +370,6 @@ form input[type="submit"].button {
 #detailedResults p.correct {
     border-left-color: #66b3ff;
 }
-
 #detailedResults p.incorrect {
     border-left-color: #66b3ff;
 }
@@ -551,7 +551,7 @@ form input[type="submit"].button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* 15) Home Page Intro (Optional) */
+/* 15) Home Page Intro (if relevant) */
 .home-intro {
     font-size: 1rem;
     font-weight: normal;
@@ -559,20 +559,17 @@ form input[type="submit"].button {
     margin-bottom: 20px;
 }
 
-/* 16) MOBILE-ONLY Tweaks */
+/* 16) Mobile-Only: Thinner side margins, keep top spacing from desktop */
 @media (max-width: 768px) {
-
-    /* Keep top spacing the same but add a little left/right grey space.
-       We'll do 95% width with max-width so there's a thin gap on sides. */
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        width: 95%;
-        max-width: 600px;  /* So it never grows beyond 600px if screen bigger */
+        width: 95%;       /* Slight space on left/right for that thin grey margin */
+        max-width: 600px; /* No larger than 600px if the screen is bigger than that */
         margin-left: auto;
         margin-right: auto;
-        /* margin-top, margin-bottom remain the same from desktop rules (70px, 20px) */
+        /* margin-top: 80px; margin-bottom: 50px; are inherited from desktop rules */
     }
 }
