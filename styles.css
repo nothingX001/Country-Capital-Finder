@@ -8,7 +8,7 @@
 /* 2) Body Defaults */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /* Light grey background */
     color: #333;
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
@@ -27,7 +27,7 @@ body {
 
 /* Navbar Container */
 .navbar-container {
-    width: 90%;
+    width: 90%;              /* Container width inside the navbar */
     margin: 0 auto;
     padding: 0 10px;
     display: flex;
@@ -35,24 +35,39 @@ body {
     justify-content: space-between;
 }
 
-/* Hamburger Menu (desktop hidden by default) */
+/* Hamburger Menu */
 .navbar-toggle {
-    display: none;
+    /* We’ll use ::before to swap ☰ and X */
+    position: relative;
+    display: none;          /* Hidden by default except on mobile */
+    width: 30px;            /* Enough room for the icon(s) */
+    height: 30px;
     background: none;
     border: none;
-    color: #fff;
-    font-size: 1.5rem;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    z-index: 1001;          /* Above the nav links overlay */
+    /* We'll size the icon in .navbar-toggle::before */
 }
 
-.navbar-toggle.active {
-    transform: rotate(90deg);
+/* The hamburger -> X swap purely in CSS */
+.navbar-toggle::before {
+    content: '☰';          /* Hamburger default */
+    font-size: 1.5rem;
+    line-height: 1;         /* Keep icon height consistent */
+    color: #fff;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
+.navbar-toggle.active::before {
+    content: 'X';           /* When toggled, show an X */
+}
+
+/* Desktop (non-mobile) nav list */
 .navbar-list {
     list-style: none;
-    display: flex; /* Horizontal on desktop */
+    display: flex;          /* Horizontal by default on desktop */
     transition: transform 0.3s ease-in-out;
 }
 
@@ -74,11 +89,11 @@ body {
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
     .navbar-toggle {
-        display: block; /* Show hamburger icon on mobile */
+        display: block; /* Show the hamburger icon on mobile */
     }
 
     .navbar-list {
-        /* Hidden by default; full-screen overlay when open */
+        /* Hidden by default; becomes full-screen overlay when open */
         display: none;
         position: fixed;
         top: 0;
@@ -86,25 +101,29 @@ body {
         width: 100vw;
         height: 100vh;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #3399ff; 
+        background-color: #3399ff;
         z-index: 999;
+        /* Let's pin them near the top, but with a little padding at the top */
+        padding-top: 80px; 
+        align-items: flex-start;  /* Start from the left */
+        gap: 30px;                /* More spacing between each link */
     }
 
     .navbar-list.open {
-        display: flex;
+        display: flex;  /* Show the overlay */
     }
 
     .navbar-list li {
-        margin: 10px 0;
+        margin: 0;
+        width: 100%;
     }
 
     .navbar-list li a {
-        font-size: 1.2rem;
+        display: block;
+        width: 100%;
         color: #fff;
-        padding: 1rem 2rem;
-        text-align: center;
+        padding: 10px 20px;
+        font-size: 1.2rem;
     }
 
     .navbar-list li a:hover {
@@ -113,34 +132,42 @@ body {
     }
 }
 
-/* 5) Main Page Containers 
-   (thinner top margin, smaller side margins, consistent style)
+/* 5) Main Page Containers
+   Keep a fixed max-width so the white box remains static size,
+   plus uniform and thinner spacing around, with enough top margin
+   so it doesn’t collide with the fixed navbar.
 */
 .page-content,
 .quiz,
 .country-profiles,
 .about,
 .world-map {
-    margin: 60px auto 20px auto; /* No doubled top margin, fairly thin spacing */
-    width: 90%;                 /* Slight side margin to avoid edge-to-edge */
-    padding: 15px;              /* Some inside spacing */
+    margin-top: 70px;       /* Enough space so it’s below the navbar */
+    margin-bottom: 20px;    /* A bit of space at the bottom */
+    max-width: 600px;       /* Keep a static size */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;          /* Thinner or bigger if you like */
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    text-align: center;         /* Center text by default; adjust if needed */
+    text-align: center;     /* Center text inside each container */
 }
 
-/* 6) General Headings: smaller font so lines don’t break awkwardly */
+/* 6) General Headings: moderate sizes to prevent odd wrapping */
 h1, h2, h3 {
     margin-bottom: 20px;
-    font-size: 1.75rem; /* Smaller default so it’s less likely to wrap oddly */
     text-align: center;
-    word-wrap: break-word; /* Helps super-long text wrap more gracefully */
+    word-wrap: break-word; 
+    line-height: 1.2;      /* Slightly tighter so lines stay close */
 }
 
-/* If you want separate sizing for h2/h3: */
+/* Tweak the exact sizes to your preference: */
+h1 {
+    font-size: 2rem;
+}
 h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
 }
 h3 {
     font-size: 1.2rem;
@@ -158,9 +185,10 @@ input[type="text"] {
     margin: 0 auto 15px auto;
 }
 
-/* 8) Buttons */
+/* 8) Buttons - center them properly (especially in quiz) */
 .button {
-    display: inline-block; /* Or block if you prefer full width */
+    display: block;         /* Block-level to easily center with margin auto */
+    margin: 15px auto;      /* Center horizontally, with some vertical margin */
     padding: 15px 40px;
     font-size: 1.1rem;
     font-weight: bold;
@@ -175,7 +203,6 @@ input[type="text"] {
       0 6px 12px rgba(0,0,0,0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    margin-top: 10px;
 }
 
 .button:hover {
@@ -190,8 +217,8 @@ input[type="text"] {
 }
 
 form input[type="submit"].button {
-    /* If your forms have a submit button with .button class */
-    margin-top: 10px;
+    /* If you have a form with a submit button using .button */
+    margin-top: 15px;
 }
 
 /* 9) Flash messages, etc. */
@@ -255,19 +282,14 @@ form input[type="submit"].button {
 
 /* 11) Quiz Section */
 .quiz {
-    text-align: left;
-    margin-top: 60px;  /* Already set above, but repeating for clarity */
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: left; /* If you want the actual quiz Q/A left-aligned inside the box */
 }
 
+/* Tweak quiz headings so they remain legible, centered headings if you like */
 .quiz h1 {
     text-align: center;
+    font-size: 2rem;
     margin-bottom: 20px;
-    font-size: 1.75rem; /* Slightly smaller to avoid weird breaks */
 }
 
 .quiz p {
@@ -316,7 +338,7 @@ form input[type="submit"].button {
 #resultContainer h2 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 1.5rem; /* Slightly reduced */
+    font-size: 1.5rem;
     color: #333;
 }
 
@@ -381,18 +403,12 @@ form input[type="submit"].button {
 /* 12) Country Profiles Section */
 .country-profiles {
     text-align: left; 
-    margin-top: 60px;
-    margin-bottom: 20px; 
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .country-profiles h1 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 1.75rem;
+    font-size: 2rem;
 }
 
 .country-profiles p {
@@ -405,7 +421,7 @@ form input[type="submit"].button {
 .country-profiles h2 {
     margin-top: 30px;
     margin-bottom: 15px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: #333;
 }
 
@@ -443,20 +459,14 @@ form input[type="submit"].button {
 /* 13) About Section */
 .about {
     text-align: left;
-    margin-top: 60px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .about h1 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 1.6rem;
+    font-size: 2rem;
     color: #333;
-    line-height: 1.2;     /* Helps “.com” not jump to next line */
+    line-height: 1.2;
     word-wrap: break-word;
 }
 
@@ -470,7 +480,7 @@ form input[type="submit"].button {
 .about h2 {
     margin-top: 30px;
     margin-bottom: 15px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: #333;
 }
 
@@ -509,18 +519,12 @@ form input[type="submit"].button {
 
 /* 14) World Map Section */
 .world-map {
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-top: 60px; 
-    margin-bottom: 20px;
     text-align: center;
 }
 
 .world-map h1 {
     margin-bottom: 20px;
-    font-size: 1.75rem;
+    font-size: 2rem;
     color: #333;
     word-wrap: break-word;
 }
@@ -531,7 +535,6 @@ form input[type="submit"].button {
     margin-bottom: 20px;
 }
 
-/* Search bar container */
 .search-bar-container {
     text-align: center;
     margin: 0 auto;
@@ -559,37 +562,35 @@ form input[type="submit"].button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* 15) Home Page Intro (optional class for “Search for any country...” text) */
+/* 15) Home Page Intro (if you have text like “Search for any country...” you want smaller) */
 .home-intro {
-    font-size: 1rem;     /* Make it smaller so it matches other smaller text */
+    font-size: 1rem;
     font-weight: normal;
     line-height: 1.4;
     margin-bottom: 20px;
 }
 
-/* 16) Mobile Responsiveness - fine-tune further if needed */
+/* 16) Extra Mobile Tweaks (optional) */
 @media (max-width: 768px) {
-    /* Slightly smaller margins/padding on mobile to reduce whitespace */
+    /* If you want to reduce top margin so content doesn’t appear “squashed”
+       but still ensures there's enough room for the fixed navbar. */
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        margin: 50px auto 15px;
-        width: 90%;
-        padding: 10px;
+        margin-top: 60px;
+        margin-bottom: 15px;
+        padding: 15px; /* Slightly bigger inside padding if you like */
     }
 
-    /* Reduce heading sizes more on narrow screens */
     h1 {
-        font-size: 1.4rem;
+        font-size: 1.8rem;
     }
     h2 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     h3 {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
-
-    /* If you want the quiz or about sections left-aligned, remove or override text-align */
 }
