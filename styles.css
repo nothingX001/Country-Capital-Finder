@@ -57,7 +57,6 @@ body {
     left: 0;
     top: 0;
 }
-
 .navbar-toggle.active::before {
     content: 'X';
 }
@@ -78,54 +77,43 @@ body {
     font-size: 1rem;
     transition: color 0.3s ease;
 }
-
 .navbar-list a:hover {
     color: #ffdd57;
 }
 
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
-    /* Move hamburger icon to the left (start) */
     .navbar-container {
-        justify-content: flex-start;
+        justify-content: flex-start; /* Move hamburger left */
     }
-
     .navbar-toggle {
         display: block;
-        margin-right: 20px; /* If you need space between it & any text/logo */
+        margin-right: 20px; 
     }
-
     .navbar-list {
-        display: none;       /* Hidden by default; displayed when .open is toggled */
+        display: none;       /* Hidden unless .open is toggled */
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
         flex-direction: column;
-        /* Place items near top, not center */
-        justify-content: flex-start;
-        align-items: center; 
+        justify-content: flex-start; /* Place items near top */
+        align-items: center;
         background-color: #3399ff;
         z-index: 999;
-        padding-top: 80px;   /* Gap below navbar before links start */
+        padding-top: 80px; /* Gap below navbar so links start lower */
     }
-
     .navbar-list.open {
         display: flex;
     }
-
     .navbar-list li {
         margin: 15px 0;
     }
-
     .navbar-list li a {
         font-size: 1.2rem;
         color: #fff;
         padding: 10px 20px;
         text-align: center;
     }
-
     .navbar-list li a:hover {
         background-color: rgba(255, 255, 255, 0.25);
         color: #fff;
@@ -133,16 +121,16 @@ body {
 }
 
 /* 5) Main Page Containers 
-   Restore your “perfect” top/bottom spacing: 80px from the navbar, 50px bottom
-   Keep max-width so it doesn't expand too wide on large screens
+   Thin margin on *all* screens to match your "thin" request:
+   about ~20px of space from navbar, same as side margins on mobile.
 */
 .page-content,
 .quiz,
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 80px;   /* Original “perfect” top spacing */
-    margin-bottom: 50px;
+    margin-top: 20px;   /* Reduced top space from the navbar */
+    margin-bottom: 20px;/* Matching bottom spacing */
     max-width: 600px; 
     margin-left: auto;
     margin-right: auto;
@@ -201,7 +189,6 @@ input[type="text"] {
     transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
-
 .button:hover {
     background: linear-gradient(180deg, #55aaff, #2288ee);
 }
@@ -211,7 +198,6 @@ input[type="text"] {
       0 3px 6px rgba(0,0,0,0.1);
     transform: translateY(2px);
 }
-
 form input[type="submit"].button {
     margin-top: 15px;
 }
@@ -230,7 +216,7 @@ form input[type="submit"].button {
     position: absolute;
     background-color: #fff;
     border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
@@ -275,24 +261,20 @@ form input[type="submit"].button {
 .quiz {
     text-align: left; 
 }
-
 .quiz h1 {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 20px;
 }
-
 .quiz p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
 }
-
 #quizContainer {
     margin-top: 20px;
 }
-
 #timer {
     font-size: 1.25rem;
     font-weight: bold;
@@ -300,18 +282,15 @@ form input[type="submit"].button {
     color: #333;
     text-align: center;
 }
-
 #questionContainer {
     margin-bottom: 20px;
 }
-
 #questionContainer p {
     font-size: 1.25rem;
     margin-bottom: 10px;
     color: #333;
     text-align: center;
 }
-
 #userAnswer {
     width: 100%;
     padding: 10px;
@@ -320,18 +299,15 @@ form input[type="submit"].button {
     border-radius: 4px;
     margin-bottom: 20px;
 }
-
 #resultContainer {
     margin-top: 20px;
 }
-
 #resultContainer h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1.5rem;
     color: #333;
 }
-
 #score {
     font-size: 1.25rem;
     margin-bottom: 20px;
@@ -339,7 +315,6 @@ form input[type="submit"].button {
     text-align: center;
     font-weight: bold;
 }
-
 #detailedResults {
     margin-top: 20px;
     padding: 20px;
@@ -347,7 +322,6 @@ form input[type="submit"].button {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 #detailedResults p {
     font-size: 1rem;
     margin-bottom: 15px;
@@ -361,19 +335,16 @@ form input[type="submit"].button {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: border-left-color 0.3s ease;
 }
-
 #detailedResults p strong {
     color: #333;
     font-weight: bold;
 }
-
 #detailedResults p.correct {
     border-left-color: #66b3ff;
 }
 #detailedResults p.incorrect {
     border-left-color: #66b3ff;
 }
-
 /* Hover effects for result sidebars */
 #detailedResults p.correct:hover {
     border-left-color: #4caf50;
@@ -381,7 +352,6 @@ form input[type="submit"].button {
 #detailedResults p.incorrect:hover {
     border-left-color: #f44336;
 }
-
 #redoQuizBtn {
     margin-top: 20px;
     display: block;
@@ -393,33 +363,28 @@ form input[type="submit"].button {
 .country-profiles {
     text-align: left; 
 }
-
 .country-profiles h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
 }
-
 .country-profiles p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
 }
-
 .country-profiles h2 {
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.5rem;
     color: #333;
 }
-
 .country-profiles ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .country-profiles ul li {
     margin: 10px 0;
     padding: 10px;
@@ -427,11 +392,9 @@ form input[type="submit"].button {
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
-
 .country-profiles ul li:hover {
     background-color: #f0f0f0;
 }
-
 .country-profiles ul li a {
     text-decoration: none;
     color: #333;
@@ -440,7 +403,6 @@ form input[type="submit"].button {
     align-items: center;
     gap: 10px;
 }
-
 .country-profiles ul li a:hover {
     color: #66b3ff;
 }
@@ -449,7 +411,6 @@ form input[type="submit"].button {
 .about {
     text-align: left; 
 }
-
 .about h1 {
     text-align: center;
     margin-bottom: 20px;
@@ -458,27 +419,23 @@ form input[type="submit"].button {
     line-height: 1.2;
     word-wrap: break-word;
 }
-
 .about p {
     font-size: 1rem;
     line-height: 1.6;
     color: #555;
     margin-bottom: 20px;
 }
-
 .about h2 {
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.5rem;
     color: #333;
 }
-
 .about ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .about ul li {
     margin: 10px 0;
     padding: 10px;
@@ -486,22 +443,18 @@ form input[type="submit"].button {
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
-
 .about ul li:hover {
     background-color: #f0f0f0;
 }
-
 .about ul li strong {
     color: #333;
     font-weight: bold;
 }
-
 .about ul li a {
     text-decoration: none;
     color: #66b3ff;
     transition: color 0.2s ease;
 }
-
 .about ul li a:hover {
     color: #3399ff;
 }
@@ -510,20 +463,17 @@ form input[type="submit"].button {
 .world-map {
     text-align: center;
 }
-
 .world-map h1 {
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
     word-wrap: break-word;
 }
-
 .world-map p {
     font-size: 1rem;
     color: #555;
     margin-bottom: 20px;
 }
-
 .search-bar-container {
     text-align: center;
     margin: 0 auto;
@@ -531,7 +481,6 @@ form input[type="submit"].button {
     max-width: 300px;
     position: relative;
 }
-
 #search-bar {
     width: 100%;
     max-width: 300px;
@@ -542,7 +491,6 @@ form input[type="submit"].button {
     display: block;
     margin: 0 auto;
 }
-
 #map {
     height: 500px;
     width: 100%;
@@ -551,7 +499,7 @@ form input[type="submit"].button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* 15) Home Page Intro (if relevant) */
+/* 15) Home Page Intro (optional) */
 .home-intro {
     font-size: 1rem;
     font-weight: normal;
@@ -559,17 +507,17 @@ form input[type="submit"].button {
     margin-bottom: 20px;
 }
 
-/* 16) Mobile-Only: Thinner side margins, keep top spacing from desktop */
+/* 16) Mobile-Only: Keep thin side margin if you prefer even on large phones */
 @media (max-width: 768px) {
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        width: 95%;       /* Slight space on left/right for that thin grey margin */
-        max-width: 600px; /* No larger than 600px if the screen is bigger than that */
+        width: 95%; /* Leaves ~2.5% grey margin each side */
+        max-width: 600px;
         margin-left: auto;
         margin-right: auto;
-        /* margin-top: 80px; margin-bottom: 50px; are inherited from desktop rules */
+        /* margin-top: 20px, margin-bottom: 20px inherited from desktop rules */
     }
 }
