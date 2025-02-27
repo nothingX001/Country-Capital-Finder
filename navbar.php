@@ -1,9 +1,7 @@
 <!-- navbar.php -->
 <nav class="navbar">
     <div class="navbar-container">
-        <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
-            &#9776;
-        </button>
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation"></button>
         <ul class="navbar-list" id="navbarList">
             <li><a href="index.php">HOME</a></li>
             <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
