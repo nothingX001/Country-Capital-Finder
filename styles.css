@@ -8,7 +8,7 @@
 /* 2) Body Defaults */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light grey background */
+    background-color: #f4f4f4;
     color: #333;
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
@@ -27,7 +27,7 @@ body {
 
 /* Navbar Container */
 .navbar-container {
-    width: 90%;              /* Container width inside the navbar */
+    width: 90%;
     margin: 0 auto;
     padding: 0 10px;
     display: flex;
@@ -35,25 +35,23 @@ body {
     justify-content: space-between;
 }
 
-/* Hamburger Menu */
+/* Hamburger Menu (Desktop Hidden) */
 .navbar-toggle {
-    /* We’ll use ::before to swap ☰ and X */
     position: relative;
-    display: none;          /* Hidden by default except on mobile */
-    width: 30px;            /* Enough room for the icon(s) */
+    display: none;  /* Shows on mobile only */
+    width: 30px;
     height: 30px;
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1001;          /* Above the nav links overlay */
-    /* We'll size the icon in .navbar-toggle::before */
+    z-index: 1001;
 }
 
-/* The hamburger -> X swap purely in CSS */
+/* Hamburger -> X in CSS */
 .navbar-toggle::before {
-    content: '☰';          /* Hamburger default */
+    content: '☰';
     font-size: 1.5rem;
-    line-height: 1;         /* Keep icon height consistent */
+    line-height: 1;
     color: #fff;
     position: absolute;
     left: 0;
@@ -61,13 +59,12 @@ body {
 }
 
 .navbar-toggle.active::before {
-    content: 'X';           /* When toggled, show an X */
+    content: 'X';
 }
 
-/* Desktop (non-mobile) nav list */
 .navbar-list {
     list-style: none;
-    display: flex;          /* Horizontal by default on desktop */
+    display: flex; /* Horizontal on desktop */
     transition: transform 0.3s ease-in-out;
 }
 
@@ -83,47 +80,50 @@ body {
 }
 
 .navbar-list a:hover {
-    color: #ffdd57; /* Highlight color on hover */
+    color: #ffdd57;
 }
 
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
+    /* Move hamburger icon further left */
+    .navbar-container {
+        justify-content: flex-start; /* hamburger to the left, any brand text can follow */
+    }
+
     .navbar-toggle {
-        display: block; /* Show the hamburger icon on mobile */
+        display: block;
+        margin-right: 20px; /* Adjust as needed if you want more space between icon & any text */
     }
 
     .navbar-list {
-        /* Hidden by default; becomes full-screen overlay when open */
-        display: none;
+        display: none;       /* Hidden by default; shown on .open */
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
         flex-direction: column;
+        justify-content: center; /* center them vertically */
+        align-items: center;     /* center them horizontally */
         background-color: #3399ff;
         z-index: 999;
-        /* Let's pin them near the top, but with a little padding at the top */
-        padding-top: 80px; 
-        align-items: flex-start;  /* Start from the left */
-        gap: 30px;                /* More spacing between each link */
     }
 
     .navbar-list.open {
-        display: flex;  /* Show the overlay */
+        display: flex;
     }
 
+    /* Center each link in the menu, space them out a bit */
     .navbar-list li {
-        margin: 0;
-        width: 100%;
+        margin: 15px 0;
+        width: auto; /* or 100% if you want them to stretch across the screen */
     }
 
     .navbar-list li a {
-        display: block;
-        width: 100%;
+        font-size: 1.2rem;
         color: #fff;
         padding: 10px 20px;
-        font-size: 1.2rem;
+        text-align: center;
     }
 
     .navbar-list li a:hover {
@@ -132,37 +132,33 @@ body {
     }
 }
 
-/* 5) Main Page Containers
-   Keep a fixed max-width so the white box remains static size,
-   plus uniform and thinner spacing around, with enough top margin
-   so it doesn’t collide with the fixed navbar.
-*/
+/* 5) Main Page Containers (Desktop) */
 .page-content,
 .quiz,
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 70px;       /* Enough space so it’s below the navbar */
-    margin-bottom: 20px;    /* A bit of space at the bottom */
-    max-width: 600px;       /* Keep a static size */
+    /* Desktop: fixed max-width, centered box, perfect spacing up top */
+    margin-top: 70px;
+    margin-bottom: 20px;
+    max-width: 600px; 
     margin-left: auto;
     margin-right: auto;
-    padding: 20px;          /* Thinner or bigger if you like */
+    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    text-align: center;     /* Center text inside each container */
+    text-align: center;
 }
 
-/* 6) General Headings: moderate sizes to prevent odd wrapping */
+/* 6) Headings (Desktop defaults) */
 h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
-    word-wrap: break-word; 
-    line-height: 1.2;      /* Slightly tighter so lines stay close */
+    word-wrap: break-word;
+    line-height: 1.2;
 }
 
-/* Tweak the exact sizes to your preference: */
 h1 {
     font-size: 2rem;
 }
@@ -185,10 +181,10 @@ input[type="text"] {
     margin: 0 auto 15px auto;
 }
 
-/* 8) Buttons - center them properly (especially in quiz) */
+/* 8) Buttons - Centered */
 .button {
-    display: block;         /* Block-level to easily center with margin auto */
-    margin: 15px auto;      /* Center horizontally, with some vertical margin */
+    display: block;
+    margin: 15px auto;
     padding: 15px 40px;
     font-size: 1.1rem;
     font-weight: bold;
@@ -208,7 +204,6 @@ input[type="text"] {
 .button:hover {
     background: linear-gradient(180deg, #55aaff, #2288ee);
 }
-
 .button:active {
     box-shadow:
       inset 0 6px 12px rgba(0,0,0,0.2),
@@ -217,7 +212,6 @@ input[type="text"] {
 }
 
 form input[type="submit"].button {
-    /* If you have a form with a submit button using .button */
     margin-top: 15px;
 }
 
@@ -244,7 +238,6 @@ form input[type="submit"].button {
     left: 0;
     padding: 0;
 }
-
 .autocomplete-dropdown li {
     padding: 10px 15px;
     font-size: 1rem;
@@ -255,16 +248,13 @@ form input[type="submit"].button {
     margin: 0;
     text-align: left;
 }
-
 .autocomplete-dropdown li:hover {
     background-color: #f0f0f0;
 }
-
 .autocomplete-dropdown li.active {
     background-color: #66b3ff;
     color: #fff;
 }
-
 .autocomplete-dropdown::-webkit-scrollbar {
     width: 8px;
 }
@@ -282,10 +272,9 @@ form input[type="submit"].button {
 
 /* 11) Quiz Section */
 .quiz {
-    text-align: left; /* If you want the actual quiz Q/A left-aligned inside the box */
+    text-align: left; 
 }
 
-/* Tweak quiz headings so they remain legible, centered headings if you like */
 .quiz h1 {
     text-align: center;
     font-size: 2rem;
@@ -458,7 +447,7 @@ form input[type="submit"].button {
 
 /* 13) About Section */
 .about {
-    text-align: left;
+    text-align: left; 
 }
 
 .about h1 {
@@ -562,7 +551,7 @@ form input[type="submit"].button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* 15) Home Page Intro (if you have text like “Search for any country...” you want smaller) */
+/* 15) Home Page Intro (Optional) */
 .home-intro {
     font-size: 1rem;
     font-weight: normal;
@@ -570,27 +559,20 @@ form input[type="submit"].button {
     margin-bottom: 20px;
 }
 
-/* 16) Extra Mobile Tweaks (optional) */
+/* 16) MOBILE-ONLY Tweaks */
 @media (max-width: 768px) {
-    /* If you want to reduce top margin so content doesn’t appear “squashed”
-       but still ensures there's enough room for the fixed navbar. */
+
+    /* Keep top spacing the same but add a little left/right grey space.
+       We'll do 95% width with max-width so there's a thin gap on sides. */
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        margin-top: 60px;
-        margin-bottom: 15px;
-        padding: 15px; /* Slightly bigger inside padding if you like */
-    }
-
-    h1 {
-        font-size: 1.8rem;
-    }
-    h2 {
-        font-size: 1.3rem;
-    }
-    h3 {
-        font-size: 1.1rem;
+        width: 95%;
+        max-width: 600px;  /* So it never grows beyond 600px if screen bigger */
+        margin-left: auto;
+        margin-right: auto;
+        /* margin-top, margin-bottom remain the same from desktop rules (70px, 20px) */
     }
 }
