@@ -11,6 +11,7 @@ body {
     background-color: #f4f4f4;
     color: #333;
     overflow-x: hidden; /* Prevent horizontal scrolling */
+    /* Ensures the site fits nicely on mobile (see meta viewport in <head> too!) */
 }
 
 /* 3) Navbar */
@@ -26,12 +27,13 @@ body {
 }
 
 .navbar-container {
+    /* Removed max-width:1200px so it's fully fluid on mobile */
+    width: 90%;
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
 }
 
 .navbar-toggle {
@@ -45,7 +47,7 @@ body {
 }
 
 .navbar-toggle.active {
-    transform: rotate(90deg); /* Rotate the hamburger icon when active */
+    transform: rotate(90deg); /* Rotate hamburger icon when active */
 }
 
 .navbar-list {
@@ -76,6 +78,7 @@ body {
     }
 
     .navbar-list {
+        /* Start hidden, off-canvas */
         display: none;
         flex-direction: column;
         background-color: #333;
@@ -84,14 +87,14 @@ body {
         left: 0;
         width: 100%;
         padding: 10px 0;
-        transform: translateX(-100%); /* Start off-screen */
+        transform: translateX(-100%);
         opacity: 0;
         transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     }
 
     .navbar-list.open {
         display: flex;
-        transform: translateX(0); /* Slide in from the left */
+        transform: translateX(0);
         opacity: 1;
     }
 
@@ -113,7 +116,7 @@ body {
     }
 }
 
-/* 5) Main Page Container ( .page-content ) */
+/* 5) Main Page Container (.page-content) */
 .page-content {
     margin-top: 80px; /* Reduced space above the content */
     max-width: 600px;
@@ -127,7 +130,7 @@ body {
 h1, h2, h3 {
     margin-bottom: 20px;
     font-size: 2rem;
-    text-align: center; /* Center-align all headings */
+    text-align: center;
 }
 
 h3 {
@@ -187,8 +190,8 @@ form input[type="submit"].button {
     margin-top: 20px;
     padding: 10px;
     background-color: #e0e0e0;
-    border: none !important; /* Remove any borders */
-    margin-bottom: 0 !important; /* Remove extra margin */
+    border: none !important;
+    margin-bottom: 0 !important;
 }
 
 /* 10) Autocomplete Dropdown */
@@ -201,9 +204,9 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 100%; /* Match the width of the search input */
-    left: 0; /* Align with the left edge of the parent container */
-    padding: 0; /* Remove padding */
+    width: 100%;
+    left: 0;
+    padding: 0;
 }
 
 .autocomplete-dropdown li {
@@ -214,15 +217,15 @@ form input[type="submit"].button {
     transition: background-color 0.2s ease;
     list-style: none;
     text-align: left;
-    margin: 0; /* Remove margin to ensure hover states fill the width */
+    margin: 0;
 }
 
 .autocomplete-dropdown li:hover {
-    background-color: #f0f0f0; /* Grey hover for mouse */
+    background-color: #f0f0f0;
 }
 
 .autocomplete-dropdown li.active {
-    background-color: #66b3ff; /* Blue hover for arrow keys */
+    background-color: #66b3ff;
     color: #fff;
 }
 
@@ -246,9 +249,9 @@ form input[type="submit"].button {
 
 /* 11) Quiz Section */
 .quiz {
-    text-align: left; /* Align quiz content to the left */
-    margin-top: 80px; /* Reduced space above the quiz */
-    margin-bottom: 50px; /* Added space below the quiz */
+    text-align: left;
+    margin-top: 80px; 
+    margin-bottom: 50px; 
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -256,13 +259,13 @@ form input[type="submit"].button {
 }
 
 .quiz h1 {
-    text-align: center; /* Center-align quiz heading */
+    text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
 }
 
 .quiz p {
-    text-align: center; /* Center-align quiz instructions */
+    text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
@@ -277,7 +280,7 @@ form input[type="submit"].button {
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
-    text-align: center; /* Center-align timer */
+    text-align: center;
 }
 
 #questionContainer {
@@ -288,7 +291,7 @@ form input[type="submit"].button {
     font-size: 1.25rem;
     margin-bottom: 10px;
     color: #333;
-    text-align: center; /* Center-align question text */
+    text-align: center;
 }
 
 #userAnswer {
@@ -305,76 +308,76 @@ form input[type="submit"].button {
 }
 
 #resultContainer h2 {
-    text-align: center; /* Center-align results heading */
+    text-align: center;
     margin-bottom: 20px;
     font-size: 1.75rem;
-    color: #333; /* Darker color for better contrast */
+    color: #333; 
 }
 
 #score {
     font-size: 1.25rem;
     margin-bottom: 20px;
     color: #333;
-    text-align: center; /* Center-align score */
-    font-weight: bold; /* Make the score stand out */
+    text-align: center;
+    font-weight: bold;
 }
 
 #detailedResults {
     margin-top: 20px;
     padding: 20px;
-    background-color: #f9f9f9; /* Light background for contrast */
+    background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #detailedResults p {
     font-size: 1rem;
-    margin-bottom: 15px; /* Increased spacing between results */
+    margin-bottom: 15px;
     color: #555;
-    text-align: left; /* Left-align detailed results */
-    line-height: 1.6; /* Improve readability */
+    text-align: left;
+    line-height: 1.6;
     padding: 10px;
-    border-left: 4px solid #66b3ff; /* Blue accent border for each result */
-    background-color: #fff; /* White background for each result */
+    border-left: 4px solid #66b3ff;
+    background-color: #fff;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for each result */
-    transition: border-left-color 0.3s ease; /* Smooth transition for hover effect */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-left-color 0.3s ease;
 }
 
 #detailedResults p strong {
-    color: #333; /* Darker color for emphasis */
+    color: #333;
     font-weight: bold;
 }
 
 #detailedResults p.correct {
-    border-left-color: #66b3ff; /* Blue accent for correct answers */
+    border-left-color: #66b3ff;
 }
 
 #detailedResults p.incorrect {
-    border-left-color: #66b3ff; /* Blue accent for incorrect answers */
+    border-left-color: #66b3ff;
 }
 
 /* Hover effects for result sidebars */
 #detailedResults p.correct:hover {
-    border-left-color: #4caf50; /* Green on hover for correct answers */
+    border-left-color: #4caf50; 
 }
 
 #detailedResults p.incorrect:hover {
-    border-left-color: #f44336; /* Red on hover for incorrect answers */
+    border-left-color: #f44336;
 }
 
 #redoQuizBtn {
     margin-top: 20px;
     display: block;
     margin-left: auto;
-    margin-right: auto; /* Center-align redo button */
+    margin-right: auto;
 }
 
 /* 12) Country Profiles Section */
 .country-profiles {
-    text-align: left; /* Align content to the left */
-    margin-top: 80px; /* Reduced space above the section */
-    margin-bottom: 50px; /* Added space below the section */
+    text-align: left; 
+    margin-top: 80px; 
+    margin-bottom: 50px; 
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -382,13 +385,13 @@ form input[type="submit"].button {
 }
 
 .country-profiles h1 {
-    text-align: center; /* Center-align heading */
+    text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
 }
 
 .country-profiles p {
-    text-align: center; /* Center-align description */
+    text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
@@ -402,41 +405,41 @@ form input[type="submit"].button {
 }
 
 .country-profiles ul {
-    list-style: none; /* Remove default bullets */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .country-profiles ul li {
-    margin: 10px 0; /* Spacing between list items */
+    margin: 10px 0;
     padding: 10px;
-    background-color: #f9f9f9; /* Light background for each item */
+    background-color: #f9f9f9;
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
 .country-profiles ul li:hover {
-    background-color: #f0f0f0; /* Grey hover effect */
+    background-color: #f0f0f0;
 }
 
 .country-profiles ul li a {
-    text-decoration: none; /* Remove underline */
-    color: #333; /* Dark text color */
+    text-decoration: none;
+    color: #333;
     font-size: 1rem;
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between flag and country name */
+    gap: 10px;
 }
 
 .country-profiles ul li a:hover {
-    color: #66b3ff; /* Blue hover color */
+    color: #66b3ff;
 }
 
 /* 13) About Section */
 .about {
-    text-align: left; /* Align content to the left */
-    margin-top: 80px; /* Reduced space above the section */
-    margin-bottom: 50px; /* Added space below the section */
+    text-align: left; 
+    margin-top: 80px; 
+    margin-bottom: 50px;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -444,7 +447,7 @@ form input[type="submit"].button {
 }
 
 .about h1 {
-    text-align: center; /* Center-align heading */
+    text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
@@ -452,7 +455,7 @@ form input[type="submit"].button {
 
 .about p {
     font-size: 1rem;
-    line-height: 1.6; /* Improve readability */
+    line-height: 1.6;
     color: #555;
     margin-bottom: 20px;
 }
@@ -465,36 +468,36 @@ form input[type="submit"].button {
 }
 
 .about ul {
-    list-style: none; /* Remove default bullets */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .about ul li {
-    margin: 10px 0; /* Spacing between list items */
+    margin: 10px 0;
     padding: 10px;
-    background-color: #f9f9f9; /* Light background for each item */
+    background-color: #f9f9f9;
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
 .about ul li:hover {
-    background-color: #f0f0f0; /* Grey hover effect */
+    background-color: #f0f0f0;
 }
 
 .about ul li strong {
-    color: #333; /* Dark text color */
+    color: #333;
     font-weight: bold;
 }
 
 .about ul li a {
-    text-decoration: none; /* Remove underline */
-    color: #66b3ff; /* Blue link color */
+    text-decoration: none;
+    color: #66b3ff;
     transition: color 0.2s ease;
 }
 
 .about ul li a:hover {
-    color: #3399ff; /* Darker blue hover color */
+    color: #3399ff;
 }
 
 /* 14) World Map Section */
@@ -503,9 +506,9 @@ form input[type="submit"].button {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 80px; /* Reduced space above the section */
-    margin-bottom: 50px; /* Added space below the section */
-    text-align: center; /* Center-align content */
+    margin-top: 80px; 
+    margin-bottom: 50px;
+    text-align: center;
 }
 
 .world-map h1 {
@@ -523,22 +526,22 @@ form input[type="submit"].button {
 /* Search bar container */
 .search-bar-container {
     text-align: center;
-    margin: 0 auto; /* Center the container */
-    padding: 0; /* Remove padding */
-    max-width: 300px; /* Match the width of the search input */
-    position: relative; /* Make the dropdown position relative to this container */
+    margin: 0 auto;
+    padding: 0;
+    max-width: 300px;
+    position: relative;
 }
 
 /* Search input styling */
 #search-bar {
-    width: 100%; /* Take up full width of the parent container */
-    max-width: 300px; /* Match the width of the dropdown */
+    width: 100%;
+    max-width: 300px;
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     display: block;
-    margin: 0 auto; /* Center the search input */
+    margin: 0 auto;
 }
 
 /* Map container styling */
@@ -547,13 +550,13 @@ form input[type="submit"].button {
     width: 100%;
     border-radius: 15px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to match other sections */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* 15) Mobile Responsiveness */
 @media (max-width: 768px) {
     .page-content {
-        margin-top: 60px; /* Further reduced top margin for mobile */
+        margin-top: 60px;
         padding: 10px;
     }
 
@@ -568,7 +571,7 @@ form input[type="submit"].button {
 
     .quiz, .country-profiles, .about, .world-map {
         margin-top: 60px; /* Further reduced top margin for mobile */
-        margin-bottom: 30px; /* Reduce bottom margin for mobile */
+        margin-bottom: 30px; 
         padding: 15px;
     }
 

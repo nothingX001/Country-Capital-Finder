@@ -81,6 +81,7 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($country['country_name']); ?> Details</title>
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
