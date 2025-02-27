@@ -27,7 +27,7 @@ $countries = json_decode($data, true);
 
     <!-- Common container .page-content + .world-map, keep the ID if you like -->
     <section class="page-content world-map" id="main-world-map">
-        <h1>WORLD MAP</h1>
+        <h1>World Map</h1>
         <p>Explore countries and their capitals around the world.</p>
         <div class="search-bar-container">
             <input type="text" id="search-bar" placeholder="Search for a country or capital...">

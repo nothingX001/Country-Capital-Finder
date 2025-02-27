@@ -27,7 +27,7 @@ $deFactoStates = json_decode($deFactoData, true) ?: [];
 
     <!-- .page-content + .country-profiles -->
     <section class="page-content country-profiles" id="main-country-profiles">
-        <h1>COUNTRY PROFILES</h1>
+        <h1>Country Profiles</h1>
         <p>Explore member/observer states, territories, and de facto states in our database.</p>
 
         <!-- 1) Member/Observer States -->
