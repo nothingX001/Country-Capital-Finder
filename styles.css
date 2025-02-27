@@ -11,7 +11,6 @@ body {
     background-color: #f4f4f4;
     color: #333;
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    /* Ensures the site fits nicely on mobile (see meta viewport in <head> too!) */
 }
 
 /* 3) Navbar */
@@ -27,7 +26,7 @@ body {
 }
 
 .navbar-container {
-    /* Removed max-width:1200px so it's fully fluid on mobile */
+    /* Make it fluid so it scales on mobile */
     width: 90%;
     margin: 0 auto;
     padding: 0 20px;
@@ -37,7 +36,7 @@ body {
 }
 
 .navbar-toggle {
-    display: none;
+    display: none; /* Overridden in mobile media query */
     background: none;
     border: none;
     color: #fff;
@@ -47,7 +46,7 @@ body {
 }
 
 .navbar-toggle.active {
-    transform: rotate(90deg); /* Rotate hamburger icon when active */
+    transform: rotate(90deg); /* Rotate the hamburger icon when active */
 }
 
 .navbar-list {
@@ -73,64 +72,79 @@ body {
 
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
+    /* Move the hamburger icon more to the left */
     .navbar-toggle {
         display: block;
+        position: absolute; 
+        left: 15px;
+        top: 10px;
+        font-size: 1.6rem;
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        z-index: 1001; 
     }
 
+    /* The dropdown menu: fill entire screen with the same blue background */
     .navbar-list {
-        /* Start hidden, off-canvas */
-        display: none;
-        flex-direction: column;
-        background-color: #333;
-        position: absolute;
-        top: 50px;
+        position: fixed;
+        top: 0;
         left: 0;
-        width: 100%;
-        padding: 10px 0;
-        transform: translateX(-100%);
-        opacity: 0;
-        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        display: none; /* Hidden by default, appears when .open is added */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        background-color: #3399ff; /* Same as navbar's primary color */
+        margin: 0;
+        padding: 0;
+        z-index: 999;
+        transform: none; /* Not sliding from left anymore; we just hide/show */
+        opacity: 1;      /* We'll rely on display: none to hide it */
     }
 
     .navbar-list.open {
         display: flex;
-        transform: translateX(0);
-        opacity: 1;
     }
 
     .navbar-list li {
-        margin: 10px 0;
+        width: 100%;
+        margin: 0;
+    }
+    .navbar-list li a {
+        width: 100%;
         text-align: center;
-    }
-
-    .navbar-list a {
+        padding: 1rem 0;
         font-size: 1.2rem;
-        padding: 10px;
+        color: #fff;
+        text-decoration: none;
         display: block;
-        transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-    .navbar-list a:hover {
-        background-color: #444; /* Add a hover effect for mobile */
-        color: #ffdd57;
+    .navbar-list li a:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: #fff;
     }
 }
 
 /* 5) Main Page Container (.page-content) */
 .page-content {
-    margin-top: 80px; /* Reduced space above the content */
+    margin-top: 80px; 
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
-    text-align: center; /* Center-align all content in .page-content */
+    text-align: center; 
+    background-color: #fff; /* Keep a white box? if desired */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 /* 6) Headings */
 h1, h2, h3 {
     margin-bottom: 20px;
     font-size: 2rem;
-    text-align: center;
+    text-align: center; 
 }
 
 h3 {
@@ -182,7 +196,7 @@ input[type="text"] {
 
 form input[type="submit"].button {
     display: block;
-    margin: 10px auto 0 auto; /* Center-align form buttons */
+    margin: 10px auto 0 auto;
 }
 
 /* 9) Flash messages, etc. */
@@ -190,8 +204,8 @@ form input[type="submit"].button {
     margin-top: 20px;
     padding: 10px;
     background-color: #e0e0e0;
-    border: none !important;
-    margin-bottom: 0 !important;
+    border: none !important; 
+    margin-bottom: 0 !important; 
 }
 
 /* 10) Autocomplete Dropdown */
@@ -204,8 +218,8 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 100%;
-    left: 0;
+    width: 100%; 
+    left: 0; 
     padding: 0;
 }
 
@@ -221,28 +235,25 @@ form input[type="submit"].button {
 }
 
 .autocomplete-dropdown li:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; 
 }
 
 .autocomplete-dropdown li.active {
-    background-color: #66b3ff;
+    background-color: #66b3ff; 
     color: #fff;
 }
 
 .autocomplete-dropdown::-webkit-scrollbar {
     width: 8px;
 }
-
 .autocomplete-dropdown::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 4px;
 }
-
 .autocomplete-dropdown::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 4px;
 }
-
 .autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
     background: #999;
 }
@@ -250,16 +261,16 @@ form input[type="submit"].button {
 /* 11) Quiz Section */
 .quiz {
     text-align: left;
-    margin-top: 80px; 
-    margin-bottom: 50px; 
+    margin-top: 80px;
+    margin-bottom: 50px;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .quiz h1 {
-    text-align: center;
+    text-align: center; 
     margin-bottom: 20px;
     font-size: 2rem;
 }
@@ -291,7 +302,7 @@ form input[type="submit"].button {
     font-size: 1.25rem;
     margin-bottom: 10px;
     color: #333;
-    text-align: center;
+    text-align: center; 
 }
 
 #userAnswer {
@@ -308,7 +319,7 @@ form input[type="submit"].button {
 }
 
 #resultContainer h2 {
-    text-align: center;
+    text-align: center; 
     margin-bottom: 20px;
     font-size: 1.75rem;
     color: #333; 
@@ -318,7 +329,7 @@ form input[type="submit"].button {
     font-size: 1.25rem;
     margin-bottom: 20px;
     color: #333;
-    text-align: center;
+    text-align: center; 
     font-weight: bold;
 }
 
@@ -327,7 +338,7 @@ form input[type="submit"].button {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 #detailedResults p {
@@ -340,7 +351,7 @@ form input[type="submit"].button {
     border-left: 4px solid #66b3ff;
     background-color: #fff;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: border-left-color 0.3s ease;
 }
 
@@ -359,9 +370,8 @@ form input[type="submit"].button {
 
 /* Hover effects for result sidebars */
 #detailedResults p.correct:hover {
-    border-left-color: #4caf50; 
+    border-left-color: #4caf50;
 }
-
 #detailedResults p.incorrect:hover {
     border-left-color: #f44336;
 }
@@ -376,22 +386,22 @@ form input[type="submit"].button {
 /* 12) Country Profiles Section */
 .country-profiles {
     text-align: left; 
-    margin-top: 80px; 
+    margin-top: 80px;
     margin-bottom: 50px; 
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .country-profiles h1 {
-    text-align: center;
+    text-align: center; 
     margin-bottom: 20px;
     font-size: 2rem;
 }
 
 .country-profiles p {
-    text-align: center;
+    text-align: center; 
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
@@ -443,7 +453,7 @@ form input[type="submit"].button {
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .about h1 {
@@ -451,6 +461,7 @@ form input[type="submit"].button {
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
+    word-wrap: break-word; /* helps long headings on small screens */
 }
 
 .about p {
@@ -505,7 +516,7 @@ form input[type="submit"].button {
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin-top: 80px; 
     margin-bottom: 50px;
     text-align: center;
@@ -515,6 +526,7 @@ form input[type="submit"].button {
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
+    word-wrap: break-word;
 }
 
 .world-map p {
@@ -532,7 +544,6 @@ form input[type="submit"].button {
     position: relative;
 }
 
-/* Search input styling */
 #search-bar {
     width: 100%;
     max-width: 300px;
@@ -544,38 +555,37 @@ form input[type="submit"].button {
     margin: 0 auto;
 }
 
-/* Map container styling */
 #map {
     height: 500px;
     width: 100%;
     border-radius: 15px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 /* 15) Mobile Responsiveness */
 @media (max-width: 768px) {
-    .page-content {
-        margin-top: 60px;
-        padding: 10px;
-    }
-
-    h1, h2, h3 {
-        font-size: 1.5rem; /* Reduce heading size for mobile */
-    }
-
-    .button {
-        font-size: 1.2rem; /* Reduce button font size for mobile */
-        padding: 10px 20px;
-    }
-
-    .quiz, .country-profiles, .about, .world-map {
-        margin-top: 60px; /* Further reduced top margin for mobile */
-        margin-bottom: 30px; 
+    /* Adjust containers so they don't run edge-to-edge */
+    .page-content,
+    .quiz,
+    .country-profiles,
+    .about,
+    .world-map {
+        width: 90%;
+        margin: 60px auto 30px;
         padding: 15px;
     }
 
+    h1, h2, h3 {
+        font-size: 1.5rem; /* Reduce heading sizes on mobile */
+    }
+
+    .button {
+        font-size: 1.2rem; 
+        padding: 10px 20px;
+    }
+
     #map {
-        height: 300px; /* Reduce map height for mobile */
+        height: 300px; /* Reduce map height on mobile */
     }
 }
