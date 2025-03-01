@@ -1,76 +1,79 @@
 <?php
+// index.php
+
 // Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Include DB connection
 include 'config.php';
 
-// Function to normalize country input
+// Optional helper to normalize user input
 function normalize_country_input($input) {
     $input = strtolower(trim($input));
-    // Include delimiters: hyphen(-), parentheses(), apostrophe('), slash(/)
+    // For example, handle hyphens, parentheses, apostrophes, etc.
     return ucwords($input, " \t\r\n\f\v-()/'");
 }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Handle the search form submission
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $country_input = $_POST['country'] ?? '';
     $country = normalize_country_input($country_input);
 
-    // Check both name and alternate_name
-    $stmt = $conn->prepare("
-        SELECT c.id, c.name, c.flag
-        FROM countries c
-        LEFT JOIN country_alternate_names can ON c.id = can.country_id
-        WHERE c.name ILIKE ?
-           OR can.alternate_name ILIKE ?
+    // 1) Look up the country by "Country Name"
+    $stmt = $conn->prepare('
+        SELECT
+            id,
+            "Country Name" AS country_name,
+            "Flag Emoji"   AS flag_emoji
+        FROM countries
+        WHERE "Country Name" ILIKE ?
         LIMIT 1
-    ");
-    $stmt->execute([$country, $country]);
+    ');
+    $stmt->execute([$country]);
     $country_result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($country_result) {
         $country_id   = $country_result['id'];
-        $country_name = $country_result['name'];
-        $flag         = $country_result['flag'] ?? '';
+        $country_name = $country_result['country_name'];
+        $flag         = $country_result['flag_emoji'] ?? '';
 
-        // Fetch capitals from the separate capitals table
-        $stmt = $conn->prepare("
-            SELECT name
+        // 2) Fetch matching capitals from the capitals table
+        $cap_stmt = $conn->prepare('
+            SELECT capital_name
             FROM capitals
             WHERE country_id = ?
-        ");
-        $stmt->execute([$country_id]);
-        $capitals = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        ');
+        $cap_stmt->execute([$country_id]);
+        $capitals = $cap_stmt->fetchAll(PDO::FETCH_COLUMN);
 
+        // 3) Build a message about the capital(s)
         if ($capitals) {
-            $capital_names  = implode(' / ', $capitals);
-            $capital_count  = count($capitals);
-            $capital_word   = $capital_count > 1 ? 'capitals' : 'capital';
-            $verb           = $capital_count > 1 ? 'are' : 'is';
-            $message        = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. {$flag}";
+            $capital_names = implode(' / ', $capitals);
+            $capital_count = count($capitals);
+            $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
+            $verb          = ($capital_count > 1) ? 'are' : 'is';
+            $message       = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. {$flag}";
         } else {
             $message = "No capitals found for {$country_name}.";
         }
 
-        // Update site statistics
+        // 4) (Optional) Update site statistics if desired
         try {
-            $stats_stmt = $conn->prepare("
+            $stats_stmt = $conn->prepare('
                 INSERT INTO site_statistics (country_name, search_count, last_searched_at)
                 VALUES (?, 1, NOW())
                 ON CONFLICT (country_name)
                 DO UPDATE SET
-                    search_count = site_statistics.search_count + 1,
+                    search_count     = site_statistics.search_count + 1,
                     last_searched_at = NOW()
-            ");
+            ');
             $stats_stmt->execute([$country_name]);
         } catch (Exception $e) {
-            // Log the error if desired
+            // You could log or ignore the error
         }
     } else {
-        $message = "Sorry, the country or territory you entered is not in our database.";
+        $message = "Sorry, the country you entered is not in our database.";
     }
 }
 ?>
@@ -78,10 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Discover capitals of countries, territories, and more!">
-    <meta name="keywords" content="explore capitals, find capitals, countries and capitals">
-    <meta name="author" content="ExploreCapitals">
     <title>ExploreCapitals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -101,6 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
     </div>
 
+    <!-- If you use an autocomplete script, keep it here -->
     <script src="autocomplete.js" defer></script>
 </body>
 </html>
