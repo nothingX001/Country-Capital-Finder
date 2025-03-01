@@ -19,12 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $country_input = $_POST['country'] ?? '';
     $country = normalize_country_input($country_input);
 
-    // Check both country_name and alternate_name
+    // Check both name and alternate_name
     $stmt = $conn->prepare("
-        SELECT c.id, c.country_name, c.flag_emoji
+        SELECT c.id, c.name, c.flag
         FROM countries c
         LEFT JOIN country_alternate_names can ON c.id = can.country_id
-        WHERE c.country_name ILIKE ?
+        WHERE c.name ILIKE ?
            OR can.alternate_name ILIKE ?
         LIMIT 1
     ");
@@ -33,12 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($country_result) {
         $country_id   = $country_result['id'];
-        $country_name = $country_result['country_name'];
-        $flag         = $country_result['flag_emoji'] ?? '';
+        $country_name = $country_result['name'];
+        $flag         = $country_result['flag'] ?? '';
 
         // Fetch capitals from the separate capitals table
         $stmt = $conn->prepare("
-            SELECT capital_name
+            SELECT name
             FROM capitals
             WHERE country_id = ?
         ");

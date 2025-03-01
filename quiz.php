@@ -10,12 +10,11 @@ include 'the-countries.php'; // For "the" prefix logic
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Take the capitals quiz!">
     <title>Quiz | ExploreCapitals</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the updated styles.css -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <!-- .page-content + .quiz -->
     <section class="page-content quiz" id="main-quiz">
         <h1>ExploreCapitals Quiz</h1>
         <p>Select a quiz type to begin.</p>
@@ -41,7 +40,6 @@ include 'the-countries.php'; // For "the" prefix logic
     </section>
 
     <script>
-    // We'll store quiz data here
     let questions = [];
     const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
 
@@ -57,19 +55,13 @@ include 'the-countries.php'; // For "the" prefix logic
 
     function normalizeInput(input) {
         let norm = input.toLowerCase().trim();
-
-        // Remove leading/trailing whitespace, punctuation, etc.
-        norm = norm.replace(/^the\s+/i, ''); // Remove leading "the"
-        norm = norm.replace(/[^\w\s]/g, ''); // Remove punctuation (including quotes)
-        norm = norm.replace(/\s+/g, ' ');    // Normalize spaces
-
-        // Handle abbreviations (e.g., "St. George" -> "saint george")
+        norm = norm.replace(/^the\s+/i, '');
+        norm = norm.replace(/[^\w\s]/g, '');
+        norm = norm.replace(/\s+/g, ' ');
         norm = norm.replace(/\bst\.?\b/gi, 'saint');
-
         return norm;
     }
 
-    // Called when user clicks a quiz start button
     function startQuiz(quizType) {
         fetch(`fetch-country-data.php?type=${quizType}&limit=10`)
             .then(async response => {
@@ -100,7 +92,6 @@ include 'the-countries.php'; // For "the" prefix logic
         questions = [];
         data.forEach(row => {
             if (row.capitals && row.capitals.length > 0) {
-                // Ensure "Washington, D.C." is treated as one capital
                 const capitals = row.capitals.map(capital => capital.replace(/\s*\/\s*/, ', '));
                 questions.push({
                     country: row.country_name,
@@ -114,16 +105,12 @@ include 'the-countries.php'; // For "the" prefix logic
             return;
         }
 
-        // Hide the "Select a quiz type to begin." text
         document.querySelector('#main-quiz p').style.display = 'none';
-
-        // Show quiz container
         document.getElementById('quizContainer').style.display = 'block';
         document.getElementById('resultContainer').style.display = 'none';
         document.getElementById('startMainQuizBtn').style.display = 'none';
         document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
 
-        // Reset everything
         score = 0;
         timeElapsed = 0;
         currentQuestionIndex = 0;
@@ -159,7 +146,7 @@ include 'the-countries.php'; // For "the" prefix logic
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.capitals.join(' / ') // No quotes here
+                    correctAnswerText: qData.capitals.join(' / ')
                 });
             } else {
                 const capCount = qData.capitals.length;
@@ -171,7 +158,7 @@ include 'the-countries.php'; // For "the" prefix logic
                     correctAnswers: [qData.country],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.country // No quotes here
+                    correctAnswerText: qData.country
                 });
             }
 
@@ -200,9 +187,8 @@ include 'the-countries.php'; // For "the" prefix logic
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `<strong>${resp.correctAnswerText.replace(/"/g, '')}</strong>`; // Remove quotes
-            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer.replace(/"/g, '')}</strong>` : '""'; // Remove quotes
-
+            const correctAnswerText = `<strong>${resp.correctAnswerText.replace(/"/g, '')}</strong>`;
+            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer.replace(/"/g, '')}</strong>` : '""';
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`
                 : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
@@ -233,7 +219,6 @@ include 'the-countries.php'; // For "the" prefix logic
         location.reload();
     });
 
-    // Start quiz buttons
     document.getElementById('startMainQuizBtn').addEventListener('click', () => {
         startQuiz('random_main');
     });
