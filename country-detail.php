@@ -10,9 +10,7 @@ if (!$country_id) {
 
 // 1) Fetch the main country record
 $stmt = $conn->prepare("
-    SELECT country_name, flag_emoji, language,
-           entity_type, disclaimer, parent_id,
-           flag_image_url
+    SELECT name as country_name, flag as flag_emoji, language, status, disclaimer, parent_id, flag_url as flag_image_url
     FROM countries
     WHERE id = ?
     LIMIT 1
@@ -26,7 +24,7 @@ if (!$country) {
 
 // 2) Fetch all capitals
 $stmt_capitals = $conn->prepare("
-    SELECT capital_name, capital_type, latitude, longitude
+    SELECT name, capital_type, latitude, longitude
     FROM capitals
     WHERE country_id = ?
 ");
@@ -35,31 +33,31 @@ $capitals = $stmt_capitals->fetchAll(PDO::FETCH_ASSOC);
 
 // 3) Fetch child territories
 $stmt_child_terr = $conn->prepare("
-    SELECT id, country_name, flag_emoji, disclaimer
+    SELECT id, name as country_name, flag as flag_emoji, disclaimer
     FROM countries
     WHERE parent_id = ?
-      AND entity_type = 'territory'
-    ORDER BY country_name ASC
+      AND status = 'Territory'
+    ORDER BY name ASC
 ");
 $stmt_child_terr->execute([$country_id]);
 $child_territories = $stmt_child_terr->fetchAll(PDO::FETCH_ASSOC);
 
 // 4) Fetch child de facto states
 $stmt_child_defacto = $conn->prepare("
-    SELECT id, country_name, flag_emoji, disclaimer
+    SELECT id, name as country_name, flag as flag_emoji, disclaimer
     FROM countries
     WHERE parent_id = ?
-      AND entity_type = 'de_facto_state'
-    ORDER BY country_name ASC
+      AND status = 'De Facto'
+    ORDER BY name ASC
 ");
 $stmt_child_defacto->execute([$country_id]);
 $child_de_factos = $stmt_child_defacto->fetchAll(PDO::FETCH_ASSOC);
 
-// 5) If this is a territory or de_facto_state => fetch parent info
+// 5) If this is a territory or de facto state => fetch parent info
 $parentInfo = null;
 if (!empty($country['parent_id'])) {
     $stmt_parent = $conn->prepare("
-        SELECT id, country_name
+        SELECT id, name as country_name
         FROM countries
         WHERE id = ?
     ");
@@ -83,12 +81,11 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($country['country_name']); ?> Details</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
 
-    <!-- Use .page-content + .country-detail for unique styling, keep the existing ID if needed -->
     <section class="page-content country-detail" id="country-detail-card">
         <div class="card-header">
             <h1>
@@ -104,7 +101,7 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
                 // Show capitals
                 if ($capitals) {
                     $capList = array_map(function($cap) {
-                        $cName = htmlspecialchars($cap['capital_name'] ?? 'N/A');
+                        $cName = htmlspecialchars($cap['name'] ?? 'N/A');
                         $cType = htmlspecialchars($cap['capital_type'] ?? '');
                         return $cType ? "$cName ($cType)" : $cName;
                     }, $capitals);
@@ -127,14 +124,12 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
 
                 <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['language'] ?? 'N/A'); ?></p>
 
-                <!-- Only show "Also Referred As:" if we actually have alternate names -->
                 <?php if (!empty($alts)): ?>
                     <?php $altString = implode(', ', $alts); ?>
                     <p><strong>Also Referred As:</strong> <?php echo htmlspecialchars($altString); ?></p>
                 <?php endif; ?>
 
-                <!-- If territory => display "Territory of" + disclaimers -->
-                <?php if ($country['entity_type'] === 'territory' && $parentInfo): ?>
+                <?php if ($country['status'] === 'Territory' && $parentInfo): ?>
                     <p>
                         <strong>Territory of:</strong>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($parentInfo['id']); ?>">
@@ -145,8 +140,7 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
                         <p><em><?php echo nl2br(htmlspecialchars($country['disclaimer'])); ?></em></p>
                     <?php endif; ?>
 
-                <!-- If de_facto_state => display "Claimed by" + disclaimers -->
-                <?php elseif ($country['entity_type'] === 'de_facto_state' && $parentInfo): ?>
+                <?php elseif ($country['status'] === 'De Facto' && $parentInfo): ?>
                     <p>
                         <strong>Claimed by:</strong>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($parentInfo['id']); ?>">
@@ -157,15 +151,13 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
                         <p><em><?php echo nl2br(htmlspecialchars($country['disclaimer'])); ?></em></p>
                     <?php endif; ?>
 
-                <!-- Otherwise (member_state, observer_state, or no parent) => disclaimers as usual -->
                 <?php else: ?>
                     <?php if (!empty($country['disclaimer'])): ?>
                         <p><em><?php echo nl2br(htmlspecialchars($country['disclaimer'])); ?></em></p>
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <!-- If this is a main country => show child territories & de facto states -->
-                <?php if (in_array($country['entity_type'], ['member_state','observer_state'])): ?>
+                <?php if (in_array($country['status'], ['UN member', 'UN observer'])): ?>
                     <?php if (!empty($child_territories)): ?>
                         <h3>Territories Administered by <?php echo htmlspecialchars($country['country_name']); ?></h3>
                         <ul>
@@ -204,8 +196,8 @@ $alts = $stmt_alt->fetchAll(PDO::FETCH_COLUMN);
                         </ul>
                     <?php endif; ?>
                 <?php endif; ?>
-            </div> <!-- .country-info -->
-        </div> <!-- .card-content -->
-    </section> <!-- .page-content.country-detail -->
+            </div>
+        </div>
+    </section>
 </body>
 </html>
