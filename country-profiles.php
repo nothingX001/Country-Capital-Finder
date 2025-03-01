@@ -1,24 +1,49 @@
 <?php
 // country-profiles.php
 
-// Fetch data for the three groups using the updated endpoint
-$mainData     = file_get_contents('http://localhost/fetch-country-data.php?type=all_main_only');
-$mainCountries = json_decode($mainData, true) ?: [];
+include 'config.php';
 
-$territoryData = file_get_contents('http://localhost/fetch-country-data.php?type=all_territories');
-$territories   = json_decode($territoryData, true) ?: [];
+try {
+    // 1) Fetch Main Countries (Member/Observer States)
+    $stmtMain = $conn->query('
+        SELECT id, "Official Name" AS country_name, "Flag Emoji" AS flag_emoji
+        FROM countries
+        WHERE "Entity Type" IN (\'Member State\', \'Observer State\')
+        ORDER BY "Official Name" ASC
+    ');
+    $mainCountries = $stmtMain->fetchAll(PDO::FETCH_ASSOC);
 
-$deFactoData   = file_get_contents('http://localhost/fetch-country-data.php?type=all_de_facto_states');
-$deFactoStates = json_decode($deFactoData, true) ?: [];
+    // 2) Fetch Territories
+    $stmtTerr = $conn->query('
+        SELECT id, "Official Name" AS country_name, "Flag Emoji" AS flag_emoji
+        FROM countries
+        WHERE "Entity Type" = \'Territory\'
+        ORDER BY "Official Name" ASC
+    ');
+    $territories = $stmtTerr->fetchAll(PDO::FETCH_ASSOC);
+
+    // 3) Fetch De Facto States
+    $stmtDefacto = $conn->query('
+        SELECT id, "Official Name" AS country_name, "Flag Emoji" AS flag_emoji
+        FROM countries
+        WHERE "Entity Type" = \'De Facto\'
+        ORDER BY "Official Name" ASC
+    ');
+    $deFactoStates = $stmtDefacto->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    // In case of error, you can log $e->getMessage()
+    die("Error fetching country profiles: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Country Profiles | ExploreCapitals</title>
-    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore profiles of countries, territories, and de facto states.">
+    <meta name="description" content="Browse profiles of countries, territories, and de facto states.">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -27,7 +52,7 @@ $deFactoStates = json_decode($deFactoData, true) ?: [];
         <h1>Country Profiles</h1>
         <p>Browse our database of countries, territories, and de facto states.</p>
 
-        <!-- 1) Main Countries (UN member/observer states) -->
+        <!-- Main Countries -->
         <h2>Countries</h2>
         <?php if (!empty($mainCountries)): ?>
             <ul>
@@ -46,7 +71,7 @@ $deFactoStates = json_decode($deFactoData, true) ?: [];
             <p>No countries found.</p>
         <?php endif; ?>
 
-        <!-- 2) Territories -->
+        <!-- Territories -->
         <h2>Territories</h2>
         <?php if (!empty($territories)): ?>
             <ul>
@@ -65,7 +90,7 @@ $deFactoStates = json_decode($deFactoData, true) ?: [];
             <p>No territories found.</p>
         <?php endif; ?>
 
-        <!-- 3) De Facto States -->
+        <!-- De Facto States -->
         <h2>De Facto States</h2>
         <?php if (!empty($deFactoStates)): ?>
             <ul>
