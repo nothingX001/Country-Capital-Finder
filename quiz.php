@@ -1,16 +1,61 @@
 <?php
 // quiz.php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'config.php';
-include 'the-countries.php'; // For "the" prefix logic
+
+// Optional: Include "the-countries.php" if you still use that logic for "the" prefix
+// If not needed, you can remove or comment this out.
+// Example: $the_countries = ["bahamas", "gambia", "philippines", ...];
+include 'the-countries.php';
+
+// 1) Fetch random main countries (UN member/observer)
+try {
+    $stmtMain = $conn->query('
+        SELECT c.id,
+               c."Country Name" AS country_name,
+               array_agg(cap.capital_name ORDER BY cap.capital_name) AS capitals
+        FROM countries c
+        JOIN capitals cap ON c.id = cap.country_id
+        WHERE c."Entity Type" IN (\'UN member\', \'UN observer\')
+        GROUP BY c.id
+        ORDER BY RANDOM()
+        LIMIT 10
+    ');
+    $randomMain = $stmtMain->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    die("Error fetching main quiz data: " . $e->getMessage());
+}
+
+// 2) Fetch random territories
+try {
+    $stmtTerr = $conn->query('
+        SELECT c.id,
+               c."Country Name" AS country_name,
+               array_agg(cap.capital_name ORDER BY cap.capital_name) AS capitals
+        FROM countries c
+        JOIN capitals cap ON c.id = cap.country_id
+        WHERE c."Entity Type" = \'Territory\'
+        GROUP BY c.id
+        ORDER BY RANDOM()
+        LIMIT 10
+    ');
+    $randomTerritories = $stmtTerr->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    die("Error fetching territories quiz data: " . $e->getMessage());
+}
+
+// Convert to arrays of [ "country_name" => ..., "capitals" => [...], ... ]
+// Already done via array_agg(...) above. Each row has country_name and capitals array.
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Take the capitals quiz!">
     <title>Quiz | ExploreCapitals</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Adjust if needed -->
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -31,7 +76,7 @@ include 'the-countries.php'; // For "the" prefix logic
             </form>
         </div>
 
-        <div id="resultContainer" style="display:none;">
+        <div id="resultContainer" style="display: none;">
             <h2>Quiz Results</h2>
             <p id="score"></p>
             <div id="detailedResults"></div>
@@ -40,77 +85,67 @@ include 'the-countries.php'; // For "the" prefix logic
     </section>
 
     <script>
-    let questions = [];
-    const theCountries = <?php echo json_encode(array_map('strtolower', $the_countries)); ?>;
+    // 1) Convert the random data from PHP to JavaScript arrays
+    //    Each element has { id, country_name, capitals: [ ... ] }
+    const randomMain = <?php echo json_encode($randomMain); ?>;
+    const randomTerritories = <?php echo json_encode($randomTerritories); ?>;
 
+    // 2) If you still use a "the-countries.php" array to prepend "the" for certain countries
+    //    define it here; otherwise, you can remove this entire logic
+    const theCountries = <?php
+        // If you do not use "the-countries.php", you can just echo "[]"
+        if (isset($the_countries) && is_array($the_countries)) {
+            echo json_encode(array_map('strtolower', $the_countries));
+        } else {
+            echo '[]';
+        }
+    ?>;
+
+    function addThe(country) {
+        // If "the-countries.php" is in use
+        return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
+    }
+
+    // 3) We'll store the current quiz data in a global variable
+    let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
     let timeElapsed = 0;
     let timer;
     let userResponses = [];
 
-    function addThe(country) {
-        return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
-    }
-
-    function normalizeInput(input) {
-        let norm = input.toLowerCase().trim();
-        norm = norm.replace(/^the\s+/i, '');
-        norm = norm.replace(/[^\w\s]/g, '');
-        norm = norm.replace(/\s+/g, ' ');
-        norm = norm.replace(/\bst\.?\b/gi, 'saint');
-        return norm;
-    }
-
-    function startQuiz(quizType) {
-        fetch(`fetch-country-data.php?type=${quizType}&limit=10`)
-            .then(async response => {
-                if (!response.ok) {
-                    let text = await response.text();
-                    console.error('Response not OK:', response.status, text);
-                    alert('Unable to load quiz data.');
-                    return;
-                }
-                let data = await response.json();
-                if (!data || data.error) {
-                    alert('Unable to load quiz data.');
-                    return;
-                }
-                if (!Array.isArray(data) || data.length === 0) {
-                    alert('No quiz data found.');
-                    return;
-                }
-                prepareQuestions(data);
-            })
-            .catch(err => {
-                console.error('Fetch error:', err);
-                alert('Unable to load quiz data.');
-            });
-    }
-
-    function prepareQuestions(data) {
+    // Called to start the quiz with the given data set (randomMain or randomTerritories)
+    function startQuiz(dataArray) {
+        // Prepare the data
         questions = [];
-        data.forEach(row => {
-            if (row.capitals && row.capitals.length > 0) {
-                const capitals = row.capitals.map(capital => capital.replace(/\s*\/\s*/, ', '));
+        dataArray.forEach(row => {
+            // row.country_name, row.capitals (array)
+            if (Array.isArray(row.capitals) && row.capitals.length > 0) {
+                // Some countries may have multiple capitals
                 questions.push({
                     country: row.country_name,
-                    capitals: capitals
+                    capitals: row.capitals
                 });
             }
         });
 
+        // If no valid entries, show an alert
         if (questions.length === 0) {
-            alert('No valid quiz entries (no capitals).');
+            alert('No valid quiz data found.');
             return;
         }
 
+        // Hide the initial "Select a quiz type" text
         document.querySelector('#main-quiz p').style.display = 'none';
+        // Show the quiz container
         document.getElementById('quizContainer').style.display = 'block';
+        // Hide the result container
         document.getElementById('resultContainer').style.display = 'none';
+        // Hide the start buttons
         document.getElementById('startMainQuizBtn').style.display = 'none';
         document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
 
+        // Reset quiz state
         score = 0;
         timeElapsed = 0;
         currentQuestionIndex = 0;
@@ -120,6 +155,7 @@ include 'the-countries.php'; // For "the" prefix logic
         showNextQuestion();
     }
 
+    // Start the timer
     function startTimer() {
         clearInterval(timer);
         timeElapsed = 0;
@@ -133,9 +169,11 @@ include 'the-countries.php'; // For "the" prefix logic
         }, 1000);
     }
 
+    // Show the next question
     function showNextQuestion() {
         if (currentQuestionIndex < questions.length) {
             const qData = questions[currentQuestionIndex];
+            // Randomly decide if we ask "What is the capital of X?" or "X is the capital of which country?"
             const isCountryQuestion = Math.random() > 0.5;
 
             let questionText;
@@ -150,11 +188,13 @@ include 'the-countries.php'; // For "the" prefix logic
                 });
             } else {
                 const capCount = qData.capitals.length;
-                const capStr = qData.capitals.map(cap => `<strong>${cap}</strong>`).join(' / ');
+                const capitalStr = qData.capitals.map(c => `<strong>${c}</strong>`).join(' / ');
                 const verb = capCount > 1 ? 'are' : 'is';
-                questionText = `${capStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
+                questionText = `${capitalStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
                 userResponses.push({
                     questionText,
+                    // We'll store just one correct answer if you want
+                    // but if multiple synonyms exist, you could store them
                     correctAnswers: [qData.country],
                     userAnswer: "",
                     isCorrect: false,
@@ -170,14 +210,28 @@ include 'the-countries.php'; // For "the" prefix logic
         }
     }
 
+    // Check if user input matches one of the correct answers
     function checkAnswer(userAnswer, correctAnswers) {
         const userNorm = normalizeInput(userAnswer);
+        // For each correct answer, we can check multiple variants
         return correctAnswers.some(ca => {
-            const variants = ca.toLowerCase().split('/').map(v => normalizeInput(v.trim()));
-            return variants.includes(userNorm);
+            // If you have synonyms, you can do more logic here
+            const caNorm = normalizeInput(ca);
+            return userNorm === caNorm;
         });
     }
 
+    // Simple normalization: lowercase, remove punctuation, etc.
+    function normalizeInput(str) {
+        let norm = str.toLowerCase().trim();
+        norm = norm.replace(/^the\s+/i, '');         // remove leading "the"
+        norm = norm.replace(/[^\w\s]/g, '');        // remove punctuation
+        norm = norm.replace(/\s+/g, ' ');           // collapse extra spaces
+        norm = norm.replace(/\bst\.?\b/gi, 'saint');// handle "St." => "saint"
+        return norm;
+    }
+
+    // Called when we run out of questions
     function endQuiz() {
         clearInterval(timer);
         document.getElementById('quizContainer').style.display = 'none';
@@ -187,12 +241,11 @@ include 'the-countries.php'; // For "the" prefix logic
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `<strong>${resp.correctAnswerText.replace(/"/g, '')}</strong>`;
-            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer.replace(/"/g, '')}</strong>` : '""';
+            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong>`;
+            const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`
                 : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
-
             detailHTML += `
                 <p class="${resp.isCorrect ? 'correct' : 'incorrect'}">
                     <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
@@ -203,13 +256,14 @@ include 'the-countries.php'; // For "the" prefix logic
         document.getElementById('detailedResults').innerHTML = detailHTML;
     }
 
+    // Event listeners
     document.getElementById('answerForm').addEventListener('submit', e => {
         e.preventDefault();
         const userAnswer = document.getElementById('userAnswer').value.trim();
         const currentResp = userResponses[currentQuestionIndex];
         const isCorrect = checkAnswer(userAnswer, currentResp.correctAnswers);
         currentResp.userAnswer = userAnswer;
-        currentResp.isCorrect  = isCorrect;
+        currentResp.isCorrect = isCorrect;
         if (isCorrect) score++;
         currentQuestionIndex++;
         showNextQuestion();
@@ -220,10 +274,10 @@ include 'the-countries.php'; // For "the" prefix logic
     });
 
     document.getElementById('startMainQuizBtn').addEventListener('click', () => {
-        startQuiz('random_main');
+        startQuiz(randomMain);
     });
     document.getElementById('startTerritoriesQuizBtn').addEventListener('click', () => {
-        startQuiz('random_territories');
+        startQuiz(randomTerritories);
     });
     </script>
 </body>
