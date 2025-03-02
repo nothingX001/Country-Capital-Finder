@@ -11,7 +11,7 @@ if (!$country_id) {
 
 try {
     // 1) Fetch the country row from the countries table.
-    //    Cast coordinates to text so they appear exactly as stored.
+    //    Coordinates are cast to text to preserve full precision.
     $stmt = $conn->prepare('
         SELECT
             "Country Name" AS country_name,
@@ -47,6 +47,25 @@ try {
     ');
     $stmt_cap->execute([$country_id]);
     $capitals = $stmt_cap->fetchAll(PDO::FETCH_ASSOC);
+
+    // Format coordinates: convert to float and add degrees and direction.
+    $lat = floatval($country['lat']);
+    $lon = floatval($country['lon']);
+    $latDir = ($lat >= 0) ? 'N' : 'S';
+    $lonDir = ($lon >= 0) ? 'E' : 'W';
+    // Adjust decimals as needed (here 4 decimals)
+    $latFormatted = number_format(abs($lat), 4) . "° " . $latDir;
+    $lonFormatted = number_format(abs($lon), 4) . "° " . $lonDir;
+
+    // Format population with commas.
+    $popFormatted = !empty($country['population']) ? number_format($country['population']) : '';
+
+    // Format calling code with plus sign.
+    $callingCode = '';
+    if (!empty($country['calling_code'])) {
+        $cc = trim($country['calling_code']);
+        $callingCode = (strpos($cc, '+') === 0) ? $cc : '+' . $cc;
+    }
 } catch (Exception $e) {
     die("Error fetching country details: " . $e->getMessage());
 }
@@ -54,144 +73,122 @@ try {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Additional styles for the country detail page */
-    .country-detail-header {
-      margin-bottom: 30px;
-    }
-    .country-detail-header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    .country-detail-entity {
-      font-size: 1.2rem;
-      color: #666;
-      margin-bottom: 20px;
-    }
-    .country-detail-attributes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      max-width: 500px;
-      margin: 0 auto 30px;
-      text-align: left;
-    }
-    .country-detail-attributes .attribute {
-      width: 48%;
-      margin-bottom: 15px;
-      font-size: 1.1rem;
-    }
-    .country-detail-attributes .attribute strong {
-      display: block;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .flag-image {
-      text-align: center;
-      margin-top: 30px;
-    }
-    .flag-image img {
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      /* Additional styles specific to the country detail page */
+      .country-detail-header {
+          margin-bottom: 20px;
+      }
+      .country-detail-header h1 {
+          font-size: 2.5rem;
+          margin-bottom: 10px;
+      }
+      .country-detail-entity {
+          font-size: 1.2rem;
+          color: #666;
+          margin-bottom: 20px;
+      }
+      .flag-image {
+          text-align: center;
+          margin-bottom: 30px;
+      }
+      .flag-image img {
+          max-width: 300px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+      }
+      .attributes {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+          max-width: 500px;
+          margin: 0 auto;
+          text-align: left;
+          font-size: 1.1rem;
+          color: #333;
+      }
+      .attributes p {
+          margin: 0;
+      }
+      .attributes strong {
+          display: inline-block;
+          width: 140px;
+      }
+    </style>
 </head>
 <body>
-  <?php include 'navbar.php'; ?>
+    <?php include 'navbar.php'; ?>
 
-  <section class="page-content country-detail">
-    <!-- Header Section: Country Name and Flag Emoji -->
-    <div class="country-detail-header">
-      <h1>
-        <?php echo htmlspecialchars($country['country_name']); ?>
-        <?php if (!empty($country['flag_emoji'])): ?>
-          <?php echo ' ' . htmlspecialchars($country['flag_emoji']); ?>
+    <section class="page-content country-detail">
+        <!-- Header: Country Name and Entity Type -->
+        <div class="country-detail-header">
+            <h1>
+                <?php echo htmlspecialchars($country['country_name']); ?>
+                <?php if (!empty($country['flag_emoji'])): ?>
+                    <?php echo ' ' . htmlspecialchars($country['flag_emoji']); ?>
+                <?php endif; ?>
+            </h1>
+            <?php if (!empty($country['entity_type'])): ?>
+                <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Flag Image (placed directly below entity type) -->
+        <?php if (!empty($country['flag_url'])): ?>
+            <div class="flag-image">
+                <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
+                     alt="Flag of <?php echo htmlspecialchars($country['country_name'] ?? ''); ?>">
+            </div>
         <?php endif; ?>
-      </h1>
-      <?php if (!empty($country['entity_type'])): ?>
-        <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
-      <?php endif; ?>
-    </div>
 
-    <!-- Attributes Section -->
-    <div class="country-detail-attributes">
-      <?php if (!empty($capitals)): ?>
-        <div class="attribute">
-          <strong>Capitals:</strong>
-          <ul style="list-style: none; padding: 0; margin: 0;">
-            <?php foreach ($capitals as $cap): ?>
-              <li><?php echo htmlspecialchars($cap['capital_name']); ?><?php if (!empty($cap['capital_type'])): ?> (<?php echo htmlspecialchars($cap['capital_type']); ?>)<?php endif; ?></li>
-            <?php endforeach; ?>
-          </ul>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['lat']) && !empty($country['lon'])): ?>
-        <div class="attribute">
-          <strong>Coordinates:</strong>
-          <?php echo htmlspecialchars($country['lat']) . ', ' . htmlspecialchars($country['lon']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['languages'])): ?>
-        <div class="attribute">
-          <strong>Languages:</strong>
-          <?php echo htmlspecialchars($country['languages']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['currency'])): ?>
-        <div class="attribute">
-          <strong>Currency:</strong>
-          <?php echo htmlspecialchars($country['currency']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['region'])): ?>
-        <div class="attribute">
-          <strong>Region:</strong>
-          <?php echo htmlspecialchars($country['region']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['subregion'])): ?>
-        <div class="attribute">
-          <strong>Subregion:</strong>
-          <?php echo htmlspecialchars($country['subregion']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['population'])): ?>
-        <div class="attribute">
-          <strong>Population:</strong>
-          <?php echo htmlspecialchars($country['population']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['area_km2'])): ?>
-        <div class="attribute">
-          <strong>Area (km²):</strong>
-          <?php echo htmlspecialchars($country['area_km2']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['calling_code'])): ?>
-        <div class="attribute">
-          <strong>Calling Code:</strong>
-          <?php echo htmlspecialchars($country['calling_code']); ?>
-        </div>
-      <?php endif; ?>
-      <?php if (!empty($country['internet_tld'])): ?>
-        <div class="attribute">
-          <strong>Internet TLD:</strong>
-          <?php echo htmlspecialchars($country['internet_tld']); ?>
-        </div>
-      <?php endif; ?>
-    </div>
+        <!-- Capitals Section -->
+        <?php if (!empty($capitals)): ?>
+            <h2>Capitals</h2>
+            <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left;">
+                <?php foreach ($capitals as $cap): ?>
+                    <li style="margin-bottom: 5px;">
+                        <?php echo '<strong>' . htmlspecialchars($cap['capital_name']) . '</strong>'; ?>
+                        <?php if (!empty($cap['capital_type'])): ?>
+                            (<?php echo htmlspecialchars($cap['capital_type']); ?>)
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
 
-    <!-- Flag Image -->
-    <?php if (!empty($country['flag_url'])): ?>
-      <div class="flag-image">
-        <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
-             alt="Flag of <?php echo htmlspecialchars($country['country_name'] ?? ''); ?>">
-      </div>
-    <?php endif; ?>
-  </section>
+        <!-- Attributes Section -->
+        <div class="attributes">
+            <?php if (!empty($latFormatted) && !empty($lonFormatted)): ?>
+                <p><strong>Coordinates:</strong> <?php echo $latFormatted . ', ' . $lonFormatted; ?></p>
+            <?php endif; ?>
+            <?php if (!empty($country['languages'])): ?>
+                <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['languages']); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($country['currency'])): ?>
+                <p><strong>Currency:</strong> <?php echo htmlspecialchars($country['currency']); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($country['region'])): ?>
+                <p><strong>Region:</strong> <?php echo htmlspecialchars($country['region']); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($country['subregion'])): ?>
+                <p><strong>Subregion:</strong> <?php echo htmlspecialchars($country['subregion']); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($popFormatted)): ?>
+                <p><strong>Population:</strong> <?php echo $popFormatted; ?></p>
+            <?php endif; ?>
+            <?php if (!empty($country['area_km2'])): ?>
+                <p><strong>Area (km²):</strong> <?php echo htmlspecialchars($country['area_km2']); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($callingCode)): ?>
+                <p><strong>Calling Code:</strong> <?php echo htmlspecialchars($callingCode); ?></p>
+            <?php endif; ?>
+            <?php if (!empty($country['internet_tld'])): ?>
+                <p><strong>Internet TLD:</strong> <?php echo htmlspecialchars($country['internet_tld']); ?></p>
+            <?php endif; ?>
+        </div>
+    </section>
 </body>
 </html>
