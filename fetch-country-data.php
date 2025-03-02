@@ -11,30 +11,30 @@ try {
     // 1. Main List of Countries (Member/Observer States)
     if ($type === 'all_main_only') {
         $stmt = $conn->query("
-            SELECT id, \"name\" AS country_name, \"flag\" AS flag_emoji
+            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
             FROM countries
             WHERE status IN ('UN member', 'UN observer')
-            ORDER BY \"name\" ASC
+            ORDER BY \"Country Name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // 2. Territories
     elseif ($type === 'all_territories') {
         $stmt = $conn->query("
-            SELECT id, \"name\" AS country_name, \"flag\" AS flag_emoji
+            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
             FROM countries
             WHERE status = 'Territory'
-            ORDER BY \"name\" ASC
+            ORDER BY \"Country Name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // 3. De Facto States
     elseif ($type === 'all_de_facto_states') {
         $stmt = $conn->query("
-            SELECT id, \"name\" AS country_name, \"flag\" AS flag_emoji
+            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
             FROM countries
             WHERE status = 'De Facto'
-            ORDER BY \"name\" ASC
+            ORDER BY \"Country Name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -43,7 +43,7 @@ try {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
             SELECT c.id, 
-                   c.\"name\" AS country_name, 
+                   c.\"Country Name\" AS country_name, 
                    array_agg(REPLACE(cap.name, ' / ', ', ')) AS capitals
             FROM countries c
             JOIN capitals cap ON c.id = cap.country_id
@@ -71,7 +71,7 @@ try {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
             SELECT c.id, 
-                   c.\"name\" AS country_name, 
+                   c.\"Country Name\" AS country_name, 
                    array_agg(REPLACE(cap.name, ' / ', ', ')) AS capitals
             FROM countries c
             JOIN capitals cap ON c.id = cap.country_id
@@ -96,7 +96,6 @@ try {
     }
     // 6. Map Data
     elseif ($type === 'map') {
-        // Return a merged list of countries and capitals.
         $query = "
             (
               SELECT
@@ -154,11 +153,12 @@ try {
     // 8. Autocomplete
     elseif ($type === 'autocomplete' && isset($_GET['query'])) {
         $query = $_GET['query'];
+        // IMPORTANT: Use "Country Name" to match your column.
         $stmt = $conn->prepare("
-            SELECT \"name\" AS country_name
+            SELECT \"Country Name\" AS country_name
             FROM countries
-            WHERE LOWER(\"name\") LIKE LOWER(?)
-            ORDER BY \"name\" ASC
+            WHERE LOWER(\"Country Name\") LIKE LOWER(?)
+            ORDER BY \"Country Name\" ASC
             LIMIT 10
         ");
         $stmt->execute([$query . '%']);
