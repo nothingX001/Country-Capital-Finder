@@ -56,7 +56,7 @@ body {
     list-style: none;
     display: flex;
     gap: 20px;
-    margin: 0 auto; /* This centers the list within the container */
+    margin: 0 auto; /* Centers the list within the container */
     transition: transform 0.3s ease-in-out;
 }
 .navbar-list li {
@@ -100,7 +100,10 @@ body {
 
 /* 4) Tablet & Mobile Navbar */
 @media (max-width: 1024px) {
-    /* Ensure logo remains at left (normal flow) */
+    /* Ensure the navbar retains the same thickness */
+    .navbar {
+        min-height: 70px; /* Adjust this value as needed */
+    }
     
     /* Show hamburger menu on mobile/tablet and position it to the right */
     .navbar-toggle {
