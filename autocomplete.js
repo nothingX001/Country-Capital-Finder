@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Add some basic inline styling so the dropdown is visible.
     dropdown.style.backgroundColor = '#fff';
-    dropdown.style.border = '1px solid #ccc';
+    dropdown.style.border = 'none';
     dropdown.style.zIndex = '1000';
     dropdown.style.position = 'absolute';
     dropdown.style.listStyleType = 'none';
