@@ -8,9 +8,9 @@
 /* 2) Body Defaults */
 body {
     font-family: Arial, sans-serif;
-    /* Removed background-color: #f4f4f4; and replaced with the map image */
+    background-color: #f4f4f4;
     background: url("images/map-background.png") no-repeat center center fixed;
-    background-size: cover;
+    background-size: 50%;
     color: #333;
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
