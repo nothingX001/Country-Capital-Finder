@@ -97,7 +97,7 @@ body {
 @media (max-width: 1024px) {
     /* Reduce navbar thickness slightly on mobile */
     .navbar {
-        padding: 15px 0; /* Slightly smaller than desktop */
+        padding: 20px 0;
     }
     
     /* Show hamburger menu on mobile/tablet and position it to the right */
