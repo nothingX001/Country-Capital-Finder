@@ -4,47 +4,43 @@
 include 'config.php';
 
 try {
-    // 1) Fetch UN member/observer states
-    //    Use the actual strings in your "Entity Type" column, e.g. 'UN member', 'UN observer'
+    // 1) Main Countries (UN member / observer)
     $stmtMain = $conn->query('
         SELECT
             id,
-            "Official Name" AS country_name,
-            "Flag Emoji"    AS flag_emoji
+            "Country Name" AS country_name,
+            "Flag Emoji"   AS flag_emoji
         FROM countries
         WHERE "Entity Type" IN (\'UN member\', \'UN observer\')
-        ORDER BY "Official Name" ASC
+        ORDER BY "Country Name" ASC
     ');
     $mainCountries = $stmtMain->fetchAll(PDO::FETCH_ASSOC);
 
-    // 2) Fetch Territories
-    //    If your CSV has 'Territory' in "Entity Type", filter by that
+    // 2) Territories
     $stmtTerr = $conn->query('
         SELECT
             id,
-            "Official Name" AS country_name,
-            "Flag Emoji"    AS flag_emoji
+            "Country Name" AS country_name,
+            "Flag Emoji"   AS flag_emoji
         FROM countries
         WHERE "Entity Type" = \'Territory\'
-        ORDER BY "Official Name" ASC
+        ORDER BY "Country Name" ASC
     ');
     $territories = $stmtTerr->fetchAll(PDO::FETCH_ASSOC);
 
-    // 3) Fetch De Facto States
-    //    If your CSV uses 'De Facto' in "Entity Type", filter by that
+    // 3) De Facto States
     $stmtDefacto = $conn->query('
         SELECT
             id,
-            "Official Name" AS country_name,
-            "Flag Emoji"    AS flag_emoji
+            "Country Name" AS country_name,
+            "Flag Emoji"   AS flag_emoji
         FROM countries
         WHERE "Entity Type" = \'De Facto\'
-        ORDER BY "Official Name" ASC
+        ORDER BY "Country Name" ASC
     ');
     $deFactoStates = $stmtDefacto->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (Exception $e) {
-    // Log or display an error message
     die("Error fetching country profiles: " . $e->getMessage());
 }
 ?>
@@ -64,13 +60,13 @@ try {
         <h1>Country Profiles</h1>
         <p>Browse our database of countries, territories, and de facto states.</p>
 
-        <!-- 1) Main Countries (UN member / observer) -->
+        <!-- 1) Main Countries -->
         <h2>Countries</h2>
         <?php if (!empty($mainCountries)): ?>
             <ul>
                 <?php foreach ($mainCountries as $c): ?>
                     <?php
-                        // Handle NULL values to avoid deprecation warnings
+                        // Safely handle NULL values
                         $countryName = $c['country_name'] ?? '';
                         $flagEmoji   = $c['flag_emoji']   ?? '';
                     ?>
