@@ -23,7 +23,7 @@ body {
     width: 100%;
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     color: #fff;
-    padding: 20px 0; /* Increased padding for thicker navbar */
+    padding: 20px 0; /* Desktop thickness */
     z-index: 9999;
 }
 
@@ -35,28 +35,25 @@ body {
     padding: 0 10px;
     display: flex;
     align-items: center;
-    /* By default, items follow the normal flow:
-       Logo at start, nav items centered, and (on mobile) hamburger will be positioned absolutely */
+    /* Logo, nav items, and hamburger will be arranged accordingly */
 }
 
-/* Logo - now in normal flow on the left */
+/* Logo - stays on the left */
 .navbar-logo {
-    /* Remove absolute positioning so it stays on the left */
-    /* Optionally, you can add some margin-right to separate from the nav items */
     margin-right: 20px;
 }
 .navbar-logo img {
-    height: 30px !important; /* Extremely small, within the navbar's thickness */
+    height: 30px !important; /* Extremely small, within navbar's thickness */
     width: auto !important;
     border-radius: 8px; /* Rounded corners */
 }
 
-/* Navigation List - center align it */
+/* Navigation List - centered */
 .navbar-list {
     list-style: none;
     display: flex;
     gap: 20px;
-    margin: 0 auto; /* Centers the list within the container */
+    margin: 0 auto; /* Centers the list */
     transition: transform 0.3s ease-in-out;
 }
 .navbar-list li {
@@ -75,7 +72,6 @@ body {
 /* Hamburger Menu (hidden on desktop/tablet by default) */
 .navbar-toggle {
     position: absolute;
-    /* On desktop/tablet, hide it */
     display: none;
     width: 30px;
     height: 30px;
@@ -84,7 +80,6 @@ body {
     cursor: pointer;
     z-index: 1001;
 }
-/* Hamburger icon styles */
 .navbar-toggle::before {
     content: '☰';
     font-size: 1.5rem;
@@ -100,21 +95,21 @@ body {
 
 /* 4) Tablet & Mobile Navbar */
 @media (max-width: 1024px) {
-    /* Ensure the navbar retains the same thickness */
+    /* Reduce navbar thickness slightly on mobile */
     .navbar {
-        min-height: 70px; /* Adjust this value as needed */
+        padding: 15px 0; /* Slightly smaller than desktop */
     }
     
     /* Show hamburger menu on mobile/tablet and position it to the right */
     .navbar-toggle {
         display: block;
-        right: 10px; /* Moved to the right */
-        top: 50%;
+        right: 10px;       /* Position at right */
+        top: 50%;          /* Vertically centered */
         transform: translateY(-50%);
     }
-    /* Adjust container so that nav items are hidden by default on mobile/tablet */
+    /* Hide the regular navigation list and use a full-screen menu instead */
     .navbar-list {
-        display: none; /* Hidden unless .open is toggled */
+        display: none;  /* Hidden until toggled */
         flex-direction: column;
         position: fixed;
         top: 0;
@@ -124,7 +119,7 @@ body {
         background-color: #3399ff;
         justify-content: flex-start;
         align-items: center;
-        padding-top: 80px;   /* Gap below navbar before links start */
+        padding-top: 80px; /* Gap below navbar before links start */
         margin: 0;
     }
     .navbar-list.open {
@@ -145,10 +140,7 @@ body {
     }
 }
 
-/* 5) Main Page Containers 
-   Restored original vertical spacing:
-   80px from the navbar (top) and 50px at the bottom.
-*/
+/* 5) Main Page Containers */
 .page-content,
 .quiz,
 .country-profiles,
@@ -538,7 +530,7 @@ form input[type="submit"].button {
     .country-profiles,
     .about,
     .world-map {
-        width: 95%; /* Leaves a thin grey margin on the sides */
+        width: 95%;
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
