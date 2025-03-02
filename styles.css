@@ -5,12 +5,16 @@
     padding: 0;
 }
 
-/* 2) Body Defaults */
+/* 2) HTML and Body Defaults */
+/* Set the html background to the navbar gradient so that the safe area shows the same color */
+html {
+    background: linear-gradient(180deg, #3399ff, #66b3ff);
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    /* Keep the background grey under page content */
+    /* The body background is set to gray for the main content area */
     background-color: #f4f4f4;
 }
 
@@ -20,28 +24,26 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    /* Use the gradient color for the navbar */
+    /* Use the blue gradient for the navbar */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     color: #fff;
-    padding: 20px 0; /* Desktop thickness */
+    padding: 30px 0; /* Increased padding for a thicker navbar */
     z-index: 9999;
 }
 
 /* iOS Safe Area Handling */
 @supports (padding: env(safe-area-inset-top)) {
-  /* Push body content below the iOS notch */
+  /* The html background now shows the gradient, so safe-area is covered */
   body {
     padding-top: env(safe-area-inset-top);
   }
-  /* Pull navbar upward to fill the notch area */
   .navbar {
     margin-top: calc(env(safe-area-inset-top) * -1);
-    /* Add safe-area inset to keep the logo/hamburger visible */
-    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-top: calc(30px + env(safe-area-inset-top));
   }
 }
 
-/* Navbar Container */
+/* 4) Navbar Container */
 .navbar-container {
     position: relative;
     width: 90%;
@@ -49,20 +51,20 @@ body {
     padding: 0 10px;
     display: flex;
     align-items: center;
-    /* Logo on the left, nav items centered, hamburger on the right (mobile) */
+    /* Items: logo on the left, nav items centered, hamburger on right (mobile) */
 }
 
-/* Logo - stays on the left */
+/* 5) Logo - stays on the left */
 .navbar-logo {
     margin-right: 20px;
 }
 .navbar-logo img {
-    height: 30px !important; /* Keep small within the navbar's thickness */
+    height: 30px !important; /* Remains small within the navbar */
     width: auto !important;
     border-radius: 8px; /* Rounded corners */
 }
 
-/* Navigation List - centered */
+/* 6) Navigation List - centered */
 .navbar-list {
     list-style: none;
     display: flex;
@@ -83,7 +85,7 @@ body {
     color: #ffdd57;
 }
 
-/* Hamburger Menu (hidden on desktop by default) */
+/* 7) Hamburger Menu (hidden on desktop by default) */
 .navbar-toggle {
     position: absolute;
     display: none;
@@ -107,14 +109,14 @@ body {
     content: 'X';
 }
 
-/* 4) Tablet & Mobile Navbar */
+/* 8) Tablet & Mobile Navbar */
 @media (max-width: 1024px) {
-    /* Keep or slightly increase navbar thickness on mobile */
+    /* Use the same thicker navbar on mobile */
     .navbar {
-        padding: 20px 0; /* Adjust to your preference */
+        padding: 30px 0;
     }
     
-    /* Show hamburger menu on mobile/tablet, align to the right & vertically center */
+    /* Show hamburger menu on mobile/tablet and align it to the right, vertically centered */
     .navbar-toggle {
         display: block;
         right: 10px;
@@ -122,7 +124,7 @@ body {
         transform: translateY(-50%);
     }
     
-    /* Hide the normal nav list, use a full-screen overlay when toggled */
+    /* Hide the normal nav list and use a full-screen overlay menu */
     .navbar-list {
         display: none;
         flex-direction: column;
@@ -155,7 +157,7 @@ body {
     }
 }
 
-/* 5) Main Page Containers */
+/* 9) Main Page Containers */
 .page-content,
 .quiz,
 .country-profiles,
@@ -173,7 +175,7 @@ body {
     text-align: center;
 }
 
-/* 6) Headings */
+/* 10) Headings */
 h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
@@ -190,7 +192,7 @@ h3 {
     font-size: 1.2rem;
 }
 
-/* 7) Search Input */
+/* 11) Search Input */
 input[type="text"] {
     width: 100%;
     max-width: 300px;
@@ -202,7 +204,7 @@ input[type="text"] {
     margin: 0 auto 15px auto;
 }
 
-/* 8) Buttons */
+/* 12) Buttons */
 .button {
     display: block;
     margin: 15px auto;
@@ -234,7 +236,7 @@ form input[type="submit"].button {
     margin-top: 15px;
 }
 
-/* 9) Flash messages, etc. */
+/* 13) Flash messages, etc. */
 .message {
     margin-top: 20px;
     padding: 10px;
@@ -243,7 +245,7 @@ form input[type="submit"].button {
     margin-bottom: 0 !important;
 }
 
-/* 10) Autocomplete Dropdown */
+/* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute;
     background-color: #fff;
@@ -289,7 +291,7 @@ form input[type="submit"].button {
     background: #999;
 }
 
-/* 11) Quiz Section */
+/* 15) Quiz Section */
 .quiz {
     text-align: left; 
 }
@@ -390,7 +392,7 @@ form input[type="submit"].button {
     margin-right: auto;
 }
 
-/* 12) Country Profiles Section */
+/* 16) Country Profiles Section */
 .country-profiles {
     text-align: left; 
 }
@@ -438,7 +440,7 @@ form input[type="submit"].button {
     color: #66b3ff;
 }
 
-/* 13) About Section */
+/* 17) About Section */
 .about {
     text-align: left; 
 }
@@ -490,7 +492,7 @@ form input[type="submit"].button {
     color: #3399ff;
 }
 
-/* 14) World Map Section */
+/* 18) World Map Section */
 .world-map {
     text-align: center;
 }
@@ -530,7 +532,7 @@ form input[type="submit"].button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* 15) Home Page Intro (if relevant) */
+/* 19) Home Page Intro (if relevant) */
 .home-intro {
     font-size: 1rem;
     font-weight: normal;
@@ -538,14 +540,14 @@ form input[type="submit"].button {
     margin-bottom: 20px;
 }
 
-/* 16) Mobile-Only: Thin Side Margins */
+/* 20) Mobile-Only: Thin Side Margins */
 @media (max-width: 1024px) {
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        width: 95%; /* Leaves a thin grey margin on the sides */
+        width: 95%;
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
