@@ -8,11 +8,10 @@
 /* 2) Body Defaults */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Keep the background grey under page content */
     background-color: #f4f4f4;
-    /* background: url("images/map-background.jpg") no-repeat center center fixed;
-    background-size: 100%;
-    color: #333;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* 3) Navbar */
@@ -21,10 +20,25 @@ body {
     top: 0;
     left: 0;
     width: 100%;
+    /* Use the gradient color for the navbar */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     color: #fff;
     padding: 20px 0; /* Desktop thickness */
     z-index: 9999;
+}
+
+/* iOS Safe Area Handling */
+@supports (padding: env(safe-area-inset-top)) {
+  /* Push body content below the iOS notch */
+  body {
+    padding-top: env(safe-area-inset-top);
+  }
+  /* Pull navbar upward to fill the notch area */
+  .navbar {
+    margin-top: calc(env(safe-area-inset-top) * -1);
+    /* Add safe-area inset to keep the logo/hamburger visible */
+    padding-top: calc(20px + env(safe-area-inset-top));
+  }
 }
 
 /* Navbar Container */
@@ -35,7 +49,7 @@ body {
     padding: 0 10px;
     display: flex;
     align-items: center;
-    /* Logo, nav items, and hamburger will be arranged accordingly */
+    /* Logo on the left, nav items centered, hamburger on the right (mobile) */
 }
 
 /* Logo - stays on the left */
@@ -43,7 +57,7 @@ body {
     margin-right: 20px;
 }
 .navbar-logo img {
-    height: 30px !important; /* Extremely small, within navbar's thickness */
+    height: 30px !important; /* Keep small within the navbar's thickness */
     width: auto !important;
     border-radius: 8px; /* Rounded corners */
 }
@@ -69,7 +83,7 @@ body {
     color: #ffdd57;
 }
 
-/* Hamburger Menu (hidden on desktop/tablet by default) */
+/* Hamburger Menu (hidden on desktop by default) */
 .navbar-toggle {
     position: absolute;
     display: none;
@@ -95,21 +109,22 @@ body {
 
 /* 4) Tablet & Mobile Navbar */
 @media (max-width: 1024px) {
-    /* Reduce navbar thickness slightly on mobile */
+    /* Keep or slightly increase navbar thickness on mobile */
     .navbar {
-        padding: 24px 0;
+        padding: 20px 0; /* Adjust to your preference */
     }
     
-    /* Show hamburger menu on mobile/tablet and position it to the right */
+    /* Show hamburger menu on mobile/tablet, align to the right & vertically center */
     .navbar-toggle {
         display: block;
-        right: 10px;       /* Position at right */
-        top: 50%;          /* Vertically centered */
+        right: 10px;
+        top: 50%;
         transform: translateY(-50%);
     }
-    /* Hide the regular navigation list and use a full-screen menu instead */
+    
+    /* Hide the normal nav list, use a full-screen overlay when toggled */
     .navbar-list {
-        display: none;  /* Hidden until toggled */
+        display: none;
         flex-direction: column;
         position: fixed;
         top: 0;
@@ -119,7 +134,7 @@ body {
         background-color: #3399ff;
         justify-content: flex-start;
         align-items: center;
-        padding-top: 80px; /* Gap below navbar before links start */
+        padding-top: 80px;
         margin: 0;
     }
     .navbar-list.open {
@@ -146,7 +161,7 @@ body {
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 80px;
+    margin-top: 80px; /* Space below the fixed navbar */
     margin-bottom: 50px;
     max-width: 600px;
     margin-left: auto;
@@ -530,7 +545,7 @@ form input[type="submit"].button {
     .country-profiles,
     .about,
     .world-map {
-        width: 95%;
+        width: 95%; /* Leaves a thin grey margin on the sides */
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
