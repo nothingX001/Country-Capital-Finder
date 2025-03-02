@@ -23,11 +23,14 @@ body {
     /* Blue gradient for navbar */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     color: #fff;
-    padding: 30px 0; /* Increased padding for a thicker navbar */
+    padding: 30px 0; /* Thicker navbar */
     z-index: 9999;
 }
 
-/* iOS Safe Area Handling for Desktop is not applied – only mobile will use the pseudo-element below */
+/* iOS Safe Area Handling for Mobile */
+@supports (padding: env(safe-area-inset-top)) {
+  /* This pseudo-element is applied only on mobile/tablet below 1024px */
+}
 
 /* 4) Navbar Container */
 .navbar-container {
@@ -97,7 +100,7 @@ body {
 
 /* 8) Tablet & Mobile Navbar */
 @media (max-width: 1024px) {
-    /* Use the same thicker navbar on mobile */
+    /* Keep the thicker navbar on mobile */
     .navbar {
         padding: 30px 0;
     }
@@ -114,7 +117,7 @@ body {
         z-index: -1;
     }
     
-    /* Show hamburger menu on mobile/tablet, aligned to the right and vertically centered */
+    /* Show hamburger menu on mobile/tablet and align it to the right, vertically centered */
     .navbar-toggle {
         display: block;
         right: 10px;
@@ -161,7 +164,7 @@ body {
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 80px; /* Space below the fixed navbar */
+    margin-top: 80px; /* Default for mobile */
     margin-bottom: 50px;
     max-width: 600px;
     margin-left: auto;
@@ -171,6 +174,17 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
+}
+
+/* 9a) Increase top margin on Desktop */
+@media (min-width: 1025px) {
+    .page-content,
+    .quiz,
+    .country-profiles,
+    .about,
+    .world-map {
+        margin-top: 100px;
+    }
 }
 
 /* 10) Headings */
