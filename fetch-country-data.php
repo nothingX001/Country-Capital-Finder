@@ -94,10 +94,10 @@ try {
         unset($row);
         $response = $rows;
     }
-        // 6. Map Data
-        elseif ($type === 'map') {
+    // 6. Map Data
+    elseif ($type === 'map') {
         $query = "
-            -- Return countries with their own coordinates
+            -- Return countries with their own coordinates (exact coordinates via cast to text)
             SELECT
                 id,
                 \"Country Name\" AS country_name,
@@ -129,8 +129,6 @@ try {
         $stmt = $conn->query($query);
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
     // 7. Country Detail by ID
     elseif ($type === 'detail' && isset($_GET['id'])) {
         $id = (int)$_GET['id'];
@@ -202,7 +200,6 @@ try {
         http_response_code(400);
         $response = ['error' => 'Invalid type or missing parameters.'];
     }
-
 } catch (Exception $e) {
     http_response_code(500);
     error_log("Error in fetch-country-data.php: " . $e->getMessage());
