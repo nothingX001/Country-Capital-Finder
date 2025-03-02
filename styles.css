@@ -91,6 +91,12 @@ body {
     transform: translateX(-50%);
 }
 
+/* Shrink logo and round corners */
+.navbar-logo img {
+    height: 30px; /* Extremely small, within the navbar's thickness */
+    border-radius: 8px; /* Rounded corners */
+}
+
 /* 4) Mobile Navbar */
 @media (max-width: 768px) {
     /* Move hamburger icon further left */
