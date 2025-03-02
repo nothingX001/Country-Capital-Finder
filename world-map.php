@@ -12,10 +12,10 @@ $locations = json_decode($data, true);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
   <title>World Map | ExploreCapitals</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
+  <link rel="stylesheet" href="styles.css">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
   <style>
-    /* Revert to your original map styling */
+    /* Revert to your original styling */
     #map {
       height: 500px;
       width: 100%;
@@ -81,7 +81,7 @@ $locations = json_decode($data, true);
       alert('Failed to load the map. Please check the console for details.');
     });
 
-    // Expected keys from the API: country_name, capital_name, latitude, longitude, iso_code, flag_emoji
+    // Expected keys: country_name, capital_name, latitude, longitude, iso_code, flag_emoji
     const locations = <?php echo json_encode($locations); ?>;
     
     const searchBar = document.getElementById('search-bar');
@@ -97,7 +97,7 @@ $locations = json_decode($data, true);
       if (matchCapital && matchCapital.latitude && matchCapital.longitude) {
         const lng = parseFloat(matchCapital.longitude);
         const lat = parseFloat(matchCapital.latitude);
-        // For capitals, use a closer zoom (e.g., 8) so that the capital point is centered.
+        // For capitals, zoom in close so that the capital point is centered.
         map.flyTo({ center: [lng, lat], zoom: 8 });
         if (matchCapital.iso_code) {
           map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', matchCapital.iso_code]);
@@ -113,7 +113,7 @@ $locations = json_decode($data, true);
       if (matchCountry && matchCountry.latitude && matchCountry.longitude) {
         const lng = parseFloat(matchCountry.longitude);
         const lat = parseFloat(matchCountry.latitude);
-        // For countries, use a lower zoom (e.g., 3) so that the entire country is visible.
+        // For countries, use a zoom level that shows the entire country.
         map.flyTo({ center: [lng, lat], zoom: 3 });
         if (matchCountry.iso_code) {
           map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', matchCountry.iso_code]);
@@ -121,7 +121,7 @@ $locations = json_decode($data, true);
         return;
       }
       
-      // If no match, clear border highlighting.
+      // If no match, clear any border highlighting.
       map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
     });
   </script>
