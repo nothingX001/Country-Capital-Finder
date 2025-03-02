@@ -6,56 +6,63 @@ error_reporting(E_ALL);
 
 include 'config.php';
 
-// Optional: Include "the-countries.php" if you still use that logic for "the" prefix
-// If not needed, you can remove or comment this out.
-// Example: $the_countries = ["bahamas", "gambia", "philippines", ...];
+// Optional: If you have a file listing countries that need a "the" prefix, include it.
+// Otherwise, remove or ignore this line.
+// Example: $the_countries = ["bahamas","gambia","philippines"];
 include 'the-countries.php';
 
-// 1) Fetch random main countries (UN member/observer)
-try {
-    $stmtMain = $conn->query('
-        SELECT c.id,
-               c."Country Name" AS country_name,
-               array_agg(cap.capital_name ORDER BY cap.capital_name) AS capitals
-        FROM countries c
-        JOIN capitals cap ON c.id = cap.country_id
-        WHERE c."Entity Type" IN (\'UN member\', \'UN observer\')
-        GROUP BY c.id
+/**
+ * A helper function to fetch up to $limit random countries by certain entity types,
+ * then for each country, fetch capitals from the capitals table and attach them.
+ */
+function fetchQuizData(PDO $conn, array $entityTypes, int $limit = 10): array {
+    // 1) Get up to $limit random countries with matching "Entity Type"
+    //    (Only selecting id + "Country Name")
+    $inList = "'" . implode("','", $entityTypes) . "'";
+    $sql = "
+        SELECT id, \"Country Name\" AS country_name
+        FROM countries
+        WHERE \"Entity Type\" IN ($inList)
         ORDER BY RANDOM()
-        LIMIT 10
-    ');
-    $randomMain = $stmtMain->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    die("Error fetching main quiz data: " . $e->getMessage());
+        LIMIT $limit
+    ";
+    $rows = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+    // 2) For each country, fetch capitals from the capitals table
+    foreach ($rows as &$row) {
+        $capStmt = $conn->prepare('
+            SELECT capital_name
+            FROM capitals
+            WHERE country_id = ?
+        ');
+        $capStmt->execute([$row['id']]);
+        $capList = $capStmt->fetchAll(PDO::FETCH_COLUMN);
+        // Attach the array of capital names to this row
+        $row['capitals'] = $capList;
+    }
+    unset($row);
+
+    return $rows;
 }
 
-// 2) Fetch random territories
 try {
-    $stmtTerr = $conn->query('
-        SELECT c.id,
-               c."Country Name" AS country_name,
-               array_agg(cap.capital_name ORDER BY cap.capital_name) AS capitals
-        FROM countries c
-        JOIN capitals cap ON c.id = cap.country_id
-        WHERE c."Entity Type" = \'Territory\'
-        GROUP BY c.id
-        ORDER BY RANDOM()
-        LIMIT 10
-    ');
-    $randomTerritories = $stmtTerr->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    die("Error fetching territories quiz data: " . $e->getMessage());
-}
+    // 1) Fetch up to 10 random "main" countries (UN member / observer)
+    //    Adjust these strings if your CSV uses something else like "UN Member" or "Member State"
+    $randomMain = fetchQuizData($conn, ['UN member', 'UN observer'], 10);
 
-// Convert to arrays of [ "country_name" => ..., "capitals" => [...], ... ]
-// Already done via array_agg(...) above. Each row has country_name and capitals array.
+    // 2) Fetch up to 10 random "territories"
+    $randomTerritories = fetchQuizData($conn, ['Territory'], 10);
+
+} catch (Exception $e) {
+    die("Error fetching quiz data: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Quiz | ExploreCapitals</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Adjust if needed -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -76,7 +83,7 @@ try {
             </form>
         </div>
 
-        <div id="resultContainer" style="display: none;">
+        <div id="resultContainer" style="display:none;">
             <h2>Quiz Results</h2>
             <p id="score"></p>
             <div id="detailedResults"></div>
@@ -90,10 +97,8 @@ try {
     const randomMain = <?php echo json_encode($randomMain); ?>;
     const randomTerritories = <?php echo json_encode($randomTerritories); ?>;
 
-    // 2) If you still use a "the-countries.php" array to prepend "the" for certain countries
-    //    define it here; otherwise, you can remove this entire logic
+    // 2) "theCountries" array for adding "the" prefix if you want it
     const theCountries = <?php
-        // If you do not use "the-countries.php", you can just echo "[]"
         if (isset($the_countries) && is_array($the_countries)) {
             echo json_encode(array_map('strtolower', $the_countries));
         } else {
@@ -102,11 +107,9 @@ try {
     ?>;
 
     function addThe(country) {
-        // If "the-countries.php" is in use
         return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
     }
 
-    // 3) We'll store the current quiz data in a global variable
     let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
@@ -114,7 +117,7 @@ try {
     let timer;
     let userResponses = [];
 
-    // Called to start the quiz with the given data set (randomMain or randomTerritories)
+    // Called to start the quiz with the given data set
     function startQuiz(dataArray) {
         // Prepare the data
         questions = [];
@@ -135,13 +138,9 @@ try {
             return;
         }
 
-        // Hide the initial "Select a quiz type" text
         document.querySelector('#main-quiz p').style.display = 'none';
-        // Show the quiz container
         document.getElementById('quizContainer').style.display = 'block';
-        // Hide the result container
         document.getElementById('resultContainer').style.display = 'none';
-        // Hide the start buttons
         document.getElementById('startMainQuizBtn').style.display = 'none';
         document.getElementById('startTerritoriesQuizBtn').style.display = 'none';
 
@@ -155,7 +154,6 @@ try {
         showNextQuestion();
     }
 
-    // Start the timer
     function startTimer() {
         clearInterval(timer);
         timeElapsed = 0;
@@ -169,11 +167,10 @@ try {
         }, 1000);
     }
 
-    // Show the next question
     function showNextQuestion() {
         if (currentQuestionIndex < questions.length) {
             const qData = questions[currentQuestionIndex];
-            // Randomly decide if we ask "What is the capital of X?" or "X is the capital of which country?"
+            // Randomly decide question type
             const isCountryQuestion = Math.random() > 0.5;
 
             let questionText;
@@ -193,8 +190,6 @@ try {
                 questionText = `${capitalStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
                 userResponses.push({
                     questionText,
-                    // We'll store just one correct answer if you want
-                    // but if multiple synonyms exist, you could store them
                     correctAnswers: [qData.country],
                     userAnswer: "",
                     isCorrect: false,
@@ -210,28 +205,23 @@ try {
         }
     }
 
-    // Check if user input matches one of the correct answers
+    function normalizeInput(str) {
+        let norm = str.toLowerCase().trim();
+        norm = norm.replace(/^the\s+/, '');
+        norm = norm.replace(/[^\w\s]/g, '');
+        norm = norm.replace(/\s+/g, ' ');
+        norm = norm.replace(/\bst\.?\b/gi, 'saint');
+        return norm;
+    }
+
     function checkAnswer(userAnswer, correctAnswers) {
         const userNorm = normalizeInput(userAnswer);
-        // For each correct answer, we can check multiple variants
         return correctAnswers.some(ca => {
-            // If you have synonyms, you can do more logic here
             const caNorm = normalizeInput(ca);
             return userNorm === caNorm;
         });
     }
 
-    // Simple normalization: lowercase, remove punctuation, etc.
-    function normalizeInput(str) {
-        let norm = str.toLowerCase().trim();
-        norm = norm.replace(/^the\s+/i, '');         // remove leading "the"
-        norm = norm.replace(/[^\w\s]/g, '');        // remove punctuation
-        norm = norm.replace(/\s+/g, ' ');           // collapse extra spaces
-        norm = norm.replace(/\bst\.?\b/gi, 'saint');// handle "St." => "saint"
-        return norm;
-    }
-
-    // Called when we run out of questions
     function endQuiz() {
         clearInterval(timer);
         document.getElementById('quizContainer').style.display = 'none';
@@ -256,14 +246,13 @@ try {
         document.getElementById('detailedResults').innerHTML = detailHTML;
     }
 
-    // Event listeners
     document.getElementById('answerForm').addEventListener('submit', e => {
         e.preventDefault();
         const userAnswer = document.getElementById('userAnswer').value.trim();
         const currentResp = userResponses[currentQuestionIndex];
         const isCorrect = checkAnswer(userAnswer, currentResp.correctAnswers);
         currentResp.userAnswer = userAnswer;
-        currentResp.isCorrect = isCorrect;
+        currentResp.isCorrect  = isCorrect;
         if (isCorrect) score++;
         currentQuestionIndex++;
         showNextQuestion();
@@ -273,6 +262,7 @@ try {
         location.reload();
     });
 
+    // Start quiz buttons
     document.getElementById('startMainQuizBtn').addEventListener('click', () => {
         startQuiz(randomMain);
     });
