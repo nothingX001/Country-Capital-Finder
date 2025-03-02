@@ -38,10 +38,8 @@ $locations = json_decode($data, true);
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
     <script>
-        // Set your Mapbox access token.
         mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
-        // Initialize the map.
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v12',
@@ -51,7 +49,6 @@ $locations = json_decode($data, true);
         });
 
         map.on('style.load', () => {
-            // Optional fog effect.
             map.setFog({
                 range: [0.5, 10],
                 color: 'rgba(135, 206, 235, 0.15)',
@@ -61,7 +58,6 @@ $locations = json_decode($data, true);
                 "star-intensity": 0.1
             });
 
-            // Add country borders for context.
             map.addSource('country-borders', {
                 type: 'vector',
                 url: 'mapbox://mapbox.country-boundaries-v1'
@@ -76,7 +72,7 @@ $locations = json_decode($data, true);
                     'line-color': '#FF0000',
                     'line-width': 2
                 },
-                filter: ['==', 'iso_3166_1', ''] // Initially no country selected.
+                filter: ['==', 'iso_3166_1', '']
             });
         });
 
@@ -85,26 +81,22 @@ $locations = json_decode($data, true);
             alert('Failed to load the map. Please check the console for details.');
         });
 
-        // Locations data from the API.
+        // Use the locations data from PHP (expected keys: country_name, capital_name, latitude, longitude, flag_emoji)
         const locations = <?php echo json_encode($locations); ?>;
 
-        // Search functionality.
         const searchBar = document.getElementById('search-bar');
         searchBar.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
-            // Find a match by country name or capital name.
+            // Allow partial matches using .includes()
             const match = locations.find(loc => {
-                return (loc.country_name && loc.country_name.toLowerCase() === query) ||
-                       (loc.capital_name && loc.capital_name.toLowerCase() === query);
+                return (loc.country_name && loc.country_name.toLowerCase().includes(query)) ||
+                       (loc.capital_name && loc.capital_name.toLowerCase().includes(query));
             });
             if (match && match.latitude && match.longitude) {
-                // Convert string coordinates to floats.
                 const lng = parseFloat(match.longitude);
                 const lat = parseFloat(match.latitude);
                 map.flyTo({ center: [lng, lat], zoom: 5 });
-            }
-            else {
-                // Optionally, clear any border highlight.
+            } else {
                 map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
             }
         });
