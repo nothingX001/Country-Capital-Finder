@@ -11,13 +11,14 @@ if (!$country_id) {
 
 try {
     // 1) Fetch the country row from the countries table.
-    //    Coordinates are cast to text to preserve full precision.
+    //    We now also select "Sovereign State" as sovereign_state.
     $stmt = $conn->prepare('
         SELECT
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
             "Flag"         AS flag_url,
             "Entity Type"  AS entity_type,
+            "Sovereign State" AS sovereign_state,
             "Coordinates (Latitude)"::text  AS lat,
             "Coordinates (Longitude)"::text AS lon,
             "Languages"    AS languages,
@@ -48,7 +49,7 @@ try {
     $stmt_cap->execute([$country_id]);
     $capitals = $stmt_cap->fetchAll(PDO::FETCH_ASSOC);
 
-    // Format coordinates: convert to float and add degree symbol and direction.
+    // Format coordinates
     $latVal = floatval($country['lat']);
     $lonVal = floatval($country['lon']);
     $latDir = ($latVal >= 0) ? 'N' : 'S';
@@ -139,7 +140,7 @@ try {
             <?php endif; ?>
         </div>
 
-        <!-- Flag Image (placed below entity type) -->
+        <!-- Flag Image (below entity type) -->
         <?php if (!empty($country['flag_url'])): ?>
             <div class="flag-image">
                 <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
@@ -150,7 +151,12 @@ try {
         <!-- Attributes Section -->
         <div class="attributes">
             <?php
-            // Capitals (combined into one line)
+            // If this is a territory, display the sovereign state.
+            if (!empty($country['sovereign_state']) && strtolower(trim($country['entity_type'])) === 'territory') {
+                echo '<p><strong>Sovereign State:</strong> ' . htmlspecialchars($country['sovereign_state']) . '</p>';
+            }
+            
+            // Capitals
             if (!empty($capitals)) {
                 $capList = [];
                 foreach ($capitals as $cap) {
@@ -194,7 +200,7 @@ try {
                 echo '<p><strong>Population:</strong> ' . $popFormatted . '</p>';
             }
 
-            // Area (km²) with commas
+            // Area (km²)
             if (!empty($areaFormatted)) {
                 echo '<p><strong>Area (km²):</strong> ' . $areaFormatted . '</p>';
             }
