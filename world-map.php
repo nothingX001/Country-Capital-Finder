@@ -1,7 +1,7 @@
 <?php
 // world-map.php
 
-// Fetch location data from the updated API endpoint.
+// Fetch location data from the API endpoint.
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
 $locations = json_decode($data, true);
 ?>
@@ -15,12 +15,17 @@ $locations = json_decode($data, true);
   <link rel="stylesheet" href="styles.css">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
   <style>
-    /* Adjusted CSS to avoid extra top margin */
+    /* Ensure the map container has a defined height and remove extra margin */
     #map {
       height: 500px;
       width: 100%;
       border-radius: 15px;
-      /* margin-top removed to avoid pushing content down */
+      margin-top: 0;
+    }
+    /* Remove any extra top margin/padding on the map page content */
+    .page-content.world-map {
+      margin-top: 0;
+      padding-top: 0;
     }
   </style>
 </head>
@@ -39,7 +44,7 @@ $locations = json_decode($data, true);
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
-    
+
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v12',
@@ -81,14 +86,14 @@ $locations = json_decode($data, true);
       alert('Failed to load the map. Please check the console for details.');
     });
 
-    // The locations data returned from the API now has keys:
-    // country_name, capital_name, latitude, longitude, iso_code, flag_emoji
+    // Use the locations data from PHP.
+    // Expected keys: country_name, capital_name, latitude, longitude, iso_code, flag_emoji
     const locations = <?php echo json_encode($locations); ?>;
-
+    
     const searchBar = document.getElementById('search-bar');
     searchBar.addEventListener('input', function() {
       const query = this.value.toLowerCase().trim();
-      // Only proceed if the input exactly matches (case-insensitive) a country or capital name.
+      // Only fly to a location if the input exactly matches a country or capital name
       const match = locations.find(loc => {
         return (loc.country_name && loc.country_name.toLowerCase() === query) ||
                (loc.capital_name && loc.capital_name.toLowerCase() === query);
@@ -98,7 +103,7 @@ $locations = json_decode($data, true);
         const lat = parseFloat(match.latitude);
         map.flyTo({ center: [lng, lat], zoom: 5 });
       } else {
-        // Optionally clear border highlighting if no match.
+        // If no exact match, you may clear the border highlight (if using iso_code)
         map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
       }
     });
