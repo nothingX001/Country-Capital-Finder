@@ -11,7 +11,7 @@ if (!$country_id) {
 
 try {
     // 1) Fetch the country row from the countries table.
-    //    We now also select "Sovereign State" as sovereign_state.
+    //    Coordinates are cast to text to preserve full precision.
     $stmt = $conn->prepare('
         SELECT
             "Country Name" AS country_name,
@@ -49,7 +49,7 @@ try {
     $stmt_cap->execute([$country_id]);
     $capitals = $stmt_cap->fetchAll(PDO::FETCH_ASSOC);
 
-    // Format coordinates
+    // Format coordinates: convert to float and add degree symbol and direction.
     $latVal = floatval($country['lat']);
     $lonVal = floatval($country['lon']);
     $latDir = ($latVal >= 0) ? 'N' : 'S';
@@ -60,7 +60,7 @@ try {
     // Format population with commas.
     $popFormatted = !empty($country['population']) ? number_format($country['population']) : '';
 
-    // Format Area (km²) with commas.
+    // Format area with commas.
     $areaFormatted = !empty($country['area_km2']) ? number_format($country['area_km2']) : '';
 
     // Format calling code with plus sign.
@@ -105,9 +105,6 @@ try {
           border-radius: 4px;
       }
       .attributes {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
           max-width: 500px;
           margin: 0 auto;
           text-align: left;
@@ -115,11 +112,13 @@ try {
           color: #333;
       }
       .attributes p {
-          margin: 0;
+          margin: 10px 0;
+          line-height: 1.5;
       }
       .attributes strong {
-          display: inline-block;
-          width: 140px;
+          display: block;
+          font-weight: bold;
+          margin-bottom: 5px;
       }
     </style>
 </head>
@@ -153,7 +152,7 @@ try {
             <?php
             // If this is a territory, display the sovereign state.
             if (!empty($country['sovereign_state']) && strtolower(trim($country['entity_type'])) === 'territory') {
-                echo '<p><strong>Sovereign State:</strong> ' . htmlspecialchars($country['sovereign_state']) . '</p>';
+                echo '<p><strong>Sovereign State:</strong><br>' . htmlspecialchars($country['sovereign_state']) . '</p>';
             }
             
             // Capitals
@@ -167,52 +166,52 @@ try {
                     $capList[] = $capString;
                 }
                 $capString = implode(' / ', $capList);
-                echo '<p><strong>Capitals:</strong> ' . $capString . '</p>';
+                echo '<p><strong>Capital(s):</strong><br>' . $capString . '</p>';
             }
-
+            
             // Coordinates
             if (!empty($country['lat']) && !empty($country['lon'])) {
-                echo '<p><strong>Coordinates:</strong> ' . $latFormatted . ', ' . $lonFormatted . '</p>';
+                echo '<p><strong>Coordinates:</strong><br>' . $latFormatted . ', ' . $lonFormatted . '</p>';
             }
-
+            
             // Languages
             if (!empty($country['languages'])) {
-                echo '<p><strong>Languages:</strong> ' . htmlspecialchars($country['languages']) . '</p>';
+                echo '<p><strong>Languages:</strong><br>' . htmlspecialchars($country['languages']) . '</p>';
             }
-
+            
             // Currency
             if (!empty($country['currency'])) {
-                echo '<p><strong>Currency:</strong> ' . htmlspecialchars($country['currency']) . '</p>';
+                echo '<p><strong>Currency:</strong><br>' . htmlspecialchars($country['currency']) . '</p>';
             }
-
+            
             // Region
             if (!empty($country['region'])) {
-                echo '<p><strong>Region:</strong> ' . htmlspecialchars($country['region']) . '</p>';
+                echo '<p><strong>Region:</strong><br>' . htmlspecialchars($country['region']) . '</p>';
             }
-
+            
             // Subregion
             if (!empty($country['subregion'])) {
-                echo '<p><strong>Subregion:</strong> ' . htmlspecialchars($country['subregion']) . '</p>';
+                echo '<p><strong>Subregion:</strong><br>' . htmlspecialchars($country['subregion']) . '</p>';
             }
-
+            
             // Population
             if (!empty($popFormatted)) {
-                echo '<p><strong>Population:</strong> ' . $popFormatted . '</p>';
+                echo '<p><strong>Population:</strong><br>' . $popFormatted . '</p>';
             }
-
+            
             // Area (km²)
             if (!empty($areaFormatted)) {
-                echo '<p><strong>Area (km²):</strong> ' . $areaFormatted . '</p>';
+                echo '<p><strong>Area (km²):</strong><br>' . $areaFormatted . '</p>';
             }
-
+            
             // Calling Code
             if (!empty($callingCode)) {
-                echo '<p><strong>Calling Code:</strong> ' . htmlspecialchars($callingCode) . '</p>';
+                echo '<p><strong>Calling Code:</strong><br>' . htmlspecialchars($callingCode) . '</p>';
             }
-
+            
             // Internet TLD
             if (!empty($country['internet_tld'])) {
-                echo '<p><strong>Internet TLD:</strong> ' . htmlspecialchars($country['internet_tld']) . '</p>';
+                echo '<p><strong>Internet TLD:</strong><br>' . htmlspecialchars($country['internet_tld']) . '</p>';
             }
             ?>
         </div>
