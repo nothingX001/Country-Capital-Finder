@@ -23,12 +23,13 @@ body {
     width: 100%;
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     color: #fff;
-    padding: 10px 0;
+    padding: 20px 0; /* Increased padding for thicker navbar */
     z-index: 9999;
 }
 
 /* Navbar Container */
 .navbar-container {
+    position: relative;  /* Added for positioning the centered logo */
     width: 90%;
     margin: 0 auto;
     padding: 0 10px;
@@ -81,6 +82,13 @@ body {
 }
 .navbar-list a:hover {
     color: #ffdd57;
+}
+
+/* Centered logo */
+.navbar-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* 4) Mobile Navbar */
