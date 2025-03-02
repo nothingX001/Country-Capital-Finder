@@ -12,10 +12,10 @@ $locations = json_decode($data, true);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
   <title>World Map | ExploreCapitals</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
   <style>
-    /* Revert to your original map styling */
+    /* Original styling */
     #map {
       height: 500px;
       width: 100%;
@@ -38,8 +38,10 @@ $locations = json_decode($data, true);
 
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
   <script>
+    // Set your Mapbox access token.
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 
+    // Initialize the map with original styling.
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v12',
@@ -49,6 +51,7 @@ $locations = json_decode($data, true);
     });
 
     map.on('style.load', () => {
+      // Set fog as in your original code.
       map.setFog({
         range: [0.5, 10],
         color: 'rgba(135, 206, 235, 0.15)',
@@ -57,7 +60,7 @@ $locations = json_decode($data, true);
         "horizon-blend": 0.1,
         "star-intensity": 0.1
       });
-      // Removed red border source/layer code.
+      // No red border source or layer is added.
     });
 
     map.on('error', (e) => {
@@ -81,7 +84,7 @@ $locations = json_decode($data, true);
       if (matchCapital && matchCapital.latitude && matchCapital.longitude) {
         const lng = parseFloat(matchCapital.longitude);
         const lat = parseFloat(matchCapital.latitude);
-        // For capitals, use a closer zoom so the capital point is centered.
+        // For capitals, use zoom level 8.
         map.flyTo({ center: [lng, lat], zoom: 8 });
         return;
       }
@@ -94,7 +97,7 @@ $locations = json_decode($data, true);
       if (matchCountry && matchCountry.latitude && matchCountry.longitude) {
         const lng = parseFloat(matchCountry.longitude);
         const lat = parseFloat(matchCountry.latitude);
-        // For countries, use a zoom level that shows the entire country.
+        // For countries, use zoom level 3.
         map.flyTo({ center: [lng, lat], zoom: 3 });
         return;
       }
