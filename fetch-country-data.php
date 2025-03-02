@@ -11,30 +11,30 @@ try {
     // 1. Main List of Countries (Member/Observer States)
     if ($type === 'all_main_only') {
         $stmt = $conn->query("
-            SELECT id, name as country_name, flag as flag_emoji
+            SELECT id, \"name\" AS country_name, \"flag\" AS flag_emoji
             FROM countries
             WHERE status IN ('UN member', 'UN observer')
-            ORDER BY name ASC
+            ORDER BY \"name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // 2. Territories
     elseif ($type === 'all_territories') {
         $stmt = $conn->query("
-            SELECT id, name as country_name, flag as flag_emoji
+            SELECT id, \"name\" AS country_name, \"flag\" AS flag_emoji
             FROM countries
             WHERE status = 'Territory'
-            ORDER BY name ASC
+            ORDER BY \"name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // 3. De Facto States
     elseif ($type === 'all_de_facto_states') {
         $stmt = $conn->query("
-            SELECT id, name as country_name, flag as flag_emoji
+            SELECT id, \"name\" AS country_name, \"flag\" AS flag_emoji
             FROM countries
             WHERE status = 'De Facto'
-            ORDER BY name ASC
+            ORDER BY \"name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -43,7 +43,7 @@ try {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
             SELECT c.id, 
-                   c.name as country_name, 
+                   c.\"name\" AS country_name, 
                    array_agg(REPLACE(cap.name, ' / ', ', ')) AS capitals
             FROM countries c
             JOIN capitals cap ON c.id = cap.country_id
@@ -53,7 +53,6 @@ try {
             LIMIT $limit
         ");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         foreach ($rows as &$row) {
             if (!empty($row['capitals']) && is_string($row['capitals'])) {
                 $row['capitals'] = array_map('trim', explode(',', trim($row['capitals'], '{}')));
@@ -72,7 +71,7 @@ try {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
             SELECT c.id, 
-                   c.name as country_name, 
+                   c.\"name\" AS country_name, 
                    array_agg(REPLACE(cap.name, ' / ', ', ')) AS capitals
             FROM countries c
             JOIN capitals cap ON c.id = cap.country_id
@@ -82,7 +81,6 @@ try {
             LIMIT $limit
         ");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         foreach ($rows as &$row) {
             if (!empty($row['capitals']) && is_string($row['capitals'])) {
                 $row['capitals'] = array_map('trim', explode(',', trim($row['capitals'], '{}')));
@@ -98,25 +96,47 @@ try {
     }
     // 6. Map Data
     elseif ($type === 'map') {
-        $stmt = $conn->query("
-            SELECT c.name as country_name, 
-                   cap.name as capital_name, 
-                   cap.latitude, 
-                   cap.longitude, 
-                   c.flag as flag_emoji
-            FROM countries c
-            LEFT JOIN capitals cap ON c.id = cap.country_id
-        ");
+        $query = "
+            -- Return countries with their own coordinates
+            SELECT
+                id,
+                \"Country Name\" AS country_name,
+                NULL::text AS capital_name,
+                \"Coordinates (Latitude)\"::text AS latitude,
+                \"Coordinates (Longitude)\"::text AS longitude,
+                \"ISO Alpha-2\" AS iso_code,
+                \"Flag\" AS flag_emoji
+            FROM countries
+            WHERE \"Coordinates (Latitude)\" IS NOT NULL
+              AND \"Coordinates (Longitude)\" IS NOT NULL
+
+            UNION ALL
+
+            -- Return capitals with their own coordinates along with their country's info
+            SELECT
+                cap.id,
+                c.\"Country Name\" AS country_name,
+                cap.capital_name,
+                cap.latitude::text AS latitude,
+                cap.longitude::text AS longitude,
+                c.\"ISO Alpha-2\" AS iso_code,
+                c.\"Flag\" AS flag_emoji
+            FROM capitals cap
+            JOIN countries c ON cap.country_id = c.id
+            WHERE cap.latitude IS NOT NULL
+              AND cap.longitude IS NOT NULL
+        ";
+        $stmt = $conn->query($query);
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     // 7. Country Detail by ID
     elseif ($type === 'detail' && isset($_GET['id'])) {
         $id = (int)$_GET['id'];
         $stmt = $conn->prepare("
-            SELECT name as country_name, 
-                   flag as flag_emoji, 
+            SELECT \"name\" AS country_name, 
+                   \"flag\" AS flag_emoji, 
                    language, 
-                   flag_url as flag_image_url,
+                   flag_url AS flag_image_url,
                    status, 
                    disclaimer, 
                    parent_id
@@ -131,10 +151,10 @@ try {
     elseif ($type === 'autocomplete' && isset($_GET['query'])) {
         $query = $_GET['query'];
         $stmt = $conn->prepare("
-            SELECT name as country_name
+            SELECT \"name\" AS country_name
             FROM countries
-            WHERE LOWER(name) LIKE LOWER(?)
-            ORDER BY name ASC
+            WHERE LOWER(\"name\") LIKE LOWER(?)
+            ORDER BY \"name\" ASC
             LIMIT 10
         ");
         $stmt->execute([$query . '%']);
