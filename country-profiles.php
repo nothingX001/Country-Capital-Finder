@@ -49,6 +49,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Country Profiles | ExploreCapitals</title>
+    <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Browse our database of countries, territories, and more!">
     <link rel="stylesheet" href="styles.css">

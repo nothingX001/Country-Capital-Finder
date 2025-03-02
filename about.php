@@ -26,6 +26,7 @@ if (!$statistics || isset($statistics['error'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | ExploreCapitals</title>
+    <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory’s capital.">
     <meta name="author" content="ExploreCapitals">
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->

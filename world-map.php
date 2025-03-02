@@ -12,6 +12,7 @@ $locations = json_decode($data, true);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
   <title>World Map | ExploreCapitals</title>
+  <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
   <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
   <style>
