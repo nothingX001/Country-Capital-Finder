@@ -95,6 +95,9 @@ try {
     </section>
 
     <script>
+    // Declare a global variable for the quiz type.
+    let quizType = 'main';
+
     // 1) Convert the random data from PHP to JavaScript arrays
     //    Each element has { id, country_name, capitals: [ ... ] }
     const randomMain = <?php echo json_encode($randomMain); ?>;
@@ -190,7 +193,9 @@ try {
                 const capCount = qData.capitals.length;
                 const capitalStr = qData.capitals.map(c => `<strong>${c}</strong>`).join(' / ');
                 const verb = capCount > 1 ? 'are' : 'is';
-                questionText = `${capitalStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which country?`;
+                // Use "territory" if the quiz type is set to territory, otherwise "country"
+                let placeLabel = (quizType === 'territory') ? 'territory' : 'country';
+                questionText = `${capitalStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which ${placeLabel}?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: [qData.country],
@@ -267,9 +272,11 @@ try {
 
     // Start quiz buttons
     document.getElementById('startMainQuizBtn').addEventListener('click', () => {
+        quizType = 'main';
         startQuiz(randomMain);
     });
     document.getElementById('startTerritoriesQuizBtn').addEventListener('click', () => {
+        quizType = 'territory';
         startQuiz(randomTerritories);
     });
     </script>
