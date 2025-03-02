@@ -93,7 +93,13 @@ try {
       .country-detail-entity {
           font-size: 1.2rem;
           color: #666;
+          margin-bottom: 10px;
+      }
+      .sovereign-state {
+          font-size: 1.2rem;
+          color: #333;
           margin-bottom: 20px;
+          text-align: center;
       }
       .flag-image {
           text-align: center;
@@ -105,6 +111,9 @@ try {
           border-radius: 4px;
       }
       .attributes {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
           max-width: 500px;
           margin: 0 auto;
           text-align: left;
@@ -137,9 +146,15 @@ try {
             <?php if (!empty($country['entity_type'])): ?>
                 <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
             <?php endif; ?>
+            <?php
+            // If the entity type is territory, display the sovereign state centered.
+            if (!empty($country['sovereign_state']) && strtolower(trim($country['entity_type'])) === 'territory') {
+                echo '<div class="sovereign-state"><strong>Sovereign State:</strong><br>' . htmlspecialchars($country['sovereign_state']) . '</div>';
+            }
+            ?>
         </div>
 
-        <!-- Flag Image (below entity type) -->
+        <!-- Flag Image (below entity type and sovereign state) -->
         <?php if (!empty($country['flag_url'])): ?>
             <div class="flag-image">
                 <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
@@ -150,11 +165,6 @@ try {
         <!-- Attributes Section -->
         <div class="attributes">
             <?php
-            // If this is a territory, display the sovereign state.
-            if (!empty($country['sovereign_state']) && strtolower(trim($country['entity_type'])) === 'territory') {
-                echo '<p><strong>Sovereign State:</strong><br>' . htmlspecialchars($country['sovereign_state']) . '</p>';
-            }
-            
             // Capitals
             if (!empty($capitals)) {
                 $capList = [];
