@@ -1,7 +1,9 @@
 <?php
 // world-map.php
+
+// Fetch location data from your API endpoint (which should return a merged list of countries and capitals)
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
-$countries = json_decode($data, true);
+$locations = json_decode($data, true);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,19 +81,21 @@ $countries = json_decode($data, true);
             alert('Failed to load the map. Please check the console for details.');
         });
 
-        const countries = <?php echo json_encode($countries); ?>;
+        // Use the locations data from PHP (assumed keys: country_name, capital_name, latitude, longitude, iso_code)
+        const locations = <?php echo json_encode($locations); ?>;
 
         const searchBar = document.getElementById('search-bar');
         searchBar.addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            // Find match among countries
-            const match = countries.find(row =>
-                (row.country_name && row.country_name.toLowerCase() === query) ||
-                (row.capital_name && row.capital_name.toLowerCase() === query)
-            );
+            const query = this.value.toLowerCase().trim();
+            // Search for a match among locations by country_name or capital_name
+            const match = locations.find(loc => {
+                return (loc.country_name && loc.country_name.toLowerCase() === query) ||
+                       (loc.capital_name && loc.capital_name.toLowerCase() === query);
+            });
             if (match) {
                 if (match.latitude && match.longitude) {
-                    map.flyTo({ center: [match.longitude, match.latitude], zoom: 5 });
+                    // Convert string coordinates to floats
+                    map.flyTo({ center: [parseFloat(match.longitude), parseFloat(match.latitude)], zoom: 5 });
                 }
                 if (match.iso_code) {
                     map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', match.iso_code]);
