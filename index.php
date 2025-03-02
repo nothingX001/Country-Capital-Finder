@@ -86,6 +86,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>ExploreCapitals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse our database of countries, territories, and more!">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
