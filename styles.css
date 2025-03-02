@@ -93,7 +93,8 @@ body {
 
 /* Shrink logo and round corners */
 .navbar-logo img {
-    height: 30px; /* Extremely small, within the navbar's thickness */
+    height: 30px !important; /* Extremely small, within the navbar's thickness */
+    width: auto !important;
     border-radius: 8px; /* Rounded corners */
 }
 
