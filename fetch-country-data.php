@@ -97,7 +97,7 @@ try {
     // 6. Map Data
     elseif ($type === 'map') {
         $query = "
-            -- Return countries with their own coordinates (exact coordinates via cast to text)
+            -- Return countries with their own coordinates (for country searches)
             SELECT
                 id,
                 \"Country Name\" AS country_name,

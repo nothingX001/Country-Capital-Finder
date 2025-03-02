@@ -1,7 +1,7 @@
 <?php
 // world-map.php
 
-// Fetch location data from your API endpoint.
+// Fetch location data from the API endpoint.
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
 $locations = json_decode($data, true);
 ?>
@@ -12,10 +12,10 @@ $locations = json_decode($data, true);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
   <title>World Map | ExploreCapitals</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
+  <link rel="stylesheet" href="styles.css">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
   <style>
-    /* Revert to your initial styling */
+    /* Revert to your original styling */
     #map {
       height: 500px;
       width: 100%;
@@ -42,7 +42,7 @@ $locations = json_decode($data, true);
 
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v12', // Original Mapbox style
+      style: 'mapbox://styles/mapbox/streets-v12',
       center: [0, 20],
       zoom: 1.5,
       projection: 'globe'
@@ -87,25 +87,36 @@ $locations = json_decode($data, true);
     const searchBar = document.getElementById('search-bar');
     searchBar.addEventListener('input', function() {
       const query = this.value.toLowerCase().trim();
-      // Require an exact match (full country or capital name)
-      const match = locations.find(loc => {
-        return (loc.country_name && loc.country_name.toLowerCase() === query) ||
-               (loc.capital_name && loc.capital_name.toLowerCase() === query);
-      });
-      if (match && match.latitude && match.longitude) {
-        // For country searches (capital_name null or empty), zoom out further (zoom level 3)
-        // For capital searches, zoom in closer (zoom level 5)
-        let zoomLevel = (match.capital_name === null || match.capital_name === "") ? 3 : 5;
-        const lng = parseFloat(match.longitude);
-        const lat = parseFloat(match.latitude);
-        map.flyTo({ center: [lng, lat], zoom: zoomLevel });
-        // Optionally, if iso_code is provided, highlight borders.
-        if (match.iso_code) {
-          map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', match.iso_code]);
-        }
-      } else {
-        map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
+      if (!query) return; // Do nothing if query is empty
+      
+      // First, check for an exact capital match.
+      const matchCapital = locations.find(loc => 
+        loc.capital_name && loc.capital_name.toLowerCase() === query
+      );
+      
+      if (matchCapital && matchCapital.latitude && matchCapital.longitude) {
+        const lng = parseFloat(matchCapital.longitude);
+        const lat = parseFloat(matchCapital.latitude);
+        // For capitals, zoom in close so that the point is centered.
+        map.flyTo({ center: [lng, lat], zoom: 5 });
+        return;
       }
+      
+      // Next, check for an exact country match.
+      const matchCountry = locations.find(loc => 
+        loc.country_name && loc.country_name.toLowerCase() === query
+      );
+      
+      if (matchCountry && matchCountry.latitude && matchCountry.longitude) {
+        const lng = parseFloat(matchCountry.longitude);
+        const lat = parseFloat(matchCountry.latitude);
+        // For countries, use a lower zoom level to show the full country.
+        map.flyTo({ center: [lng, lat], zoom: 2 });
+        return;
+      }
+      
+      // If no exact match, clear any border highlighting.
+      map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
     });
   </script>
 </body>
