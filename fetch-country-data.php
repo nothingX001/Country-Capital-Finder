@@ -96,35 +96,42 @@ try {
     }
     // 6. Map Data
     elseif ($type === 'map') {
+        // We use a UNION ALL to merge two sets:
+        // - Countries with their own coordinates (capital_name is null)
+        // - Capitals with their own coordinates
+        // We add a sort_order so that rows from capitals (sort_order = 0) come before rows from countries (sort_order = 1).
         $query = "
-            -- Return countries with their own coordinates (for country searches)
-            SELECT
-                id,
-                \"Country Name\" AS country_name,
-                NULL::text AS capital_name,
-                \"Coordinates (Latitude)\"::text AS latitude,
-                \"Coordinates (Longitude)\"::text AS longitude,
-                \"ISO Alpha-2\" AS iso_code,
-                \"Flag\" AS flag_emoji
-            FROM countries
-            WHERE \"Coordinates (Latitude)\" IS NOT NULL
-              AND \"Coordinates (Longitude)\" IS NOT NULL
-
+            (
+              SELECT
+                  id,
+                  \"Country Name\" AS country_name,
+                  NULL::text AS capital_name,
+                  \"Coordinates (Latitude)\"::text AS latitude,
+                  \"Coordinates (Longitude)\"::text AS longitude,
+                  \"ISO Alpha-2\" AS iso_code,
+                  \"Flag\" AS flag_emoji,
+                  1 AS sort_order
+              FROM countries
+              WHERE \"Coordinates (Latitude)\" IS NOT NULL
+                AND \"Coordinates (Longitude)\" IS NOT NULL
+            )
             UNION ALL
-
-            -- Return capitals with their own coordinates along with their country's info
-            SELECT
-                cap.id,
-                c.\"Country Name\" AS country_name,
-                cap.capital_name,
-                cap.latitude::text AS latitude,
-                cap.longitude::text AS longitude,
-                c.\"ISO Alpha-2\" AS iso_code,
-                c.\"Flag\" AS flag_emoji
-            FROM capitals cap
-            JOIN countries c ON cap.country_id = c.id
-            WHERE cap.latitude IS NOT NULL
-              AND cap.longitude IS NOT NULL
+            (
+              SELECT
+                  cap.id,
+                  c.\"Country Name\" AS country_name,
+                  cap.capital_name,
+                  cap.latitude::text AS latitude,
+                  cap.longitude::text AS longitude,
+                  c.\"ISO Alpha-2\" AS iso_code,
+                  c.\"Flag\" AS flag_emoji,
+                  0 AS sort_order
+              FROM capitals cap
+              JOIN countries c ON cap.country_id = c.id
+              WHERE cap.latitude IS NOT NULL
+                AND cap.longitude IS NOT NULL
+            )
+            ORDER BY sort_order, country_name
         ";
         $stmt = $conn->query($query);
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
