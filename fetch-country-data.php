@@ -96,10 +96,7 @@ try {
     }
     // 6. Map Data
     elseif ($type === 'map') {
-        // We use a UNION ALL to merge two sets:
-        // - Countries with their own coordinates (capital_name is null)
-        // - Capitals with their own coordinates
-        // We add a sort_order so that rows from capitals (sort_order = 0) come before rows from countries (sort_order = 1).
+        // Return a merged list of countries and capitals.
         $query = "
             (
               SELECT
