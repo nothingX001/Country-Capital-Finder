@@ -10,8 +10,7 @@ if (!$country_id) {
 }
 
 try {
-    // 1) Fetch the country row from the countries table.
-    //    Coordinates are cast to text to preserve full precision.
+    // 1) Fetch the country row
     $stmt = $conn->prepare('
         SELECT
             "Country Name" AS country_name,
@@ -39,7 +38,7 @@ try {
         die("Country not found.");
     }
 
-    // 2) Fetch capitals exclusively from the capitals table.
+    // 2) Fetch capitals exclusively from the capitals table
     $stmt_cap = $conn->prepare('
         SELECT capital_name, capital_type
         FROM capitals
@@ -48,24 +47,24 @@ try {
     $stmt_cap->execute([$country_id]);
     $capitals = $stmt_cap->fetchAll(PDO::FETCH_ASSOC);
 
-    // Format coordinates: convert to float and add degrees and direction.
-    $lat = floatval($country['lat']);
-    $lon = floatval($country['lon']);
-    $latDir = ($lat >= 0) ? 'N' : 'S';
-    $lonDir = ($lon >= 0) ? 'E' : 'W';
-    // Adjust decimals as needed (here 4 decimals)
-    $latFormatted = number_format(abs($lat), 4) . "° " . $latDir;
-    $lonFormatted = number_format(abs($lon), 4) . "° " . $lonDir;
+    // Format coordinates
+    $latVal = floatval($country['lat']);
+    $lonVal = floatval($country['lon']);
+    $latDir = ($latVal >= 0) ? 'N' : 'S';
+    $lonDir = ($lonVal >= 0) ? 'E' : 'W';
+    $latFormatted = number_format(abs($latVal), 4) . "° $latDir";
+    $lonFormatted = number_format(abs($lonVal), 4) . "° $lonDir";
 
-    // Format population with commas.
+    // Format population with commas
     $popFormatted = !empty($country['population']) ? number_format($country['population']) : '';
 
-    // Format calling code with plus sign.
+    // Format calling code with plus sign
     $callingCode = '';
     if (!empty($country['calling_code'])) {
         $cc = trim($country['calling_code']);
         $callingCode = (strpos($cc, '+') === 0) ? $cc : '+' . $cc;
     }
+
 } catch (Exception $e) {
     die("Error fetching country details: " . $e->getMessage());
 }
@@ -77,9 +76,10 @@ try {
     <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-      /* Additional styles specific to the country detail page */
+      /* Additional styling for country detail */
       .country-detail-header {
           margin-bottom: 20px;
+          text-align: center;
       }
       .country-detail-header h1 {
           font-size: 2.5rem;
@@ -102,7 +102,6 @@ try {
       .attributes {
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
           gap: 15px;
           max-width: 500px;
           margin: 0 auto;
@@ -136,7 +135,7 @@ try {
             <?php endif; ?>
         </div>
 
-        <!-- Flag Image (placed directly below entity type) -->
+        <!-- Flag Image (below entity type) -->
         <?php if (!empty($country['flag_url'])): ?>
             <div class="flag-image">
                 <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
@@ -144,50 +143,69 @@ try {
             </div>
         <?php endif; ?>
 
-        <!-- Capitals Section -->
-        <?php if (!empty($capitals)): ?>
-            <h2>Capitals</h2>
-            <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left;">
-                <?php foreach ($capitals as $cap): ?>
-                    <li style="margin-bottom: 5px;">
-                        <?php echo '<strong>' . htmlspecialchars($cap['capital_name']) . '</strong>'; ?>
-                        <?php if (!empty($cap['capital_type'])): ?>
-                            (<?php echo htmlspecialchars($cap['capital_type']); ?>)
-                        <?php endif; ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-
         <!-- Attributes Section -->
         <div class="attributes">
-            <?php if (!empty($latFormatted) && !empty($lonFormatted)): ?>
-                <p><strong>Coordinates:</strong> <?php echo $latFormatted . ', ' . $lonFormatted; ?></p>
-            <?php endif; ?>
-            <?php if (!empty($country['languages'])): ?>
-                <p><strong>Languages:</strong> <?php echo htmlspecialchars($country['languages']); ?></p>
-            <?php endif; ?>
-            <?php if (!empty($country['currency'])): ?>
-                <p><strong>Currency:</strong> <?php echo htmlspecialchars($country['currency']); ?></p>
-            <?php endif; ?>
-            <?php if (!empty($country['region'])): ?>
-                <p><strong>Region:</strong> <?php echo htmlspecialchars($country['region']); ?></p>
-            <?php endif; ?>
-            <?php if (!empty($country['subregion'])): ?>
-                <p><strong>Subregion:</strong> <?php echo htmlspecialchars($country['subregion']); ?></p>
-            <?php endif; ?>
-            <?php if (!empty($popFormatted)): ?>
-                <p><strong>Population:</strong> <?php echo $popFormatted; ?></p>
-            <?php endif; ?>
-            <?php if (!empty($country['area_km2'])): ?>
-                <p><strong>Area (km²):</strong> <?php echo htmlspecialchars($country['area_km2']); ?></p>
-            <?php endif; ?>
-            <?php if (!empty($callingCode)): ?>
-                <p><strong>Calling Code:</strong> <?php echo htmlspecialchars($callingCode); ?></p>
-            <?php endif; ?>
-            <?php if (!empty($country['internet_tld'])): ?>
-                <p><strong>Internet TLD:</strong> <?php echo htmlspecialchars($country['internet_tld']); ?></p>
-            <?php endif; ?>
+            <?php
+            // 1) Capitals
+            if (!empty($capitals)) {
+                // Combine all capitals in a single string
+                $capList = [];
+                foreach ($capitals as $cap) {
+                    $capString = htmlspecialchars($cap['capital_name']);
+                    if (!empty($cap['capital_type'])) {
+                        $capString .= ' (' . htmlspecialchars($cap['capital_type']) . ')';
+                    }
+                    $capList[] = $capString;
+                }
+                $capString = implode(' / ', $capList);
+                echo '<p><strong>Capitals:</strong> ' . $capString . '</p>';
+            }
+
+            // 2) Coordinates
+            if (!empty($country['lat']) && !empty($country['lon'])) {
+                echo '<p><strong>Coordinates:</strong> ' . $latFormatted . ', ' . $lonFormatted . '</p>';
+            }
+
+            // 3) Languages
+            if (!empty($country['languages'])) {
+                echo '<p><strong>Languages:</strong> ' . htmlspecialchars($country['languages']) . '</p>';
+            }
+
+            // 4) Currency
+            if (!empty($country['currency'])) {
+                echo '<p><strong>Currency:</strong> ' . htmlspecialchars($country['currency']) . '</p>';
+            }
+
+            // 5) Region
+            if (!empty($country['region'])) {
+                echo '<p><strong>Region:</strong> ' . htmlspecialchars($country['region']) . '</p>';
+            }
+
+            // 6) Subregion
+            if (!empty($country['subregion'])) {
+                echo '<p><strong>Subregion:</strong> ' . htmlspecialchars($country['subregion']) . '</p>';
+            }
+
+            // 7) Population
+            if (!empty($popFormatted)) {
+                echo '<p><strong>Population:</strong> ' . $popFormatted . '</p>';
+            }
+
+            // 8) Area (km²)
+            if (!empty($country['area_km2'])) {
+                echo '<p><strong>Area (km²):</strong> ' . htmlspecialchars($country['area_km2']) . '</p>';
+            }
+
+            // 9) Calling Code
+            if (!empty($callingCode)) {
+                echo '<p><strong>Calling Code:</strong> ' . htmlspecialchars($callingCode) . '</p>';
+            }
+
+            // 10) Internet TLD
+            if (!empty($country['internet_tld'])) {
+                echo '<p><strong>Internet TLD:</strong> ' . htmlspecialchars($country['internet_tld']) . '</p>';
+            }
+            ?>
         </div>
     </section>
 </body>
