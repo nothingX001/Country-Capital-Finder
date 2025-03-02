@@ -1,7 +1,7 @@
 <?php
 // world-map.php
 
-// Fetch location data from the API endpoint.
+// Fetch location data from your API endpoint.
 $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
 $locations = json_decode($data, true);
 ?>
@@ -12,10 +12,10 @@ $locations = json_decode($data, true);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
   <title>World Map | ExploreCapitals</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
   <style>
-    /* Revert to your original styling */
+    /* Revert to your original map styling */
     #map {
       height: 500px;
       width: 100%;
@@ -87,7 +87,7 @@ $locations = json_decode($data, true);
     const searchBar = document.getElementById('search-bar');
     searchBar.addEventListener('input', function() {
       const query = this.value.toLowerCase().trim();
-      if (!query) return; // Do nothing if query is empty
+      if (!query) return;
       
       // First, check for an exact capital match.
       const matchCapital = locations.find(loc => 
@@ -97,8 +97,11 @@ $locations = json_decode($data, true);
       if (matchCapital && matchCapital.latitude && matchCapital.longitude) {
         const lng = parseFloat(matchCapital.longitude);
         const lat = parseFloat(matchCapital.latitude);
-        // For capitals, zoom in close so that the point is centered.
-        map.flyTo({ center: [lng, lat], zoom: 5 });
+        // For capitals, use a closer zoom (e.g., 8) so that the capital point is centered.
+        map.flyTo({ center: [lng, lat], zoom: 8 });
+        if (matchCapital.iso_code) {
+          map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', matchCapital.iso_code]);
+        }
         return;
       }
       
@@ -110,12 +113,15 @@ $locations = json_decode($data, true);
       if (matchCountry && matchCountry.latitude && matchCountry.longitude) {
         const lng = parseFloat(matchCountry.longitude);
         const lat = parseFloat(matchCountry.latitude);
-        // For countries, use a lower zoom level to show the full country.
-        map.flyTo({ center: [lng, lat], zoom: 2 });
+        // For countries, use a lower zoom (e.g., 3) so that the entire country is visible.
+        map.flyTo({ center: [lng, lat], zoom: 3 });
+        if (matchCountry.iso_code) {
+          map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', matchCountry.iso_code]);
+        }
         return;
       }
       
-      // If no exact match, clear any border highlighting.
+      // If no match, clear border highlighting.
       map.setFilter('country-borders-highlight', ['==', 'iso_3166_1', '']);
     });
   </script>
