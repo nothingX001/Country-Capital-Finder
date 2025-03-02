@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php endif; ?>
     </div>
 
-    <!-- If you use an autocomplete script, keep it here -->
+    <!-- Autocomplete script is included below -->
     <script src="autocomplete.js" defer></script>
 </body>
 </html>

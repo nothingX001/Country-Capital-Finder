@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Fetch matching countries
+        // Fetch matching countries from the autocomplete endpoint
         const response = await fetch(`/fetch-country-data.php?type=autocomplete&query=${query}`);
         const countries = await response.json();
 
@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault(); // Prevent form submission
                 items[activeIndex].click(); // Trigger click on the active item
             } else {
-                // If no item is selected, submit the form
                 e.preventDefault();
                 input.form.submit();
             }
