@@ -35,8 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($country_result) {
         $country_id   = $country_result['id'];
-        $country_name = $country_result['country_name'];
-        $flag         = $country_result['flag_emoji'] ?? '';
+        $country_name = htmlspecialchars($country_result['country_name']);
+        $flag         = htmlspecialchars($country_result['flag_emoji'] ?? '');
 
         // 2) Fetch matching capitals from the capitals table
         $cap_stmt = $conn->prepare('
@@ -47,13 +47,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $cap_stmt->execute([$country_id]);
         $capitals = $cap_stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // 3) Build a message about the capital(s)
+        // 3) Build a message about the capital(s) with capital names in bold.
         if ($capitals) {
-            $capital_names = implode(' / ', $capitals);
+            // Bold each capital using <strong> tags.
+            $capital_names = implode(' / ', array_map(function($cap) {
+                return '<strong>' . htmlspecialchars($cap) . '</strong>';
+            }, $capitals));
             $capital_count = count($capitals);
             $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
             $verb          = ($capital_count > 1) ? 'are' : 'is';
-            $message       = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. {$flag}";
+            // Build the message.
+            $message = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. {$flag}";
         } else {
             $message = "No capitals found for {$country_name}.";
         }
@@ -70,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ');
             $stats_stmt->execute([$country_name]);
         } catch (Exception $e) {
-            // You could log or ignore the error
+            // Optionally log or ignore the error.
         }
     } else {
         $message = "Sorry, the country you entered is not in our database.";
@@ -96,11 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
 
         <?php if (isset($message)): ?>
-            <p class="message"><?php echo htmlspecialchars($message); ?></p>
+            <!-- Output message as raw HTML so the <strong> tags take effect -->
+            <p class="message"><?php echo $message; ?></p>
         <?php endif; ?>
     </div>
 
-    <!-- Autocomplete script is included below -->
+    <!-- Autocomplete script -->
     <script src="autocomplete.js" defer></script>
 </body>
 </html>
