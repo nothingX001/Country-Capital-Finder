@@ -109,58 +109,45 @@
   }
   
   /* 8) Mobile & Tablet Adjustments */
-  /* When the viewport gets narrow enough that nav items would wrap, switch to hamburger mode.
-     Adjust the breakpoint (here set to 1100px) as needed. */
   @media (max-width: 1100px) {
-    /* Hide the centered nav list */
+    /* Hide the centered nav list by default */
     .navbar-list {
       display: none;
+    }
+    /* When .open is added, display the nav list as an overlay */
+    .navbar-list.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100vw;
+      background-color: #3399ff;
+      padding-top: 20px;
+      z-index: 9998;
+    }
+    .navbar-list.open li {
+      margin: 15px 0;
+      text-align: center;
+    }
+    .navbar-list.open li a {
+      font-size: 1.2rem;
+      padding: 10px 20px;
     }
     /* Show the hamburger menu */
     .navbar-toggle {
       display: block;
     }
-    
-    /* Mobile overlay menu for nav items */
-    .navbar-menu-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #3399ff;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 80px; /* Leaves room for fixed navbar */
-      z-index: 9998;
-    }
-    .navbar-menu-overlay.open {
-      display: flex;
-    }
-    .navbar-menu-overlay li {
-      margin: 15px 0;
-    }
-    .navbar-menu-overlay li a {
-      font-size: 1.2rem;
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 20px;
-      text-align: center;
-    }
-    .navbar-menu-overlay li a:hover {
-      background-color: rgba(255,255,255,0.25);
-      color: #fff;
-    }
   }
   
   /* 9) Main Page Containers */
-  /* Extra space between the bottom of the fixed navbar and page content */
+  /* Consistent top margin for all screen sizes */
   .page-content,
   .quiz,
   .country-profiles,
   .about,
   .world-map {
+    margin-top: 120px;
     margin-bottom: 50px;
     max-width: 600px;
     margin-left: auto;
@@ -170,26 +157,6 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
-  }
-  
-  /* Use extra top margin on desktop and mobile */
-  @media (min-width: 1025px) {
-    .page-content,
-    .quiz,
-    .country-profiles,
-    .about,
-    .world-map {
-      margin-top: 120px;
-    }
-  }
-  @media (max-width: 1100px) {
-    .page-content,
-    .quiz,
-    .country-profiles,
-    .about,
-    .world-map {
-      margin-top: 140px;
-    }
   }
   
   /* 10) Headings */
