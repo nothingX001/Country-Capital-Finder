@@ -14,6 +14,7 @@ body {
 }
 
 /* 3) Navbar */
+/* Fixed height so the navbar remains the same regardless of logo visibility */
 .navbar {
     position: fixed;
     top: 0;
@@ -23,7 +24,7 @@ body {
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     color: #fff;
     z-index: 9999;
-    /* No vertical padding to keep the height fixed */
+    padding: 0; /* No extra vertical padding */
 }
 
 /* iOS Safe Area Handling for Mobile */
@@ -41,7 +42,7 @@ body {
 }
 
 /* 4) Navbar Container */
-/* Use a three-column grid so we can control the order */
+/* Use a three-column grid: logo | nav list | hamburger */
 .navbar-container {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -52,22 +53,25 @@ body {
     padding: 0 10px;
 }
 
-/* Set explicit order for children so that logo is left, nav list center, and hamburger right */
-.navbar-toggle {
-    order: 3;
-}
+/* Set explicit order so that the logo is left, nav list is center, and hamburger is right */
 .navbar-logo {
     order: 1;
-    /* Optional: add some right padding for spacing */
+    /* Optional: add right padding for spacing */
     padding-right: 20px;
 }
 .navbar-list {
     order: 2;
+    justify-self: center;
+}
+.navbar-toggle {
+    order: 3;
+    /* Ensure it aligns to the right within its grid cell */
+    justify-self: end;
 }
 
 /* 5) Logo – stays on the left */
 .navbar-logo img {
-    height: 30px !important; /* Remains small within the fixed navbar */
+    height: 30px !important; /* Keep the logo small */
     width: auto !important;
     border-radius: 8px;
 }
@@ -77,7 +81,6 @@ body {
     list-style: none;
     display: flex;
     gap: 20px;
-    justify-content: center;
     align-items: center;
 }
 .navbar-list li {
@@ -116,7 +119,7 @@ body {
 
 /* 8) Tablet & Mobile Navbar */
 @media (max-width: 1024px) {
-    /* Ensure the navbar remains 80px high */
+    /* Keep the fixed navbar height */
     .navbar {
         height: 80px;
     }
@@ -124,7 +127,6 @@ body {
     /* Show hamburger menu in its grid cell (right column) */
     .navbar-toggle {
         display: block;
-        /* With grid, it stays in the right cell and is centered vertically */
     }
     
     /* Hide the normal navigation list and use a full-screen overlay menu */
@@ -161,8 +163,8 @@ body {
 }
 
 /* 9) Main Page Containers */
-/* Default margin-top pushes content below the navbar.
-   On desktop, we use 120px; on mobile, we increase it to 140px. */
+/* Increase top margin so content is pushed below the navbar */
+/* On desktop, margin-top: 120px; on mobile, margin-top: 140px */
 .page-content,
 .quiz,
 .country-profiles,
