@@ -127,7 +127,7 @@ body {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: #3399ff;
+        background-color: #3399ff; /* We'll update it below for consistency */
         flex-direction: column;
         align-items: center;
         padding-top: 80px; /* Leaves room for fixed navbar */
@@ -135,6 +135,8 @@ body {
     }
     .navbar-menu-overlay.open {
         display: flex;
+        /* match gradient as well */
+        background: linear-gradient(180deg, #3399ff, #66b3ff);
     }
     .navbar-menu-overlay li {
         margin: 15px 0;
@@ -160,7 +162,7 @@ body {
         left: 0;
         width: 100vw;
         height: calc(100vh - 80px); /* if top=80px */
-        background-color: #3399ff;
+        background: linear-gradient(180deg, #3399ff, #66b3ff);
         padding-top: 20px; /* spacing for the menu items */
         z-index: 9998;
         align-items: center;
