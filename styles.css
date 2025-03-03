@@ -22,9 +22,10 @@
     height: 80px; /* Fixed height for navbar */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
+    /* No extra padding since height is fixed */
   }
   
-  /* iOS Safe Area Handling for Mobile Only */
+  /* iOS Safe Area Handling (Mobile Only) */
   @media (max-width: 1024px) {
     .navbar::before {
       content: "";
@@ -39,19 +40,19 @@
   }
   
   /* 4) Navbar Container */
-  /* We use relative positioning so we can absolutely position the logo and hamburger.
-     The nav list is centered using absolute centering so that it is not affected by the logo width. */
+  /* Using relative positioning so we can absolutely position children */
   .navbar-container {
     position: relative;
     width: 90%;
     height: 100%;
     margin: 0 auto;
+    padding: 0 10px;
   }
   
-  /* Logo – Always at far left */
+  /* 5) Logo – Always at far left, vertically centered */
   .navbar-logo {
     position: absolute;
-    left: 10px; /* Adjust as needed */
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -61,7 +62,7 @@
     border-radius: 8px;
   }
   
-  /* Navigation List – Absolutely centered horizontally */
+  /* 6) Navigation List – Absolutely centered horizontally */
   .navbar-list {
     position: absolute;
     left: 50%;
@@ -69,8 +70,9 @@
     transform: translate(-50%, -50%);
     list-style: none;
     display: flex;
-    gap: 40px; /* More space between items on desktop */
+    gap: 40px; /* Increased gap between items on desktop */
     align-items: center;
+    white-space: nowrap; /* Prevent items from wrapping */
   }
   .navbar-list li a {
     color: #fff;
@@ -82,10 +84,10 @@
     color: #ffdd57;
   }
   
-  /* Hamburger Menu – Always at far right */
+  /* 7) Hamburger Menu – Always fixed to the right, vertically centered */
   .navbar-toggle {
     position: absolute;
-    right: 10px; /* Far right */
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     display: none; /* Hidden on desktop */
@@ -106,18 +108,20 @@
     content: 'X';
   }
   
-  /* 5) Mobile Adjustments (max-width: 1024px) */
-  @media (max-width: 1024px) {
-    /* Show the hamburger on mobile */
-    .navbar-toggle {
-      display: block;
-    }
-    /* Hide the centered nav list from the main navbar */
+  /* 8) Mobile & Tablet Adjustments */
+  /* When the viewport gets narrow enough that nav items would wrap, switch to hamburger mode.
+     Adjust the breakpoint (here set to 1100px) as needed. */
+  @media (max-width: 1100px) {
+    /* Hide the centered nav list */
     .navbar-list {
       display: none;
     }
+    /* Show the hamburger menu */
+    .navbar-toggle {
+      display: block;
+    }
     
-    /* Mobile Overlay Menu for Navigation */
+    /* Mobile overlay menu for nav items */
     .navbar-menu-overlay {
       display: none;
       position: fixed;
@@ -128,7 +132,7 @@
       background-color: #3399ff;
       flex-direction: column;
       align-items: center;
-      padding-top: 80px; /* Leave room for navbar */
+      padding-top: 80px; /* Leaves room for fixed navbar */
       z-index: 9998;
     }
     .navbar-menu-overlay.open {
@@ -145,12 +149,13 @@
       text-align: center;
     }
     .navbar-menu-overlay li a:hover {
-      background-color: rgba(255, 255, 255, 0.25);
+      background-color: rgba(255,255,255,0.25);
       color: #fff;
     }
   }
   
-  /* 6) Main Page Containers */
+  /* 9) Main Page Containers */
+  /* Extra space between the bottom of the fixed navbar and page content */
   .page-content,
   .quiz,
   .country-profiles,
@@ -167,7 +172,7 @@
     text-align: center;
   }
   
-  /* Extra space between navbar and content */
+  /* Use extra top margin on desktop and mobile */
   @media (min-width: 1025px) {
     .page-content,
     .quiz,
@@ -177,7 +182,7 @@
       margin-top: 120px;
     }
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     .page-content,
     .quiz,
     .country-profiles,
@@ -187,7 +192,7 @@
     }
   }
   
-  /* 7) Headings */
+  /* 10) Headings */
   h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
@@ -197,7 +202,7 @@
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.2rem; }
   
-  /* 8) Search Input */
+  /* 11) Search Input */
   input[type="text"] {
     width: 100%;
     max-width: 300px;
@@ -209,7 +214,7 @@
     margin: 0 auto 15px auto;
   }
   
-  /* 9) Buttons */
+  /* 12) Buttons */
   .button {
     display: block;
     margin: 15px auto;
@@ -218,7 +223,6 @@
     font-weight: bold;
     color: white;
     text-align: center;
-    text-decoration: none;
     border: none;
     border-radius: 50px;
     background: linear-gradient(180deg, #66b3ff, #3399ff);
@@ -237,7 +241,7 @@
     margin-top: 15px;
   }
   
-  /* 10) Flash Messages */
+  /* 13) Flash Messages */
   .message {
     margin-top: 20px;
     padding: 10px;
@@ -246,7 +250,7 @@
     margin-bottom: 0 !important;
   }
   
-  /* 11) Autocomplete Dropdown */
+  /* 14) Autocomplete Dropdown */
   .autocomplete-dropdown {
     position: absolute;
     background-color: #fff;
@@ -291,7 +295,7 @@
     background: #999;
   }
   
-  /* 12) Quiz Section */
+  /* 15) Quiz Section */
   .quiz {
     text-align: left;
   }
@@ -392,7 +396,7 @@
     margin-right: auto;
   }
   
-  /* 13) Country Profiles Section */
+  /* 16) Country Profiles Section */
   .country-profiles {
     text-align: left;
   }
@@ -440,7 +444,7 @@
     color: #66b3ff;
   }
   
-  /* 14) About Section */
+  /* 17) About Section */
   .about {
     text-align: left;
   }
@@ -491,7 +495,7 @@
     color: #3399ff;
   }
   
-  /* 15) World Map Section */
+  /* 18) World Map Section */
   .world-map {
     text-align: center;
   }
@@ -530,14 +534,14 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
   
-  /* 16) Home Page Intro (if relevant) */
+  /* 19) Home Page Intro (if relevant) */
   .home-intro {
     font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 20px;
   }
   
-  /* 17) Mobile-Only: Thin Side Margins */
+  /* 20) Mobile-Only: Thin Side Margins */
   @media (max-width: 1024px) {
     .page-content,
     .quiz,
@@ -546,8 +550,7 @@
     .world-map {
       width: 95%;
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
     }
   }
   
