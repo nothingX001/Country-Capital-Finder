@@ -20,9 +20,9 @@ body {
     left: 0;
     width: 100%;
     height: 80px; /* Fixed height for navbar */
+    /* Darker at top, lighter at bottom */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
-    /* No extra padding since height is fixed */
 }
 
 /* iOS Safe Area Handling (Mobile Only) */
@@ -40,7 +40,6 @@ body {
 }
 
 /* 4) Navbar Container */
-/* Using relative positioning so we can absolutely position children */
 .navbar-container {
     position: relative;
     width: 90%;
@@ -49,7 +48,7 @@ body {
     padding: 0 10px;
 }
 
-/* 5) Logo – Always at far left, vertically centered */
+/* 5) Logo – Perfectly centered vertically */
 .navbar-logo {
     position: absolute;
     left: 10px;
@@ -57,12 +56,14 @@ body {
     transform: translateY(-50%);
 }
 .navbar-logo img {
-    height: 30px !important;
-    width: auto !important;
+    /* Force the image to have a consistent bounding box */
+    display: block;
+    height: 30px;
+    width: auto;
     border-radius: 8px;
 }
 
-/* 6) Navigation List – Absolutely centered horizontally */
+/* 6) Navigation List – Absolutely centered horizontally (desktop) */
 .navbar-list {
     position: absolute;
     left: 50%;
@@ -84,7 +85,7 @@ body {
     color: #ffdd57;
 }
 
-/* 7) Hamburger Menu – Always fixed to the right, vertically centered */
+/* 7) Hamburger Menu – Perfectly centered vertically */
 .navbar-toggle {
     position: absolute;
     right: 10px;
@@ -97,12 +98,17 @@ body {
     border: none;
     cursor: pointer;
     z-index: 1001;
+    /* Consistent line-height to match the 30px "box" */
+    line-height: 30px;
 }
 .navbar-toggle::before {
     content: '☰';
     font-size: 1.5rem;
-    line-height: 1;
     color: #fff;
+    /* Center the icon within the 30px box */
+    display: inline-block;
+    width: 30px;
+    text-align: center;
 }
 .navbar-toggle.active::before {
     content: 'X';
@@ -119,7 +125,7 @@ body {
         display: block;
     }
     
-    /* Mobile overlay menu for nav items (original code preserved) */
+    /* Mobile overlay menu (original code) */
     .navbar-menu-overlay {
         display: none;
         position: fixed;
@@ -127,16 +133,14 @@ body {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: #3399ff; /* We'll update it below for consistency */
+        background: linear-gradient(180deg, #66b3ff, #3399ff);
         flex-direction: column;
         align-items: center;
-        padding-top: 80px; /* Leaves room for fixed navbar */
+        padding-top: 80px;
         z-index: 9998;
     }
     .navbar-menu-overlay.open {
         display: flex;
-        /* match gradient as well */
-        background: linear-gradient(180deg, #3399ff, #66b3ff);
     }
     .navbar-menu-overlay li {
         margin: 15px 0;
@@ -153,17 +157,18 @@ body {
         color: #fff;
     }
     
-    /* ----- CRUCIAL OVERRIDES FOR .navbar-list WHEN .open IS TOGGLED ----- */
+    /* The .navbar-list in mobile overlay mode */
     .navbar-list.open {
         display: flex !important;
         flex-direction: column;
         position: fixed;
-        top: 80px; /* or 0 if you want it to cover the navbar */
+        top: 80px; /* If you want it below the navbar. Set 0 to cover. */
         left: 0;
         width: 100vw;
-        height: calc(100vh - 80px); /* if top=80px */
-        background: linear-gradient(180deg, #3399ff, #66b3ff);
-        padding-top: 20px; /* spacing for the menu items */
+        /* Lighter at top, darker at bottom to continue from navbar */
+        background: linear-gradient(180deg, #66b3ff, #3399ff);
+        height: calc(100vh - 80px);
+        padding-top: 20px;
         z-index: 9998;
         align-items: center;
         justify-content: flex-start;
