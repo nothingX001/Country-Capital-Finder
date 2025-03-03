@@ -8,7 +8,7 @@
   /* 2) Body Defaults */
   body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Gray background for content */
+    background-color: #f4f4f4; /* Content background remains gray */
     margin: 0;
     padding: 0;
   }
@@ -19,12 +19,12 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 80px; /* Fixed height */
+    height: 80px; /* Fixed height for navbar */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
   }
   
-  /* iOS Safe Area Handling (Mobile Only) */
+  /* iOS Safe Area Handling for Mobile Only */
   @media (max-width: 1024px) {
     .navbar::before {
       content: "";
@@ -38,20 +38,22 @@
     }
   }
   
-  /* 4) Navbar Container using Flex */
+  /* 4) Navbar Container */
+  /* We use relative positioning so we can absolutely position the logo and hamburger.
+     The nav list is centered using absolute centering so that it is not affected by the logo width. */
   .navbar-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Logo left, nav list center, hamburger right */
+    position: relative;
     width: 90%;
     height: 100%;
     margin: 0 auto;
-    padding: 0 10px;
   }
   
-  /* 5) Logo */
+  /* Logo – Always at far left */
   .navbar-logo {
-    flex: 0 0 auto;
+    position: absolute;
+    left: 10px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
   }
   .navbar-logo img {
     height: 30px !important;
@@ -59,13 +61,15 @@
     border-radius: 8px;
   }
   
-  /* 6) Navigation List (Desktop) */
+  /* Navigation List – Absolutely centered horizontally */
   .navbar-list {
-    display: flex;
-    gap: 40px;  /* Increased gap between items on desktop */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     list-style: none;
-    flex: 1;
-    justify-content: center;
+    display: flex;
+    gap: 40px; /* More space between items on desktop */
     align-items: center;
   }
   .navbar-list li a {
@@ -78,15 +82,19 @@
     color: #ffdd57;
   }
   
-  /* 7) Hamburger Menu (Hidden on Desktop) */
+  /* Hamburger Menu – Always at far right */
   .navbar-toggle {
-    display: none;
+    position: absolute;
+    right: 10px; /* Far right */
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; /* Hidden on desktop */
     width: 30px;
     height: 30px;
     background: none;
     border: none;
     cursor: pointer;
-    flex: 0 0 auto;
+    z-index: 1001;
   }
   .navbar-toggle::before {
     content: '☰';
@@ -98,18 +106,18 @@
     content: 'X';
   }
   
-  /* 8) Mobile Styles */
+  /* 5) Mobile Adjustments (max-width: 1024px) */
   @media (max-width: 1024px) {
-    /* Show hamburger and hide desktop nav list */
+    /* Show the hamburger on mobile */
     .navbar-toggle {
       display: block;
-      /* The flex container (navbar-container) already centers items vertically */
     }
+    /* Hide the centered nav list from the main navbar */
     .navbar-list {
       display: none;
     }
     
-    /* Overlay menu for mobile */
+    /* Mobile Overlay Menu for Navigation */
     .navbar-menu-overlay {
       display: none;
       position: fixed;
@@ -120,7 +128,7 @@
       background-color: #3399ff;
       flex-direction: column;
       align-items: center;
-      padding-top: 80px; /* To leave room for the fixed navbar */
+      padding-top: 80px; /* Leave room for navbar */
       z-index: 9998;
     }
     .navbar-menu-overlay.open {
@@ -137,12 +145,12 @@
       text-align: center;
     }
     .navbar-menu-overlay li a:hover {
-      background-color: rgba(255,255,255,0.25);
+      background-color: rgba(255, 255, 255, 0.25);
       color: #fff;
     }
   }
   
-  /* 9) Main Page Containers */
+  /* 6) Main Page Containers */
   .page-content,
   .quiz,
   .country-profiles,
@@ -159,7 +167,7 @@
     text-align: center;
   }
   
-  /* Extra top margin for desktop and mobile */
+  /* Extra space between navbar and content */
   @media (min-width: 1025px) {
     .page-content,
     .quiz,
@@ -179,7 +187,7 @@
     }
   }
   
-  /* 10) Headings */
+  /* 7) Headings */
   h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
@@ -189,7 +197,7 @@
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.2rem; }
   
-  /* 11) Search Input */
+  /* 8) Search Input */
   input[type="text"] {
     width: 100%;
     max-width: 300px;
@@ -201,7 +209,7 @@
     margin: 0 auto 15px auto;
   }
   
-  /* 12) Buttons */
+  /* 9) Buttons */
   .button {
     display: block;
     margin: 15px auto;
@@ -210,6 +218,7 @@
     font-weight: bold;
     color: white;
     text-align: center;
+    text-decoration: none;
     border: none;
     border-radius: 50px;
     background: linear-gradient(180deg, #66b3ff, #3399ff);
@@ -228,7 +237,7 @@
     margin-top: 15px;
   }
   
-  /* 13) Flash Messages */
+  /* 10) Flash Messages */
   .message {
     margin-top: 20px;
     padding: 10px;
@@ -237,7 +246,7 @@
     margin-bottom: 0 !important;
   }
   
-  /* 14) Autocomplete Dropdown */
+  /* 11) Autocomplete Dropdown */
   .autocomplete-dropdown {
     position: absolute;
     background-color: #fff;
@@ -282,7 +291,7 @@
     background: #999;
   }
   
-  /* 15) Quiz Section */
+  /* 12) Quiz Section */
   .quiz {
     text-align: left;
   }
@@ -383,7 +392,7 @@
     margin-right: auto;
   }
   
-  /* 16) Country Profiles Section */
+  /* 13) Country Profiles Section */
   .country-profiles {
     text-align: left;
   }
@@ -431,7 +440,7 @@
     color: #66b3ff;
   }
   
-  /* 17) About Section */
+  /* 14) About Section */
   .about {
     text-align: left;
   }
@@ -482,7 +491,7 @@
     color: #3399ff;
   }
   
-  /* 18) World Map Section */
+  /* 15) World Map Section */
   .world-map {
     text-align: center;
   }
@@ -521,14 +530,14 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
   
-  /* 19) Home Page Intro (if relevant) */
+  /* 16) Home Page Intro (if relevant) */
   .home-intro {
     font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 20px;
   }
   
-  /* 20) Mobile-Only: Thin Side Margins */
+  /* 17) Mobile-Only: Thin Side Margins */
   @media (max-width: 1024px) {
     .page-content,
     .quiz,
@@ -537,7 +546,8 @@
     .world-map {
       width: 95%;
       max-width: 600px;
-      margin: 0 auto;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
   
