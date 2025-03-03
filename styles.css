@@ -8,48 +8,32 @@
   /* 2) Body Defaults */
   body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Main content background remains gray */
+    background-color: #f4f4f4; /* Gray background under content */
     margin: 0;
     padding: 0;
   }
   
-  /* 3) Navbar */
+  /* 3) Navbar - Fixed at 80px high */
   .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 80px; /* Fixed height for navbar */
+    height: 80px; /* Fixed height */
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
-    /* No vertical padding so the height remains fixed */
-  }
-  
-  /* iOS Safe Area Handling for Mobile Only */
-  @media (max-width: 1024px) {
-    .navbar::before {
-      content: "";
-      position: absolute;
-      top: -env(safe-area-inset-top);
-      left: 0;
-      width: 100%;
-      height: env(safe-area-inset-top);
-      background: linear-gradient(180deg, #3399ff, #66b3ff);
-      z-index: -1;
-    }
   }
   
   /* 4) Navbar Container */
-  /* Using relative positioning so we can absolutely position logo, nav list, and hamburger */
   .navbar-container {
-    position: relative;
+    position: relative; 
     width: 90%;
     height: 100%;
     margin: 0 auto;
     padding: 0 10px;
   }
   
-  /* 5) Logo – Always at far left, vertically centered */
+  /* 5) Logo – Always left, vertically centered */
   .navbar-logo {
     position: absolute;
     left: 10px;
@@ -70,9 +54,9 @@
     transform: translate(-50%, -50%);
     list-style: none;
     display: flex;
-    gap: 40px;         /* Increase gap between items on desktop */
+    gap: 40px; /* Gap between items on desktop */
     align-items: center;
-    white-space: nowrap; /* Prevent text wrapping */
+    white-space: nowrap; /* Prevent wrapping */
   }
   .navbar-list li a {
     color: #fff;
@@ -84,7 +68,7 @@
     color: #ffdd57;
   }
   
-  /* 7) Hamburger Menu – Always at far right, vertically centered */
+  /* 7) Hamburger Menu – Always right, vertically centered; hidden on desktop */
   .navbar-toggle {
     position: absolute;
     right: 10px;
@@ -108,16 +92,14 @@
     content: 'X';
   }
   
-  /* 8) Mobile & Tablet Adjustments */
-  /* When viewport width is less than 1100px, hide the desktop nav list and use hamburger mode */
+  /* 8) Mobile/Tablet Breakpoint for Hamburger (and no wrapping) */
   @media (max-width: 1100px) {
     .navbar-list {
-      display: none;
+      display: none; /* Hide desktop nav list */
     }
     .navbar-toggle {
-      display: block;
+      display: block; /* Show hamburger on mobile/tablet */
     }
-    
     /* Mobile Overlay Menu for Navigation */
     .navbar-menu-overlay {
       display: none;
@@ -129,7 +111,7 @@
       background-color: #3399ff;
       flex-direction: column;
       align-items: center;
-      padding-top: 80px; /* Leaves room for fixed navbar */
+      padding-top: 80px; /* Leave room for the fixed navbar */
       z-index: 9998;
     }
     .navbar-menu-overlay.open {
@@ -146,18 +128,18 @@
       text-align: center;
     }
     .navbar-menu-overlay li a:hover {
-      background-color: rgba(255, 255, 255, 0.25);
+      background-color: rgba(255,255,255,0.25);
       color: #fff;
     }
   }
   
-  /* 9) Main Page Containers – Consistent Top Margin */
+  /* 9) Main Page Containers – Unified top margin across all devices */
   .page-content,
   .quiz,
   .country-profiles,
   .about,
   .world-map {
-    margin-top: 120px;  /* This margin works for both desktop and mobile now */
+    margin-top: 120px; /* Consistent gap below the fixed navbar */
     margin-bottom: 50px;
     max-width: 600px;
     margin-left: auto;
