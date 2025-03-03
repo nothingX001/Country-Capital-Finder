@@ -4,7 +4,9 @@
     <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation"></button>
     <!-- Centered logo -->
     <div class="navbar-logo">
-      <img src="images/explore-capitals-logo.jpg" alt="ExploreCapitals Logo">
+      <a href="index.php">
+        <img src="images/explore-capitals-logo.jpg" alt="ExploreCapitals Logo">
+      </a>
     </div>
     <ul class="navbar-list" id="navbarList">
       <li><a href="index.php">HOME</a></li>
