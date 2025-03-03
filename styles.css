@@ -3,18 +3,18 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
+}
   
-  /* 2) Body Defaults */
-  body {
+/* 2) Body Defaults */
+body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4; /* Content background remains gray */
     margin: 0;
     padding: 0;
-  }
+}
   
-  /* 3) Navbar */
-  .navbar {
+/* 3) Navbar */
+.navbar {
     position: fixed;
     top: 0;
     left: 0;
@@ -23,47 +23,47 @@
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
     /* No extra padding since height is fixed */
-  }
+}
   
-  /* iOS Safe Area Handling (Mobile Only) */
-  @media (max-width: 1024px) {
+/* iOS Safe Area Handling (Mobile Only) */
+@media (max-width: 1024px) {
     .navbar::before {
-      content: "";
-      position: absolute;
-      top: -env(safe-area-inset-top);
-      left: 0;
-      width: 100%;
-      height: env(safe-area-inset-top);
-      background: linear-gradient(180deg, #3399ff, #66b3ff);
-      z-index: -1;
+        content: "";
+        position: absolute;
+        top: -env(safe-area-inset-top);
+        left: 0;
+        width: 100%;
+        height: env(safe-area-inset-top);
+        background: linear-gradient(180deg, #3399ff, #66b3ff);
+        z-index: -1;
     }
-  }
+}
   
-  /* 4) Navbar Container */
-  /* Using relative positioning so we can absolutely position children */
-  .navbar-container {
+/* 4) Navbar Container */
+/* Using relative positioning so we can absolutely position children */
+.navbar-container {
     position: relative;
     width: 90%;
     height: 100%;
     margin: 0 auto;
     padding: 0 10px;
-  }
+}
   
-  /* 5) Logo – Always at far left, vertically centered */
-  .navbar-logo {
+/* 5) Logo – Always at far left, vertically centered */
+.navbar-logo {
     position: absolute;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-  }
-  .navbar-logo img {
+}
+.navbar-logo img {
     height: 30px !important;
     width: auto !important;
     border-radius: 8px;
-  }
+}
   
-  /* 6) Navigation List – Absolutely centered horizontally */
-  .navbar-list {
+/* 6) Navigation List – Absolutely centered horizontally */
+.navbar-list {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -73,19 +73,19 @@
     gap: 40px; /* Increased gap between items on desktop */
     align-items: center;
     white-space: nowrap; /* Prevent items from wrapping */
-  }
-  .navbar-list li a {
+}
+.navbar-list li a {
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s ease;
-  }
-  .navbar-list li a:hover {
+}
+.navbar-list li a:hover {
     color: #ffdd57;
-  }
+}
   
-  /* 7) Hamburger Menu – Always fixed to the right, vertically centered */
-  .navbar-toggle {
+/* 7) Hamburger Menu – Always fixed to the right, vertically centered */
+.navbar-toggle {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -97,56 +97,97 @@
     border: none;
     cursor: pointer;
     z-index: 1001;
-  }
-  .navbar-toggle::before {
+}
+.navbar-toggle::before {
     content: '☰';
     font-size: 1.5rem;
     line-height: 1;
     color: #fff;
-  }
-  .navbar-toggle.active::before {
+}
+.navbar-toggle.active::before {
     content: 'X';
-  }
+}
   
-  /* 8) Mobile & Tablet Adjustments */
-  @media (max-width: 1100px) {
-    /* Hide the centered nav list by default */
+/* 8) Mobile & Tablet Adjustments */
+@media (max-width: 1100px) {
+    /* Hide the centered nav list */
     .navbar-list {
-      display: none;
-    }
-    /* When .open is added, display the nav list as an overlay */
-    .navbar-list.open {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 80px;
-      left: 0;
-      width: 100vw;
-      background-color: #3399ff;
-      padding-top: 20px;
-      z-index: 9998;
-    }
-    .navbar-list.open li {
-      margin: 15px 0;
-      text-align: center;
-    }
-    .navbar-list.open li a {
-      font-size: 1.2rem;
-      padding: 10px 20px;
+        display: none;
     }
     /* Show the hamburger menu */
     .navbar-toggle {
-      display: block;
+        display: block;
     }
-  }
+    
+    /* Mobile overlay menu for nav items (original code preserved) */
+    .navbar-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #3399ff;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 80px; /* Leaves room for fixed navbar */
+        z-index: 9998;
+    }
+    .navbar-menu-overlay.open {
+        display: flex;
+    }
+    .navbar-menu-overlay li {
+        margin: 15px 0;
+    }
+    .navbar-menu-overlay li a {
+        font-size: 1.2rem;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        text-align: center;
+    }
+    .navbar-menu-overlay li a:hover {
+        background-color: rgba(255,255,255,0.25);
+        color: #fff;
+    }
+    
+    /* --- Added for when .navbar-list gets toggled .open via JS --- */
+    .navbar-list.open {
+        display: flex !important;
+        flex-direction: column;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100vw;
+        background-color: #3399ff;
+        padding-top: 80px; /* Matches the navbar-menu-overlay */
+        z-index: 9998;
+        align-items: center;
+    }
+    .navbar-list.open li {
+        margin: 15px 0;
+        text-align: center;
+    }
+    .navbar-list.open li a {
+        font-size: 1.2rem;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        text-align: center;
+    }
+    .navbar-list.open li a:hover {
+        background-color: rgba(255,255,255,0.25);
+        color: #fff;
+    }
+}
   
-  /* 9) Main Page Containers */
-  /* Consistent top margin for all screen sizes */
-  .page-content,
-  .quiz,
-  .country-profiles,
-  .about,
-  .world-map {
+/* 9) Main Page Containers */
+/* Extra space between the bottom of the fixed navbar and page content */
+.page-content,
+.quiz,
+.country-profiles,
+.about,
+.world-map {
     margin-top: 120px;
     margin-bottom: 50px;
     max-width: 600px;
@@ -157,20 +198,20 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
-  }
+}
   
-  /* 10) Headings */
-  h1, h2, h3 {
+/* 10) Headings */
+h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
     line-height: 1.2;
-  }
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
   
-  /* 11) Search Input */
-  input[type="text"] {
+/* 11) Search Input */
+input[type="text"] {
     width: 100%;
     max-width: 300px;
     padding: 15px;
@@ -179,10 +220,10 @@
     border-radius: 4px;
     display: block;
     margin: 0 auto 15px auto;
-  }
+}
   
-  /* 12) Buttons */
-  .button {
+/* 12) Buttons */
+.button {
     display: block;
     margin: 15px auto;
     padding: 15px 40px;
@@ -196,29 +237,29 @@
     box-shadow: inset 0 3px 6px rgba(255,255,255,0.6), 0 6px 12px rgba(0,0,0,0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-  }
-  .button:hover {
+}
+.button:hover {
     background: linear-gradient(180deg, #55aaff, #2288ee);
-  }
-  .button:active {
+}
+.button:active {
     box-shadow: inset 0 6px 12px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.1);
     transform: translateY(2px);
-  }
-  form input[type="submit"].button {
+}
+form input[type="submit"].button {
     margin-top: 15px;
-  }
+}
   
-  /* 13) Flash Messages */
-  .message {
+/* 13) Flash Messages */
+.message {
     margin-top: 20px;
     padding: 10px;
     background-color: #e0e0e0;
     border: none !important;
     margin-bottom: 0 !important;
-  }
+}
   
-  /* 14) Autocomplete Dropdown */
-  .autocomplete-dropdown {
+/* 14) Autocomplete Dropdown */
+.autocomplete-dropdown {
     position: absolute;
     background-color: #fff;
     border-radius: 4px;
@@ -230,8 +271,8 @@
     width: 100%;
     left: 0;
     padding: 0;
-  }
-  .autocomplete-dropdown li {
+}
+.autocomplete-dropdown li {
     padding: 10px 15px;
     font-size: 1rem;
     color: #333;
@@ -239,95 +280,95 @@
     transition: background-color 0.2s ease;
     list-style: none;
     text-align: left;
-  }
-  .autocomplete-dropdown li:hover {
+}
+.autocomplete-dropdown li:hover {
     background-color: #f0f0f0;
-  }
-  .autocomplete-dropdown li.active {
+}
+.autocomplete-dropdown li.active {
     background-color: #66b3ff;
     color: #fff;
-  }
-  .autocomplete-dropdown::-webkit-scrollbar {
+}
+.autocomplete-dropdown::-webkit-scrollbar {
     width: 8px;
-  }
-  .autocomplete-dropdown::-webkit-scrollbar-track {
+}
+.autocomplete-dropdown::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 4px;
-  }
-  .autocomplete-dropdown::-webkit-scrollbar-thumb {
+}
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 4px;
-  }
-  .autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+}
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
     background: #999;
-  }
+}
   
-  /* 15) Quiz Section */
-  .quiz {
+/* 15) Quiz Section */
+.quiz {
     text-align: left;
-  }
-  .quiz h1 {
+}
+.quiz h1 {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 20px;
-  }
-  .quiz p {
+}
+.quiz p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
-  }
-  #quizContainer {
+}
+#quizContainer {
     margin-top: 20px;
-  }
-  #timer {
+}
+#timer {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333;
     text-align: center;
-  }
-  #questionContainer {
+}
+#questionContainer {
     margin-bottom: 20px;
-  }
-  #questionContainer p {
+}
+#questionContainer p {
     font-size: 1.25rem;
     margin-bottom: 10px;
     color: #333;
     text-align: center;
-  }
-  #userAnswer {
+}
+#userAnswer {
     width: 100%;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 20px;
-  }
-  #resultContainer {
+}
+#resultContainer {
     margin-top: 20px;
-  }
-  #resultContainer h2 {
+}
+#resultContainer h2 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1.5rem;
     color: #333;
-  }
-  #score {
+}
+#score {
     font-size: 1.25rem;
     margin-bottom: 20px;
     color: #333;
     text-align: center;
     font-weight: bold;
-  }
-  #detailedResults {
+}
+#detailedResults {
     margin-top: 20px;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  #detailedResults p {
+}
+#detailedResults p {
     font-size: 1rem;
     margin-bottom: 15px;
     color: #555;
@@ -339,151 +380,151 @@
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     transition: border-left-color 0.3s ease;
-  }
-  #detailedResults p strong {
+}
+#detailedResults p strong {
     color: #333;
     font-weight: bold;
-  }
-  #detailedResults p.correct {
+}
+#detailedResults p.correct {
     border-left-color: #66b3ff;
-  }
-  #detailedResults p.incorrect {
+}
+#detailedResults p.incorrect {
     border-left-color: #66b3ff;
-  }
-  #detailedResults p.correct:hover {
+}
+#detailedResults p.correct:hover {
     border-left-color: #4caf50;
-  }
-  #detailedResults p.incorrect:hover {
+}
+#detailedResults p.incorrect:hover {
     border-left-color: #f44336;
-  }
-  #redoQuizBtn {
+}
+#redoQuizBtn {
     margin-top: 20px;
     display: block;
     margin-left: auto;
     margin-right: auto;
-  }
+}
   
-  /* 16) Country Profiles Section */
-  .country-profiles {
+/* 16) Country Profiles Section */
+.country-profiles {
     text-align: left;
-  }
-  .country-profiles h1 {
+}
+.country-profiles h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
-  }
-  .country-profiles p {
+}
+.country-profiles p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
     color: #555;
-  }
-  .country-profiles h2 {
+}
+.country-profiles h2 {
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.5rem;
     color: #333;
-  }
-  .country-profiles ul {
+}
+.country-profiles ul {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  .country-profiles ul li {
+}
+.country-profiles ul li {
     margin: 10px 0;
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 4px;
     transition: background-color 0.2s ease;
-  }
-  .country-profiles ul li:hover {
+}
+.country-profiles ul li:hover {
     background-color: #f0f0f0;
-  }
-  .country-profiles ul li a {
+}
+.country-profiles ul li a {
     text-decoration: none;
     color: #333;
     font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-  .country-profiles ul li a:hover {
+}
+.country-profiles ul li a:hover {
     color: #66b3ff;
-  }
+}
   
-  /* 17) About Section */
-  .about {
+/* 17) About Section */
+.about {
     text-align: left;
-  }
-  .about h1 {
+}
+.about h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
     line-height: 1.2;
-  }
-  .about p {
+}
+.about p {
     font-size: 1rem;
     line-height: 1.6;
     color: #555;
     margin-bottom: 20px;
-  }
-  .about h2 {
+}
+.about h2 {
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.5rem;
     color: #333;
-  }
-  .about ul {
+}
+.about ul {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-  .about ul li {
+}
+.about ul li {
     margin: 10px 0;
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 4px;
     transition: background-color 0.2s ease;
-  }
-  .about ul li:hover {
+}
+.about ul li:hover {
     background-color: #f0f0f0;
-  }
-  .about ul li strong {
+}
+.about ul li strong {
     color: #333;
     font-weight: bold;
-  }
-  .about ul li a {
+}
+.about ul li a {
     text-decoration: none;
     color: #66b3ff;
     transition: color 0.2s ease;
-  }
-  .about ul li a:hover {
+}
+.about ul li a:hover {
     color: #3399ff;
-  }
+}
   
-  /* 18) World Map Section */
-  .world-map {
+/* 18) World Map Section */
+.world-map {
     text-align: center;
-  }
-  .world-map h1 {
+}
+.world-map h1 {
     margin-bottom: 20px;
     font-size: 2rem;
     color: #333;
-  }
-  .world-map p {
+}
+.world-map p {
     font-size: 1rem;
     color: #555;
     margin-bottom: 20px;
-  }
-  .search-bar-container {
+}
+.search-bar-container {
     text-align: center;
     margin: 0 auto;
     padding: 0;
     max-width: 300px;
     position: relative;
-  }
-  #search-bar {
+}
+#search-bar {
     width: 100%;
     max-width: 300px;
     padding: 15px;
@@ -492,32 +533,32 @@
     border-radius: 4px;
     display: block;
     margin: 0 auto;
-  }
-  #map {
+}
+#map {
     height: 500px;
     width: 100%;
     border-radius: 15px;
     margin-top: 20px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
+}
   
-  /* 19) Home Page Intro (if relevant) */
-  .home-intro {
+/* 19) Home Page Intro (if relevant) */
+.home-intro {
     font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 20px;
-  }
+}
   
-  /* 20) Mobile-Only: Thin Side Margins */
-  @media (max-width: 1024px) {
+/* 20) Mobile-Only: Thin Side Margins */
+@media (max-width: 1024px) {
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-      width: 95%;
-      max-width: 600px;
-      margin: 0 auto;
+        width: 95%;
+        max-width: 600px;
+        /* Preserve top spacing (120px) and bottom spacing (50px) */
+        margin: 120px auto 50px auto;
     }
-  }
-  
+}
