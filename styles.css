@@ -294,8 +294,6 @@ form input[type="submit"].button {
     z-index: 1000;
     margin-top: 5px;
     width: 300px; /* Match the input width */
-    left: 50%;
-    transform: translateX(-50%);
     padding: 0;
 }
 .autocomplete-dropdown li {
