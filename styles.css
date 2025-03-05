@@ -640,10 +640,13 @@ form input[type="submit"].button {
 /* Flag Image (below entity type and sovereign state) */
 
 .constituent-countries {
-    font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
     text-align: center;
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .constituent-countries a {

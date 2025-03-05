@@ -156,10 +156,10 @@ try {
                         Comprises of 
                         <?php
                         $constituents = [
-                            'England' => 'england',
-                            'Scotland' => 'scotland',
-                            'Northern Ireland' => 'northern-ireland',
-                            'Wales' => 'wales'
+                            'England' => 1,
+                            'Scotland' => 2,
+                            'Northern Ireland' => 3,
+                            'Wales' => 4
                         ];
                         $links = [];
                         foreach ($constituents as $name => $id) {
