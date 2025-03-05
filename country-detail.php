@@ -137,7 +137,7 @@ try {
             <h1>
                 <?php echo htmlspecialchars($country['country_name']); ?>
                 <?php if (!empty($country['flag_emoji'])): ?>
-                    <?php echo ' ' . htmlspecialchars($country['flag_emoji']); ?>
+                    <span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span>
                 <?php endif; ?>
             </h1>
             <?php if (!empty($country['entity_type'])): ?>
