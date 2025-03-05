@@ -141,16 +141,27 @@ try {
                     <span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span>
                 <?php endif; ?>
             </h1>
-            <?php if (!empty($country['official_name'])): ?>
-                <div class="country-detail-entity"><em>officially <?php echo htmlspecialchars($country['official_name']);?></em></div>
-            <?php endif; ?>
             <?php if (!empty($country['entity_type'])): ?>
                 <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
             <?php endif; ?>
             <?php
             // If this is a territory, display the sovereign state in one line, centered.
             if (!empty($country['sovereign_state']) && strtolower(trim($country['entity_type'])) === 'territory') {
-                echo '<div class="sovereign-state"><strong>Sovereign State:</strong> ' . htmlspecialchars($country['sovereign_state']) . '</div>';
+                // Fetch the sovereign state's ID
+                $sovereign_stmt = $conn->prepare('
+                    SELECT id
+                    FROM countries
+                    WHERE "Country Name" = ?
+                    LIMIT 1
+                ');
+                $sovereign_stmt->execute([$country['sovereign_state']]);
+                $sovereign_id = $sovereign_stmt->fetchColumn();
+                
+                if ($sovereign_id) {
+                    echo '<div class="sovereign-state"><strong>Sovereign State:</strong> <a href="country-detail.php?id=' . urlencode($sovereign_id) . '">' . htmlspecialchars($country['sovereign_state']) . '</a></div>';
+                } else {
+                    echo '<div class="sovereign-state"><strong>Sovereign State:</strong> ' . htmlspecialchars($country['sovereign_state']) . '</div>';
+                }
             }
             ?>
         </div>
@@ -161,6 +172,11 @@ try {
                 <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
                      alt="Flag of <?php echo htmlspecialchars($country['country_name'] ?? ''); ?>">
             </div>
+        <?php endif; ?>
+
+        <!-- Official Name -->
+        <?php if (!empty($country['official_name'])): ?>
+            <div class="country-detail-entity"><em>officially <?php echo htmlspecialchars($country['official_name']);?></em></div>
         <?php endif; ?>
 
         <!-- Attributes Section -->

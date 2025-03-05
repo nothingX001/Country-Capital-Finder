@@ -283,6 +283,17 @@ form input[type="submit"].button {
     border-radius: 2px;
 }
 
+.message a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.message a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute;
@@ -593,3 +604,23 @@ small {
         margin: 120px auto 50px auto; /* keep consistent top/bottom spacing */
     }
 }
+
+.sovereign-state {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sovereign-state a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.sovereign-state a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Flag Image (below entity type and sovereign state) */

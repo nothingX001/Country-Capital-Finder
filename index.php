@@ -59,9 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
             $verb          = ($capital_count > 1) ? 'are' : 'is';
             // Build the message with a clickable country name
-            $message = "The {$capital_word} of <a href='country-detail.php?country=" . urlencode($country_name) . "'>{$country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
+            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
         } else {
-            $message = "No capitals found for <a href='country-detail.php?country=" . urlencode($country_name) . "'>{$country_name}</a>.";
+            $message = "No capitals found for <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$country_name}</a>.";
         }
 
         // 4) (Optional) Update site statistics if desired
