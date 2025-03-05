@@ -142,7 +142,33 @@ try {
                 <?php endif; ?>
             </h1>
             <?php if (!empty($country['entity_type'])): ?>
-                <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
+                <div class="country-detail-entity">
+                    <?php 
+                    if (strpos(strtolower($country['entity_type']), 'part of the united kingdom') !== false) {
+                        echo 'Part of the <a href="country-detail.php?id=united-kingdom">United Kingdom</a>';
+                    } else {
+                        echo htmlspecialchars($country['entity_type']);
+                    }
+                    ?>
+                </div>
+                <?php if ($country['country_name'] === 'United Kingdom'): ?>
+                    <div class="constituent-countries">
+                        Comprises of 
+                        <?php
+                        $constituents = [
+                            'England' => 'england',
+                            'Scotland' => 'scotland',
+                            'Northern Ireland' => 'northern-ireland',
+                            'Wales' => 'wales'
+                        ];
+                        $links = [];
+                        foreach ($constituents as $name => $id) {
+                            $links[] = '<a href="country-detail.php?id=' . urlencode($id) . '">' . htmlspecialchars($name) . '</a>';
+                        }
+                        echo implode(', ', $links);
+                        ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
             <?php
             // If this is a territory, display the sovereign state in one line, centered.
