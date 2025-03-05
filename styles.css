@@ -638,3 +638,34 @@ form input[type="submit"].button {
 }
 
 /* Flag Image (below entity type and sovereign state) */
+
+.constituent-countries {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.constituent-countries a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.constituent-countries a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.country-detail-entity a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.country-detail-entity a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Flag Image (below entity type and sovereign state) */
