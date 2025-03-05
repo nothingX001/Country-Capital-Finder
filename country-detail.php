@@ -142,15 +142,6 @@ try {
                 <?php endif; ?>
             </h1>
             <?php if (!empty($country['entity_type'])): ?>
-                <div class="country-detail-entity">
-                    <?php 
-                    if (strpos(strtolower($country['entity_type']), 'part of the united kingdom') !== false) {
-                        echo 'Part of the <a href="country-detail.php?id=united-kingdom">United Kingdom</a>';
-                    } else {
-                        echo htmlspecialchars($country['entity_type']);
-                    }
-                    ?>
-                </div>
                 <?php if ($country['country_name'] === 'United Kingdom'): ?>
                     <div class="constituent-countries">
                         Comprises of 
@@ -169,6 +160,15 @@ try {
                         ?>
                     </div>
                 <?php endif; ?>
+                <div class="country-detail-entity">
+                    <?php 
+                    if (strpos(strtolower($country['entity_type']), 'part of the united kingdom') !== false) {
+                        echo 'Part of the <a href="country-detail.php?id=united-kingdom">United Kingdom</a>';
+                    } else {
+                        echo htmlspecialchars($country['entity_type']);
+                    }
+                    ?>
+                </div>
             <?php endif; ?>
             <?php
             // If this is a territory, display the sovereign state in one line, centered.
