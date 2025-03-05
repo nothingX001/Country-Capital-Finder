@@ -293,8 +293,9 @@ form input[type="submit"].button {
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 100%;
-    left: 0;
+    width: 300px; /* Match the input width */
+    left: 50%;
+    transform: translateX(-50%);
     padding: 0;
 }
 .autocomplete-dropdown li {

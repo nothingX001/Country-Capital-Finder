@@ -27,7 +27,7 @@ if (!$statistics || isset($statistics['error'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory’s capital.">
+    <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
 </head>
@@ -52,9 +52,9 @@ if (!$statistics || isset($statistics['error'])) {
 
         <h2>Site Statistics</h2>
         <ul>
-            <li><strong>Most Searched Country:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?></li>
+            <li><strong>Most Searched Country:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?> <?php if (!empty($statistics['most_searched_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_searched_flag']); ?></span><?php endif; ?></li>
             <li><strong>Total Searches:</strong> <?php echo htmlspecialchars($statistics['total_searches']); ?></li>
-            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?></li>
+            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?> <?php if (!empty($statistics['most_recent_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_recent_flag']); ?></span><?php endif; ?></li>
             <li><strong>Searches Today:</strong> <?php echo htmlspecialchars($statistics['searches_today']); ?></li>
             <li><strong>Unique Countries Searched:</strong> <?php echo htmlspecialchars($statistics['unique_countries_searched']); ?></li>
         </ul>
