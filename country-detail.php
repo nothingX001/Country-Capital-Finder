@@ -95,7 +95,7 @@ try {
       }
       .country-detail-entity {
           font-size: 1.2rem;
-          color: #666;
+          color: #333;
           margin-bottom: 10px;
       }
       .sovereign-state {
