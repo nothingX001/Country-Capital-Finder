@@ -177,19 +177,29 @@ try {
     // 9. Site Statistics
     elseif ($type === 'statistics') {
         $stmt = $conn->query("
-            SELECT country_name
-            FROM site_statistics
-            ORDER BY search_count DESC
+            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji
+            FROM site_statistics s
+            LEFT JOIN countries c ON s.country_name = c.\"Country Name\"
+            ORDER BY s.search_count DESC
             LIMIT 1
         ");
         $most_searched = $stmt->fetch(PDO::FETCH_ASSOC);
         $most_searched_countries = $most_searched ? $most_searched['country_name'] : 'No data';
+        $most_searched_flag = $most_searched ? $most_searched['flag_emoji'] : '';
 
         $stmt = $conn->query("SELECT SUM(search_count) AS total_searches FROM site_statistics");
         $total_searches = $stmt->fetch(PDO::FETCH_ASSOC)['total_searches'] ?? 0;
 
-        $stmt = $conn->query("SELECT country_name FROM site_statistics ORDER BY last_searched_at DESC LIMIT 1");
-        $most_recent_search = $stmt->fetch(PDO::FETCH_ASSOC)['country_name'] ?? 'No data';
+        $stmt = $conn->query("
+            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji
+            FROM site_statistics s
+            LEFT JOIN countries c ON s.country_name = c.\"Country Name\"
+            ORDER BY s.last_searched_at DESC
+            LIMIT 1
+        ");
+        $most_recent = $stmt->fetch(PDO::FETCH_ASSOC);
+        $most_recent_search = $most_recent ? $most_recent['country_name'] : 'No data';
+        $most_recent_flag = $most_recent ? $most_recent['flag_emoji'] : '';
 
         $stmt = $conn->query("
             SELECT SUM(search_count) AS searches_today
@@ -203,8 +213,10 @@ try {
 
         $response = [
             'most_searched_countries' => $most_searched_countries,
+            'most_searched_flag' => $most_searched_flag,
             'total_searches' => $total_searches,
             'most_recent_search' => $most_recent_search,
+            'most_recent_flag' => $most_recent_flag,
             'searches_today' => $searches_today,
             'unique_countries_searched' => $unique_countries_searched
         ];

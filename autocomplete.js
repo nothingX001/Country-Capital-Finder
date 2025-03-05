@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function positionDropdown() {
         const rect = input.getBoundingClientRect();
         dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-        dropdown.style.left = `${rect.left + window.scrollX}px`;
+        dropdown.style.left = `${rect.left + (rect.width / 2)}px`;
     }
 
     // Handle keyboard navigation
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle typing in the input field.
+    // Handle typing in the input field
     input.addEventListener('input', async (e) => {
         const query = e.target.value.trim();
         activeIndex = -1; // Reset the active index
@@ -58,12 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Use a relative URL (without a leading slash) so that it points to the correct file.
             const response = await fetch(`fetch-country-data.php?type=autocomplete&query=${encodeURIComponent(query)}`);
             const countries = await response.json();
-            console.log("Autocomplete results:", countries); // Debug: check results in console
 
-            // Populate the dropdown.
+            // Populate the dropdown
             dropdown.innerHTML = '';
             if (countries.length > 0) {
                 countries.forEach((country) => {
