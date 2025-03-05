@@ -167,7 +167,21 @@ try {
                 <div class="country-detail-entity">
                     <?php 
                     if (strpos(strtolower($country['entity_type']), 'part of the united kingdom') !== false) {
-                        echo 'Part of the <a href="country-detail.php?id=united-kingdom">United Kingdom</a>';
+                        // Fetch the United Kingdom's ID
+                        $uk_stmt = $conn->prepare('
+                            SELECT id
+                            FROM countries
+                            WHERE "Country Name" = \'United Kingdom\'
+                            LIMIT 1
+                        ');
+                        $uk_stmt->execute();
+                        $uk_id = $uk_stmt->fetchColumn();
+                        
+                        if ($uk_id) {
+                            echo 'Part of the <a href="country-detail.php?id=' . urlencode($uk_id) . '">United Kingdom</a>';
+                        } else {
+                            echo 'Part of the United Kingdom';
+                        }
                     } else {
                         echo htmlspecialchars($country['entity_type']);
                     }
