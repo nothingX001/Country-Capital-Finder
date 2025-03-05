@@ -49,7 +49,7 @@ try {
                        array_agg(cap.capital_name) AS capitals
                 FROM countries c
                 JOIN capitals cap ON c.id = cap.country_id
-                WHERE c.status IN ('UN member', 'UN observer')
+                WHERE c.\"Entity Type\" IN ('UN member', 'UN observer')
                 GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\"
                 ORDER BY RANDOM()
                 LIMIT $limit
@@ -82,7 +82,7 @@ try {
                        array_agg(cap.capital_name) AS capitals
                 FROM countries c
                 JOIN capitals cap ON c.id = cap.country_id
-                WHERE c.status = 'Territory'
+                WHERE c.\"Entity Type\" = 'Territory'
                 GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\"
                 ORDER BY RANDOM()
                 LIMIT $limit

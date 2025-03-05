@@ -60,9 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $verb          = ($capital_count > 1) ? 'are' : 'is';
             // Build the message.
             $message = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
-            if (!empty($official_name)) {
-                $message .= "<br><small>Officially known as: {$official_name}</small>";
-            }
         } else {
             $message = "No capitals found for {$country_name}.";
         }
