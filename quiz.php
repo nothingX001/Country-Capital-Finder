@@ -195,13 +195,15 @@ try {
 
             let questionText;
             if (isCountryQuestion) {
-                questionText = `What is the capital of ${qData.country_name} <span class="flag-emoji">${qData.flag_emoji}</span>?`;
+                questionText = `What is the capital of <strong>${qData.country_name}</strong> <span class="flag-emoji">${qData.flag_emoji}</span>?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: formatCapitals(qData.capitals)
+                    correctAnswerText: formatCapitals(qData.capitals),
+                    countryName: qData.country_name,
+                    flagEmoji: qData.flag_emoji
                 });
             } else {
                 const capCount = qData.capitals.length;
@@ -215,7 +217,9 @@ try {
                     correctAnswers: [qData.country_name],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.country_name
+                    correctAnswerText: qData.country_name,
+                    countryName: qData.country_name,
+                    flagEmoji: qData.flag_emoji
                 });
             }
 
@@ -253,7 +257,7 @@ try {
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong>`;
+            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong> <span class="flag-emoji">${resp.flagEmoji}</span>`;
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`
