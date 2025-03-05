@@ -9,8 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Position the dropdown below the input
     function positionDropdown() {
         const rect = input.getBoundingClientRect();
+        const form = input.closest('form');
+        const formRect = form.getBoundingClientRect();
+        
         dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.left = `${formRect.left + (formRect.width - 300) / 2}px`;
     }
 
     // Handle keyboard navigation
