@@ -27,7 +27,8 @@ try {
             "Population"   AS population,
             "Area (km2)"   AS area_km2,
             "Calling Code" AS calling_code,
-            "Internet TLD" AS internet_tld
+            "Internet TLD" AS internet_tld,
+            "Official Name" AS official_name
         FROM countries
         WHERE id = ?
         LIMIT 1
@@ -140,6 +141,9 @@ try {
                     <span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span>
                 <?php endif; ?>
             </h1>
+            <?php if (!empty($country['official_name'])): ?>
+                <div class="official-name"><?php echo htmlspecialchars($country['official_name']); ?></div>
+            <?php endif; ?>
             <?php if (!empty($country['entity_type'])): ?>
                 <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
             <?php endif; ?>
