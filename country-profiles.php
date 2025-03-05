@@ -35,7 +35,7 @@ try {
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji
         FROM countries
-        WHERE "Entity Type" = \'De Facto\'
+        WHERE "Entity Type" = \'De facto state\'
         ORDER BY "Country Name" ASC
     ');
     $deFactoStates = $stmtDefacto->fetchAll(PDO::FETCH_ASSOC);
