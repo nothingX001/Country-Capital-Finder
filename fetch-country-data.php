@@ -33,7 +33,7 @@ try {
         $stmt = $conn->query("
             SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
             FROM countries
-            WHERE status = 'De Facto'
+            WHERE status = 'De facto state'
             ORDER BY \"Country Name\" ASC
         ");
         $response = $stmt->fetchAll(PDO::FETCH_ASSOC);
