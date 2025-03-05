@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function positionDropdown() {
         const rect = input.getBoundingClientRect();
         dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-        dropdown.style.left = `${rect.left + (rect.width / 2)}px`;
+        dropdown.style.left = `${rect.left}px`;
     }
 
     // Handle keyboard navigation

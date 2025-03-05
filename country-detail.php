@@ -142,7 +142,7 @@ try {
                 <?php endif; ?>
             </h1>
             <?php if (!empty($country['official_name'])): ?>
-                <div class="country-detail-entity">Officially (<?php echo htmlspecialchars($country['official_name']); ?>)</div>
+                <div class="country-detail-entity"><em>officially</em> <?php echo htmlspecialchars($country['official_name']); ?></div>
             <?php endif; ?>
             <?php if (!empty($country['entity_type'])): ?>
                 <div class="country-detail-entity"><?php echo htmlspecialchars($country['entity_type']); ?></div>
