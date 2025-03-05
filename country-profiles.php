@@ -75,7 +75,7 @@ try {
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($c['id']); ?>">
                             <?php echo htmlspecialchars($countryName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <?php echo ' ' . htmlspecialchars($flagEmoji); ?>
+                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -98,7 +98,7 @@ try {
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($t['id']); ?>">
                             <?php echo htmlspecialchars($countryName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <?php echo ' ' . htmlspecialchars($flagEmoji); ?>
+                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -121,7 +121,7 @@ try {
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($d['id']); ?>">
                             <?php echo htmlspecialchars($countryName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <?php echo ' ' . htmlspecialchars($flagEmoji); ?>
+                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>

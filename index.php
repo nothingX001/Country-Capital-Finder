@@ -25,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         SELECT
             id,
             "Country Name" AS country_name,
-            "Flag Emoji"   AS flag_emoji
+            "Flag Emoji"   AS flag_emoji,
+            "Official Name" AS official_name
         FROM countries
         WHERE "Country Name" ILIKE ?
         LIMIT 1
@@ -37,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $country_id   = $country_result['id'];
         $country_name = htmlspecialchars($country_result['country_name']);
         $flag         = htmlspecialchars($country_result['flag_emoji'] ?? '');
+        $official_name = htmlspecialchars($country_result['official_name'] ?? '');
 
         // 2) Fetch matching capitals from the capitals table
         $cap_stmt = $conn->prepare('
@@ -50,14 +52,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // 3) Build a message about the capital(s) with capital names in bold.
         if ($capitals) {
             // Bold each capital using <strong> tags.
-            $capital_names = implode(' / ', array_map(function($cap) {
+            $capital_names = implode(', ', array_map(function($cap) {
                 return '<strong>' . htmlspecialchars($cap) . '</strong>';
             }, $capitals));
             $capital_count = count($capitals);
             $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
             $verb          = ($capital_count > 1) ? 'are' : 'is';
             // Build the message.
-            $message = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. {$flag}";
+            $message = "The {$capital_word} of {$country_name} {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
+            if (!empty($official_name)) {
+                $message .= "<br><small>Officially known as: {$official_name}</small>";
+            }
         } else {
             $message = "No capitals found for {$country_name}.";
         }
@@ -85,10 +90,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ExploreCapitals</title>
+    <title>ExploreCapitals - Find Any Country's Capital City</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Browse our database of countries, territories, and more!">
+    <meta name="description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
+    <meta name="keywords" content="capital cities, world capitals, country capitals, geography quiz, world geography">
+    <meta name="author" content="ExploreCapitals">
+    <meta property="og:title" content="ExploreCapitals - Find Any Country's Capital City">
+    <meta property="og:description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>

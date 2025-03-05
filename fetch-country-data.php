@@ -42,15 +42,20 @@ try {
     elseif ($type === 'random_main' && isset($_GET['limit'])) {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
-            SELECT c.id, 
-                   c.\"Country Name\" AS country_name, 
-                   array_agg(REPLACE(cap.name, ' / ', ', ')) AS capitals
-            FROM countries c
-            JOIN capitals cap ON c.id = cap.country_id
-            WHERE c.status IN ('UN member', 'UN observer')
-            GROUP BY c.id
-            ORDER BY RANDOM()
-            LIMIT $limit
+            WITH random_countries AS (
+                SELECT c.id, 
+                       c.\"Country Name\" AS country_name,
+                       c.\"Flag Emoji\" AS flag_emoji,
+                       array_agg(cap.capital_name) AS capitals
+                FROM countries c
+                JOIN capitals cap ON c.id = cap.country_id
+                WHERE c.status IN ('UN member', 'UN observer')
+                GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\"
+                ORDER BY RANDOM()
+                LIMIT $limit
+            )
+            SELECT * FROM random_countries
+            WHERE array_length(capitals, 1) > 0
         ");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as &$row) {
@@ -70,15 +75,20 @@ try {
     elseif ($type === 'random_territories' && isset($_GET['limit'])) {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
-            SELECT c.id, 
-                   c.\"Country Name\" AS country_name, 
-                   array_agg(REPLACE(cap.name, ' / ', ', ')) AS capitals
-            FROM countries c
-            JOIN capitals cap ON c.id = cap.country_id
-            WHERE c.status = 'Territory'
-            GROUP BY c.id
-            ORDER BY RANDOM()
-            LIMIT $limit
+            WITH random_countries AS (
+                SELECT c.id, 
+                       c.\"Country Name\" AS country_name,
+                       c.\"Flag Emoji\" AS flag_emoji,
+                       array_agg(cap.capital_name) AS capitals
+                FROM countries c
+                JOIN capitals cap ON c.id = cap.country_id
+                WHERE c.status = 'Territory'
+                GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\"
+                ORDER BY RANDOM()
+                LIMIT $limit
+            )
+            SELECT * FROM random_countries
+            WHERE array_length(capitals, 1) > 0
         ");
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as &$row) {

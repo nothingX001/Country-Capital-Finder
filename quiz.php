@@ -104,16 +104,29 @@ try {
     const randomTerritories = <?php echo json_encode($randomTerritories); ?>;
 
     // 2) "theCountries" array for adding "the" prefix if you want it
-    const theCountries = <?php
-        if (isset($the_countries) && is_array($the_countries)) {
-            echo json_encode(array_map('strtolower', $the_countries));
-        } else {
-            echo '[]';
-        }
-    ?>;
+    const theCountries = <?php echo json_encode($the_countries); ?>;
 
-    function addThe(country) {
-        return theCountries.includes(country.toLowerCase()) ? `the ${country}` : country;
+    // 3) Helper function to normalize input (remove accents, etc.)
+    function normalizeString(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    // 4) Helper function to check if answer matches any of the capitals
+    function checkAnswer(userAnswer, capitals) {
+        const normalizedUserAnswer = normalizeString(userAnswer);
+        return capitals.some(capital => 
+            normalizeString(capital) === normalizedUserAnswer
+        );
+    }
+
+    // 5) Helper function to format capitals for display
+    function formatCapitals(capitals) {
+        return capitals.join(', ');
+    }
+
+    // 6) Helper function to format country name with flag
+    function formatCountryName(country) {
+        return `${country.country_name} <span class="flag-emoji">${country.flag_emoji}</span>`;
     }
 
     let questions = [];
@@ -181,13 +194,13 @@ try {
 
             let questionText;
             if (isCountryQuestion) {
-                questionText = `What is the capital of <strong>${addThe(qData.country)}</strong>?`;
+                questionText = `What is the capital of <strong>${formatCountryName(qData)}</strong>?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.capitals.join(' / ')
+                    correctAnswerText: formatCapitals(qData.capitals)
                 });
             } else {
                 const capCount = qData.capitals.length;
