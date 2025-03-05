@@ -17,10 +17,10 @@ include 'the-countries.php';
  */
 function fetchQuizData(PDO $conn, array $entityTypes, int $limit = 10): array {
     // 1) Get up to $limit random countries with matching "Entity Type"
-    //    (Only selecting id + "Country Name")
+    //    (Only selecting id + "Country Name" + "Flag Emoji")
     $inList = "'" . implode("','", $entityTypes) . "'";
     $sql = "
-        SELECT id, \"Country Name\" AS country_name
+        SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
         FROM countries
         WHERE \"Entity Type\" IN ($inList)
         ORDER BY RANDOM()
@@ -145,7 +145,8 @@ try {
             if (Array.isArray(row.capitals) && row.capitals.length > 0) {
                 // Some countries may have multiple capitals
                 questions.push({
-                    country: row.country_name,
+                    country_name: row.country_name,
+                    flag_emoji: row.flag_emoji,
                     capitals: row.capitals
                 });
             }
@@ -194,7 +195,7 @@ try {
 
             let questionText;
             if (isCountryQuestion) {
-                questionText = `What is the capital of <strong>${formatCountryName(qData)}</strong>?`;
+                questionText = `What is the capital of ${qData.country_name} <span class="flag-emoji">${qData.flag_emoji}</span>?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: qData.capitals,
@@ -211,10 +212,10 @@ try {
                 questionText = `${capitalStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which ${placeLabel}?`;
                 userResponses.push({
                     questionText,
-                    correctAnswers: [qData.country],
+                    correctAnswers: [qData.country_name],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.country
+                    correctAnswerText: qData.country_name
                 });
             }
 
