@@ -146,15 +146,19 @@ try {
                     <div class="constituent-countries">
                         Comprises of 
                         <?php
-                        $constituents = [
-                            'England' => 1,
-                            'Scotland' => 2,
-                            'Northern Ireland' => 3,
-                            'Wales' => 4
-                        ];
+                        // Fetch the actual IDs of the constituent countries
+                        $constituent_stmt = $conn->prepare('
+                            SELECT id, "Country Name"
+                            FROM countries
+                            WHERE "Country Name" IN (\'England\', \'Scotland\', \'Northern Ireland\', \'Wales\')
+                            ORDER BY "Country Name" ASC
+                        ');
+                        $constituent_stmt->execute();
+                        $constituents = $constituent_stmt->fetchAll(PDO::FETCH_ASSOC);
+                        
                         $links = [];
-                        foreach ($constituents as $name => $id) {
-                            $links[] = '<a href="country-detail.php?id=' . urlencode($id) . '">' . htmlspecialchars($name) . '</a>';
+                        foreach ($constituents as $constituent) {
+                            $links[] = '<a href="country-detail.php?id=' . urlencode($constituent['id']) . '">' . htmlspecialchars($constituent['Country Name']) . '</a>';
                         }
                         echo implode(', ', $links);
                         ?>
