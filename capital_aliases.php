@@ -19,14 +19,6 @@ $capital_aliases = [
     "hanoi" => "Hanoi",
     "ha noi" => "Hanoi",
 
-    // Sri Lanka (Sri Jayawardenepura Kotte / Colombo)
-    "kotte" => "Sri Jayawardenepura Kotte / Colombo",
-    "colombo" => "Sri Jayawardenepura Kotte / Colombo",
-
-    // Palestine
-    "east jerusalem" => "Jerusalem / Ramallah",
-    "jerusalem" => "Jerusalem / Ramallah",
-
     // UAE (Abu Dhabi)
     "abu dhabi" => "Abu Dhabi",
     "dubai" => "Abu Dhabi", // Commonly mistaken as capital
