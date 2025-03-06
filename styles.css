@@ -504,17 +504,17 @@ form input[type="submit"].button {
     margin-right: auto;
 }
 
+/* Flag Image (below entity type and sovereign state) */
 .flag-image {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .flag-image img {
     max-width: 300px;
-    border-radius: 4px;
-    border: none;
-    outline: none;
-    box-shadow: none;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Additional reset for images to prevent any browser defaults */
@@ -652,7 +652,6 @@ img {
 }
 
 /* Flag Image (below entity type and sovereign state) */
-
 .constituent-countries {
     font-size: 1.2rem;
     color: #333;

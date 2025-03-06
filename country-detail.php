@@ -134,12 +134,7 @@ try {
     <section class="page-content country-detail">
         <!-- Header: Country Name and Entity Type -->
         <div class="country-detail-header">
-            <h1>
-                <?php echo htmlspecialchars($country['country_name']); ?>
-                <?php if (!empty($country['flag_emoji'])): ?>
-                    <span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span>
-                <?php endif; ?>
-            </h1>
+            <h1><?php echo htmlspecialchars($country['country_name']); ?> <span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span></h1>
             <?php if (!empty($country['entity_type'])): ?>
                 <?php if ($country['country_name'] === 'United Kingdom'): ?>
                     <div class="constituent-countries">
@@ -211,9 +206,17 @@ try {
 
         <!-- Flag Image (below entity type and sovereign state) -->
         <?php if (!empty($country['flag_url'])): ?>
+            <?php 
+            // Check if it's Nepal to apply different styling
+            $isNepal = strtolower($country['country_name']) === 'nepal';
+            $flagStyle = $isNepal ? '' : 'border: 1px solid #ccc;';
+            ?>
             <div class="flag-image">
-                <img src="<?php echo htmlspecialchars($country['flag_url']); ?>"
-                     alt="Flag of <?php echo htmlspecialchars($country['country_name'] ?? ''); ?>">
+                <img 
+                    src="<?php echo htmlspecialchars($country['flag_url']); ?>" 
+                    alt="Flag of <?php echo htmlspecialchars($country['country_name']); ?>"
+                    style="max-width: 300px; height: auto; <?php echo $flagStyle; ?>"
+                >
             </div>
         <?php endif; ?>
 
