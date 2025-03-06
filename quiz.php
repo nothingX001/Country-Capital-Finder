@@ -107,15 +107,26 @@ try {
     const theCountries = <?php echo json_encode($the_countries); ?>;
 
     // 3) Helper function to normalize input (remove accents, etc.)
-    function normalizeString(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    function normalizeInput(str) {
+        let norm = str.toLowerCase().trim();
+        // Remove "the" from beginning of string
+        norm = norm.replace(/^the\s+/, '');
+        // Remove special characters except letters and spaces
+        norm = norm.replace(/[^\w\s]/g, '');
+        // Normalize whitespace
+        norm = norm.replace(/\s+/g, ' ');
+        // Replace "st." or "st" with "saint"
+        norm = norm.replace(/\bst\.?\b/gi, 'saint');
+        // Remove all diacritics/accents
+        norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return norm;
     }
 
     // 4) Helper function to check if answer matches any of the capitals
     function checkAnswer(userAnswer, capitals) {
-        const normalizedUserAnswer = normalizeString(userAnswer);
+        const normalizedUserAnswer = normalizeInput(userAnswer);
         return capitals.some(capital => 
-            normalizeString(capital) === normalizedUserAnswer
+            normalizeInput(capital) === normalizedUserAnswer
         );
     }
 
@@ -241,10 +252,16 @@ try {
 
     function normalizeInput(str) {
         let norm = str.toLowerCase().trim();
+        // Remove "the" from beginning of string
         norm = norm.replace(/^the\s+/, '');
+        // Remove special characters except letters and spaces
         norm = norm.replace(/[^\w\s]/g, '');
+        // Normalize whitespace
         norm = norm.replace(/\s+/g, ' ');
+        // Replace "st." or "st" with "saint"
         norm = norm.replace(/\bst\.?\b/gi, 'saint');
+        // Remove all diacritics/accents
+        norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         return norm;
     }
 
