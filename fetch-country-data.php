@@ -76,7 +76,7 @@ try {
         $limit = (int)$_GET['limit'];
         $stmt = $conn->query("
             WITH random_countries AS (
-                SELECT c.id, 
+                SELECT c.id,
                        c.\"Country Name\" AS country_name,
                        c.\"Flag Emoji\" AS flag_emoji,
                        array_agg(cap.capital_name) AS capitals
