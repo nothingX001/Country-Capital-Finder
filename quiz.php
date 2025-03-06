@@ -195,23 +195,23 @@ try {
 
             let questionText;
             if (isCountryQuestion) {
+                // For country questions, randomly select one capital if there are multiple
+                const randomCapital = qData.capitals[Math.floor(Math.random() * qData.capitals.length)];
                 questionText = `What is the capital of <strong>${qData.country_name}</strong> <span class="flag-emoji">${qData.flag_emoji}</span>?`;
                 userResponses.push({
                     questionText,
-                    correctAnswers: qData.capitals,
+                    correctAnswers: qData.capitals, // Keep all capitals as correct answers
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: formatCapitals(qData.capitals),
+                    correctAnswerText: qData.capitals.join(', '), // Show all capitals in results
                     countryName: qData.country_name,
                     flagEmoji: qData.flag_emoji
                 });
             } else {
-                const capCount = qData.capitals.length;
-                const capitalStr = qData.capitals.map(c => `<strong>${c}</strong>`).join(' / ');
-                const verb = capCount > 1 ? 'are' : 'is';
+                const capitalStr = `<strong>${qData.capitals[0]}</strong>`; // Use only first capital for this question type
                 // Use "territory" if the quiz type is set to territory, otherwise "country"
                 let placeLabel = (quizType === 'territory') ? 'territory' : 'country';
-                questionText = `${capitalStr} ${verb} the capital${capCount > 1 ? 's' : ''} of which ${placeLabel}?`;
+                questionText = `${capitalStr} is the capital of which ${placeLabel}?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: [qData.country_name],

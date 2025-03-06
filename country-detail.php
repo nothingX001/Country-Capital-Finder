@@ -110,7 +110,6 @@ try {
       }
       .flag-image img {
           max-width: 300px;
-          border: 1px solid #ccc;
           border-radius: 4px;
       }
       .attributes {
@@ -236,7 +235,7 @@ try {
                     }
                     $capList[] = $capString;
                 }
-                $capString = implode(' / ', $capList);
+                $capString = implode(', ', $capList);
                 echo '<p><strong>Capital(s):</strong> ' . $capString . '</p>';
             }
             
