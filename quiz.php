@@ -121,7 +121,15 @@ try {
 
     // 5) Helper function to format capitals for display
     function formatCapitals(capitals) {
-        return capitals.join(', ');
+        if (capitals.length === 1) {
+            return capitals[0];
+        } else if (capitals.length === 2) {
+            return `${capitals[0]} or ${capitals[1]}`;
+        } else {
+            const lastCapital = capitals[capitals.length - 1];
+            const otherCapitals = capitals.slice(0, -1);
+            return `${otherCapitals.join(', ')} or ${lastCapital}`;
+        }
     }
 
     // 6) Helper function to format country name with flag
@@ -203,7 +211,7 @@ try {
                     correctAnswers: qData.capitals, // Keep all capitals as correct answers
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.capitals.join(', '), // Show all capitals in results
+                    correctAnswerText: formatCapitals(qData.capitals), // Use formatCapitals instead of join
                     countryName: qData.country_name,
                     flagEmoji: qData.flag_emoji
                 });
