@@ -7,12 +7,20 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include 'config.php';
+include 'the-countries.php'; // Make sure this is included
 
 // Optional helper to normalize user input
 function normalize_country_input($input) {
     $input = strtolower(trim($input));
     // For example, handle hyphens, parentheses, apostrophes, etc.
     return ucwords($input, " \t\r\n\f\v-()/'");
+}
+
+// Helper function to format country name in sentence with proper "the" prefix
+function format_country_name_in_sentence($country_name, $the_countries) {
+    $country_lower = strtolower($country_name);
+    $needs_the = in_array($country_lower, $the_countries);
+    return $needs_the ? "the " . $country_name : $country_name;
 }
 
 // Handle the search form submission
@@ -52,16 +60,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // 3) Build a message about the capital(s) with capital names in bold.
         if ($capitals) {
             // Bold each capital using <strong> tags.
-            $capital_names = implode(', ', array_map(function($cap) {
+            $boldCapitals = array_map(function($cap) {
                 return '<strong>' . htmlspecialchars($cap) . '</strong>';
-            }, $capitals));
+            }, $capitals);
+
+            // Format capitals based on count
+            if (count($capitals) === 1) {
+                $capital_names = $boldCapitals[0];
+            } else if (count($capitals) === 2) {
+                $capital_names = $boldCapitals[0] . ' and ' . $boldCapitals[1];
+            } else {
+                $lastCapital = array_pop($boldCapitals);
+                $capital_names = implode(', ', $boldCapitals) . ' and ' . $lastCapital;
+            }
+
             $capital_count = count($capitals);
             $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
             $verb          = ($capital_count > 1) ? 'are' : 'is';
+            // Format country name with "the" if needed
+            $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
             // Build the message with a clickable country name
-            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
+            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
         } else {
-            $message = "No capitals found for <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$country_name}</a>.";
+            // Format country name with "the" if needed
+            $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
+            $message = "No capitals found for <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a>.";
         }
 
         // 4) (Optional) Update site statistics if desired

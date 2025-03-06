@@ -7,21 +7,6 @@ $capital_aliases = [
     "d.c." => "Washington, D.C",
     "DC"=> "Washington, D.C",
 
-    // The Hague / Amsterdam
-    "the hague" => "Amsterdam / The Hague",
-    "amsterdam" => "Amsterdam / The Hague",
-    "den haag" => "Amsterdam / The Hague",
-    "hague" => "Amsterdam / The Hague",
-
-    // South Africa (Pretoria / Cape Town / Bloemfontein)
-    "pretoria" => "Pretoria / Cape Town / Bloemfontein",
-    "cape town" => "Pretoria / Cape Town / Bloemfontein",
-    "bloemfontein" => "Pretoria / Cape Town / Bloemfontein",
-
-    // Bolivia (La Paz / Sucre)
-    "la paz" => "La Paz / Sucre",
-    "sucre" => "La Paz / Sucre",
-
     // Myanmar
     "rangoon" => "Naypyidaw",
     "nay pyi taw" => "Naypyidaw",
