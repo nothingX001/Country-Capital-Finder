@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ExploreCapitals - Find Any Country's Capital City</title>
+    <title>ExploreCapitals | The World Capital Finder</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
