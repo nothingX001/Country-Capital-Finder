@@ -39,53 +39,67 @@ body {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    overflow: visible;
 }
 
 /* iOS Safe Area Handling (Mobile Only) */
 @media (max-width: 1024px) {
     .navbar {
         width: 100vw;
+        min-width: 100vw;
         left: 0;
         right: 0;
+        top: 0;
         padding: 0;
         margin: 0;
-        min-width: 100%;
     }
     .navbar::before {
         content: "";
-        position: absolute;
-        top: -env(safe-area-inset-top);
+        position: fixed;
+        top: 0;
         left: 0;
         right: 0;
         width: 100vw;
-        height: env(safe-area-inset-top);
+        height: calc(env(safe-area-inset-top) + 80px);
         background: linear-gradient(180deg, #3399ff, #66b3ff);
         z-index: -1;
     }
     .navbar-container {
-        width: 100%;
-        padding: 0 15px;
+        width: 100vw;
+        min-width: 100vw;
         margin: 0;
-        min-width: 100%;
+        padding: env(safe-area-inset-top) 0 0 0;
+    }
+    /* Adjust page content to account for safe area */
+    .page-content,
+    .quiz,
+    .country-profiles,
+    .about,
+    .world-map {
+        margin-top: calc(80px + env(safe-area-inset-top));
     }
 }
 
 /* 4) Navbar Container */
 .navbar-container {
     position: relative;
-    width: 100%;
+    width: 100vw;
+    min-width: 100vw;
     height: 100%;
     margin: 0;
-    padding: 0 10px;
+    padding: 0;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 /* 5) Logo – Perfectly centered vertically */
 .navbar-logo {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
+    margin-left: 35px;
+    display: flex;
+    align-items: center;
 }
 .navbar-logo img {
     /* Force the image to have a consistent bounding box */
