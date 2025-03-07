@@ -40,19 +40,19 @@ body {
     margin: 0;
     padding: 0;
     overflow: visible;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* iOS Safe Area Handling (Mobile Only) */
-@media (max-width: 1024px) {
+@supports (padding-top: env(safe-area-inset-top)) {
     .navbar {
-        width: 100vw;
-        min-width: 100vw;
-        left: 0;
-        right: 0;
-        top: 0;
-        padding: 0;
-        margin: 0;
+        padding-top: env(safe-area-inset-top);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        height: calc(80px + env(safe-area-inset-top));
     }
+
     .navbar::before {
         content: "";
         position: fixed;
@@ -64,19 +64,41 @@ body {
         background: linear-gradient(180deg, #3399ff, #66b3ff);
         z-index: -1;
     }
-    .navbar-container {
-        width: 100vw;
-        min-width: 100vw;
-        margin: 0;
-        padding: env(safe-area-inset-top) 0 0 0;
+
+    body {
+        padding-top: env(safe-area-inset-top);
     }
-    /* Adjust page content to account for safe area */
+
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
         margin-top: calc(80px + env(safe-area-inset-top));
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+@media (max-width: 1024px) {
+    .navbar {
+        width: 100vw;
+        min-width: 100vw;
+        left: 0;
+        right: 0;
+        top: 0;
+    }
+
+    .navbar-container {
+        width: 100vw;
+        min-width: 100vw;
+        margin: 0;
+        padding: 0;
+        height: 80px;
+    }
+
+    .navbar-list.open {
+        padding-top: calc(env(safe-area-inset-top) + 80px);
     }
 }
 
@@ -100,6 +122,7 @@ body {
     margin-left: 35px;
     display: flex;
     align-items: center;
+    height: 80px;
 }
 .navbar-logo img {
     /* Force the image to have a consistent bounding box */
@@ -109,7 +132,7 @@ body {
     border-radius: 8px;
 }
 
-/* 6) Navigation List – Absolutely centered horizontally (desktop) */
+/* 6) Navigation List */
 .navbar-list {
     position: absolute;
     left: 50%;
@@ -117,9 +140,10 @@ body {
     transform: translate(-50%, -50%);
     list-style: none;
     display: flex;
-    gap: 40px; /* Increased gap between items on desktop */
+    gap: 40px;
     align-items: center;
-    white-space: nowrap; /* Prevent items from wrapping */
+    white-space: nowrap;
+    height: 80px;
 }
 .navbar-list li a {
     color: #fff;
