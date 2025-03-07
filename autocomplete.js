@@ -27,33 +27,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle keyboard navigation
     input.addEventListener('keydown', (e) => {
         const items = dropdown.querySelectorAll('li');
-        if (!items.length) return;
-
+        
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                activeIndex = (activeIndex + 1) % items.length;
-                items.forEach((item, i) => {
-                    item.classList.toggle('active', i === activeIndex);
-                });
+                if (items.length > 0) {
+                    activeIndex = (activeIndex + 1) % items.length;
+                    items.forEach((item, i) => {
+                        item.classList.toggle('active', i === activeIndex);
+                    });
+                }
                 break;
             case 'ArrowUp':
                 e.preventDefault();
-                activeIndex = (activeIndex - 1 + items.length) % items.length;
-                items.forEach((item, i) => {
-                    item.classList.toggle('active', i === activeIndex);
-                });
+                if (items.length > 0) {
+                    activeIndex = (activeIndex - 1 + items.length) % items.length;
+                    items.forEach((item, i) => {
+                        item.classList.toggle('active', i === activeIndex);
+                    });
+                }
                 break;
             case 'Enter':
                 e.preventDefault();
-                if (activeIndex >= 0 && items[activeIndex]) {
+                if (items.length > 0 && activeIndex >= 0 && items[activeIndex]) {
                     input.value = items[activeIndex].textContent;
                     dropdown.style.display = 'none';
+                    input.form.submit();
+                } else if (input.value.trim()) {
+                    // If no dropdown item is selected but input has value, submit the form
                     input.form.submit();
                 }
                 break;
             case 'Escape':
                 dropdown.style.display = 'none';
+                activeIndex = -1;
                 break;
         }
     });
@@ -78,8 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 countries.forEach((country) => {
                     const item = document.createElement('li');
                     item.textContent = country;
-                    item.style.padding = '5px 10px';
-                    item.style.cursor = 'pointer';
                     item.addEventListener('click', () => {
                         input.value = country;
                         dropdown.style.display = 'none';
@@ -102,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
         if (!input.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.style.display = 'none';
+            activeIndex = -1;
         }
     });
 

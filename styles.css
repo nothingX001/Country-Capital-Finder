@@ -319,7 +319,7 @@ form input[type="submit"].button {
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
@@ -327,13 +327,14 @@ form input[type="submit"].button {
     padding: 0;
 }
 .autocomplete-dropdown li {
-    padding: 10px 15px;
+    padding: 12px 15px;
     font-size: 1rem;
     color: #333;
     cursor: pointer;
     transition: background-color 0.2s ease;
     list-style: none;
     text-align: left;
+    line-height: 1.4;
 }
 .autocomplete-dropdown li:hover {
     background-color: #f0f0f0;
