@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('input[name="country"]');
     if (!input) return;
 
+    // Ensure browser autocomplete is disabled
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('autocorrect', 'off');
+    input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('spellcheck', 'false');
+
     const dropdown = document.createElement('ul');
     dropdown.className = 'autocomplete-dropdown';
     input.parentNode.appendChild(dropdown);

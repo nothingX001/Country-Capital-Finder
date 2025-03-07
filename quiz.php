@@ -91,7 +91,7 @@ try {
                 </div>
             </div>
             <form id="answerForm">
-                <input type="text" id="userAnswer" placeholder="Type your answer here" required>
+                <input type="text" id="userAnswer" placeholder="Type your answer here" required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 <button type="submit" class="button">SUBMIT ANSWER</button>
             </form>
         </div>

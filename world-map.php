@@ -38,7 +38,7 @@ $locations = json_decode($data, true);
     <h1>World Map</h1>
     <p>Explore countries and their capitals around the world.</p>
     <div class="search-bar-container">
-      <input type="text" id="search-bar" placeholder="Search for a country...">
+      <input type="text" id="search-bar" placeholder="Search for a country..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <div id="map"></div>
   </section>
@@ -89,17 +89,34 @@ $locations = json_decode($data, true);
         const lng = parseFloat(matchCountry.longitude);
         const lat = parseFloat(matchCountry.latitude);
         
-        // Calculate appropriate zoom level based on country size
+        // Calculate zoom level based on country size
         let zoomLevel = 3; // Default zoom level
-        if (matchCountry.country_name.toLowerCase() === 'hong kong' || 
-            matchCountry.country_name.toLowerCase() === 'singapore' ||
-            matchCountry.country_name.toLowerCase() === 'vatican city') {
-          zoomLevel = 8;
-        } else if (matchCountry.country_name.toLowerCase() === 'united states' ||
-                   matchCountry.country_name.toLowerCase() === 'russia' ||
-                   matchCountry.country_name.toLowerCase() === 'canada' ||
-                   matchCountry.country_name.toLowerCase() === 'china') {
-          zoomLevel = 2;
+        
+        // If we have bounding box coordinates, use them to calculate zoom
+        if (matchCountry.min_lat && matchCountry.max_lat && 
+            matchCountry.min_lng && matchCountry.max_lng) {
+          const latDiff = Math.abs(matchCountry.max_lat - matchCountry.min_lat);
+          const lngDiff = Math.abs(matchCountry.max_lng - matchCountry.min_lng);
+          
+          // Calculate the larger difference to determine zoom level
+          const maxDiff = Math.max(latDiff, lngDiff);
+          
+          // Adjust zoom level based on the size
+          if (maxDiff < 0.5) { // Very small countries (like Vatican City, Singapore)
+            zoomLevel = 8;
+          } else if (maxDiff < 1) { // Small countries
+            zoomLevel = 7;
+          } else if (maxDiff < 2) { // Medium-small countries
+            zoomLevel = 6;
+          } else if (maxDiff < 5) { // Medium countries
+            zoomLevel = 5;
+          } else if (maxDiff < 10) { // Medium-large countries
+            zoomLevel = 4;
+          } else if (maxDiff < 20) { // Large countries
+            zoomLevel = 3;
+          } else { // Very large countries (like Russia, Canada, China)
+            zoomLevel = 2;
+          }
         }
         
         map.flyTo({ 
