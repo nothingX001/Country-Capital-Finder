@@ -60,15 +60,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // 3) Build a message about the capital(s) with capital names in bold.
         if ($capitals) {
             // Bold each capital using <strong> tags.
-            $boldCapitals = array_map(function($cap) {
-                return '<strong>' . htmlspecialchars($cap) . '</strong>';
+            $boldCapitals = array_map(function($cap) use ($country_id) {
+                return '<a href="country-detail.php?id=' . urlencode($country_id) . '"><strong>' . htmlspecialchars($cap) . '</strong></a>';
             }, $capitals);
 
             // Format capitals based on count
             if (count($capitals) === 1) {
                 $capital_names = $boldCapitals[0];
             } else if (count($capitals) === 2) {
-                $capital_names = $boldCapitals[0] . ' and ' . $boldCapitals[1];
+                $capital_names = $boldCapitals[0] . ' or ' . $boldCapitals[1];
             } else {
                 $lastCapital = array_pop($boldCapitals);
                 $capital_names = implode(', ', $boldCapitals) . ' and ' . $lastCapital;
