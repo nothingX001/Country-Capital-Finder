@@ -79,7 +79,17 @@ try {
 
         <div id="quizContainer" style="display: none;">
             <div id="timer">Time: 0:00</div>
-            <div id="questionContainer"></div>
+            <div id="questionContainer">
+                <p>What is the capital of <?php echo htmlspecialchars($country['country_name']); ?>?</p>
+                <p>Choose from the following options:</p>
+                <div class="options">
+                    <?php foreach ($options as $option): ?>
+                        <button class="option-button" onclick="checkAnswer('<?php echo htmlspecialchars($option); ?>')">
+                            <?php echo htmlspecialchars($option); ?>
+                        </button>
+                    <?php endforeach; ?>
+                </div>
+            </div>
             <form id="answerForm">
                 <input type="text" id="userAnswer" placeholder="Type your answer here" required>
                 <button type="submit" class="button">SUBMIT ANSWER</button>
