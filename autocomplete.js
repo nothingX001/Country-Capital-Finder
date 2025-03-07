@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('input[name="country"]');
+    if (!input) return;
+
     const dropdown = document.createElement('ul');
     dropdown.className = 'autocomplete-dropdown';
     input.parentNode.appendChild(dropdown);
@@ -99,4 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Focus the input field when the page loads
     input.focus();
+
+    // Add touch event support for mobile devices
+    input.addEventListener('touchstart', () => {
+        input.focus();
+    });
 });

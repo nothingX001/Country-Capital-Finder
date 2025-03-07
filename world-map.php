@@ -10,7 +10,13 @@ $locations = json_decode($data, true);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Explore capitals of countries, territories, and more with our world map!">
+  <meta name="description" content="Explore capitals of countries, territories, and more with our interactive world map! Find country capitals, learn about different nations, and test your geography knowledge.">
+  <meta name="keywords" content="world map, country capitals, geography, interactive map, world geography, country information">
+  <meta name="author" content="ExploreCapitals">
+  <meta property="og:title" content="World Map | ExploreCapitals">
+  <meta property="og:description" content="Explore capitals of countries, territories, and more with our interactive world map!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="images/explore-capitals-logo.jpg">
   <title>World Map | ExploreCapitals</title>
   <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
   <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
@@ -46,7 +52,8 @@ $locations = json_decode($data, true);
       style: 'mapbox://styles/mapbox/streets-v12',
       center: [0, 20],
       zoom: 1.5,
-      projection: 'globe'
+      projection: 'globe',
+      maxBounds: [[-180, -90], [180, 90]]
     });
 
     map.on('style.load', () => {
@@ -58,7 +65,6 @@ $locations = json_decode($data, true);
         "horizon-blend": 0.1,
         "star-intensity": 0.1
       });
-      // No red borders are added.
     });
 
     map.on('error', (e) => {
@@ -82,8 +88,26 @@ $locations = json_decode($data, true);
       if (matchCountry && matchCountry.latitude && matchCountry.longitude) {
         const lng = parseFloat(matchCountry.longitude);
         const lat = parseFloat(matchCountry.latitude);
-        // Use a zoom level that shows the full country.
-        map.flyTo({ center: [lng, lat], zoom: 3 });
+        
+        // Calculate appropriate zoom level based on country size
+        let zoomLevel = 3; // Default zoom level
+        if (matchCountry.country_name.toLowerCase() === 'hong kong' || 
+            matchCountry.country_name.toLowerCase() === 'singapore' ||
+            matchCountry.country_name.toLowerCase() === 'vatican city') {
+          zoomLevel = 8;
+        } else if (matchCountry.country_name.toLowerCase() === 'united states' ||
+                   matchCountry.country_name.toLowerCase() === 'russia' ||
+                   matchCountry.country_name.toLowerCase() === 'canada' ||
+                   matchCountry.country_name.toLowerCase() === 'china') {
+          zoomLevel = 2;
+        }
+        
+        map.flyTo({ 
+          center: [lng, lat], 
+          zoom: zoomLevel,
+          duration: 2000,
+          essential: true
+        });
       }
     });
   </script>

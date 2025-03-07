@@ -7,7 +7,7 @@
 
 /* Add emoji font support */
 .flag-emoji {
-    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Android Emoji", "EmojiSymbols", "Twemoji Mozilla", "Noto Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji";
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Android Emoji", "EmojiSymbols", "Twemoji Mozilla", "Noto Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", "Segoe UI", "Arial Unicode MS", "Microsoft YaHei", "sans-serif";
     font-size: 1.2em;
     line-height: 1;
     vertical-align: middle;
@@ -15,6 +15,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1, "tnum" 0, "onum" 0, "lnum" 0, "dlig" 0, "hlig" 0;
 }
 
 /* 2) Body Defaults */
@@ -32,10 +33,10 @@ body {
     left: 0;
     right: 0;
     width: 100%;
-    height: 80px; /* Fixed height for navbar */
-    /* Darker at top, lighter at bottom */
+    height: 80px;
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
+    box-sizing: border-box;
 }
 
 /* iOS Safe Area Handling (Mobile Only) */
@@ -44,6 +45,8 @@ body {
         width: 100vw;
         left: 0;
         right: 0;
+        padding: 0;
+        margin: 0;
     }
     .navbar::before {
         content: "";
@@ -55,6 +58,10 @@ body {
         height: env(safe-area-inset-top);
         background: linear-gradient(180deg, #3399ff, #66b3ff);
         z-index: -1;
+    }
+    .navbar-container {
+        width: 100%;
+        padding: 0 15px;
     }
 }
 
