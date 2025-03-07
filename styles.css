@@ -32,11 +32,13 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    width: 100%;
+    width: 100vw;
     height: 80px;
     background: linear-gradient(180deg, #3399ff, #66b3ff);
     z-index: 9999;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 /* iOS Safe Area Handling (Mobile Only) */
@@ -47,6 +49,7 @@ body {
         right: 0;
         padding: 0;
         margin: 0;
+        min-width: 100%;
     }
     .navbar::before {
         content: "";
@@ -62,16 +65,19 @@ body {
     .navbar-container {
         width: 100%;
         padding: 0 15px;
+        margin: 0;
+        min-width: 100%;
     }
 }
 
 /* 4) Navbar Container */
 .navbar-container {
     position: relative;
-    width: 90%;
+    width: 100%;
     height: 100%;
-    margin: 0 auto;
+    margin: 0;
     padding: 0 10px;
+    box-sizing: border-box;
 }
 
 /* 5) Logo – Perfectly centered vertically */
