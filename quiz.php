@@ -143,13 +143,13 @@ try {
     // 5) Helper function to format capitals for display
     function formatCapitals(capitals) {
         if (capitals.length === 1) {
-            return capitals[0];
+            return `<strong>${capitals[0]}</strong>`;
         } else if (capitals.length === 2) {
-            return `${capitals[0]} or ${capitals[1]}`;
+            return `<strong>${capitals[0]}</strong> or <strong>${capitals[1]}</strong>`;
         } else {
             const lastCapital = capitals[capitals.length - 1];
-            const otherCapitals = capitals.slice(0, -1);
-            return `${otherCapitals.join(', ')} or ${lastCapital}`;
+            const otherCapitals = capitals.slice(0, -1).map(cap => `<strong>${cap}</strong>`);
+            return `${otherCapitals.join(', ')} or <strong>${lastCapital}</strong>`;
         }
     }
 
