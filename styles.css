@@ -7,7 +7,7 @@
 
 /* Add emoji font support */
 .flag-emoji {
-    font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "Android Emoji", "EmojiSymbols", "Twemoji Mozilla", "Noto Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", "Segoe UI", "Arial Unicode MS", "Microsoft YaHei", "sans-serif";
+    font-family: "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji", "EmojiOne Color", "Android Emoji", "Noto Color Emoji", "EmojiSymbols", "Symbola", system-ui, -apple-system, sans-serif;
     font-size: 1.2em;
     line-height: 1;
     vertical-align: middle;
@@ -16,6 +16,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1, "tnum" 0, "onum" 0, "lnum" 0, "dlig" 0, "hlig" 0;
+    font-variation-settings: "FILL" 0;
+}
+
+/* Windows-specific emoji adjustments */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .flag-emoji {
+        font-family: "Segoe UI Emoji", "Twemoji Mozilla", "Noto Color Emoji", system-ui;
+    }
+}
+
+/* Edge-specific emoji adjustments */
+@supports (-ms-ime-align: auto) {
+    .flag-emoji {
+        font-family: "Segoe UI Emoji", "Twemoji Mozilla", "Noto Color Emoji", system-ui;
+    }
 }
 
 /* 2) Body Defaults */
