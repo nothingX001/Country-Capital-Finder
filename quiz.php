@@ -292,7 +292,7 @@ try {
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `<strong>${resp.correctAnswerText}</strong> <span class="flag-emoji">${resp.flagEmoji}</span>`;
+            const correctAnswerText = resp.correctAnswerText + ` <span class="flag-emoji">${resp.flagEmoji}</span>`;
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}.`
