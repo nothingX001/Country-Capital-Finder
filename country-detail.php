@@ -95,12 +95,12 @@ try {
       }
       .country-detail-entity {
           font-size: 1.2rem;
-          color: #333;
+          color: #555;
           margin-bottom: 10px;
       }
       .sovereign-state {
           font-size: 1.2rem;
-          color: #333;
+          color: #555;
           margin-bottom: 20px;
           text-align: center;
       }
@@ -117,7 +117,7 @@ try {
           margin: 0 auto;
           text-align: left;
           font-size: 1.1rem;
-          color: #333;
+          color: #555;
       }
       .attributes p {
           margin: 10px 0;
@@ -125,6 +125,7 @@ try {
       }
       .attributes strong {
           font-weight: bold;
+          color: #333;
       }
     </style>
 </head>
