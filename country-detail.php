@@ -118,7 +118,6 @@ try {
           height: 200px;  /* Fixed height */
           width: auto;    /* Width will adjust proportionally */
           max-width: none;  /* Remove max-width constraint */
-          border-radius: 0; /* Remove border radius */
       }
       .attributes {
           max-width: 500px;
@@ -143,7 +142,7 @@ try {
       }
       .header-emoji {
           font-size: 3rem;
-          margin-bottom: 10px;
+          margin-top: 10px;
       }
     </style>
 </head>
@@ -153,8 +152,8 @@ try {
     <section class="page-content country-detail">
         <!-- Header: Country Name and Entity Type -->
         <div class="country-detail-header">
-            <div class="header-emoji"><span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span></div>
             <h1><?php echo htmlspecialchars($country['country_name']); ?></h1>
+            <div class="header-emoji"><span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span></div>
             <?php if (!empty($country['entity_type'])): ?>
                 <?php if ($country['country_name'] === 'United Kingdom'): ?>
                     <div class="constituent-countries">
