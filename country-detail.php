@@ -115,8 +115,10 @@ try {
           margin-bottom: 30px;
       }
       .flag-image img {
-          max-width: 300px;
-          border-radius: 4px;
+          height: 200px;  /* Fixed height */
+          width: auto;    /* Width will adjust proportionally */
+          max-width: none;  /* Remove max-width constraint */
+          border-radius: 0; /* Remove border radius */
       }
       .attributes {
           max-width: 500px;
@@ -139,6 +141,10 @@ try {
       .constituent-countries {
           font-family: "Courier New", Courier, monospace;
       }
+      .header-emoji {
+          font-size: 3rem;
+          margin-bottom: 10px;
+      }
     </style>
 </head>
 <body>
@@ -147,7 +153,8 @@ try {
     <section class="page-content country-detail">
         <!-- Header: Country Name and Entity Type -->
         <div class="country-detail-header">
-            <h1><?php echo htmlspecialchars($country['country_name']); ?> <span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span></h1>
+            <div class="header-emoji"><span class="flag-emoji"><?php echo htmlspecialchars($country['flag_emoji']); ?></span></div>
+            <h1><?php echo htmlspecialchars($country['country_name']); ?></h1>
             <?php if (!empty($country['entity_type'])): ?>
                 <?php if ($country['country_name'] === 'United Kingdom'): ?>
                     <div class="constituent-countries">
