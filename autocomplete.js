@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeIndex = -1;
 
+    // Helper function to normalize country name for submission
+    function normalizeCountryName(countryName) {
+        // Remove "The " prefix if present
+        return countryName.replace(/^The\s+/i, '');
+    }
+
     // Handle keyboard navigation
     input.addEventListener('keydown', (e) => {
         const items = dropdown.querySelectorAll('li');
@@ -37,11 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'Enter':
                 e.preventDefault();
                 if (items.length > 0 && activeIndex >= 0 && items[activeIndex]) {
-                    input.value = items[activeIndex].textContent;
+                    input.value = normalizeCountryName(items[activeIndex].textContent);
                     dropdown.style.display = 'none';
                     input.form.submit();
                 } else if (input.value.trim()) {
-                    // If no dropdown item is selected but input has value, submit the form
+                    input.value = normalizeCountryName(input.value);
                     input.form.submit();
                 }
                 break;
@@ -73,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const item = document.createElement('li');
                     item.textContent = country;
                     item.addEventListener('click', () => {
-                        input.value = country;
+                        input.value = normalizeCountryName(country);
                         dropdown.style.display = 'none';
                         input.form.submit();
                     });
@@ -101,6 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!('ontouchstart' in window)) {
         input.focus();
     }
+
+    // Form submit handler to normalize the input value
+    input.form.addEventListener('submit', (e) => {
+        input.value = normalizeCountryName(input.value);
+    });
 
     // Improved touch event handling for mobile
     let touchMoved = false;
