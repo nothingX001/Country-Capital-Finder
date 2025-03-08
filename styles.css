@@ -238,6 +238,13 @@ h3 {
 }
 
 /* 11) Search Input */
+.search-bar-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
 input[type="text"] {
     font-family: Arial, sans-serif;
     width: 100%;
@@ -305,6 +312,9 @@ form input[type="submit"].button {
 /* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: #2A363B;
     border-radius: 2px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
