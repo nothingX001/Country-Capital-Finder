@@ -90,20 +90,20 @@ try {
           text-align: center;
       }
       .country-detail-header h1 {
-          font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+          font-family: "Courier New", Courier, monospace;
           font-size: 2.5rem;
           margin-bottom: 10px;
           font-weight: 600;
           letter-spacing: 0.5px;
       }
       .country-detail-entity {
-          font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+          font-family: "Courier New", Courier, monospace;
           font-size: 1.2rem;
           color: #DCCB9C;
           margin-bottom: 10px;
       }
       .sovereign-state {
-          font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+          font-family: "Courier New", Courier, monospace;
           font-size: 1.2rem;
           color: #DCCB9C;
           margin-bottom: 20px;
