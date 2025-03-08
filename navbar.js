@@ -2,7 +2,6 @@ let lastScrollTop = 0;
 const navbar = document.querySelector('.navbar');
 const navbarToggle = document.querySelector('.navbar-toggle');
 const navbarList = document.querySelector('.navbar-list');
-const threshold = 5; // Minimum amount of pixels to scroll before showing/hiding
 const scrollThreshold = 50; // Threshold for when to add background
 let isHamburgerOpen = false;
 let scrollPosition = 0;
@@ -17,7 +16,6 @@ function setHamburgerState(isOpen) {
         document.body.classList.add('menu-open');
         navbarToggle.classList.add('active');
         navbarList.classList.add('open');
-        navbar.classList.remove('hidden');
         navbar.classList.add('scrolled'); // Always show background when menu is open
     } else {
         document.body.classList.remove('menu-open');
@@ -51,19 +49,6 @@ window.addEventListener('scroll', () => {
     } else {
         navbar.classList.remove('scrolled');
     }
-    
-    // Determine scroll direction and distance
-    if (Math.abs(lastScrollTop - currentScroll) <= threshold) return;
-
-    if (currentScroll > lastScrollTop && currentScroll > navbar.clientHeight) {
-        // Scrolling down & past navbar height
-        navbar.classList.add('hidden');
-    } else if (currentScroll < lastScrollTop) {
-        // Only show navbar when explicitly scrolling up
-        navbar.classList.remove('hidden');
-    }
-
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 }, { passive: true });
 
 // Prevent touchmove events when menu is open
