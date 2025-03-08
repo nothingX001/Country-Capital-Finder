@@ -843,7 +843,10 @@ img {
     color: inherit;
 }
 
-/* Update navbar list in mobile mode to match */
+/* 
+   Update navbar list in mobile mode to match 
+   — here's where we add "overflow-y: auto"
+*/
 .navbar-list.open {
     display: flex !important;
     flex-direction: column;
@@ -860,6 +863,7 @@ img {
     align-items: center;
     justify-content: flex-start;
     transform: none !important;
+    /* NEW lines: allow the open menu to scroll */
     overflow-y: auto;
-    transition: transform 0.3s ease;
+    -webkit-overflow-scrolling: touch;
 }
