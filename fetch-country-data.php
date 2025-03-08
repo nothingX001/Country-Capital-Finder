@@ -205,16 +205,16 @@ try {
                 SELECT 
                     \"Country Name\" AS country_name,
                     CASE 
-                        WHEN LOWER(\"Country Name\") = ANY($1)
+                        WHEN LOWER(\"Country Name\") = ANY(?)
                         THEN TRUE 
                         ELSE FALSE 
                     END AS needs_the
                 FROM countries
-                WHERE LOWER(\"Country Name\") LIKE LOWER($2)
+                WHERE LOWER(\"Country Name\") LIKE ?
                 ORDER BY \"Country Name\" ASC
                 LIMIT 10
             ");
-            $stmt->execute(['{' . implode(',', $the_countries) . '}', $query . '%']);
+            $stmt->execute(['{' . implode(',', $the_countries) . '}', strtolower($query) . '%']);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response = array_map(function($row) {
                 return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
