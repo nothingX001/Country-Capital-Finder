@@ -115,7 +115,7 @@ try {
     <?php include 'navbar.php'; ?>
 
     <section class="page-content quiz" id="main-quiz">
-        <h1>ExploreCapitals Quiz</h1>
+        <h1 id="quizTitle">ExploreCapitals Quiz</h1>
         <p>Select a quiz type to begin.</p>
 
         <button id="startMainQuizBtn" class="button">COUNTRIES QUIZ</button>
@@ -230,6 +230,10 @@ try {
             return;
         }
 
+        // Update the quiz title based on quiz type
+        document.getElementById('quizTitle').textContent = 
+            quizType === 'main' ? 'Countries Quiz' : 'Territories Quiz';
+
         document.querySelector('#main-quiz p').style.display = 'none';
         document.getElementById('quizContainer').style.display = 'block';
         document.getElementById('resultContainer').style.display = 'none';
@@ -313,10 +317,15 @@ try {
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const countryLink = `<a href="country-detail.php?id=${resp.id}">${resp.countryName}</a>`;
+            // Create country link with normal text styling
+            const countryLink = `<a href="country-detail.php?id=${resp.id}" class="quiz-link"><strong>${resp.countryName}</strong></a>`;
+            
+            // Create properly formatted capital links
             const capitalLinks = resp.correctAnswers.map(capital => 
-                `<a href="country-detail.php?id=${resp.id}">${capital}</a>`
+                `<a href="country-detail.php?id=${resp.id}" class="quiz-link"><strong>${capital}</strong></a>`
             );
+            
+            // Format multiple capitals properly
             const correctAnswerText = capitalLinks.length === 1 
                 ? capitalLinks[0]
                 : capitalLinks.slice(0, -1).join(', ') + ' or ' + capitalLinks[capitalLinks.length - 1];
@@ -326,10 +335,10 @@ try {
                 ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`
                 : `Incorrect. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span> You answered ${userAnswerText}.`;
 
-            // Replace the country name in the question with a link
+            // Replace the country name in the question with a styled link
             const questionTextWithLink = resp.questionText.replace(
                 new RegExp(`<strong>${resp.countryName}</strong>`),
-                `<strong>${countryLink}</strong>`
+                `<a href="country-detail.php?id=${resp.id}" class="quiz-link"><strong>${resp.countryName}</strong></a>`
             );
 
             detailHTML += `
