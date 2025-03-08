@@ -238,7 +238,7 @@ h3 {
 .search-bar-container {
     width: 300px;
     margin: 0 auto;
-    position: relative;
+    position: relative !important;
 }
 
 input[type="text"] {
@@ -317,7 +317,7 @@ form input[type="submit"].button {
 /* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute;
-    width: 300px;
+    width: 100%;
     left: 0;
     top: 100%;
     background-color: #FFFFFF;
@@ -328,6 +328,11 @@ form input[type="submit"].button {
     overflow-y: auto;
     margin-top: -1px;
     z-index: 1000;
+    display: none;
+}
+
+.autocomplete-dropdown[style*="display: block"] {
+    display: block !important;
 }
 
 input[type="text"].show-dropdown {
