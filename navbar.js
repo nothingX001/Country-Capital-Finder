@@ -2,70 +2,66 @@ let lastScrollTop = 0;
 const navbar = document.querySelector('.navbar');
 const navbarToggle = document.querySelector('.navbar-toggle');
 const navbarList = document.querySelector('.navbar-list');
-const threshold = 5; // Minimum amount of pixels to scroll before showing/hiding
-let isHamburgerOpen = false;
-let scrollPosition = 0;
+const threshold = 5;
+let isMenuOpen = false;
 
-// Function to handle hamburger menu state
-function setHamburgerState(isOpen) {
-    isHamburgerOpen = isOpen;
+function setHamburgerState(open) {
+    isMenuOpen = open;
+    const body = document.body;
     
-    if (isOpen) {
-        // Store current scroll position
-        scrollPosition = window.pageYOffset;
-        document.body.classList.add('menu-open');
+    if (open) {
         navbarToggle.classList.add('active');
         navbarList.classList.add('open');
+        body.classList.add('menu-open');
         navbar.classList.remove('hidden');
     } else {
-        document.body.classList.remove('menu-open');
         navbarToggle.classList.remove('active');
         navbarList.classList.remove('open');
-        // Restore scroll position
-        window.scrollTo(0, scrollPosition);
+        body.classList.remove('menu-open');
     }
 }
 
-// Handle hamburger click
+// Handle hamburger menu click
 navbarToggle.addEventListener('click', () => {
-    setHamburgerState(!isHamburgerOpen);
+    setHamburgerState(!isMenuOpen);
 });
 
 // Handle scroll events
 window.addEventListener('scroll', () => {
-    if (isHamburgerOpen) {
-        return; // Don't process scroll events when menu is open
-    }
-
+    if (isMenuOpen) return; // Don't hide navbar if menu is open
+    
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Determine scroll direction and distance
-    if (Math.abs(lastScrollTop - currentScroll) <= threshold) return;
-
-    if (currentScroll > lastScrollTop && currentScroll > navbar.clientHeight) {
+    if (Math.abs(currentScroll - lastScrollTop) <= threshold) return;
+    
+    if (currentScroll > lastScrollTop && currentScroll > 80) {
         // Scrolling down & past navbar height
         navbar.classList.add('hidden');
-    } else if (currentScroll < lastScrollTop) {
-        // Only show navbar when explicitly scrolling up
+    } else {
+        // Scrolling up
         navbar.classList.remove('hidden');
     }
-
+    
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 }, { passive: true });
 
-// Prevent touchmove events when menu is open
-document.addEventListener('touchmove', (e) => {
-    if (isHamburgerOpen) {
-        e.preventDefault();
-    }
-}, { passive: false });
-
 // Close menu on escape key
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isHamburgerOpen) {
+    if (e.key === 'Escape' && isMenuOpen) {
         setHamburgerState(false);
     }
 });
 
-// Expose the setHamburgerState function globally
-window.setHamburgerState = setHamburgerState; 
+// Prevent touchmove when menu is open
+document.body.addEventListener('touchmove', (e) => {
+    if (isMenuOpen) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// Handle resize events
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 1100 && isMenuOpen) {
+        setHamburgerState(false);
+    }
+}, { passive: true }); 
