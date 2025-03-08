@@ -373,6 +373,18 @@ form input[type="submit"].button {
     font-size: 1rem;
     color: #ECECEC;
 }
+
+/* Quiz Links - Make them look like normal text */
+.quiz-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+.quiz-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 #quizContainer {
     margin-top: 20px;
 }
