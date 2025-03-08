@@ -163,6 +163,9 @@ try {
     // 8. Autocomplete
     elseif ($type === 'autocomplete' && isset($_GET['query'])) {
         $query = $_GET['query'];
+        // Remove "the" from the beginning of the search query if present
+        $normalized_query = preg_replace('/^the\s+/i', '', $query);
+        
         // IMPORTANT: Use "Country Name" to match your column.
         $stmt = $conn->prepare("
             SELECT 
@@ -177,7 +180,7 @@ try {
             ORDER BY REGEXP_REPLACE(LOWER(\"Country Name\"), '^the\\s+', '') ASC
             LIMIT 10
         ");
-        $stmt->execute([$query . '%']);
+        $stmt->execute([$normalized_query . '%']);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $response = array_map(function($row) {
             return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
