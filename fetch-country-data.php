@@ -40,13 +40,19 @@ try {
     }
     // 4. Random Member/Observer States for Quiz
     elseif ($type === 'random_main' && isset($_GET['limit'])) {
+        include 'the-countries.php'; // Include the list of "the" countries
         $limit = (int)$_GET['limit'];
-        $stmt = $conn->query("
+        $stmt = $conn->prepare("
             WITH random_countries AS (
                 SELECT c.id, 
                        c.\"Country Name\" AS country_name,
                        c.\"Flag Emoji\" AS flag_emoji,
-                       array_agg(cap.capital_name) AS capitals
+                       array_agg(cap.capital_name) AS capitals,
+                       CASE 
+                           WHEN LOWER(c.\"Country Name\") = ANY(?) 
+                           THEN TRUE 
+                           ELSE FALSE 
+                       END AS needs_the
                 FROM countries c
                 JOIN capitals cap ON c.id = cap.country_id
                 WHERE c.\"Entity Type\" IN ('UN member', 'UN observer')
@@ -57,6 +63,7 @@ try {
             SELECT * FROM random_countries
             WHERE array_length(capitals, 1) > 0
         ");
+        $stmt->execute(['{' . implode(',', $the_countries) . '}']);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as &$row) {
             if (!empty($row['capitals']) && is_string($row['capitals'])) {
@@ -67,19 +74,29 @@ try {
             } else {
                 $row['capitals'] = [];
             }
+            // Add "The" prefix where needed
+            if ($row['needs_the']) {
+                $row['country_name'] = 'The ' . $row['country_name'];
+            }
         }
         unset($row);
         $response = $rows;
     }
     // 5. Random Territories for Quiz
     elseif ($type === 'random_territories' && isset($_GET['limit'])) {
+        include 'the-countries.php'; // Include the list of "the" countries if not already included
         $limit = (int)$_GET['limit'];
-        $stmt = $conn->query("
+        $stmt = $conn->prepare("
             WITH random_countries AS (
                 SELECT c.id,
                        c.\"Country Name\" AS country_name,
                        c.\"Flag Emoji\" AS flag_emoji,
-                       array_agg(cap.capital_name) AS capitals
+                       array_agg(cap.capital_name) AS capitals,
+                       CASE 
+                           WHEN LOWER(c.\"Country Name\") = ANY(?) 
+                           THEN TRUE 
+                           ELSE FALSE 
+                       END AS needs_the
                 FROM countries c
                 JOIN capitals cap ON c.id = cap.country_id
                 WHERE c.\"Entity Type\" = 'Territory'
@@ -90,6 +107,7 @@ try {
             SELECT * FROM random_countries
             WHERE array_length(capitals, 1) > 0
         ");
+        $stmt->execute(['{' . implode(',', $the_countries) . '}']);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as &$row) {
             if (!empty($row['capitals']) && is_string($row['capitals'])) {
@@ -99,6 +117,10 @@ try {
                 }, $row['capitals']);
             } else {
                 $row['capitals'] = [];
+            }
+            // Add "The" prefix where needed
+            if ($row['needs_the']) {
+                $row['country_name'] = 'The ' . $row['country_name'];
             }
         }
         unset($row);
