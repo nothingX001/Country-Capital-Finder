@@ -21,80 +21,69 @@
 </nav>
 
 <script>
-// ----------------------------------------------------------
-// INLINED NAVBAR.JS
-// ----------------------------------------------------------
+// INLINED NAVBAR JS
 (() => {
-    const navbar        = document.querySelector('.navbar');
-    const navbarToggle  = document.getElementById('navbarToggle');
-    const navbarList    = document.getElementById('navbarList');
-    const navbarLogo    = document.querySelector('.navbar-logo');
+    const navbar       = document.querySelector('.navbar');
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarList   = document.getElementById('navbarList');
+    const navbarLogo   = document.querySelector('.navbar-logo');
 
-    let isHamburgerOpen = false;
-    let lastScrollY     = 0;
-    const scrollThreshold       = 50;  // If user scrolls beyond 50px, we "scrolled"
-    const scrollThresholdForHide= 5;   // Minimal scroll to hide the logo/toggle inside menu
+    let isMenuOpen           = false;
+    let lastWindowScrollY    = 0;
+    let lastMenuScrollY      = 0;
+    const SCROLL_THRESHOLD   = 50; // if page scrolled beyond 50px, we call it "scrolled"
+    const HIDE_THRESHOLD     = 5;  // minimal scroll inside the menu to hide the logo/toggle
 
-    // Normal page scrolling behavior when menu is closed
+    // 1) NORMAL PAGE SCROLL (when menu is closed):
     function handleWindowScroll() {
-        if (!isHamburgerOpen) {
+        if (!isMenuOpen) {
             const currentScroll = window.pageYOffset;
-            if (currentScroll > scrollThreshold) {
+            if (currentScroll > SCROLL_THRESHOLD) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
+            lastWindowScrollY = currentScroll;
         }
     }
 
-    // Scroll inside the open hamburger menu
-    function handleMenuScroll() {
-        if (!isHamburgerOpen) return;
-        const currentScroll = navbarList.scrollTop;
-        lastScrollY = currentScroll;
-    }
+    // 2) If we wanted to do “hide logo on menu scroll,” we’d need to
+    //    attach a scroll listener to the menu itself. BUT in this
+    //    approach, the menu is in normal flow – it’s not an overlay
+    //    with its own scroll container. The entire page just scrolls.
+    //    So we no longer need a separate "menu scroll" listener.
 
-    // Toggle open/closed
-    function setHamburgerState(isOpen) {
-        isHamburgerOpen = isOpen;
-        if (isOpen) {
-            // Lock body scrolling behind overlay
-            document.body.classList.add('menu-open');
-
-            // Show the overlay
+    // 3) Toggle menu open/closed in normal flow
+    function setMenuState(open) {
+        isMenuOpen = open;
+        if (open) {
+            // Instead of locking the page, let it scroll normally.
+            // We'll just expand the navbar-list below the hamburger.
             navbarList.classList.add('open');
-            // Force a background on the navbar
+            // Force background on the navbar if user was near top
             navbar.classList.add('scrolled');
 
-            // Reset scroll inside the menu
-            navbarList.scrollTop = 0;
-            lastScrollY = 0;
         } else {
-            document.body.classList.remove('menu-open');
             navbarList.classList.remove('open');
-
-            // If the main page hasn't scrolled beyond threshold, remove .scrolled
-            if (window.pageYOffset < scrollThreshold) {
+            // If the page is near top, remove .scrolled
+            if (window.pageYOffset < SCROLL_THRESHOLD) {
                 navbar.classList.remove('scrolled');
             }
         }
     }
 
-    // Handle hamburger toggle
+    // 4) Hook up the toggle button
     navbarToggle.addEventListener('click', () => {
-        setHamburgerState(!isHamburgerOpen);
+        setMenuState(!isMenuOpen);
     });
 
-    // Listen for normal page scroll
+    // 5) Listen for normal page scrolling
     window.addEventListener('scroll', handleWindowScroll, { passive: true });
 
-    // Listen for scroll within the open menu
-    navbarList.addEventListener('scroll', handleMenuScroll, { passive: true });
-
-    // Allow closing with Escape key
+    // 6) Optional: close menu on Escape
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isHamburgerOpen) {
-            setHamburgerState(false);
+        if (e.key === 'Escape' && isMenuOpen) {
+            setMenuState(false);
         }
     });
 })();
