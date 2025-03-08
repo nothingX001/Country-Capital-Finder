@@ -3,6 +3,7 @@ const navbar = document.querySelector('.navbar');
 const navbarToggle = document.querySelector('.navbar-toggle');
 const navbarList = document.querySelector('.navbar-list');
 const threshold = 5; // Minimum amount of pixels to scroll before showing/hiding
+const scrollThreshold = 50; // Threshold for when to add background
 let isHamburgerOpen = false;
 let scrollPosition = 0;
 
@@ -17,10 +18,15 @@ function setHamburgerState(isOpen) {
         navbarToggle.classList.add('active');
         navbarList.classList.add('open');
         navbar.classList.remove('hidden');
+        navbar.classList.add('scrolled'); // Always show background when menu is open
     } else {
         document.body.classList.remove('menu-open');
         navbarToggle.classList.remove('active');
         navbarList.classList.remove('open');
+        // Check if we should remove the scrolled class
+        if (window.pageYOffset < scrollThreshold) {
+            navbar.classList.remove('scrolled');
+        }
         // Restore scroll position
         window.scrollTo(0, scrollPosition);
     }
@@ -38,6 +44,13 @@ window.addEventListener('scroll', () => {
     }
 
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Add/remove scrolled class based on scroll position
+    if (currentScroll > scrollThreshold) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
     
     // Determine scroll direction and distance
     if (Math.abs(lastScrollTop - currentScroll) <= threshold) return;
