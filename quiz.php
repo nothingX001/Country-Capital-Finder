@@ -334,7 +334,7 @@ try {
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const resultText = resp.isCorrect
                 ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`
-                : `Incorrect. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span> You answered ${userAnswerText}.`;
+                : `Incorrect. You answered ${userAnswerText}. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`;
 
             // Replace the country name in the question with a styled link
             const questionTextWithLink = resp.questionText.replace(
