@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h1>ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
         <form action="index.php" method="post" id="searchForm">
-            <input type="text" name="country" placeholder="Search..." required>
+            <input type="text" name="country" placeholder="Search..." novalidate>
             <input type="submit" value="SUBMIT" class="button">
         </form>
 
@@ -141,13 +141,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Autocomplete script -->
     <script src="autocomplete.js" defer></script>
     <script>
-    // Prevent form submission from stealing focus on mobile
     document.getElementById('searchForm').addEventListener('submit', function(e) {
-        // Don't focus the input after form submission
         const input = this.querySelector('input[name="country"]');
-        if (input) {
+        if (input && !input.value.trim()) {
+            e.preventDefault();
+            input.setCustomValidity('Please enter a country name');
+            input.reportValidity();
+        } else if (input) {
+            input.setCustomValidity('');
             input.blur();
         }
+    });
+
+    // Clear validation message when user starts typing
+    document.querySelector('input[name="country"]').addEventListener('input', function() {
+        this.setCustomValidity('');
     });
     </script>
 </body>
