@@ -54,8 +54,8 @@ body {
     right: 0;
     width: 100vw;
     height: 80px;
-    /* Dark gradient to stand out against body background */
-    background: linear-gradient(180deg, #2F3B44, #3B4B54);
+    /* Match body background color */
+    background: #1F2B30;
     z-index: 9999;
     box-sizing: border-box;
     margin: 0;
@@ -72,7 +72,7 @@ body {
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
         height: calc(80px + env(safe-area-inset-top));
-        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        background: #1F2B30;
     }
 
     .navbar::before {
@@ -83,7 +83,7 @@ body {
         right: 0;
         width: 100vw;
         height: calc(env(safe-area-inset-top) + 80px);
-        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        background: #1F2B30;
         z-index: -1;
     }
 
