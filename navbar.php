@@ -51,19 +51,6 @@
     function handleMenuScroll() {
         if (!isHamburgerOpen) return;
         const currentScroll = navbarList.scrollTop;
-        const diff          = currentScroll - lastScrollY;
-
-        if (Math.abs(diff) > scrollThresholdForHide) {
-            if (diff > 0 && currentScroll > 50) {
-                // Scrolling down => hide logo + toggle
-                navbarLogo.classList.add('hidden');
-                navbarToggle.classList.add('hidden');
-            } else {
-                // Scrolling up => show them again
-                navbarLogo.classList.remove('hidden');
-                navbarToggle.classList.remove('hidden');
-            }
-        }
         lastScrollY = currentScroll;
     }
 
@@ -78,10 +65,6 @@
             navbarList.classList.add('open');
             // Force a background on the navbar
             navbar.classList.add('scrolled');
-
-            // Reset hidden states
-            navbarLogo.classList.remove('hidden');
-            navbarToggle.classList.remove('hidden');
 
             // Reset scroll inside the menu
             navbarList.scrollTop = 0;
