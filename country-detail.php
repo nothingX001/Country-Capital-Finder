@@ -88,6 +88,7 @@ try {
       .country-detail-header {
           margin-bottom: 20px;
           text-align: center;
+          font-family: "Courier New", Courier, monospace;
       }
       .country-detail-header h1 {
           font-family: "Courier New", Courier, monospace;
@@ -122,15 +123,21 @@ try {
           margin: 0 auto;
           text-align: left;
           font-size: 1.1rem;
-          color: #DCCB9C
+          color: #DCCB9C;
+          font-family: "Courier New", Courier, monospace;
       }
       .attributes p {
           margin: 10px 0;
           line-height: 1.5;
+          font-family: "Courier New", Courier, monospace;
       }
       .attributes strong {
           font-weight: bold;
           color: #DCCB9C;
+          font-family: "Courier New", Courier, monospace;
+      }
+      .constituent-countries {
+          font-family: "Courier New", Courier, monospace;
       }
     </style>
 </head>
