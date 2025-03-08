@@ -377,6 +377,24 @@ try {
         quizType = 'territory';
         startQuiz(randomTerritories);
     });
+
+    // Add this function to handle scrolling to top when restarting quiz
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Add click handlers to quiz restart buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        const restartButtons = document.querySelectorAll('.restart-quiz-btn');
+        restartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                scrollToTop();
+            });
+        });
+    });
     </script>
 </body>
 </html>
