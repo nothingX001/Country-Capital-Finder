@@ -7,7 +7,9 @@
 
 /* Add emoji font support */
 .flag-emoji {
-    font-family: "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji", "EmojiOne Color", "Android Emoji", "Noto Color Emoji", "EmojiSymbols", "Symbola", system-ui, -apple-system, sans-serif;
+    font-family: "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji", "EmojiOne Color", 
+                 "Android Emoji", "Noto Color Emoji", "EmojiSymbols", "Symbola", system-ui, 
+                 -apple-system, sans-serif;
     font-size: 1.2em;
     line-height: 1;
     vertical-align: middle;
@@ -15,7 +17,8 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1, "tnum" 0, "onum" 0, "lnum" 0, "dlig" 0, "hlig" 0;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "pnum" 1, "tnum" 0, "onum" 0, 
+                           "lnum" 0, "dlig" 0, "hlig" 0;
     font-variation-settings: "FILL" 0;
 }
 
@@ -36,7 +39,9 @@
 /* 2) Body Defaults */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Content background remains gray */
+    /* Moody gray-blue matching the outer ring of the globe */
+    background-color: #1F2B30;
+    color: #ECECEC;
     margin: 0;
     padding: 0;
 }
@@ -49,7 +54,8 @@ body {
     right: 0;
     width: 100vw;
     height: 80px;
-    background: linear-gradient(180deg, #3399ff, #66b3ff);
+    /* Dark gradient to stand out against body background */
+    background: linear-gradient(180deg, #2F3B44, #3B4B54);
     z-index: 9999;
     box-sizing: border-box;
     margin: 0;
@@ -66,6 +72,7 @@ body {
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
         height: calc(80px + env(safe-area-inset-top));
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
     }
 
     .navbar::before {
@@ -76,7 +83,7 @@ body {
         right: 0;
         width: 100vw;
         height: calc(env(safe-area-inset-top) + 80px);
-        background: linear-gradient(180deg, #3399ff, #66b3ff);
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
         z-index: -1;
     }
 
@@ -140,7 +147,6 @@ body {
     height: 80px;
 }
 .navbar-logo img {
-    /* Force the image to have a consistent bounding box */
     display: block;
     height: 30px;
     width: auto;
@@ -161,13 +167,14 @@ body {
     height: 80px;
 }
 .navbar-list li a {
-    color: #fff;
+    color: #ECECEC;
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s ease;
 }
 .navbar-list li a:hover {
-    color: #ffdd57;
+    /* Soft gold highlight */
+    color: #DCCB9C;
 }
 
 /* 7) Hamburger Menu – Perfectly centered vertically */
@@ -183,14 +190,12 @@ body {
     border: none;
     cursor: pointer;
     z-index: 1001;
-    /* Consistent line-height to match the 30px "box" */
     line-height: 30px;
 }
 .navbar-toggle::before {
     content: '☰';
     font-size: 1.5rem;
-    color: #fff;
-    /* Center the icon within the 30px box */
+    color: #ECECEC;
     display: inline-block;
     width: 30px;
     text-align: center;
@@ -210,7 +215,7 @@ body {
         display: block;
     }
     
-    /* Mobile overlay menu (original code) */
+    /* Mobile overlay menu */
     .navbar-menu-overlay {
         display: none;
         position: fixed;
@@ -218,7 +223,7 @@ body {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: linear-gradient(180deg, #66b3ff, #3399ff);
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
         flex-direction: column;
         align-items: center;
         padding-top: 80px;
@@ -232,14 +237,14 @@ body {
     }
     .navbar-menu-overlay li a {
         font-size: 1.2rem;
-        color: #fff;
+        color: #ECECEC;
         text-decoration: none;
         padding: 10px 20px;
         text-align: center;
     }
     .navbar-menu-overlay li a:hover {
-        background-color: rgba(255,255,255,0.25);
-        color: #fff;
+        background-color: rgba(255,255,255,0.15);
+        color: #DCCB9C;
         border-radius: 8px;
     }
     
@@ -248,17 +253,16 @@ body {
         display: flex !important;
         flex-direction: column;
         position: fixed;
-        top: 80px; /* If you want it below the navbar. Set 0 to cover. */
+        top: 80px;
         left: 0;
         width: 100vw;
-        /* Lighter at top, darker at bottom to continue from navbar */
-        background: linear-gradient(180deg, #66b3ff, #3399ff);
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
         height: calc(100vh - 80px);
         padding-top: 20px;
         z-index: 9998;
         align-items: center;
         justify-content: flex-start;
-        transform: none !important; /* remove desktop transform */
+        transform: none !important;
     }
     .navbar-list.open li {
         margin: 15px 0;
@@ -266,14 +270,14 @@ body {
     }
     .navbar-list.open li a {
         font-size: 1.2rem;
-        color: #fff;
+        color: #ECECEC;
         text-decoration: none;
         padding: 10px 20px;
         text-align: center;
     }
     .navbar-list.open li a:hover {
-        background-color: rgba(255,255,255,0.25);
-        color: #fff;
+        background-color: rgba(255,255,255,0.15);
+        color: #DCCB9C;
         border-radius: 8px;
     }
 }
@@ -290,10 +294,12 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding: 20px;
-    background-color: #fff;
+    /* Slightly lighter dark background than body */
+    background-color: #2A363B;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     text-align: center;
+    color: #ECECEC;
 }
 
 /* 10) Headings */
@@ -301,6 +307,7 @@ h1, h2, h3 {
     margin-bottom: 20px;
     text-align: center;
     line-height: 1.2;
+    color: #F0F0F0;
 }
 h1 { font-size: 2rem; }
 h2 { font-size: 1.5rem; }
@@ -312,7 +319,8 @@ input[type="text"] {
     max-width: 300px;
     padding: 15px;
     font-size: 1rem;
-    border: 1px solid #ccc;
+    /* Darker border to show on dark backgrounds */
+    border: 1px solid #444;
     border-radius: 4px;
     display: block;
     margin: 0 auto 15px auto;
@@ -325,17 +333,18 @@ input[type="text"] {
     padding: 15px 40px;
     font-size: 1.1rem;
     font-weight: bold;
-    color: white;
+    /* Gold gradient for contrast against dark background */
+    color: #1F2B30;
     text-align: center;
     border: none;
     border-radius: 50px;
-    background: linear-gradient(180deg, #66b3ff, #3399ff);
-    box-shadow: inset 0 3px 6px rgba(255,255,255,0.6), 0 6px 12px rgba(0,0,0,0.2);
+    background: linear-gradient(180deg, #DCCB9C, #C0AA75);
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 6px 12px rgba(0,0,0,0.2);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
 .button:hover {
-    background: linear-gradient(180deg, #55aaff, #2288ee);
+    background: linear-gradient(180deg, #C8B882, #B89F6A);
 }
 .button:active {
     box-shadow: inset 0 6px 12px rgba(0,0,0,0.2), 0 3px 6px rgba(0,0,0,0.1);
@@ -349,10 +358,12 @@ form input[type="submit"].button {
 .message {
     margin-top: 20px;
     padding: 10px;
-    background-color: #e0e0e0;
+    /* Slightly darker container for message boxes */
+    background-color: #404B50;
     border: none !important;
     margin-bottom: 0 !important;
     border-radius: 2px;
+    color: #ECECEC;
 }
 
 .message a {
@@ -360,29 +371,28 @@ form input[type="submit"].button {
     color: inherit;
     cursor: pointer;
 }
-
 .message a:hover {
     text-decoration: none;
-    color: inherit;
+    color: #DCCB9C;
 }
 
 /* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute;
-    background-color: #fff;
+    background-color: #2A363B;
     border-radius: 2px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     max-height: 300px;
     overflow-y: auto;
     z-index: 1000;
     margin-top: 5px;
-    width: 300px; /* Match the input width */
+    width: 300px;
     padding: 0;
 }
 .autocomplete-dropdown li {
     padding: 12px 15px;
     font-size: 1rem;
-    color: #333;
+    color: #ECECEC;
     cursor: pointer;
     transition: background-color 0.2s ease;
     list-style: none;
@@ -390,25 +400,25 @@ form input[type="submit"].button {
     line-height: 1.4;
 }
 .autocomplete-dropdown li:hover {
-    background-color: #f0f0f0;
+    background-color: #3B4B54;
 }
 .autocomplete-dropdown li.active {
-    background-color: #66b3ff;
-    color: #fff;
+    background-color: #DCCB9C;
+    color: #1F2B30;
 }
 .autocomplete-dropdown::-webkit-scrollbar {
     width: 8px;
 }
 .autocomplete-dropdown::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #3B4B54;
     border-radius: 4px;
 }
 .autocomplete-dropdown::-webkit-scrollbar-thumb {
-    background: #ccc;
+    background: #555;
     border-radius: 4px;
 }
 .autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
-    background: #999;
+    background: #666;
 }
 
 /* 15) Quiz Section */
@@ -419,12 +429,13 @@ form input[type="submit"].button {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 20px;
+    color: #F0F0F0;
 }
 .quiz p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
-    color: #555;
+    color: #ECECEC;
 }
 #quizContainer {
     margin-top: 20px;
@@ -433,7 +444,7 @@ form input[type="submit"].button {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #ECECEC;
     text-align: center;
 }
 #questionContainer {
@@ -442,16 +453,18 @@ form input[type="submit"].button {
 #questionContainer p {
     font-size: 1.25rem;
     margin-bottom: 10px;
-    color: #333;
+    color: #ECECEC;
     text-align: center;
 }
 #userAnswer {
     width: 100%;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #444;
     border-radius: 4px;
     margin-bottom: 20px;
+    color: #ECECEC;
+    background-color: #2A363B;
 }
 #resultContainer {
     margin-top: 20px;
@@ -460,49 +473,45 @@ form input[type="submit"].button {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1.5rem;
-    color: #333;
+    color: #F0F0F0;
 }
 #score {
     font-size: 1.25rem;
     margin-bottom: 20px;
-    color: #333;
+    color: #ECECEC;
     text-align: center;
     font-weight: bold;
 }
 #detailedResults {
     margin-top: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #404B50;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 #detailedResults p {
     font-size: 1rem;
     margin-bottom: 15px;
-    color: #555;
+    color: #ECECEC;
     text-align: left;
     line-height: 1.6;
     padding: 10px;
-    border-left: 4px solid #66b3ff;
-    background-color: #fff;
+    border-left: 4px solid #C0AA75; /* default gold-ish left border */
+    background-color: #2A363B;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     transition: border-left-color 0.3s ease;
 }
 #detailedResults p strong {
-    color: #333;
+    color: #ECECEC;
     font-weight: bold;
 }
-#detailedResults p.correct {
-    border-left-color: #66b3ff;
-}
-#detailedResults p.incorrect {
-    border-left-color: #66b3ff;
-}
 #detailedResults p.correct:hover {
+    /* turns green on hover if correct */
     border-left-color: #4caf50;
 }
 #detailedResults p.incorrect:hover {
+    /* turns red on hover if incorrect */
     border-left-color: #f44336;
 }
 #redoQuizBtn {
@@ -520,18 +529,19 @@ form input[type="submit"].button {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
+    color: #F0F0F0;
 }
 .country-profiles p {
     text-align: center;
     margin-bottom: 20px;
     font-size: 1rem;
-    color: #555;
+    color: #ECECEC;
 }
 .country-profiles h2 {
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.5rem;
-    color: #333;
+    color: #F0F0F0;
 }
 .country-profiles ul {
     list-style: none;
@@ -541,29 +551,29 @@ form input[type="submit"].button {
 .country-profiles ul li {
     margin: 10px 0;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #404B50;
     border-radius: 2px;
     transition: background-color 0.2s ease;
 }
 .country-profiles ul li:hover {
-    background-color: #f0f0f0;
+    background-color: #3B4B54;
 }
 .country-profiles ul li a {
     text-decoration: none;
-    color: #333;
+    color: #ECECEC;
     font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 .country-profiles ul li a:hover {
-    color: #66b3ff;
+    color: #DCCB9C;
 }
 
-/* Add styles for official name */
+/* Official Name etc. */
 .country-detail-entity {
     font-size: 1.2rem;
-    color: #333;
+    color: #ECECEC;
     margin-bottom: 10px;
     text-align: center;
     max-width: 70%;
@@ -571,20 +581,17 @@ form input[type="submit"].button {
     margin-right: auto;
 }
 
-/* Flag Image (below entity type and sovereign state) */
+/* Flag Image */
 .flag-image {
     text-align: center;
     margin: 20px 0;
 }
-
 .flag-image img {
     max-width: 300px;
     height: auto;
     display: block;
     margin: 0 auto;
 }
-
-/* Additional reset for images to prevent any browser defaults */
 img {
     border: 0;
     outline: 0;
@@ -598,20 +605,20 @@ img {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2rem;
-    color: #333;
+    color: #F0F0F0;
     line-height: 1.2;
 }
 .about p {
     font-size: 1rem;
     line-height: 1.6;
-    color: #555;
+    color: #ECECEC;
     margin-bottom: 20px;
 }
 .about h2 {
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.5rem;
-    color: #333;
+    color: #F0F0F0;
 }
 .about ul {
     list-style: none;
@@ -621,24 +628,24 @@ img {
 .about ul li {
     margin: 10px 0;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #404B50;
     border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 .about ul li:hover {
-    background-color: #f0f0f0;
+    background-color: #3B4B54;
 }
 .about ul li strong {
-    color: #333;
+    color: #ECECEC;
     font-weight: bold;
 }
 .about ul li a {
     text-decoration: none;
-    color: #66b3ff;
+    color: #DCCB9C;
     transition: color 0.2s ease;
 }
 .about ul li a:hover {
-    color: #3399ff;
+    color: #C0AA75;
 }
 
 /* 18) World Map Section */
@@ -648,11 +655,11 @@ img {
 .world-map h1 {
     margin-bottom: 20px;
     font-size: 2rem;
-    color: #333;
+    color: #F0F0F0;
 }
 .world-map p {
     font-size: 1rem;
-    color: #555;
+    color: #ECECEC;
     margin-bottom: 20px;
 }
 .search-bar-container {
@@ -667,17 +674,19 @@ img {
     max-width: 300px;
     padding: 15px;
     font-size: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #444;
     border-radius: 4px;
     display: block;
     margin: 0 auto;
+    color: #ECECEC;
+    background-color: #2A363B;
 }
 #map {
     height: 500px;
     width: 100%;
     border-radius: 15px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 /* 19) Home Page Intro (if relevant) */
@@ -685,6 +694,7 @@ img {
     font-size: 1rem;
     line-height: 1.4;
     margin-bottom: 20px;
+    color: #ECECEC;
 }
 
 /* 20) Mobile-Only: Thin Side Margins */
@@ -696,13 +706,13 @@ img {
     .world-map {
         width: 95%;
         max-width: 600px;
-        margin: 120px auto 50px auto; /* keep consistent top/bottom spacing */
+        margin: 120px auto 50px auto;
     }
 }
 
 .sovereign-state {
     font-size: 1.2rem;
-    color: #333;
+    color: #ECECEC;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -718,10 +728,9 @@ img {
     color: inherit;
 }
 
-/* Flag Image (below entity type and sovereign state) */
 .constituent-countries {
     font-size: 1.2rem;
-    color: #333;
+    color: #ECECEC;
     margin-bottom: 10px;
     text-align: center;
     max-width: 70%;
@@ -750,5 +759,3 @@ img {
     text-decoration: none;
     color: inherit;
 }
-
-/* Flag Image (below entity type and sovereign state) */
