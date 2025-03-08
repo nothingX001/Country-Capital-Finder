@@ -9,10 +9,15 @@ try {
         SELECT
             id,
             "Country Name" AS country_name,
-            "Flag Emoji"   AS flag_emoji
+            "Flag Emoji"   AS flag_emoji,
+            CASE 
+                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                THEN TRUE 
+                ELSE FALSE 
+            END AS needs_the
         FROM countries
         WHERE "Entity Type" IN (\'UN member\', \'UN observer\')
-        ORDER BY "Country Name" ASC
+        ORDER BY REGEXP_REPLACE(LOWER("Country Name"), \'^the\s+\', \'\') ASC
     ');
     $mainCountries = $stmtMain->fetchAll(PDO::FETCH_ASSOC);
 
@@ -21,10 +26,15 @@ try {
         SELECT
             id,
             "Country Name" AS country_name,
-            "Flag Emoji"   AS flag_emoji
+            "Flag Emoji"   AS flag_emoji,
+            CASE 
+                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                THEN TRUE 
+                ELSE FALSE 
+            END AS needs_the
         FROM countries
         WHERE "Entity Type" = \'Territory\'
-        ORDER BY "Country Name" ASC
+        ORDER BY REGEXP_REPLACE(LOWER("Country Name"), \'^the\s+\', \'\') ASC
     ');
     $territories = $stmtTerr->fetchAll(PDO::FETCH_ASSOC);
 
@@ -33,10 +43,15 @@ try {
         SELECT
             id,
             "Country Name" AS country_name,
-            "Flag Emoji"   AS flag_emoji
+            "Flag Emoji"   AS flag_emoji,
+            CASE 
+                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                THEN TRUE 
+                ELSE FALSE 
+            END AS needs_the
         FROM countries
         WHERE "Entity Type" = \'De facto state\'
-        ORDER BY "Country Name" ASC
+        ORDER BY REGEXP_REPLACE(LOWER("Country Name"), \'^the\s+\', \'\') ASC
     ');
     $deFactoStates = $stmtDefacto->fetchAll(PDO::FETCH_ASSOC);
 
@@ -70,10 +85,11 @@ try {
                         // Safely handle NULL values
                         $countryName = $c['country_name'] ?? '';
                         $flagEmoji   = $c['flag_emoji']   ?? '';
+                        $displayName = $c['needs_the'] ? 'The ' . $countryName : $countryName;
                     ?>
                     <li>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($c['id']); ?>">
-                            <?php echo htmlspecialchars($countryName); ?>
+                            <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
                                 <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
@@ -93,10 +109,11 @@ try {
                     <?php
                         $countryName = $t['country_name'] ?? '';
                         $flagEmoji   = $t['flag_emoji']   ?? '';
+                        $displayName = $t['needs_the'] ? 'The ' . $countryName : $countryName;
                     ?>
                     <li>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($t['id']); ?>">
-                            <?php echo htmlspecialchars($countryName); ?>
+                            <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
                                 <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
@@ -116,10 +133,11 @@ try {
                     <?php
                         $countryName = $d['country_name'] ?? '';
                         $flagEmoji   = $d['flag_emoji']   ?? '';
+                        $displayName = $d['needs_the'] ? 'The ' . $countryName : $countryName;
                     ?>
                     <li>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($d['id']); ?>">
-                            <?php echo htmlspecialchars($countryName); ?>
+                            <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
                                 <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>

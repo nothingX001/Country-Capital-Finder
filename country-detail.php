@@ -28,7 +28,12 @@ try {
             "Area (km2)"   AS area_km2,
             "Calling Code" AS calling_code,
             "Internet TLD" AS internet_tld,
-            "Official Name" AS official_name
+            "Official Name" AS official_name,
+            CASE 
+                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                THEN TRUE 
+                ELSE FALSE 
+            END AS needs_the
         FROM countries
         WHERE id = ?
         LIMIT 1
@@ -152,7 +157,10 @@ try {
     <section class="page-content country-detail">
         <!-- Header: Country Name and Entity Type -->
         <div class="country-detail-header">
-            <h1><?php echo htmlspecialchars($country['country_name']); ?></h1>
+            <h1><?php 
+                $displayName = $country['needs_the'] ? 'The ' . $country['country_name'] : $country['country_name'];
+                echo htmlspecialchars($displayName); 
+            ?></h1>
             <?php if (!empty($country['entity_type'])): ?>
                 <?php if ($country['country_name'] === 'United Kingdom'): ?>
                     <div class="constituent-countries">
