@@ -20,11 +20,11 @@ function fetchQuizData(PDO $conn, array $entityTypes, int $limit = 10): array {
     //    (Only selecting id + "Country Name" + "Flag Emoji")
     $inList = "'" . implode("','", $entityTypes) . "'";
     $sql = "
-        SELECT DISTINCT c.id, c.\"Country Name\" AS country_name, c.\"Flag Emoji\" AS flag_emoji
+        SELECT DISTINCT c.id, c.\"Country Name\" AS country_name, c.\"Flag Emoji\" AS flag_emoji, RANDOM() as rand
         FROM countries c
         INNER JOIN capitals cap ON c.id = cap.country_id
         WHERE c.\"Entity Type\" IN ($inList)
-        ORDER BY RANDOM()
+        ORDER BY rand
         LIMIT $limit
     ";
     $rows = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
