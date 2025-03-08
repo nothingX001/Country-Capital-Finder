@@ -16,13 +16,14 @@ include 'the-countries.php';
  * then for each country, fetch capitals from the capitals table and attach them.
  */
 function fetchQuizData(PDO $conn, array $entityTypes, int $limit = 10): array {
-    // 1) Get up to $limit random countries with matching "Entity Type"
+    // 1) Get up to $limit random countries with matching "Entity Type" that have capitals
     //    (Only selecting id + "Country Name" + "Flag Emoji")
     $inList = "'" . implode("','", $entityTypes) . "'";
     $sql = "
-        SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
-        FROM countries
-        WHERE \"Entity Type\" IN ($inList)
+        SELECT DISTINCT c.id, c.\"Country Name\" AS country_name, c.\"Flag Emoji\" AS flag_emoji
+        FROM countries c
+        INNER JOIN capitals cap ON c.id = cap.country_id
+        WHERE c.\"Entity Type\" IN ($inList)
         ORDER BY RANDOM()
         LIMIT $limit
     ";
