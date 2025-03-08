@@ -76,10 +76,14 @@ try {
 
     // Get 3 random incorrect capitals
     $stmt = $conn->prepare('
-        SELECT DISTINCT capital_name
-        FROM capitals
-        WHERE country_id != ?
-        ORDER BY RANDOM()
+        WITH RandomCapitals AS (
+            SELECT DISTINCT capital_name, RANDOM() as rand
+            FROM capitals
+            WHERE country_id != ?
+        )
+        SELECT capital_name
+        FROM RandomCapitals
+        ORDER BY rand
         LIMIT 3
     ');
     $stmt->execute([$country['id']]);
@@ -319,8 +323,8 @@ try {
             
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const resultText = resp.isCorrect
-                ? `Correct. The answer was ${correctAnswerText} <span class="flag-emoji">${resp.flagEmoji}</span>.`
-                : `Incorrect. The answer was ${correctAnswerText} <span class="flag-emoji">${resp.flagEmoji}</span>. You answered ${userAnswerText}.`;
+                ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`
+                : `Incorrect. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span> You answered ${userAnswerText}.`;
 
             // Replace the country name in the question with a link
             const questionTextWithLink = resp.questionText.replace(
