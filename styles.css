@@ -3,11 +3,15 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    background-color: #3B4B54; /* Fallback color */
 }
 
 html {
     height: 100%;
     min-height: 100%;
+    background: linear-gradient(180deg,#DCCB9C, #3B4B54) fixed;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 /* Add emoji font support */
@@ -44,7 +48,7 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    background: linear-gradient(180deg, #DCCB9C, #3B4B54) fixed;
+    background: none;
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
