@@ -165,14 +165,23 @@ try {
         $query = $_GET['query'];
         // IMPORTANT: Use "Country Name" to match your column.
         $stmt = $conn->prepare("
-            SELECT \"Country Name\" AS country_name
+            SELECT 
+                \"Country Name\" AS country_name,
+                CASE 
+                    WHEN LOWER(\"Country Name\") IN (SELECT UNNEST(ARRAY['united states', 'united kingdom', 'netherlands', 'philippines', 'bahamas', 'gambia', 'czech republic', 'united arab emirates', 'central african republic', 'republic of the congo', 'democratic republic of the congo', 'maldives', 'marshall islands', 'seychelles', 'solomon islands', 'comoros']))
+                    THEN TRUE 
+                    ELSE FALSE 
+                END AS needs_the
             FROM countries
             WHERE LOWER(\"Country Name\") LIKE LOWER(?)
-            ORDER BY \"Country Name\" ASC
+            ORDER BY REGEXP_REPLACE(LOWER(\"Country Name\"), '^the\\s+', '') ASC
             LIMIT 10
         ");
         $stmt->execute([$query . '%']);
-        $response = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $response = array_map(function($row) {
+            return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
+        }, $results);
     }
     // 9. Site Statistics
     elseif ($type === 'statistics') {
