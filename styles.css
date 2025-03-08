@@ -241,6 +241,7 @@ h3 {
     max-width: 300px;
     margin: 0 auto;
     display: block;
+    z-index: 1000;
 }
 
 input[type="text"] {
@@ -248,11 +249,14 @@ input[type="text"] {
     padding: 15px;
     font-size: 1rem;
     border: 1px solid #444;
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     background-color: #FFFFFF;
     color: #333333;
     font-family: "Courier New", Courier, monospace;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    z-index: 1001;
+    margin: 0;
 }
 
 input[type="text"]:focus {
@@ -321,17 +325,18 @@ form input[type="submit"].button {
     position: absolute;
     top: 100%;
     left: 0;
+    right: 0;
     width: 100%;
     background-color: #FFFFFF;
     border-radius: 0 0 4px 4px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     max-height: 300px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 999;
     padding: 0;
     border: 1px solid #444;
     border-top: none;
-    margin: 0;
+    margin-top: -1px;
 }
 
 .autocomplete-dropdown li {
