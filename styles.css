@@ -203,7 +203,7 @@ body.menu-open {
 .about,
 .world-map {
     margin-top: 100px;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -312,17 +312,16 @@ form input[type="submit"].button {
 /* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    top: calc(100% - 15px); /* Adjust for the margin-bottom of input */
+    left: 0;
+    right: 0;
     background-color: #2A363B;
     border-radius: 2px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     max-height: 300px;
     overflow-y: auto;
     z-index: 1000;
-    margin-top: 5px;
-    width: 300px;
+    width: 100%;
     padding: 0;
 }
 .autocomplete-dropdown li {
