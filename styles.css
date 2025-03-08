@@ -180,9 +180,6 @@ body.menu-open {
     width: 30px;
     text-align: center;
 }
-.navbar-toggle.active::before {
-    content: 'X';
-}
 
 /* 8) Mobile & Tablet Adjustments */
 @media (max-width: 1100px) {
@@ -254,8 +251,8 @@ input[type="text"] {
     border-radius: 4px 4px 0 0;
     display: block;
     margin: 0;
-    background-color: #2A363B;
-    color: #ECECEC;
+    background-color: #FFFFFF;
+    color: #333333;
     font-family: Arial, sans-serif;
 }
 
@@ -414,8 +411,8 @@ form input[type="submit"].button {
     border: 1px solid #444;
     border-radius: 4px;
     margin-bottom: 20px;
-    color: #ECECEC;
-    background-color: #2A363B;
+    color: #333333;
+    background-color: #FFFFFF;
 }
 #resultContainer {
     margin-top: 20px;
@@ -629,8 +626,8 @@ img {
     border-radius: 4px;
     display: block;
     margin: 0 auto;
-    color: #ECECEC;
-    background-color: #2A363B;
+    color: #333333;
+    background-color: #FFFFFF;
 }
 #map {
     height: 500px;
