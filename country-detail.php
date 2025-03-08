@@ -83,6 +83,9 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Browse our database of countries, territories, and more!">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
       /* Additional styling for the country detail page */
       .country-detail-header {
@@ -90,15 +93,20 @@ try {
           text-align: center;
       }
       .country-detail-header h1 {
+          font-family: 'Montserrat', sans-serif;
           font-size: 2.5rem;
           margin-bottom: 10px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
       }
       .country-detail-entity {
+          font-family: 'Montserrat', sans-serif;
           font-size: 1.2rem;
           color: #DCCB9C;
           margin-bottom: 10px;
       }
       .sovereign-state {
+          font-family: 'Montserrat', sans-serif;
           font-size: 1.2rem;
           color: #DCCB9C;
           margin-bottom: 20px;
