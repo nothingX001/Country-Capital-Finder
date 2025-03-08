@@ -34,7 +34,7 @@ window.addEventListener('scroll', () => {
     
     if (Math.abs(currentScroll - lastScrollTop) <= threshold) return;
     
-    if (currentScroll > lastScrollTop && currentScroll > 80) {
+    if (currentScroll > lastScrollTop && currentScroll > navbar.clientHeight) {
         // Scrolling down & past navbar height
         navbar.classList.add('hidden');
     } else {
@@ -52,9 +52,9 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Prevent touchmove when menu is open
+// Prevent touchmove when menu is open or hovering over navbar
 document.body.addEventListener('touchmove', (e) => {
-    if (isMenuOpen) {
+    if (isMenuOpen || e.target.closest('.navbar')) {
         e.preventDefault();
     }
 }, { passive: false });
