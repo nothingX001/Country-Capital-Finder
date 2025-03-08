@@ -47,7 +47,7 @@ body {
     background: linear-gradient(180deg, #2F3B44, #3B4B54) fixed;
     color: #ECECEC;
     margin: 0;
-    padding: 0 0 100px 0;
+    padding: 0 0 40px 0;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
@@ -200,7 +200,7 @@ body.menu-open {
 .about,
 .world-map {
     margin-top: 100px;
-    margin-bottom: 100px;
+    margin-bottom: 40px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
