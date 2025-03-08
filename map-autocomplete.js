@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeIndex = -1;
 
+    // Helper function to normalize country name for searching
+    function normalizeCountryName(countryName) {
+        // Remove "The " prefix if present
+        return countryName.replace(/^The\s+/i, '');
+    }
+
     // Handle keyboard navigation
     input.addEventListener('keydown', (e) => {
         const items = dropdown.querySelectorAll('li');
@@ -34,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'Enter':
                 e.preventDefault();
                 if (items.length > 0 && activeIndex >= 0 && items[activeIndex]) {
-                    input.value = items[activeIndex].textContent;
+                    input.value = normalizeCountryName(items[activeIndex].textContent);
                     dropdown.style.display = 'none';
                     // Trigger the map's search functionality
                     input.dispatchEvent(new Event('input'));
@@ -74,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const item = document.createElement('li');
                         item.textContent = country;
                         item.addEventListener('click', () => {
-                            input.value = country;
+                            input.value = normalizeCountryName(country);
                             dropdown.style.display = 'none';
                             // Trigger the map's search functionality
                             input.dispatchEvent(new Event('input'));
