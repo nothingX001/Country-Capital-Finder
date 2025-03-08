@@ -11,14 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeIndex = -1;
 
-    // Position the dropdown below the input
-    function positionDropdown() {
-        const rect = input.getBoundingClientRect();
-        dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-        dropdown.style.left = `${rect.left}px`;
-        dropdown.style.width = `${rect.width}px`;
-    }
-
     // Handle keyboard navigation
     input.addEventListener('keydown', (e) => {
         const items = dropdown.querySelectorAll('li');
@@ -87,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     dropdown.appendChild(item);
                 });
-                positionDropdown();
                 dropdown.style.display = 'block';
             } else {
                 dropdown.style.display = 'none';
