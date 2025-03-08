@@ -115,10 +115,21 @@ try {
           margin-bottom: 30px;
       }
       .flag-image img {
-          height: 250px;  /* Fixed height of 250px */
+          height: 180px;  /* Reduced fixed height that works well on all devices */
           width: auto;    /* Width will adjust proportionally */
-          max-width: none;  /* Remove max-width constraint */
+          max-width: 100%;  /* Ensure it doesn't overflow container */
       }
+
+      /* Responsive flag sizing for mobile */
+      @media (max-width: 768px) {
+          .flag-image img {
+              height: auto;  /* Let height adjust based on width */
+              max-height: 200px;  /* Maximum height on mobile */
+              width: 100%;  /* Full width of container */
+              max-width: 100%;  /* Ensure it doesn't overflow */
+          }
+      }
+
       .attributes {
           max-width: 500px;
           margin: 0 auto;
