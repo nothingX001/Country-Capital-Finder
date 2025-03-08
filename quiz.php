@@ -246,7 +246,7 @@ try {
                     correctAnswers: [qData.country_name],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: qData.country_name,
+                    correctAnswerText: `<strong>${qData.country_name}</strong>`,
                     countryName: qData.country_name,
                     flagEmoji: qData.flag_emoji
                 });
