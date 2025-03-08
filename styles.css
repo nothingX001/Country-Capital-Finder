@@ -524,7 +524,7 @@ form input[type="submit"].button {
 }
 #detailedResults p.incorrect:hover {
     /* turns red on hover if incorrect */
-    border-left-color: #f44336;
+    border-left-color: #f31000;
 }
 #redoQuizBtn {
     margin-top: 20px;
