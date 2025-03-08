@@ -115,7 +115,7 @@ try {
           margin-bottom: 30px;
       }
       .flag-image img {
-          height: 200px;  /* Fixed height */
+          height: 250px;  /* Fixed height of 250px */
           width: auto;    /* Width will adjust proportionally */
           max-width: none;  /* Remove max-width constraint */
       }
@@ -225,16 +225,10 @@ try {
 
         <!-- Flag Image (below entity type and sovereign state) -->
         <?php if (!empty($country['flag_url'])): ?>
-            <?php 
-            // Check if it's Nepal to apply different styling
-            $isNepal = strtolower($country['country_name']) === 'nepal';
-            $flagStyle = $isNepal ? '' : 'border: 1px solid #ccc;';
-            ?>
             <div class="flag-image">
                 <img 
                     src="<?php echo htmlspecialchars($country['flag_url']); ?>" 
                     alt="Flag of <?php echo htmlspecialchars($country['country_name']); ?>"
-                    style="max-width: 300px; height: auto; <?php echo $flagStyle; ?>"
                 >
             </div>
         <?php endif; ?>
