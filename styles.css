@@ -11,7 +11,7 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    /* We remove overscroll-behavior: none so there's normal scroll bounce */
+    /* Normal scroll bounce rather than overscroll-behavior: none */
 }
 
 /* Add emoji font support */
@@ -59,22 +59,34 @@ body {
     /* Enables smoother “momentum” scrolling on iOS */
     -webkit-overflow-scrolling: touch;
 }
-/*
-   PSEUDO-ELEMENT:
-   This is the actual gradient background. 
-   It's fixed behind all content, so on iOS 
-   overscroll, you’ll see the gradient, not white.
+
+/* 
+   2a) Pseudo-element for the background:
+   pinned to the full viewport and extends beyond safe-area 
+   insets to avoid any side/bottom bars on iOS. 
 */
 body::before {
     content: "";
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    inset: 0;               /* Pin to all edges */
     z-index: -1;
     background: linear-gradient(180deg, #3B4B54, #DCCB9C);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+}
+
+@supports(padding: max(0px)) {
+    /* 
+       Extend beyond iPhone safe-area insets 
+       so no edges appear in landscape or with notches.
+    */
+    body::before {
+        top: calc(0px - env(safe-area-inset-top));
+        right: calc(0px - env(safe-area-inset-right));
+        bottom: calc(0px - env(safe-area-inset-bottom));
+        left: calc(0px - env(safe-area-inset-left));
+    }
 }
 
 /* 3) Navbar */
