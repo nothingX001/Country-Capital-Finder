@@ -11,7 +11,7 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    overscroll-behavior: none; /* helps prevent white overscroll on modern browsers */
+    /* We remove overscroll-behavior: none so there's normal scroll bounce */
 }
 
 /* Add emoji font support */
@@ -48,19 +48,33 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    /* Fallback dark color + gradient */
+    /* Solid fallback to avoid white if gradient fails */
     background-color: #3B4B54;
-    background-image: linear-gradient(180deg, #3B4B54, #DCCB9C);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    overscroll-behavior: none; /* reduces iOS "bounce" white flash */
+    /* Enables smoother “momentum” scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+}
+/*
+   PSEUDO-ELEMENT:
+   This is the actual gradient background. 
+   It's fixed behind all content, so on iOS 
+   overscroll, you’ll see the gradient, not white.
+*/
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 /* 3) Navbar */
