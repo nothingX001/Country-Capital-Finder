@@ -50,7 +50,7 @@ body {
     font-family: "Courier New", Courier, monospace;
     /* Fallback dark color + gradient */
     background-color: #3B4B54;
-    background-image: linear-gradient(180deg, #DCCB9C, #3B4B54);
+    background-image: linear-gradient(180deg, #3B4B54, #DCCB9C);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
