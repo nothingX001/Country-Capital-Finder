@@ -9,7 +9,7 @@ $locations = json_decode($data, true);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Explore capitals of countries, territories, and more with our interactive world map! Find country capitals, learn about different nations, and test your geography knowledge.">
   <meta name="keywords" content="world map, country capitals, geography, interactive map, world geography, country information">
   <meta name="author" content="ExploreCapitals">

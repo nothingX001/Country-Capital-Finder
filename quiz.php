@@ -108,7 +108,7 @@ try {
     <meta charset="UTF-8">
     <title>Quiz | ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Browse our database of countries, territories, and more!">
     <link rel="stylesheet" href="styles.css">
 </head>
