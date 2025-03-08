@@ -11,6 +11,7 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
+    /* Normal scroll bounce rather than overscroll-behavior: none */
 }
 
 /* Add emoji font support */
@@ -47,20 +48,45 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    /* Fallback dark color + gradient */
+    /* Solid fallback to avoid white if gradient fails */
     background-color: #3B4B54;
-    background-image: linear-gradient(180deg, #DCCB9C, #3B4B54);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    /* iOS momentum scroll */
+    /* Enables smoother "momentum" scrolling on iOS */
     -webkit-overflow-scrolling: touch;
+}
+
+/* 
+   2a) Pseudo-element for the background:
+   pinned to the full viewport and extends beyond safe-area 
+   insets to avoid any side/bottom bars on iOS. 
+*/
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;               /* Pin to all edges */
+    z-index: -1;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+@supports(padding: max(0px)) {
+    /* 
+       Extend beyond iPhone safe-area insets 
+       so no edges appear in landscape or with notches.
+    */
+    body::before {
+        top: calc(0px - env(safe-area-inset-top));
+        right: calc(0px - env(safe-area-inset-right));
+        bottom: calc(0px - env(safe-area-inset-bottom));
+        left: calc(0px - env(safe-area-inset-left));
+    }
 }
 
 /* 3) Navbar */
@@ -104,7 +130,7 @@ body {
     }
 }
 
-/* Add body class for when menu is open (optional if you freeze background) */
+/* Add body class for when menu is open */
 body.menu-open {
     overflow: hidden;
     position: fixed;
@@ -130,7 +156,6 @@ body.menu-open {
 
 /* 5) Logo – Perfectly centered vertically */
 .navbar-logo {
-    /* Removed absolute positioning; let it be in normal flow on the navbar */
     position: relative;
     margin-left: 35px;
     display: flex;
@@ -145,9 +170,16 @@ body.menu-open {
     border-radius: 8px;
 }
 
+/* Hidden state for logo and toggle */
+.navbar-logo.hidden,
+.navbar-toggle.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
 /* 6) Navigation List */
 .navbar-list {
-    /* For the closed (desktop) state, we can still center it: */
     position: absolute;
     left: 50%;
     top: 50%;
@@ -166,17 +198,17 @@ body.menu-open {
     transition: color 0.3s ease;
 }
 .navbar-list li a:hover {
+    /* Soft gold highlight */
     color: #DCCB9C;
 }
 
-/* 7) Hamburger Menu */
+/* 7) Hamburger Menu – Perfectly centered vertically */
 .navbar-toggle {
-    /* Removed absolute positioning so it can be in normal flow. 
-       We'll place it on the right side using margin, etc. */
-    position: relative;
+    position: absolute;
     right: 35px;
-    /* Instead of top:50%, we just center in the navbar's 80px: */
-    display: none; /* hidden on desktop by default */
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; /* Hidden on desktop */
     width: 30px;
     height: 30px;
     background: none;
@@ -197,11 +229,11 @@ body.menu-open {
 
 /* 8) Mobile & Tablet Adjustments */
 @media (max-width: 1100px) {
-    /* Hide the centered nav list by default (closed) */
+    /* Hide the centered nav list by default */
     .navbar-list {
         display: none;
     }
-    /* Show the hamburger menu on mobile */
+    /* Show the hamburger menu */
     .navbar-toggle {
         display: block;
     }
@@ -235,15 +267,15 @@ h1, h2, h3 {
     line-height: 1.2;
     letter-spacing: 0.5px;
 }
-h1 {
+h1 { 
     font-size: 2rem; 
     font-weight: 600;
 }
-h2 {
+h2 { 
     font-size: 1.5rem;
     font-weight: 600;
 }
-h3 {
+h3 { 
     font-size: 1.2rem;
     font-weight: 600;
 }
@@ -714,9 +746,6 @@ img {
     }
 }
 
-/* Keep the old .navbar-menu-overlay if you want. 
-   We'll rely on .navbar-list.open as your overlay. */
-
 /* Mobile & Tablet Adjustments */
 @media (max-width: 1100px) {
     .navbar-list {
@@ -814,36 +843,23 @@ img {
     color: inherit;
 }
 
-/* 
-   FINALLY: The open hamburger overlay. 
-   This is what actually makes the entire menu (logo + hamburger + items) scroll:
-*/
+/* Update navbar list in mobile mode to match */
 .navbar-list.open {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column;
     position: fixed;
-    top: 0;
+    top: 80px;
     left: 0;
     width: 100%;
-    height: 100%;
-    z-index: 9998;
     background: linear-gradient(180deg, #2F3B44, #3B4B54);
-    /* Scrollable container */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    /* Let’s remove the old transform so it’s pinned at top-left */
-    transform: none !important;
-    /* Some padding so content isn’t flush at top */
-    padding: 20px;
-    /* Switch to column so logo/hamburger appear at top, nav items below */
-    flex-direction: column;
-    align-items: flex-start;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: calc(100vh - 80px);
+    padding: 20px 0;
+    z-index: 9998;
+    align-items: center;
     justify-content: flex-start;
+    transform: none !important;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
 }
-
-/* You might want spacing so your logo/hamburger appear at top. 
-   Example:
-   .navbar-list.open .navbar-logo { margin-bottom: 20px; }
-   .navbar-list.open .navbar-toggle { align-self: flex-end; }
-   ... 
-   Adjust as you like. 
-*/
