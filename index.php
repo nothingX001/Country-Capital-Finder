@@ -127,8 +127,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="page-content home">
         <h1>ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
-        <form action="index.php" method="post">
-            <input type="text" name="country" autocomplete="on" placeholder="Search..." required>
+        <form action="index.php" method="post" id="searchForm">
+            <input type="text" name="country" placeholder="Search..." required>
             <input type="submit" value="SUBMIT" class="button">
         </form>
 
@@ -140,5 +140,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Autocomplete script -->
     <script src="autocomplete.js" defer></script>
+    <script>
+    // Prevent form submission from stealing focus on mobile
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        // Don't focus the input after form submission
+        const input = this.querySelector('input[name="country"]');
+        if (input) {
+            input.blur();
+        }
+    });
+    </script>
 </body>
 </html>

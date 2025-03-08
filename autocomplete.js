@@ -108,11 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Focus the input field when the page loads
-    input.focus();
-
-    // Add touch event support for mobile devices
-    input.addEventListener('touchstart', () => {
+    // Only focus on desktop devices
+    if (!('ontouchstart' in window)) {
         input.focus();
-    });
+    }
+
+    // Improved touch event handling for mobile
+    input.addEventListener('touchend', (e) => {
+        e.preventDefault(); // Prevent double-tap zoom
+        input.focus();
+    }, { passive: false });
 });
