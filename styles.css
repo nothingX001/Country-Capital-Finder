@@ -38,7 +38,7 @@
 
 /* 2) Body Defaults */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Courier New", Courier, monospace;
     /* Moody gray-blue matching the outer ring of the globe */
     background-color: #1F2B30;
     color: #ECECEC;
@@ -325,6 +325,7 @@ h3 {
 
 /* 11) Search Input */
 input[type="text"] {
+    font-family: Arial, sans-serif;
     width: 100%;
     max-width: 300px;
     padding: 15px;
@@ -338,6 +339,7 @@ input[type="text"] {
 
 /* 12) Buttons */
 .button {
+    font-family: Arial, sans-serif;
     display: block;
     margin: 15px auto;
     padding: 15px 40px;
