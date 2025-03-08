@@ -2,58 +2,62 @@
 // country-profiles.php
 
 include 'config.php';
+include 'the-countries.php'; // Include the list of "the" countries
 
 try {
     // 1) Main Countries (UN member / observer)
-    $stmtMain = $conn->query('
+    $stmt = $conn->prepare('
         SELECT
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
             CASE 
-                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
                 ELSE FALSE 
             END AS needs_the
         FROM countries
         WHERE "Entity Type" IN (\'UN member\', \'UN observer\')
-        ORDER BY REGEXP_REPLACE(LOWER("Country Name"), \'^the\s+\', \'\') ASC
+        ORDER BY "Country Name" ASC
     ');
-    $mainCountries = $stmtMain->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute(['{' . implode(',', $the_countries) . '}']);
+    $mainCountries = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // 2) Territories
-    $stmtTerr = $conn->query('
+    $stmt = $conn->prepare('
         SELECT
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
             CASE 
-                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
                 ELSE FALSE 
             END AS needs_the
         FROM countries
         WHERE "Entity Type" = \'Territory\'
-        ORDER BY REGEXP_REPLACE(LOWER("Country Name"), \'^the\s+\', \'\') ASC
+        ORDER BY "Country Name" ASC
     ');
-    $territories = $stmtTerr->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute(['{' . implode(',', $the_countries) . '}']);
+    $territories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // 3) De Facto States
-    $stmtDefacto = $conn->query('
+    $stmt = $conn->prepare('
         SELECT
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
             CASE 
-                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
                 ELSE FALSE 
             END AS needs_the
         FROM countries
         WHERE "Entity Type" = \'De facto state\'
-        ORDER BY REGEXP_REPLACE(LOWER("Country Name"), \'^the\s+\', \'\') ASC
+        ORDER BY "Country Name" ASC
     ');
-    $deFactoStates = $stmtDefacto->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute(['{' . implode(',', $the_countries) . '}']);
+    $deFactoStates = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (Exception $e) {
     die("Error fetching country profiles: " . $e->getMessage());

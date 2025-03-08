@@ -2,6 +2,7 @@
 // country-detail.php
 
 include 'config.php';
+include 'the-countries.php'; // Include the list of "the" countries
 
 // Get the country ID from the query string
 $country_id = $_GET['id'] ?? null;
@@ -30,7 +31,7 @@ try {
             "Internet TLD" AS internet_tld,
             "Official Name" AS official_name,
             CASE 
-                WHEN LOWER("Country Name") IN (SELECT UNNEST(ARRAY[\'united states\', \'united kingdom\', \'netherlands\', \'philippines\', \'bahamas\', \'gambia\', \'czech republic\', \'united arab emirates\', \'central african republic\', \'republic of the congo\', \'democratic republic of the congo\', \'maldives\', \'marshall islands\', \'seychelles\', \'solomon islands\', \'comoros\']))
+                WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
                 ELSE FALSE 
             END AS needs_the
@@ -38,7 +39,7 @@ try {
         WHERE id = ?
         LIMIT 1
     ');
-    $stmt->execute([$country_id]);
+    $stmt->execute(['{' . implode(',', $the_countries) . '}', $country_id]);
     $country = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$country) {
