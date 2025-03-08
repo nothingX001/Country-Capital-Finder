@@ -39,11 +39,13 @@
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    /* Moody gray-blue matching the outer ring of the globe */
-    background-color: #1F2B30;
+    /* Update to gradient background */
+    background: linear-gradient(180deg, #2F3B44, #3B4B54);
+    background-attachment: fixed;
     color: #ECECEC;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
 /* 3) Navbar */
@@ -54,8 +56,10 @@ body {
     right: 0;
     width: 100vw;
     height: 80px;
-    /* Match body background color */
-    background: #1F2B30;
+    /* Create seamless gradient effect */
+    background: linear-gradient(180deg, #2F3B44, #3B4B54);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 9999;
     box-sizing: border-box;
     margin: 0;
@@ -72,7 +76,9 @@ body {
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
         height: calc(80px + env(safe-area-inset-top));
-        background: #1F2B30;
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 
     .navbar::before {
@@ -83,7 +89,9 @@ body {
         right: 0;
         width: 100vw;
         height: calc(env(safe-area-inset-top) + 80px);
-        background: #1F2B30;
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         z-index: -1;
     }
 
@@ -224,6 +232,8 @@ body {
         width: 100vw;
         height: 100vh;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         flex-direction: column;
         align-items: center;
         padding-top: 80px;
@@ -256,7 +266,9 @@ body {
         top: 80px;
         left: 0;
         width: 100vw;
-        background: linear-gradient(180deg, #3B4B54, #2F3B44);
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         height: calc(100vh - 80px);
         padding-top: 20px;
         z-index: 9998;
