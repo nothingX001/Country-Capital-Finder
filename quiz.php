@@ -45,6 +45,13 @@ function fetchQuizData(PDO $conn, array $entityTypes, int $limit = 10): array {
     return $rows;
 }
 
+// Helper function to format country name in sentence with proper "the" prefix
+function format_country_name_in_sentence($country_name, $the_countries) {
+    $country_lower = strtolower($country_name);
+    $needs_the = in_array($country_lower, $the_countries);
+    return $needs_the ? "the " . $country_name : $country_name;
+}
+
 try {
     // 1) Fetch up to 10 random "main" countries (UN member / observer)
     //    Adjust these strings if your CSV uses something else like "UN Member" or "Member State"
@@ -52,6 +59,39 @@ try {
 
     // 2) Fetch up to 10 random "territories"
     $randomTerritories = fetchQuizData($conn, ['Territory'], 10);
+
+    // Get a random country and its capital
+    $stmt = $conn->query('
+        SELECT 
+            c.id,
+            c."Country Name" AS country_name,
+            cap.capital_name
+        FROM countries c
+        JOIN capitals cap ON c.id = cap.country_id
+        WHERE c."Entity Type" IN (\'UN member\', \'UN observer\')
+        ORDER BY RANDOM()
+        LIMIT 1
+    ');
+    $country = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Get 3 random incorrect capitals
+    $stmt = $conn->prepare('
+        SELECT DISTINCT capital_name
+        FROM capitals
+        WHERE country_id != ?
+        ORDER BY RANDOM()
+        LIMIT 3
+    ');
+    $stmt->execute([$country['id']]);
+    $incorrect_capitals = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    // Combine correct and incorrect answers
+    $options = array_merge([$country['capital_name']], $incorrect_capitals);
+    // Shuffle the options
+    shuffle($options);
+
+    // Format the country name with "the" if needed
+    $formatted_country_name = format_country_name_in_sentence($country['country_name'], $the_countries);
 
 } catch (Exception $e) {
     die("Error fetching quiz data: " . $e->getMessage());
@@ -80,7 +120,7 @@ try {
         <div id="quizContainer" style="display: none;">
             <div id="timer">Time: 0:00</div>
             <div id="questionContainer">
-                <p>What is the capital of <?php echo htmlspecialchars($country['country_name']); ?>?</p>
+                <p>What is the capital of <?php echo htmlspecialchars($formatted_country_name); ?>?</p>
                 <p>Choose from the following options:</p>
                 <div class="options">
                     <?php foreach ($options as $option): ?>
@@ -96,11 +136,11 @@ try {
             </form>
         </div>
 
-        <div id="resultContainer" style="display:none;">
+        <div id="resultContainer" style="display: none;">
             <h2>Quiz Results</h2>
             <p id="score"></p>
             <div id="detailedResults"></div>
-            <button id="redoQuizBtn" class="button">REDO QUIZ</button>
+            <button id="redoQuizBtn" class="button">TAKE QUIZ AGAIN</button>
         </div>
     </section>
 
@@ -155,7 +195,7 @@ try {
 
     // 6) Helper function to format country name with flag
     function formatCountryName(country) {
-        return `${country.country_name} <span class="flag-emoji">${country.flag_emoji}</span>`;
+        return country.country_name;
     }
 
     let questions = [];
@@ -170,13 +210,12 @@ try {
         // Prepare the data
         questions = [];
         dataArray.forEach(row => {
-            // row.country_name, row.capitals (array)
             if (Array.isArray(row.capitals) && row.capitals.length > 0) {
-                // Some countries may have multiple capitals
                 questions.push({
                     country_name: row.country_name,
                     flag_emoji: row.flag_emoji,
-                    capitals: row.capitals
+                    capitals: row.capitals,
+                    id: row.id
                 });
             }
         });
@@ -226,19 +265,19 @@ try {
             if (isCountryQuestion) {
                 // For country questions, randomly select one capital if there are multiple
                 const randomCapital = qData.capitals[Math.floor(Math.random() * qData.capitals.length)];
-                questionText = `What is the capital of <strong>${qData.country_name}</strong> <span class="flag-emoji">${qData.flag_emoji}</span>?`;
+                questionText = `What is the capital of <strong>${qData.country_name}</strong>?`;
                 userResponses.push({
                     questionText,
-                    correctAnswers: qData.capitals, // Keep all capitals as correct answers
+                    correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: formatCapitals(qData.capitals), // Use formatCapitals instead of join
+                    correctAnswerText: formatCapitals(qData.capitals),
                     countryName: qData.country_name,
-                    flagEmoji: qData.flag_emoji
+                    flagEmoji: qData.flag_emoji,
+                    id: qData.id
                 });
             } else {
-                const capitalStr = `<strong>${qData.capitals[0]}</strong>`; // Use only first capital for this question type
-                // Use "territory" if the quiz type is set to territory, otherwise "country"
+                const capitalStr = `<strong>${qData.capitals[0]}</strong>`;
                 let placeLabel = (quizType === 'territory') ? 'territory' : 'country';
                 questionText = `${capitalStr} is the capital of which ${placeLabel}?`;
                 userResponses.push({
@@ -248,7 +287,8 @@ try {
                     isCorrect: false,
                     correctAnswerText: `<strong>${qData.country_name}</strong>`,
                     countryName: qData.country_name,
-                    flagEmoji: qData.flag_emoji
+                    flagEmoji: qData.flag_emoji,
+                    id: qData.id
                 });
             }
 
@@ -260,29 +300,6 @@ try {
         }
     }
 
-    function normalizeInput(str) {
-        let norm = str.toLowerCase().trim();
-        // Remove "the" from beginning of string
-        norm = norm.replace(/^the\s+/, '');
-        // Remove special characters except letters and spaces
-        norm = norm.replace(/[^\w\s]/g, '');
-        // Normalize whitespace
-        norm = norm.replace(/\s+/g, ' ');
-        // Replace "st." or "st" with "saint"
-        norm = norm.replace(/\bst\.?\b/gi, 'saint');
-        // Remove all diacritics/accents
-        norm = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        return norm;
-    }
-
-    function checkAnswer(userAnswer, correctAnswers) {
-        const userNorm = normalizeInput(userAnswer);
-        return correctAnswers.some(ca => {
-            const caNorm = normalizeInput(ca);
-            return userNorm === caNorm;
-        });
-    }
-
     function endQuiz() {
         clearInterval(timer);
         document.getElementById('quizContainer').style.display = 'none';
@@ -292,14 +309,28 @@ try {
 
         let detailHTML = '';
         userResponses.forEach((resp, idx) => {
-            const correctAnswerText = `${resp.correctAnswerText} <span class="flag-emoji">${resp.flagEmoji}</span>`;
+            const countryLink = `<a href="country-detail.php?id=${resp.id}">${resp.countryName}</a>`;
+            const capitalLinks = resp.correctAnswers.map(capital => 
+                `<a href="country-detail.php?id=${resp.id}">${capital}</a>`
+            );
+            const correctAnswerText = capitalLinks.length === 1 
+                ? capitalLinks[0]
+                : capitalLinks.slice(0, -1).join(', ') + ' or ' + capitalLinks[capitalLinks.length - 1];
+            
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const resultText = resp.isCorrect
-                ? `Correct. The answer was ${correctAnswerText}.`
-                : `Incorrect. The answer was ${correctAnswerText}. You answered ${userAnswerText}.`;
+                ? `Correct. The answer was ${correctAnswerText} <span class="flag-emoji">${resp.flagEmoji}</span>.`
+                : `Incorrect. The answer was ${correctAnswerText} <span class="flag-emoji">${resp.flagEmoji}</span>. You answered ${userAnswerText}.`;
+
+            // Replace the country name in the question with a link
+            const questionTextWithLink = resp.questionText.replace(
+                new RegExp(`<strong>${resp.countryName}</strong>`),
+                `<strong>${countryLink}</strong>`
+            );
+
             detailHTML += `
                 <p class="${resp.isCorrect ? 'correct' : 'incorrect'}">
-                    <strong>Question ${idx + 1}:</strong> ${resp.questionText}<br>
+                    <strong>Question ${idx + 1}:</strong> ${questionTextWithLink}<br>
                     ${resultText}
                 </p>
             `;
