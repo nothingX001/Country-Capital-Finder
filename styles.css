@@ -40,7 +40,7 @@
 body {
     font-family: "Courier New", Courier, monospace;
     /* Moody gray-blue matching the outer ring of the globe */
-    background-color: #1F2B30;
+    background: linear-gradient(180deg, #3B4B54, #2F3B44);
     color: #ECECEC;
     margin: 0;
     padding: 0;
@@ -256,7 +256,7 @@ body {
         top: 80px;
         left: 0;
         width: 100vw;
-        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        background: linear-gradient(180deg, #3B4B54, #2F3B44);
         height: calc(100vh - 80px);
         padding-top: 20px;
         z-index: 9998;
