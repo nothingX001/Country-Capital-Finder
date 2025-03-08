@@ -14,11 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Position the dropdown below the input
     function positionDropdown() {
         const rect = input.getBoundingClientRect();
-        const form = input.closest('form');
-        const formRect = form.getBoundingClientRect();
-        
         dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-        dropdown.style.left = `${formRect.left + (formRect.width - 300) / 2}px`;
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.width = `${rect.width}px`;
     }
 
     // Handle keyboard navigation
@@ -100,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Close dropdown when clicking outside
+    // Close dropdown when clicking outside, but not when clicking the input
     document.addEventListener('click', (e) => {
         if (!input.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.style.display = 'none';
@@ -114,8 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Improved touch event handling for mobile
+    let touchMoved = false;
+    
+    input.addEventListener('touchstart', () => {
+        touchMoved = false;
+    });
+
+    input.addEventListener('touchmove', () => {
+        touchMoved = true;
+    });
+
     input.addEventListener('touchend', (e) => {
-        e.preventDefault(); // Prevent double-tap zoom
-        input.focus();
-    }, { passive: false });
+        if (!touchMoved) {
+            e.preventDefault();
+            input.focus();
+        }
+        touchMoved = false;
+    });
 });
