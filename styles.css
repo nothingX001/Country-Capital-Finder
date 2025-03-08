@@ -64,6 +64,11 @@ body {
     overflow: visible;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    transition: transform 0.3s ease;
+}
+
+.navbar.hidden {
+    transform: translateY(-100%);
 }
 
 /* iOS Safe Area Handling (Mobile Only) */
@@ -74,18 +79,11 @@ body {
         padding-right: env(safe-area-inset-right);
         height: calc(80px + env(safe-area-inset-top));
         background: transparent;
+        transition: transform 0.3s ease;
     }
 
-    .navbar::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: calc(env(safe-area-inset-top) + 80px);
-        background: transparent;
-        z-index: -1;
+    .navbar.hidden {
+        transform: translateY(calc(-100% - env(safe-area-inset-top)));
     }
 
     body {
@@ -118,13 +116,23 @@ body {
     top: 80px;
     left: 0;
     width: 100%;
-    background: transparent;
+    background: linear-gradient(180deg, #2F3B44, #3B4B54);
+    background-attachment: fixed;
+    background-size: 100% 100vh;
     height: calc(100vh - 80px);
     padding-top: 20px;
     z-index: 9998;
     align-items: center;
     justify-content: flex-start;
     transform: none !important;
+    overflow-y: auto;
+}
+
+/* Add body class for when menu is open */
+body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
 }
 
 /* 4) Navbar Container */
@@ -708,7 +716,9 @@ img {
     }
     .navbar-menu-overlay li {
         margin: 15px 0;
-        background: transparent;
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        width: 100%;
+        text-align: center;
     }
     .navbar-menu-overlay li a {
         font-size: 1.2rem;
@@ -716,11 +726,12 @@ img {
         text-decoration: none;
         padding: 10px 20px;
         text-align: center;
+        display: block;
+        width: 100%;
     }
     .navbar-menu-overlay li a:hover {
         background-color: rgba(255,255,255,0.15);
         color: #DCCB9C;
-        border-radius: 8px;
     }
 }
 
