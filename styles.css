@@ -8,6 +8,7 @@
 html {
     height: 100%;
     min-height: 100%;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
 }
 
 /* Add emoji font support */
@@ -44,7 +45,7 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    background: linear-gradient(180deg, #2F3B44, #3B4B54) fixed;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
