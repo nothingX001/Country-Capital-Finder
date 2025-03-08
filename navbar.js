@@ -2,9 +2,12 @@ let lastScrollTop = 0;
 const navbar = document.querySelector('.navbar');
 const navbarToggle = document.querySelector('.navbar-toggle');
 const navbarList = document.querySelector('.navbar-list');
+const navbarLogo = document.querySelector('.navbar-logo');
 const scrollThreshold = 50; // Threshold for when to add background
 let isHamburgerOpen = false;
 let scrollPosition = 0;
+let lastScrollY = 0;
+const scrollThresholdForHide = 5; // Minimum scroll amount to trigger hide/show
 
 // Function to handle hamburger menu state
 function setHamburgerState(isOpen) {
@@ -17,6 +20,10 @@ function setHamburgerState(isOpen) {
         navbarToggle.classList.add('active');
         navbarList.classList.add('open');
         navbar.classList.add('scrolled'); // Always show background when menu is open
+        // Reset the navbar visibility when opening menu
+        navbar.classList.remove('navbar-hidden');
+        navbarLogo.classList.remove('hidden');
+        navbarToggle.classList.remove('hidden');
     } else {
         document.body.classList.remove('menu-open');
         navbarToggle.classList.remove('active');
@@ -37,18 +44,33 @@ navbarToggle.addEventListener('click', () => {
 
 // Handle scroll events
 window.addEventListener('scroll', () => {
-    if (isHamburgerOpen) {
-        return; // Don't process scroll events when menu is open
-    }
-
-    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    const currentScroll = window.pageYOffset;
     
-    // Add/remove scrolled class based on scroll position
-    if (currentScroll > scrollThreshold) {
-        navbar.classList.add('scrolled');
+    if (isHamburgerOpen) {
+        // When menu is open, handle scroll-based visibility of header elements
+        const scrollDiff = currentScroll - lastScrollY;
+        
+        if (Math.abs(scrollDiff) > scrollThresholdForHide) {
+            if (scrollDiff > 0 && currentScroll > 50) {
+                // Scrolling down - hide the logo and hamburger
+                navbarLogo.classList.add('hidden');
+                navbarToggle.classList.add('hidden');
+            } else {
+                // Scrolling up - show the logo and hamburger
+                navbarLogo.classList.remove('hidden');
+                navbarToggle.classList.remove('hidden');
+            }
+        }
     } else {
-        navbar.classList.remove('scrolled');
+        // Normal scroll behavior when menu is closed
+        if (currentScroll > scrollThreshold) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
     }
+    
+    lastScrollY = currentScroll;
 }, { passive: true });
 
 // Prevent touchmove events when menu is open

@@ -56,7 +56,7 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    /* Enables smoother “momentum” scrolling on iOS */
+    /* Enables smoother "momentum" scrolling on iOS */
     -webkit-overflow-scrolling: touch;
 }
 
@@ -161,12 +161,21 @@ body.menu-open {
     display: flex;
     align-items: center;
     height: 80px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .navbar-logo img {
     display: block;
     height: 30px;
     width: auto;
     border-radius: 8px;
+}
+
+/* Hidden state for logo and toggle */
+.navbar-logo.hidden,
+.navbar-toggle.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
 }
 
 /* 6) Navigation List */
@@ -207,6 +216,7 @@ body.menu-open {
     cursor: pointer;
     z-index: 1001;
     line-height: 30px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .navbar-toggle::before {
     content: '☰';
@@ -851,4 +861,5 @@ img {
     justify-content: flex-start;
     transform: none !important;
     overflow-y: auto;
+    transition: transform 0.3s ease;
 }
