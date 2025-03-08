@@ -162,29 +162,63 @@ try {
     }
     // 8. Autocomplete
     elseif ($type === 'autocomplete' && isset($_GET['query'])) {
-        $query = $_GET['query'];
-        // Remove "the" from the beginning of the search query if present
-        $normalized_query = preg_replace('/^the\s+/i', '', $query);
+        $query = trim($_GET['query']);
         
-        // IMPORTANT: Use "Country Name" to match your column.
-        $stmt = $conn->prepare("
-            SELECT 
-                \"Country Name\" AS country_name,
-                CASE 
-                    WHEN LOWER(\"Country Name\") IN (SELECT UNNEST(ARRAY['united states', 'united kingdom', 'netherlands', 'philippines', 'bahamas', 'gambia', 'czech republic', 'united arab emirates', 'central african republic', 'republic of the congo', 'democratic republic of the congo', 'maldives', 'marshall islands', 'seychelles', 'solomon islands', 'comoros']))
-                    THEN TRUE 
-                    ELSE FALSE 
-                END AS needs_the
-            FROM countries
-            WHERE LOWER(\"Country Name\") LIKE LOWER(?)
-            ORDER BY REGEXP_REPLACE(LOWER(\"Country Name\"), '^the\\s+', '') ASC
-            LIMIT 10
-        ");
-        $stmt->execute([$normalized_query . '%']);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $response = array_map(function($row) {
-            return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
-        }, $results);
+        // Special case: if query is just "the" (case insensitive), show all "the" countries
+        if (preg_match('/^the$/i', $query)) {
+            $stmt = $conn->prepare("
+                SELECT 
+                    \"Country Name\" AS country_name
+                FROM countries 
+                WHERE LOWER(\"Country Name\") IN (
+                    SELECT UNNEST(ARRAY[
+                        'united states', 'united kingdom', 'netherlands', 
+                        'philippines', 'bahamas', 'gambia', 'czech republic', 
+                        'united arab emirates', 'central african republic', 
+                        'republic of the congo', 'democratic republic of the congo', 
+                        'maldives', 'marshall islands', 'seychelles', 
+                        'solomon islands', 'comoros'
+                    ])
+                )
+                ORDER BY \"Country Name\" ASC
+                LIMIT 10
+            ");
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response = array_map(function($row) {
+                return 'The ' . $row['country_name'];
+            }, $results);
+        } else {
+            // Remove "the" from the beginning of the search query if present
+            $normalized_query = preg_replace('/^the\s+/i', '', $query);
+            
+            // Regular search query
+            $stmt = $conn->prepare("
+                SELECT 
+                    \"Country Name\" AS country_name,
+                    CASE 
+                        WHEN LOWER(\"Country Name\") IN (SELECT UNNEST(ARRAY[
+                            'united states', 'united kingdom', 'netherlands', 
+                            'philippines', 'bahamas', 'gambia', 'czech republic', 
+                            'united arab emirates', 'central african republic', 
+                            'republic of the congo', 'democratic republic of the congo', 
+                            'maldives', 'marshall islands', 'seychelles', 
+                            'solomon islands', 'comoros'
+                        ]))
+                        THEN TRUE 
+                        ELSE FALSE 
+                    END AS needs_the
+                FROM countries
+                WHERE LOWER(\"Country Name\") LIKE LOWER(?)
+                ORDER BY REGEXP_REPLACE(LOWER(\"Country Name\"), '^the\\s+', '') ASC
+                LIMIT 10
+            ");
+            $stmt->execute([$normalized_query . '%']);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response = array_map(function($row) {
+                return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
+            }, $results);
+        }
     }
     // 9. Site Statistics
     elseif ($type === 'statistics') {
