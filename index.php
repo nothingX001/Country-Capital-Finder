@@ -128,7 +128,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h1>ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
         <form action="index.php" method="post" id="searchForm">
-            <input type="text" name="country" placeholder="Search..." novalidate>
+            <div class="search-bar-container">
+                <input type="text" name="country" placeholder="Search..." novalidate>
+            </div>
             <input type="submit" value="SUBMIT" class="button">
         </form>
 
