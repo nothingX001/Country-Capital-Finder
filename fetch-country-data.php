@@ -162,58 +162,59 @@ try {
     }
     // 8. Autocomplete
     elseif ($type === 'autocomplete' && isset($_GET['query'])) {
+        include 'the-countries.php'; // Include the list of "the" countries
         $query = trim($_GET['query']);
         
         // Special case: if query is just "the" (case insensitive), show all "the" countries
         if (preg_match('/^the$/i', $query)) {
+            $placeholders = str_repeat('?,', count($the_countries) - 1) . '?';
             $stmt = $conn->prepare("
-                SELECT 
-                    \"Country Name\" AS country_name
+                SELECT \"Country Name\" AS country_name
                 FROM countries 
-                WHERE LOWER(\"Country Name\") IN (
-                    SELECT UNNEST(ARRAY[
-                        'united states', 'united kingdom', 'netherlands', 
-                        'philippines', 'bahamas', 'gambia', 'czech republic', 
-                        'united arab emirates', 'central african republic', 
-                        'republic of the congo', 'democratic republic of the congo', 
-                        'maldives', 'marshall islands', 'seychelles', 
-                        'solomon islands', 'comoros'
-                    ])
-                )
+                WHERE LOWER(\"Country Name\") IN ($placeholders)
                 ORDER BY \"Country Name\" ASC
-                LIMIT 10
             ");
-            $stmt->execute();
+            $stmt->execute($the_countries);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response = array_map(function($row) {
                 return 'The ' . $row['country_name'];
             }, $results);
-        } else {
-            // Remove "the" from the beginning of the search query if present
-            $normalized_query = preg_replace('/^the\s+/i', '', $query);
-            
+        } 
+        // If query starts with "the " (case insensitive), only show matching "the" countries
+        elseif (preg_match('/^the\s+(.+)/i', $query, $matches)) {
+            $search_term = $matches[1]; // Get the part after "the "
+            $placeholders = str_repeat('?,', count($the_countries) - 1) . '?';
+            $stmt = $conn->prepare("
+                SELECT \"Country Name\" AS country_name
+                FROM countries 
+                WHERE LOWER(\"Country Name\") IN ($placeholders)
+                AND LOWER(\"Country Name\") LIKE LOWER(?)
+                ORDER BY \"Country Name\" ASC
+                LIMIT 10
+            ");
+            $params = array_merge($the_countries, [$search_term . '%']);
+            $stmt->execute($params);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response = array_map(function($row) {
+                return 'The ' . $row['country_name'];
+            }, $results);
+        }
+        else {
             // Regular search query
             $stmt = $conn->prepare("
                 SELECT 
                     \"Country Name\" AS country_name,
                     CASE 
-                        WHEN LOWER(\"Country Name\") IN (SELECT UNNEST(ARRAY[
-                            'united states', 'united kingdom', 'netherlands', 
-                            'philippines', 'bahamas', 'gambia', 'czech republic', 
-                            'united arab emirates', 'central african republic', 
-                            'republic of the congo', 'democratic republic of the congo', 
-                            'maldives', 'marshall islands', 'seychelles', 
-                            'solomon islands', 'comoros'
-                        ]))
+                        WHEN LOWER(\"Country Name\") = ANY($1)
                         THEN TRUE 
                         ELSE FALSE 
                     END AS needs_the
                 FROM countries
-                WHERE LOWER(\"Country Name\") LIKE LOWER(?)
-                ORDER BY REGEXP_REPLACE(LOWER(\"Country Name\"), '^the\\s+', '') ASC
+                WHERE LOWER(\"Country Name\") LIKE LOWER($2)
+                ORDER BY \"Country Name\" ASC
                 LIMIT 10
             ");
-            $stmt->execute([$normalized_query . '%']);
+            $stmt->execute(['{' . implode(',', $the_countries) . '}', $query . '%']);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $response = array_map(function($row) {
                 return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
