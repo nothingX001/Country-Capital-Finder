@@ -38,12 +38,13 @@ $locations = json_decode($data, true);
     <h1>World Map</h1>
     <p>Explore countries and their capitals around the world.</p>
     <div class="search-bar-container">
-      <input type="text" id="search-bar" placeholder="Search for a country..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <input type="text" id="search-bar" name="country" placeholder="Search for a country..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <div id="map"></div>
   </section>
 
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+  <script src="map-autocomplete.js"></script>
   <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
 

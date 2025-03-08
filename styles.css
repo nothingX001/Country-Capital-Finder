@@ -425,7 +425,9 @@ input[type="text"].show-dropdown {
     text-align: center;
 }
 #userAnswer {
-    width: 100%;
+    width: 300px;
+    margin: 0 auto;
+    display: block;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #444;
