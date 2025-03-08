@@ -34,8 +34,8 @@ window.addEventListener('scroll', () => {
     
     if (Math.abs(currentScroll - lastScrollTop) <= threshold) return;
     
-    if (currentScroll > lastScrollTop && currentScroll > 80) {
-        // Scrolling down & past navbar height
+    if (currentScroll > lastScrollTop) {
+        // Scrolling down
         navbar.classList.add('hidden');
     } else {
         // Scrolling up
