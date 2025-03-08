@@ -11,6 +11,7 @@ $the_countries = [
     "central african republic",
     "republic of the congo",
     "democratic republic of the congo",
+    "dominican republic",
     "maldives",
     "marshall islands",
     "seychelles",

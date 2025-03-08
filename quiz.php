@@ -198,9 +198,10 @@ try {
         }
     }
 
-    // 6) Helper function to format country name with flag
-    function formatCountryName(country) {
-        return country.country_name;
+    // 6) Helper function to format country name with "the" if needed
+    function formatCountryNameWithThe(countryName) {
+        const countryLower = countryName.toLowerCase();
+        return theCountries.includes(countryLower) ? `the ${countryName}` : countryName;
     }
 
     let questions = [];
@@ -267,6 +268,8 @@ try {
     function showNextQuestion() {
         if (currentQuestionIndex < questions.length) {
             const qData = questions[currentQuestionIndex];
+            // Format country name with "the" if needed
+            const formattedCountryName = formatCountryNameWithThe(qData.country_name);
             // Randomly decide question type
             const isCountryQuestion = Math.random() > 0.5;
 
@@ -274,14 +277,14 @@ try {
             if (isCountryQuestion) {
                 // For country questions, randomly select one capital if there are multiple
                 const randomCapital = qData.capitals[Math.floor(Math.random() * qData.capitals.length)];
-                questionText = `What is the capital of <strong>${qData.country_name}</strong>?`;
+                questionText = `What is the capital of <strong>${formattedCountryName}</strong>?`;
                 userResponses.push({
                     questionText,
                     correctAnswers: qData.capitals,
                     userAnswer: "",
                     isCorrect: false,
                     correctAnswerText: formatCapitals(qData.capitals),
-                    countryName: qData.country_name,
+                    countryName: formattedCountryName,
                     flagEmoji: qData.flag_emoji,
                     id: qData.id
                 });
@@ -291,11 +294,11 @@ try {
                 questionText = `${capitalStr} is the capital of which ${placeLabel}?`;
                 userResponses.push({
                     questionText,
-                    correctAnswers: [qData.country_name],
+                    correctAnswers: [formattedCountryName],
                     userAnswer: "",
                     isCorrect: false,
-                    correctAnswerText: `<strong>${qData.country_name}</strong>`,
-                    countryName: qData.country_name,
+                    correctAnswerText: `<strong>${formattedCountryName}</strong>`,
+                    countryName: formattedCountryName,
                     flagEmoji: qData.flag_emoji,
                     id: qData.id
                 });
