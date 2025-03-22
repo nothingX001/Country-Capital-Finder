@@ -134,18 +134,18 @@ input[type="text"] {
     cursor: text !important;
 }
 
-/* Card visibility fixes only */
+/* Card visibility fixes with larger proportions */
 #countryProfileCard {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin: 25px auto 35px;
-    padding: 30px;
+    margin: 40px auto 50px; /* Increased from 25px auto 35px */
+    padding: 40px;          /* Increased from 30px */
     background-color: #2A363B;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border-radius: 10px;    /* Increased from 8px */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3); /* Increased shadow */
     border-top: 1px solid rgba(220, 203, 156, 0.3);
-    max-width: 800px;
+    max-width: 900px;       /* Increased from 800px */
     width: 90%;
     text-align: center;
     color: #ECECEC;
@@ -156,15 +156,15 @@ input[type="text"] {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin-top: 25px;
-    padding: 20px;
+    margin-top: 30px;       /* Increased from 25px */
+    padding: 25px;          /* Increased from 20px */
     /* Slightly darker container for message boxes */
     background-color: #404B50;
     border: none !important;
-    margin-bottom: 25px !important;
-    border-radius: 4px;
+    margin-bottom: 30px !important; /* Increased from 25px */
+    border-radius: 6px;     /* Increased from 4px */
     color: #ECECEC;
-    font-size: 22px !important;
+    font-size: 24px !important; /* Increased from 22px */
     line-height: 1.5 !important;
     font-weight: 500 !important;
     text-align: center !important;
@@ -174,14 +174,14 @@ input[type="text"] {
     text-decoration: none;
     color: #DCCB9C !important;
     font-weight: bold !important;
-    font-size: 24px !important;
+    font-size: 26px !important; /* Increased from 24px */
 }
 
 /* Country attributes with larger text */
 .attributes p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;      /* Increased from 1.1rem */
     line-height: 1.6;
-    margin-bottom: 12px;
+    margin-bottom: 15px;    /* Increased from 12px */
 }
 
 /* Flag image larger */
@@ -189,8 +189,8 @@ input[type="text"] {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin: 25px auto;
-    max-width: 350px; /* Increased from 300px */
+    margin: 30px auto;      /* Increased from 25px */
+    max-width: 400px;       /* Increased from 350px */
 }
 
 /* Fix for button styling - restore original */
@@ -386,17 +386,16 @@ input[type="text"] {
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 100px;     /* Ensure this stays at 100px */
-    margin-bottom: 20px;
-    max-width: 800px;      /* Increased from 600px */
-    width: 90%;            /* Added to ensure it takes more space on larger screens */
+    margin-top: 100px;     /* Keep this the same */
+    margin-bottom: 30px;   /* Increased from 20px */
+    max-width: 900px;      /* Increased from 800px */
+    width: 90%;            /* Keep percentage the same */
     margin-left: auto;
     margin-right: auto;
-    padding: 30px;         /* Increased from 20px */
-    /* Slightly lighter dark background than body */
+    padding: 40px;         /* Increased from 30px */
     background-color: #2A363B;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border-radius: 10px;   /* Increased from 8px */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Increased shadow */
     text-align: center;
     color: #ECECEC;
 }
@@ -404,37 +403,37 @@ input[type="text"] {
 /* 10) Headings - proportionally larger */
 h1, h2, h3 {
     font-family: "Courier New", Courier, monospace;
-    margin-bottom: 25px;   /* Increased from 20px */
+    margin-bottom: 30px;   /* Increased from 25px */
     text-align: center;
     line-height: 1.2;
     letter-spacing: 0.5px;
 }
 h1 { 
-    font-size: 2.5rem;     /* Increased from 2rem */
+    font-size: 2.8rem;     /* Increased from 2.5rem */
     font-weight: 600;
 }
 h2 { 
-    font-size: 1.8rem;     /* Increased from 1.5rem */
+    font-size: 2rem;       /* Increased from 1.8rem */
     font-weight: 600;
 }
 h3 { 
-    font-size: 1.4rem;     /* Increased from 1.2rem */
+    font-size: 1.6rem;     /* Increased from 1.4rem */
     font-weight: 600;
 }
 
 /* 11) Search Input - larger */
 .search-bar-container {
-    width: 350px;          /* Increased from 300px */
-    margin: 0 auto;
+    width: 400px;          /* Increased from 350px */
+    margin: 0 auto 40px;   /* Added bottom margin */
     position: relative !important;
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 18px;         /* Increased from 15px */
-    font-size: 1.1rem;     /* Increased from 1rem */
+    padding: 20px;         /* Increased from 18px */
+    font-size: 1.2rem;     /* Increased from 1.1rem */
     border: 1px solid #444;
-    border-radius: 4px;
+    border-radius: 6px;    /* Increased from 4px */
     background-color: #FFFFFF;
     color: #333333;
     font-family: "Courier New", Courier, monospace;
@@ -452,18 +451,17 @@ input[type="text"]:focus {
 .button {
     font-family: Arial, sans-serif;
     display: block;
-    width: 320px;          /* Increased from 280px */
-    margin: 20px auto;     /* Increased from 15px auto */
-    padding: 15px 0;       /* Increased from 12px 0 */
-    font-size: 1.2rem;     /* Increased from 1.1rem */
+    width: 360px;          /* Increased from 320px */
+    margin: 25px auto;     /* Increased from 20px auto */
+    padding: 18px 0;       /* Increased from 15px 0 */
+    font-size: 1.3rem;     /* Increased from 1.2rem */
     font-weight: bold;
-    /* Gold gradient for contrast against dark background */
     color: #1F2B30;
     text-align: center;
     border: none;
-    border-radius: 50px;
+    border-radius: 60px;   /* Increased from 50px */
     background: linear-gradient(180deg, #DCCB9C, #C0AA75);
-    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 6px 12px rgba(0,0,0,0.2);
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 8px 16px rgba(0,0,0,0.2); /* Increased shadow */
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     white-space: nowrap;
@@ -535,14 +533,14 @@ form input[type="submit"].button {
 }
 .quiz h1 {
     text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 2.8rem;
+    margin-bottom: 30px;
     color: #F0F0F0;
 }
 .quiz p {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 1rem;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
     color: #ECECEC;
 }
 
@@ -558,70 +556,70 @@ form input[type="submit"].button {
 }
 
 #quizContainer {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 #timer {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     color: #ECECEC;
     text-align: center;
 }
 #questionContainer {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 #questionContainer p {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
     color: #ECECEC;
     text-align: center;
 }
 #userAnswer {
-    width: 300px;
+    width: 350px;
     margin: 0 auto;
     display: block;
-    padding: 10px;
-    font-size: 1rem;
+    padding: 15px;
+    font-size: 1.2rem;
     border: 1px solid #444;
-    border-radius: 4px;
-    margin-bottom: 20px;
+    border-radius: 6px;
+    margin-bottom: 25px;
     color: #333333;
     background-color: #FFFFFF;
 }
 #resultContainer {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 #resultContainer h2 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
+    margin-bottom: 25px;
+    font-size: 2rem;
     color: #F0F0F0;
 }
 #score {
-    font-size: 1.25rem;
-    margin-bottom: 20px;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
     color: #ECECEC;
     text-align: center;
     font-weight: bold;
 }
 #detailedResults {
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: 25px;
+    padding: 25px;
     background-color: #404B50;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 #detailedResults p {
-    font-size: 1rem;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
     color: #ECECEC;
     text-align: left;
     line-height: 1.6;
-    padding: 10px;
-    border-left: 4px solid #C0AA75; /* default gold-ish left border */
+    padding: 15px;
+    border-left: 4px solid #C0AA75;
     background-color: #2A363B;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: border-left-color 0.3s ease;
 }
 #detailedResults p strong {
@@ -694,11 +692,11 @@ form input[type="submit"].button {
 
 /* Official Name etc. */
 .country-detail-entity {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #ECECEC;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     text-align: center;
-    max-width: 70%;
+    max-width: 85%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -711,8 +709,8 @@ form input[type="submit"].button {
     margin: 0 auto;
     max-width: 100%;
     height: auto;
-    border-radius: 4px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    border-radius: 6px;     /* Increased from 4px */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Increased shadow */
 }
 
 .country-detail-header {
@@ -771,21 +769,21 @@ html, body {
 }
 .about h1 {
     text-align: center;
-    margin-bottom: 25px;
-    font-size: 2.2rem;
+    margin-bottom: 30px;
+    font-size: 2.8rem;
     color: #F0F0F0;
     line-height: 1.2;
 }
 .about p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1.6;
     color: #ECECEC;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 .about h2 {
-    margin-top: 35px;
-    margin-bottom: 20px;
-    font-size: 1.7rem;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    font-size: 2rem;
     color: #F0F0F0;
 }
 .about ul {
@@ -794,10 +792,10 @@ html, body {
     margin: 0;
 }
 .about ul li {
-    margin: 12px 0;
-    padding: 12px;
+    margin: 15px 0;
+    padding: 15px;
     background-color: #404B50;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background-color 0.2s ease;
 }
 .about ul li:hover {
@@ -821,47 +819,47 @@ html, body {
     text-align: center;
 }
 .world-map h1 {
-    margin-bottom: 25px;
-    font-size: 2.2rem;
+    margin-bottom: 30px;
+    font-size: 2.8rem;
     color: #F0F0F0;
 }
 .world-map p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #ECECEC;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 .search-bar-container {
     text-align: center;
-    margin: 0 auto;
+    margin: 0 auto 40px;
     padding: 0;
-    max-width: 350px;
+    max-width: 400px;
     position: relative;
 }
 #search-bar {
     width: 100%;
-    max-width: 350px;
-    padding: 15px;
-    font-size: 1.1rem;
+    max-width: 400px;
+    padding: 20px;
+    font-size: 1.2rem;
     border: 1px solid #444;
-    border-radius: 4px;
+    border-radius: 6px;
     display: block;
     margin: 0 auto;
     color: #333333;
     background-color: #FFFFFF;
 }
 #map {
-    height: 500px;
+    height: 550px;
     width: 100%;
     border-radius: 15px;
-    margin-top: 25px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    margin-top: 30px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
 /* 19) Home Page Intro (if relevant) */
 .home-intro {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 25px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
     color: #ECECEC;
 }
 
@@ -893,22 +891,51 @@ html, body {
     .about,
     .world-map {
         width: 95%;
-        max-width: 800px;    /* Increased from 600px */
-        margin: 100px auto 150px auto;
+        max-width: 900px;    /* Increased from 800px */
+        margin: 100px auto 50px auto;
+        padding: 30px;       /* Slightly reduced on mobile */
     }
 
     #countryProfileCard {
         width: 95%;
-        max-width: 800px;    /* Increased from 600px */
-        margin: 25px auto 35px;
+        max-width: 900px;    /* Increased from 800px */
+        margin: 40px auto 50px; /* Keep consistent with desktop */
+        padding: 30px;       /* Slightly reduced on mobile */
         box-sizing: border-box;
+    }
+    
+    .search-bar-container {
+        width: 90%;          /* Use percentage on mobile */
+        max-width: 400px;    /* Match desktop */
+        margin: 0 auto 40px; /* Keep consistent spacing */
+    }
+    
+    .button {
+        width: 90%;          /* Use percentage on mobile */
+        max-width: 360px;    /* Match desktop */
+    }
+    
+    .message {
+        margin-top: 30px;
+        margin-bottom: 30px !important;
+        font-size: 22px !important; /* Slightly smaller on mobile */
+    }
+    
+    .message a, .message strong {
+        font-size: 24px !important; /* Slightly smaller on mobile */
+    }
+    
+    /* Fix for smaller screens */
+    input[type="text"] {
+        padding: 18px;       /* Slightly reduced on mobile */
+        font-size: 1.1rem;   /* Slightly reduced on mobile */
     }
 }
 
 .sovereign-state {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: #ECECEC;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
@@ -924,11 +951,11 @@ html, body {
 }
 
 .constituent-countries {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: #ECECEC;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: center;
-    max-width: 80%;
+    max-width: 85%;
     margin-left: auto;
     margin-right: auto;
 }
