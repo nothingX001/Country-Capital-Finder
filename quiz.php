@@ -110,7 +110,10 @@ try {
     <title>Quiz | ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Browse our database of countries, territories, and more!">
+    <meta name="description" content="Test your knowledge of world capitals with our interactive quiz. How many capitals can you name?">
+    <meta property="og:title" content="Capital City Quiz | ExploreCapitals">
+    <meta property="og:description" content="Test your knowledge of world capitals with our interactive quiz. How many capitals can you name?">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
     <style>
         html, body {
