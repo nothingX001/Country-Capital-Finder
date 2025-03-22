@@ -466,6 +466,7 @@ input[type="text"] {
     .navbar-logo {
         margin-right: 0;
         padding-left: 15px;
+        z-index: 10001; /* Ensure logo stays visible above menu */
     }
     
     .navbar-toggle {
@@ -477,7 +478,7 @@ input[type="text"] {
         margin-left: 0;
         order: 2;
         height: 100%;
-        z-index: 10000;
+        z-index: 10001; /* Ensure toggle stays above menu */
     }
     
     /* Add mobile-specific navbar-list styles */
@@ -491,12 +492,12 @@ input[type="text"] {
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        padding-top: 80px; /* Add padding-top matching navbar height */
+        justify-content: center; /* Center the menu items vertically */
+        padding-top: 0; /* Remove top padding */
         z-index: 9990; /* Slightly lower than navbar */
-        overflow-y: auto;
+        overflow-y: hidden; /* Prevent scrolling */
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
-        padding: 80px 0 0 0; /* Set top padding to match navbar height */
+        padding: 0; /* Remove padding */
         margin: 0;
         transform: none;
         border-top: 1px solid rgba(220, 203, 156, 0.1); /* Add subtle border */
@@ -508,10 +509,22 @@ input[type="text"] {
         width: 100%;
     }
     
-    .navbar-list li {
-        margin: 12px 0;
+    /* Create a container for menu items to be better centered */
+    .navbar-list-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        max-width: 400px;
+        max-height: 80vh; /* Limit height to ensure content stays in viewport */
+        padding: 20px 0;
+        margin-top: -20px; /* Move up slightly to better center in viewport */
+    }
+    
+    .navbar-list li {
+        margin: 8px 0; /* Reduce spacing between items */
+        width: 100%;
+        max-width: 280px; /* Narrower for better spacing */
         text-align: center;
         display: flex;
         justify-content: center;
@@ -520,8 +533,8 @@ input[type="text"] {
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 28px;
-        padding: 15px 0;
+        font-size: 24px; /* Slightly smaller font */
+        padding: 10px 0; /* Reduce padding */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -529,27 +542,26 @@ input[type="text"] {
         text-align: center;
         font-weight: 500;
         transition: color 0.1s ease;
-        cursor: pointer;
+        cursor: pointer !important; /* Ensure cursor is pointer */
+    }
+
+    /* Ensure hover works properly */
+    .navbar-list li a:hover {
+        color: #DCCB9C !important;
+        cursor: pointer !important;
+    }
+    
+    /* Add specific selector to ensure hover effect works */
+    .navbar-list.open li a:hover {
+        color: #DCCB9C !important;
     }
 
     /* iPhone-specific adjustments */
     @media (max-width: 480px) {
-        .navbar-list {
-            padding-top: 70px; /* Match navbar height on iPhone */
-        }
-        
-        .navbar-list.open {
-            padding-top: 70px; /* Match navbar height on iPhone */
-        }
-        
         .navbar-list li a {
             font-size: 22px; /* Slightly smaller font for iPhone */
-            padding: 12px 0;
+            padding: 10px 0;
         }
-    }
-    
-    .navbar-list li a:hover {
-        color: #DCCB9C;
     }
 
     body.menu-open {
@@ -1503,3 +1515,19 @@ a.button,
         touch-action: auto !important;
     }
 }
+
+/* Enforce cursor and hover behavior globally */
+.navbar-list li a,
+.navbar-list.open li a {
+    cursor: pointer !important;
+}
+
+.navbar-list li a:hover,
+.navbar-list.open li a:hover,
+.navbar-list li a:active,
+.navbar-list.open li a:active {
+    color: #DCCB9C !important;
+    cursor: pointer !important;
+}
+
+/* Ensure iOS Safari properly handles pull-to-refresh and overscroll */

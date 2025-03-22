@@ -10,11 +10,13 @@
     </div>
 
     <ul class="navbar-list" id="navbarList">
-      <li><a href="index.php">HOME</a></li>
-      <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
-      <li><a href="quiz.php">QUIZ</a></li>
-      <li><a href="world-map.php">WORLD MAP</a></li>
-      <li><a href="about.php">ABOUT</a></li>
+      <div class="navbar-list-inner">
+        <li><a href="index.php">HOME</a></li>
+        <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
+        <li><a href="quiz.php">QUIZ</a></li>
+        <li><a href="world-map.php">WORLD MAP</a></li>
+        <li><a href="about.php">ABOUT</a></li>
+      </div>
     </ul>
   </div>
 </nav>
@@ -49,6 +51,9 @@
             // Add accessibility attributes
             navbarToggle.setAttribute('aria-expanded', 'true');
             navbarList.setAttribute('aria-hidden', 'false');
+            
+            // Add hover and cursor styles immediately when menu opens
+            applyMenuItemStyles();
         } else {
             document.body.classList.remove('menu-open');
             navbar.classList.remove('menu-active');
@@ -71,11 +76,38 @@
         setMenuState(!isMenuOpen);
     });
 
+    // Apply cursor and hover effects explicitly
+    function applyMenuItemStyles() {
+        navbarLinks.forEach(link => {
+            // Ensure cursor is pointer
+            link.style.cursor = 'pointer';
+            
+            // Clear existing listeners
+            link.removeEventListener('mouseenter', handleMouseEnter);
+            link.removeEventListener('mouseleave', handleMouseLeave);
+            
+            // Add them back
+            link.addEventListener('mouseenter', handleMouseEnter);
+            link.addEventListener('mouseleave', handleMouseLeave);
+        });
+    }
+
+    // Event handler functions
+    function handleMouseEnter() {
+        this.style.color = '#DCCB9C';
+    }
+
+    function handleMouseLeave() {
+        if (!this.classList.contains('active')) {
+            this.style.color = '#ECECEC';
+        }
+    }
+
     // Handle link clicks with a delay to keep menu visible during navigation
     navbarLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             // Only apply delay behavior in mobile view
-            if (window.innerWidth <= 1100) {
+            if (window.innerWidth <= 1200) {
                 // Get the href to navigate to
                 const href = this.getAttribute('href');
                 
@@ -106,10 +138,13 @@
     
     // Close menu if window is resized beyond mobile breakpoint
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 1100 && isMenuOpen) {
+        if (window.innerWidth > 1200 && isMenuOpen) {
             setMenuState(false);
         }
     });
+    
+    // Apply styles immediately
+    applyMenuItemStyles();
 })();
 
 // Simplified handler to only focus on cursor and card visibility
