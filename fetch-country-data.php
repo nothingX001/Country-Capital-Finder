@@ -6,32 +6,7 @@ header('Content-Type: application/json');
 
 // Function to detect Windows and handle flag emoji compatibility
 function processFlags($data) {
-    // Only add windows_flag_url property without any other changes
-    if (is_array($data)) {
-        foreach ($data as &$item) {
-            if (is_array($item) && isset($item['flag_emoji'])) {
-                // Convert emoji flag to image tag or add a Windows-compatible version
-                $countryCode = isset($item['iso_code']) ? $item['iso_code'] : '';
-                if (empty($countryCode) && isset($item['country_name'])) {
-                    // Try to find country code by name in the database if not available
-                    global $conn;
-                    $stmt = $conn->prepare("SELECT \"ISO Alpha-2\" FROM countries WHERE \"Country Name\" = ?");
-                    $stmt->execute([$item['country_name']]);
-                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if ($result) {
-                        $countryCode = $result['ISO Alpha-2'];
-                    }
-                }
-                
-                if ($countryCode) {
-                    // Add a windows_flag_url to the response
-                    $item['windows_flag_url'] = "https://flagcdn.com/32x24/".strtolower($countryCode).".png";
-                }
-            }
-        }
-        unset($item);
-    }
-    
+    // Simply return the data without any modifications
     return $data;
 }
 

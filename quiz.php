@@ -341,8 +341,8 @@ try {
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
             const windowsFlagUrl = resp.iso_code ? `https://flagcdn.com/32x24/${resp.iso_code.toLowerCase()}.png` : '';
             const resultText = resp.isCorrect
-                ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji" data-windows-flag-url="${windowsFlagUrl}">${resp.flagEmoji}</span>`
-                : `Incorrect. You answered ${userAnswerText}. The answer was ${correctAnswerText}. <span class="flag-emoji" data-windows-flag-url="${windowsFlagUrl}">${resp.flagEmoji}</span>`;
+                ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`
+                : `Incorrect. You answered ${userAnswerText}. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`;
 
             // Replace the country name in the question with a styled link
             const questionTextWithLink = resp.questionText.replace(
@@ -404,8 +404,5 @@ try {
         });
     });
     </script>
-
-    <!-- Flag emoji handler for Windows devices -->
-    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

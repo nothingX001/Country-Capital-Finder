@@ -97,15 +97,17 @@ body::before {
     right: 0;
     width: 100%;
     height: 80px;
-    background: transparent;
+    background-color: #2F3B44;
     z-index: 9999;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     overflow: visible;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transition: background-color 0.3s ease;
+    display: block !important;  /* Force display */
+    visibility: visible !important;  /* Force visibility */
+    opacity: 1 !important;  /* Force opacity */
+    -webkit-backface-visibility: visible !important;
+    backface-visibility: visible !important;
 }
 
 .navbar.scrolled {
@@ -142,101 +144,116 @@ body.menu-open {
 
 /* 4) Navbar Container */
 .navbar-container {
-    position: relative;
-    width: 100%;
-    min-width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
-/* 5) Logo – Perfectly centered vertically */
+/* Logo */
 .navbar-logo {
     position: relative;
-    margin-left: 35px;
-    display: flex;
-    align-items: center;
-    height: 80px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 1000;
 }
+
 .navbar-logo img {
-    display: block;
     height: 30px;
     width: auto;
     border-radius: 8px;
 }
 
-/* Hidden state for logo and toggle */
-.navbar-logo.hidden,
-.navbar-toggle.hidden {
-    opacity: 0;
-    transform: translateY(-100%);
-    pointer-events: none;
-}
-
-/* 6) Navigation List */
-.navbar-list {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    list-style: none;
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    white-space: nowrap;
-    height: 80px;
-}
-.navbar-list li a {
-    color: #ECECEC;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
-.navbar-list li a:hover {
-    /* Soft gold highlight */
-    color: #DCCB9C;
-}
-
-/* 7) Hamburger Menu – Perfectly centered vertically */
+/* Toggle Button (Hamburger) */
 .navbar-toggle {
-    position: absolute;
-    right: 35px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: none; /* Hidden on desktop */
+    display: none;
     width: 30px;
     height: 30px;
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1001;
-    line-height: 30px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    z-index: 10000;
 }
+
 .navbar-toggle::before {
     content: '☰';
     font-size: 1.5rem;
     color: #ECECEC;
-    display: inline-block;
-    width: 30px;
-    text-align: center;
 }
 
-/* 8) Mobile & Tablet Adjustments */
+/* Navigation List */
+.navbar-list {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0;
+    margin: 0;
+    z-index: 999;
+}
+
+.navbar-list li {
+    list-style: none;
+    margin: 0 10px;
+}
+
+.navbar-list li a {
+    color: #ECECEC;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+}
+
+.navbar-list li a:hover {
+    color: #DCCB9C;
+}
+
+/* Mobile Styles */
 @media (max-width: 1100px) {
-    /* Hide the centered nav list by default */
     .navbar-list {
         display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #2F3B44;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-    /* Show the hamburger menu */
+    
     .navbar-toggle {
         display: block;
     }
+    
+    .navbar-list.open {
+        display: flex;
+    }
+    
+    .navbar-list li {
+        margin: 10px 0;
+    }
+    
+    .navbar-list li a {
+        font-size: 1.5rem;
+        padding: 10px 20px;
+    }
+    
+    body.menu-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.navbar.menu-active {
+    background-color: #2F3B44 !important;
 }
 
 /* 9) Main Page Containers */

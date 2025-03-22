@@ -314,8 +314,5 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
             ?>
         </div>
     </section>
-
-    <!-- Flag emoji handler for Windows devices -->
-    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

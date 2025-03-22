@@ -102,7 +102,7 @@ try {
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($c['id']); ?>">
                             <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($flagEmoji); ?></span>
+                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -130,7 +130,7 @@ try {
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($t['id']); ?>">
                             <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($flagEmoji); ?></span>
+                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -158,7 +158,7 @@ try {
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($d['id']); ?>">
                             <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($flagEmoji); ?></span>
+                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -168,8 +168,5 @@ try {
             <p>No de facto states found.</p>
         <?php endif; ?>
     </section>
-    
-    <!-- Flag emoji handler for Windows devices -->
-    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $windows_flag_url = !empty($iso_code) ? "https://flagcdn.com/32x24/" . strtolower($iso_code) . ".png" : "";
             
             // Build the message with a clickable country name and flag
-            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\" data-windows-flag-url=\"" . $windows_flag_url . "\">{$flag}</span>";
+            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
         } else {
             // Format country name with "the" if needed
             $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
@@ -158,8 +158,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Autocomplete script -->
     <script src="autocomplete.js" defer></script>
-    <!-- Flag emoji handler for Windows devices -->
-    <script src="flag-emoji-handler.js" defer></script>
     <script>
     document.getElementById('searchForm').addEventListener('submit', function(e) {
         const input = this.querySelector('input[name="country"]');
