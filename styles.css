@@ -212,6 +212,18 @@ input[type="text"] {
     text-align: left;
 }
 
+/* Center align text in the country information card on index.php for desktop only */
+@media (min-width: 769px) {
+    #countryProfileCard .attributes {
+        text-align: center;
+        margin: 0 auto;
+    }
+    
+    #countryProfileCard .attributes p {
+        text-align: center;
+    }
+}
+
 .attributes strong {
     font-weight: bold;
     color: #DCCB9C;
