@@ -31,10 +31,13 @@ html {
     min-height: 100%;
     /* Enable pull-to-refresh explicitly */
     overscroll-behavior-y: auto !important;
-    background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
-    background-attachment: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
 }
 
 /* Add emoji font support */
@@ -485,19 +488,11 @@ input[type="text"] {
 /* Mobile Styles */
 @media (max-width: 1200px) {
     .navbar {
-        background-color: transparent !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-    
-    /* When menu is open, show solid background and effects */
-    .navbar.menu-active {
         background-color: #2F3B44 !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
         backdrop-filter: blur(8px) !important;
         -webkit-backdrop-filter: blur(8px) !important;
-        border-bottom: 1px solid rgba(220, 203, 156, 0.3) !important; /* Add bottom border to connect with menu */
+        height: 80px !important;
     }
     
     .navbar-container {
@@ -526,16 +521,16 @@ input[type="text"] {
     /* Add mobile-specific navbar-list styles */
     .navbar-list {
         position: fixed;
-        top: 0; /* Start from the top of the screen */
+        top: 80px !important; /* Position directly below navbar */
         left: 0;
         width: 100%;
-        height: 100vh;
+        height: calc(100vh - 80px) !important; /* Full height minus navbar */
         background-color: #2F3B44;
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: center; /* Center items vertically */
-        padding: 0; /* Remove padding */
+        justify-content: flex-start !important; /* Start from top */
+        padding-top: 20px !important; /* Add padding at top */
         z-index: 9990; /* Slightly lower than navbar */
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
@@ -555,15 +550,15 @@ input[type="text"] {
     .navbar-list li {
         margin: 3px 0; /* Reduced from 6px */
         width: 100%;
-        max-width: 320px;
+        max-width: 280px;
         text-align: center;
     }
     
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 22px; /* Reduced from 24px */
-        padding: 8px 0; /* Reduced from 10px */
+        font-size: 20px; /* Reduced from 22px */
+        padding: 6px 0; /* Reduced from 8px */
         display: block;
         width: 100%;
         text-align: center;
@@ -1291,22 +1286,27 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     }
     
     /* Make sure background is showing on mobile */
-    html, body {
-        background-attachment: fixed;
+    html {
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
+        background-attachment: fixed !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
     }
     
     body::before {
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
-        background-attachment: fixed !important;
         content: "";
         position: fixed;
-        z-index: -1;
-        top: -50px;
-        left: -50px;
-        right: -50px;
-        bottom: -50px;
-        width: calc(100% + 100px);
-        height: calc(100% + 100px);
+        top: -50vh !important;
+        left: -50vw !important;
+        right: -50vw !important;
+        bottom: -50vh !important;
+        width: 200vw !important; /* Extra wide */
+        height: 200vh !important; /* Extra tall */
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
+        background-attachment: fixed !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        z-index: -10 !important; /* Ensure it's behind everything */
     }
     
     .message {
@@ -1327,17 +1327,24 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     
     /* Center menu items better on mobile - more condensed */
     .navbar-list {
-        justify-content: center !important;
-        padding-top: 0 !important;
+        justify-content: flex-start !important;
+        padding-top: 30px !important;
+        align-items: center !important;
     }
     
     .navbar-list li {
-        margin: 2px 0 !important; /* Reduced from 4px for tighter spacing */
+        margin: 2px 0 !important; /* Tighter spacing */
+        width: 100% !important;
+        max-width: 280px !important; /* Narrower width for better centering */
+        text-align: center !important;
     }
     
     .navbar-list li a {
-        font-size: 20px; /* Reduced from 22px */
-        padding: 6px 0; /* Reduced from 8px */
+        font-size: 20px; /* Smaller font */
+        padding: 6px 0; /* Less padding */
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
     }
     
     .page-content,
@@ -1557,39 +1564,42 @@ a.button,
 @supports (-webkit-touch-callout: none) {
     /* iOS Safari specific */
     html, body {
-        height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
+        background-attachment: scroll !important; /* Use scroll instead of fixed for iOS */
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
     }
 
-    /* Explicitly enable momentum scrolling on iOS */
     body {
-        -webkit-overflow-scrolling: touch !important;
+        min-height: -webkit-fill-available;
+        background: transparent !important;
     }
-
-    /* Ensure navbar stays fixed */
-    .navbar {
-        position: fixed !important;
-        top: 0 !important;
-        z-index: 10000 !important;
-    }
-
-    html {
-        /* Original gradient background */
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
-        background-attachment: scroll; /* Use scroll instead of fixed for iOS */
+    
+    /* iOS navbar fix */
+    @media (max-width: 1200px) {
+        .navbar-list {
+            top: 80px !important;
+            height: calc(100vh - 80px) !important;
+        }
     }
     
     /* Special handling for pull-to-refresh on iOS */
     body::before {
         /* Extend well beyond the viewport to prevent white edges */
-        top: -150vh;
-        left: -150vw;
-        right: -150vw;
-        bottom: -150vh;
-        width: 400vw;
-        height: 400vh;
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
+        content: "";
+        position: fixed !important;
+        top: -100vh !important;
+        left: -100vw !important;
+        right: -100vw !important;
+        bottom: -100vh !important;
+        width: 300vw !important;
+        height: 300vh !important;
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
+        background-attachment: fixed !important;
         background-repeat: no-repeat !important;
         background-size: cover !important;
+        z-index: -10 !important;
     }
 }
 
