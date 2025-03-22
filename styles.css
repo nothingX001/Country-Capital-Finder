@@ -304,7 +304,6 @@ body.menu-open {
     }
     
     .navbar-list li a:hover {
-        background-color: rgba(220, 203, 156, 0.1);
         color: #DCCB9C;
     }
 

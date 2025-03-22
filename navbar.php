@@ -39,7 +39,6 @@
             // Add accessibility attributes
             navbarToggle.setAttribute('aria-expanded', 'true');
             navbarList.setAttribute('aria-hidden', 'false');
-            console.log('Menu opened');
         } else {
             document.body.classList.remove('menu-open');
             navbar.classList.remove('menu-active');
@@ -47,7 +46,6 @@
             // Update accessibility attributes
             navbarToggle.setAttribute('aria-expanded', 'false');
             navbarList.setAttribute('aria-hidden', 'true');
-            console.log('Menu closed');
         }
     }
 
@@ -56,7 +54,7 @@
     navbarList.setAttribute('aria-hidden', 'true');
     navbarList.classList.remove('open');
 
-    // Hook up the toggle button - use direct event listener
+    // Hook up the toggle button - single direct event listener
     navbarToggle.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -91,22 +89,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Force the navbar to be visible
     const navbar = document.querySelector('.navbar');
-    const navbarList = document.querySelector('.navbar-list');
-    const navbarToggle = document.getElementById('navbarToggle');
     
     if (navbar) {
         navbar.style.display = 'block';
         navbar.style.visibility = 'visible';
         navbar.style.opacity = '1';
-    }
-    
-    // Double check toggle button functionality
-    if (navbarToggle && navbarList) {
-        navbarToggle.addEventListener('click', function() {
-            navbarList.classList.toggle('open');
-            const isOpen = navbarList.classList.contains('open');
-            navbarToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        });
     }
 });
 </script>
