@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>ExploreCapitals | The World Capital Finder</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
     <meta name="keywords" content="capital cities, world capitals, country capitals, geography quiz, world geography">
     <meta name="author" content="ExploreCapitals">
@@ -145,6 +145,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid rgba(220, 203, 156, 0.3);
+        }
+        
+        /* Prevent input zoom on iOS */
+        input[type="text"], 
+        input[type="search"], 
+        input[type="email"], 
+        input[type="tel"], 
+        input[type="number"], 
+        select, 
+        textarea {
+            font-size: 16px !important; /* iOS doesn't zoom with 16px or larger */
         }
     </style>
 </head>
