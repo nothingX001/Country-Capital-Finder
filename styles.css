@@ -159,6 +159,7 @@ body.menu-open {
     position: relative;
     z-index: 1000;
     margin-right: auto; /* Push to the left */
+    padding-left: 5px;
 }
 
 .navbar-logo img {
@@ -178,6 +179,7 @@ body.menu-open {
     padding: 10px;
     font-size: 1.5rem;
     color: #ECECEC;
+    padding-right: 5px;
 }
 
 .navbar-toggle::before {
@@ -224,10 +226,18 @@ body.menu-open {
         justify-content: space-between;
     }
     
+    .navbar-logo {
+        margin-right: 0;
+        padding-left: 5px;
+    }
+    
     .navbar-toggle {
         display: block;
         position: relative;
         padding: 10px;
+        margin-left: 0;
+        order: 2;
+        padding-right: 5px;
     }
     
     .navbar-list {
@@ -252,6 +262,7 @@ body.menu-open {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
+        display: flex !important;
     }
     
     .navbar-list li {
@@ -782,53 +793,6 @@ img {
         width: 95%;
         max-width: 600px;
         margin: 100px auto 150px auto;
-    }
-}
-
-/* Mobile & Tablet Adjustments */
-@media (max-width: 1100px) {
-    .navbar-list {
-        display: none;
-    }
-    .navbar-toggle {
-        display: block;
-    }
-    
-    .navbar-menu-overlay {
-        display: none;
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 80px);
-        background: linear-gradient(180deg, #2F3B44, #3B4B54);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        flex-direction: column;
-        align-items: center;
-        z-index: 9998;
-    }
-    .navbar-menu-overlay.open {
-        display: flex;
-    }
-    .navbar-menu-overlay li {
-        margin: 15px 0;
-        width: 100%;
-        text-align: center;
-        background: linear-gradient(180deg, #2F3B44, #3B4B54);
-    }
-    .navbar-menu-overlay li a {
-        font-size: 1.2rem;
-        color: #ECECEC;
-        text-decoration: none;
-        padding: 10px 20px;
-        text-align: center;
-        display: block;
-        width: 100%;
-    }
-    .navbar-menu-overlay li a:hover {
-        background-color: rgba(255,255,255,0.15);
-        color: #DCCB9C;
     }
 }
 

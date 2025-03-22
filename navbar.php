@@ -82,14 +82,39 @@
     });
 })();
 
-// Add check to ensure navbar is visible
+// Add check to ensure navbar is visible and properly styled
 document.addEventListener('DOMContentLoaded', function() {
     // Force the navbar to be visible
     const navbar = document.querySelector('.navbar');
+    const navbarList = document.querySelector('.navbar-list');
+    
     if (navbar) {
         navbar.style.display = 'block';
         navbar.style.visibility = 'visible';
         navbar.style.opacity = '1';
     }
+    
+    // Ensure proper display of navbar components based on screen size
+    function adjustForScreenSize() {
+        if (window.innerWidth <= 1100) {
+            if (navbarList && !navbarList.classList.contains('open')) {
+                navbarList.style.transform = 'translateY(-100%)';
+                navbarList.style.opacity = '0';
+                navbarList.style.visibility = 'hidden';
+            }
+        } else {
+            if (navbarList) {
+                navbarList.style.transform = '';
+                navbarList.style.opacity = '';
+                navbarList.style.visibility = '';
+            }
+        }
+    }
+    
+    // Initial adjustment
+    adjustForScreenSize();
+    
+    // Listen for resize events
+    window.addEventListener('resize', adjustForScreenSize);
 });
 </script>
