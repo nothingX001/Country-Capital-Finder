@@ -25,7 +25,7 @@ $most_searched_flag_url = !empty($statistics['most_searched_iso']) ? "https://fl
 $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcdn.com/32x24/" . strtolower($statistics['most_recent_iso']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>About | ExploreCapitals</title>
@@ -36,13 +36,8 @@ $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcd
     <meta property="og:description" content="About the ExploreCapitals project - find capital cities of countries worldwide">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        html, body {
-            overflow-x: hidden !important;
-        }
-    </style>
 </head>
-<body style="background: transparent;">
+<body>
     <?php include 'navbar.php'; ?>
 
     <!-- Common container class plus .about -->

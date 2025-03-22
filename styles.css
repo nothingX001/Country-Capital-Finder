@@ -31,9 +31,11 @@ html {
     min-height: 100%;
     /* Enable pull-to-refresh explicitly */
     overscroll-behavior-y: auto !important;
+    /* Add the background to html for better full-page coverage */
     background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     background-attachment: fixed;
     background-size: cover;
+    overflow-x: hidden; /* Control horizontal overflow */
 }
 
 /* Add emoji font support */
@@ -70,7 +72,8 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    background: transparent; /* Changed from gradient to transparent */
+    /* Set background to transparent to allow html gradient to show through */
+    background: transparent !important; 
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
@@ -78,7 +81,9 @@ body {
     position: relative;
     overflow-x: hidden;
     /* Enables smoother "momentum" scrolling on iOS */
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch !important;
+    /* Always allow pull-to-refresh */
+    overscroll-behavior-y: auto !important;
 }
 
 /*
@@ -790,5 +795,48 @@ html, body {
         position: relative;
         -webkit-overflow-scrolling: touch !important;
         overscroll-behavior-y: auto !important;
+    }
+}
+
+/* Final fixes for iOS Safari to ensure proper rendering and pull-to-refresh */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    /* iOS Safari specific fixes */
+    html {
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
+        background-attachment: fixed !important;
+        height: -webkit-fill-available;
+    }
+    
+    body {
+        min-height: -webkit-fill-available;
+        background-color: transparent !important;
+    }
+    
+    /* Force hardware acceleration for smoother scrolling */
+    .page-content, 
+    .quiz, 
+    .country-profiles, 
+    .about, 
+    .world-map, 
+    .country-detail {
+        transform: translateZ(0);
+        will-change: transform;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Fix for full height content */
+    #root, main, .app-container {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        background-color: transparent !important;
+    }
+}
+
+/* Special handling for iOS notched devices */
+@supports(padding: max(0px)) and (-webkit-touch-callout: none) {
+    .page-content {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
 }

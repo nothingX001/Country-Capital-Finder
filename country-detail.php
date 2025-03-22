@@ -85,7 +85,7 @@ try {
 $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . strtolower($country['iso_code']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
@@ -96,13 +96,8 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
     <meta property="og:description" content="Learn about <?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> and its capital<?php echo (count($capitals) > 1) ? 's' : ''; ?> with ExploreCapitals.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        html, body {
-            overflow-x: hidden !important;
-        }
-    </style>
 </head>
-<body style="background: transparent;">
+<body>
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-detail">

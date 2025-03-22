@@ -67,7 +67,7 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Country Profiles | ExploreCapitals</title>
@@ -78,13 +78,8 @@ try {
     <meta property="og:description" content="Browse our database of countries, territories, and more!">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        html, body {
-            overflow-x: hidden !important;
-        }
-    </style>
 </head>
-<body style="background: transparent;">
+<body>
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-profiles" id="main-country-profiles">

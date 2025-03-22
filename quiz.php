@@ -104,7 +104,7 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Quiz | ExploreCapitals</title>
@@ -115,13 +115,8 @@ try {
     <meta property="og:description" content="Test your knowledge of world capital cities with our interactive quiz.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        html, body {
-            overflow-x: hidden !important;
-        }
-    </style>
 </head>
-<body style="background: transparent;">
+<body>
     <?php include 'navbar.php'; ?>
 
     <section class="page-content quiz" id="main-quiz">
