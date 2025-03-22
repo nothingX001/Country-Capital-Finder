@@ -91,7 +91,7 @@ function generateDescriptionWithOpenAI($countryData) {
     // Create a prompt for the country description
     $capitals = implode(', ', $countryData['capitals']);
     
-    $prompt = "Write an engaging and educational two-paragraph description about {$countryData['name']}. ";
+    $prompt = "Write an engaging, educational, and comprehensive three-paragraph description about {$countryData['name']}. ";
     
     // Add basic country facts as context
     $prompt .= "\n\nCountry Facts:";
@@ -112,19 +112,23 @@ function generateDescriptionWithOpenAI($countryData) {
     }
     
     // Specific instructions to create varied and interesting descriptions
-    $prompt .= "\n\nIn your response, include a mix of the following elements (choosing different aspects each time to ensure variety):";
-    $prompt .= "\n1) Brief history with key events that shaped the country";
-    $prompt .= "\n2) Notable cultural traditions, customs, or festivals";
-    $prompt .= "\n3) Famous cuisine, dishes, or beverages";
-    $prompt .= "\n4) Key landmarks or tourist attractions";
-    $prompt .= "\n5) Notable figures from history, arts, sports, or politics";
-    $prompt .= "\n6) Interesting geographic features";
-    $prompt .= "\n7) Economic highlights (industries, exports, etc.)";
-    $prompt .= "\n8) Unique or lesser-known facts that would surprise visitors";
+    $prompt .= "\n\nIn your response, incorporate a comprehensive mix of the following elements:";
+    $prompt .= "\n1) Fascinating historical narrative with key events and periods that shaped the country's identity";
+    $prompt .= "\n2) Rich cultural traditions, customs, or festivals that define the nation's character";
+    $prompt .= "\n3) Detailed culinary traditions, including famous dishes, beverages, and unique ingredients";
+    $prompt .= "\n4) Notable architectural landmarks, natural wonders, and must-visit destinations";
+    $prompt .= "\n5) Influential figures from history, arts, literature, science, sports, or politics";
+    $prompt .= "\n6) Distinctive geographic features and biodiversity that make the country unique";
+    $prompt .= "\n7) Economic landscape, including major industries, trade relationships, and global contributions";
+    $prompt .= "\n8) Contemporary society, including modern challenges, achievements, and national aspirations";
+    $prompt .= "\n9) Unusual or lesser-known facts that would surprise even well-traveled visitors";
     
-    $prompt .= "\n\nThe first paragraph should establish the country's identity with basic information and one or two key historical/cultural aspects. The second paragraph should provide more depth on selected aspects from the list above.";
+    $prompt .= "\n\nStructure your response in three well-developed paragraphs:";
+    $prompt .= "\n- First paragraph: Establish the country's identity, geographical context, and introduce 1-2 most distinctive aspects (historical or cultural significance).";
+    $prompt .= "\n- Second paragraph: Explore the country's cultural heritage, traditions, cuisine, and important historical developments that shaped the nation.";
+    $prompt .= "\n- Third paragraph: Highlight modern aspects including economy, tourism highlights, contemporary society, and conclude with what makes this country particularly special on the world stage.";
     
-    $prompt .= "\n\nKeep the tone informative, educational, and engaging. Format as flowing paragraphs without headings or bullet points. Do not repeat the same facts that are obvious from the country information card. Instead, provide information that helps users develop a deeper understanding of the country.";
+    $prompt .= "\n\nWrite in an engaging, authoritative, and educational tone that conveys genuine expertise about the country. Use vivid language and specific details rather than generalizations. Avoid simply restating the basic facts already provided in the country information card. Instead, provide rich context and insights that help users develop a deeper understanding and appreciation of the country.";
     
     // Call OpenAI API
     $response = callOpenAI($apiKey, $prompt);
@@ -168,13 +172,13 @@ function callOpenAI($apiKey, $prompt) {
     $url = 'https://api.openai.com/v1/chat/completions';
     
     $data = [
-        'model' => 'gpt-4',  // Using GPT-4 for better quality descriptions
+        'model' => 'gpt-4-turbo',  // Using the latest GPT-4 model for better quality descriptions
         'messages' => [
-            ['role' => 'system', 'content' => 'You are a knowledgeable travel guide, historian, and cultural expert that provides accurate, engaging, and educational information about countries and territories around the world. Your descriptions are informative, balanced, and culturally sensitive.'],
+            ['role' => 'system', 'content' => 'You are a world-renowned expert on geography, history, culture, and global affairs with decades of experience researching and writing about countries worldwide. Your descriptions combine academic depth with engaging storytelling, offering readers rich, nuanced portraits of nations that balance historical context, cultural insights, and contemporary relevance. You provide accurate, balanced, and culturally sensitive information that avoids stereotypes while highlighting what makes each country truly distinctive.'],
             ['role' => 'user', 'content' => $prompt]
         ],
-        'temperature' => 0.8,  // Slightly higher temperature for more variety
-        'max_tokens' => 650
+        'temperature' => 0.7,  // Balanced for creativity and accuracy
+        'max_tokens' => 1000   // Increased token limit for more comprehensive descriptions
     ];
     
     $headers = [
@@ -209,6 +213,7 @@ function generateDemoDescription($countryData) {
     $population = $countryData['population'] ?? 'a significant population';
     $languages = $countryData['languages'] ?? 'various languages';
     $capitals = !empty($countryData['capitals']) ? implode(', ', $countryData['capitals']) : 'its capital';
+    $entityType = strtolower($countryData['entityType'] ?? 'country');
     
     // Try to get some Wikipedia information for the fallback
     $wikiSummary = getWikipediaSummary($name);
@@ -216,53 +221,97 @@ function generateDemoDescription($countryData) {
     if (!empty($wikiSummary)) {
         // If we have Wikipedia data, create a more interesting description
         $sentences = explode('. ', $wikiSummary);
-        $firstPara = array_slice($sentences, 0, min(4, count($sentences)));
+        $firstPara = array_slice($sentences, 0, min(5, count($sentences)));
         $firstPara = implode('. ', $firstPara) . '.';
         
-        $secondPara = "With " . (count($countryData['capitals']) > 1 ? "capitals including {$capitals}" : "its capital at {$capitals}") . 
-                     ", {$name} has a rich cultural heritage. " .
-                     "The people speak {$languages}, which contributes to the country's unique identity. " .
-                     "Visitors are often drawn to its distinctive culture, traditions, and " .
-                     (strpos(strtolower($region), 'europe') !== false ? "historical architecture and cuisine." : 
-                     (strpos(strtolower($region), 'asia') !== false ? "ancient traditions and diverse landscapes." : 
-                     (strpos(strtolower($region), 'america') !== false ? "natural beauty and vibrant cities." : 
-                     (strpos(strtolower($region), 'africa') !== false ? "rich cultural traditions and stunning landscapes." : 
-                     (strpos(strtolower($region), 'oceania') !== false ? "unique ecosystems and beautiful beaches." : 
-                     "unique geographical and cultural features.")))));
+        // Create a more detailed second paragraph
+        $secondPara = "{$name} is renowned for its rich cultural heritage and diverse traditions. " .
+                     (count($countryData['capitals']) > 1 ? "Its capitals include {$capitals}, each offering unique cultural experiences. " : "Its capital, {$capitals}, serves as the cultural and political heart of the nation. ") .
+                     "The people speak " . (strpos($languages, ',') !== false ? "several languages including {$languages}, reflecting the country's diverse heritage" : "{$languages}, which forms an essential part of the national identity") . ". " .
+                     "The country is celebrated for its " . 
+                     (strpos(strtolower($region), 'europe') !== false ? "historic architecture, artistic traditions, and renowned cuisine featuring local specialties. " : 
+                     (strpos(strtolower($region), 'asia') !== false ? "ancient cultural practices, distinctive art forms, and flavorful culinary traditions. " : 
+                     (strpos(strtolower($region), 'america') !== false ? "vibrant music, diverse cuisine, and spectacular natural landscapes. " : 
+                     (strpos(strtolower($region), 'africa') !== false ? "rich musical heritage, traditional crafts, and breathtaking natural environments. " : 
+                     (strpos(strtolower($region), 'oceania') !== false ? "unique island culture, pristine natural beauty, and strong connection to the ocean. " : 
+                     "distinctive cultural identity and geographic features. ")))));
         
-        return $firstPara . "\n\n" . $secondPara;
+        // Add a third paragraph about modern aspects
+        $thirdPara = "In modern times, " . $name . " has " . 
+                    (isset($countryData['population']) && strpos($population, 'million') !== false ? "developed into a significant nation with a population of {$population}. " : "evolved while maintaining its unique character. ") .
+                    "Its economy is based on " .
+                    (strpos(strtolower($region), 'europe') !== false ? "a mix of services, manufacturing, and technology sectors. " : 
+                    (strpos(strtolower($region), 'asia') !== false ? "diverse industries ranging from manufacturing to innovative technologies. " : 
+                    (strpos(strtolower($region), 'america') !== false ? "natural resources, agriculture, and expanding service sectors. " : 
+                    (strpos(strtolower($region), 'africa') !== false ? "agriculture, mining, and increasingly, tourism and technology. " : 
+                    (strpos(strtolower($region), 'oceania') !== false ? "tourism, agriculture, and maritime industries. " : 
+                    "a variety of sectors adapted to its resources and location. "))))) .
+                    "Visitors to " . $name . " are drawn to its " .
+                    (strpos(strtolower($region), 'europe') !== false ? "historical sites, museums, and picturesque landscapes. " : 
+                    (strpos(strtolower($region), 'asia') !== false ? "ancient temples, bustling markets, and diverse natural wonders. " : 
+                    (strpos(strtolower($region), 'america') !== false ? "national parks, vibrant cities, and cultural festivals. " : 
+                    (strpos(strtolower($region), 'africa') !== false ? "wildlife reserves, dramatic landscapes, and rich cultural experiences. " : 
+                    (strpos(strtolower($region), 'oceania') !== false ? "stunning beaches, unique wildlife, and warm hospitality. " : 
+                    "unique attractions and authentic cultural experiences. "))))) .
+                    "The country continues to shape its identity while preserving its valuable heritage and traditions.";
+        
+        return $firstPara . "\n\n" . $secondPara . "\n\n" . $thirdPara;
     }
     
-    // Original fallback if no Wikipedia data
-    $description = "{$name} is a " . (strpos(strtolower($countryData['entityType'] ?? ''), 'territory') !== false ? 'territory' : 'country') . " located in {$region}";
+    // Complete fallback if no Wikipedia data
+    $description = "{$name} is a " . ($entityType === 'territory' ? 'territory' : 'country') . " located in {$region}";
     if (!empty($subregion)) {
         $description .= ", specifically in the {$subregion} subregion";
     }
-    $description .= ". With {$population} inhabitants, it has " . (strpos($population, 'million') !== false ? "one of the larger populations in the region" : "a population that contributes to the region's diversity") . ". ";
+    $description .= ". With " . (isset($countryData['population']) ? "{$population} inhabitants" : "its population") . ", it represents an important presence in the region. ";
     $description .= "The " . (count($countryData['capitals']) > 1 ? "capitals are {$capitals}, which serve" : "capital is {$capitals}, which serves") . " as the political and cultural center";
     $description .= count($countryData['capitals']) > 1 ? "s" : "";
-    $description .= " of the " . (strpos(strtolower($countryData['entityType'] ?? ''), 'territory') !== false ? 'territory' : 'nation') . ".";
+    $description .= " of the " . ($entityType === 'territory' ? 'territory' : 'nation') . ". The geographical landscape features diverse terrain that contributes to its unique character and natural resources.";
     
-    // Second paragraph - culture and significance
-    $description .= "\n\n{$name} is known for its unique cultural heritage and traditions. ";
-    $description .= "The people speak {$languages}, which " . (strpos($languages, ',') !== false ? "reflect the linguistic diversity of the region" : "is an important part of the national identity") . ". ";
-    $description .= "The country has a rich history that has shaped its current social and economic landscape. ";
-    $description .= "Visitors to {$name} often appreciate its " . (strpos(strtolower($region), 'europe') !== false ? "historical architecture, cuisine, and cultural festivals" : 
-                    (strpos(strtolower($region), 'asia') !== false ? "ancient traditions, diverse cuisines, and natural landscapes" : 
-                    (strpos(strtolower($region), 'america') !== false ? "natural beauty, vibrant cities, and cultural diversity" : 
-                    (strpos(strtolower($region), 'africa') !== false ? "rich cultural traditions, diverse wildlife, and stunning landscapes" : 
-                    (strpos(strtolower($region), 'oceania') !== false ? "unique ecosystems, beautiful beaches, and indigenous cultures" : 
-                    "unique cultural aspects and geographic features"))))) . ".";
+    // Second paragraph - culture and heritage
+    $description .= "\n\n{$name} is known for its rich cultural heritage and diverse traditions that have evolved over centuries. ";
+    $description .= "The people speak " . (strpos($languages, ',') !== false ? "several languages including {$languages}, reflecting the country's multicultural nature" : "{$languages}, which forms an essential element of the national identity") . ". ";
+    $description .= "Traditional arts, crafts, music, and dance play important roles in expressing the cultural identity, while local cuisine features distinct flavors and preparation methods unique to the region. ";
+    $description .= "Religious practices and festivals throughout the year showcase the spiritual traditions that remain an integral part of daily life.";
+    
+    // Third paragraph - modern aspects and significance
+    $description .= "\n\nIn contemporary times, {$name} has developed " . 
+                    ($entityType === 'territory' ? "unique administrative structures while maintaining connections to its sovereign state. " : "its own political and economic systems adapted to regional and global contexts. ") .
+                    "The economy encompasses various sectors including " . 
+                    (strpos(strtolower($region), 'europe') !== false ? "services, manufacturing, and technology. " : 
+                    (strpos(strtolower($region), 'asia') !== false ? "agriculture, manufacturing, and emerging technologies. " : 
+                    (strpos(strtolower($region), 'america') !== false ? "natural resources, agriculture, and services. " : 
+                    (strpos(strtolower($region), 'africa') !== false ? "agriculture, mineral extraction, and tourism. " : 
+                    (strpos(strtolower($region), 'oceania') !== false ? "tourism, agriculture, and maritime industries. " : 
+                    "diverse industries adapted to local resources. "))))) .
+                    "Visitors are attracted to " . 
+                    (strpos(strtolower($region), 'europe') !== false ? "historical architecture, museums, and cultural sites. " : 
+                    (strpos(strtolower($region), 'asia') !== false ? "ancient monuments, vibrant markets, and natural landscapes. " : 
+                    (strpos(strtolower($region), 'america') !== false ? "natural wonders, cultural heritage sites, and urban attractions. " : 
+                    (strpos(strtolower($region), 'africa') !== false ? "wildlife reserves, scenic vistas, and cultural experiences. " : 
+                    (strpos(strtolower($region), 'oceania') !== false ? "pristine beaches, unique ecosystems, and island culture. " : 
+                    "its distinctive attractions and authentic experiences. "))))) .
+                    "As {$name} navigates the challenges and opportunities of globalization, it continues to preserve its unique identity while engaging with the broader international community.";
     
     return $description;
 }
 
-// Choose which method to use
-$description = generateDescriptionWithOpenAI($data); // Uses real API if key is available, falls back to demo if not
-
-// Return the generated description
-echo json_encode([
-    'success' => true,
-    'description' => $description
-]);
+// Process the country data to generate a description
+if (!empty($data)) {
+    $countryName = $data['name'];
+    $description = '';
+    
+    // Option 1: Use OpenAI if API key is available
+    $description = generateDescriptionWithOpenAI($data);
+    
+    // Send back the response
+    echo json_encode([
+        'success' => true,
+        'country' => $countryName,
+        'description' => $description,
+        // Let's include information about which method was used (for debugging/analytics)
+        'source' => !empty(getOpenAIKey()) ? 'ai' : 'fallback'
+    ]);
+    exit;
+}
 ?> 
