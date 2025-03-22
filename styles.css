@@ -298,13 +298,13 @@ input[type="text"] {
     }
 }
 
-/* Flag image larger */
+/* Flag image - restored to original fixed height */
 .flag-image {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin: 30px auto;      /* Increased from 25px */
-    max-width: 400px;       /* Increased from 350px */
+    margin: 25px auto;      /* Restored to original 25px */
+    max-width: 300px;       /* Restored to original 300px */
 }
 
 /* Fix for button styling - restore original */
@@ -822,9 +822,9 @@ form input[type="submit"].button {
     opacity: 1 !important;
     margin: 0 auto;
     max-width: 100%;
-    height: auto;
-    border-radius: 6px;     /* Increased from 4px */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Increased shadow */
+    height: 192px;          /* Restored to original fixed height */
+    border-radius: 4px;     /* Restored to original 4px */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Restored to original shadow */
 }
 
 .country-detail-header {
