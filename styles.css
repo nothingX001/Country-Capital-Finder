@@ -422,14 +422,15 @@ input[type="text"] {
     background: none;
     border: none;
     cursor: pointer;
-    margin-left: auto;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 10000;
-    display: flex;
+    display: none; /* Hide by default - only show on mobile */
     padding: 10px 15px;
     font-size: 1.5rem;
     color: #ECECEC;
-    position: relative;
-    order: 2;
 }
 
 .navbar-toggle::before {
@@ -547,7 +548,8 @@ input[type="text"] {
     
     /* Adjust navbar links for mobile - super condensed */
     .navbar-list li {
-        margin: -5px 0 !important; /* Negative margin to pull items closer */
+        margin: 5px 0 !important; /* Normal margin between items */
+        padding: 0 !important;
         width: 100%;
         max-width: 280px;
         text-align: center;
@@ -557,9 +559,9 @@ input[type="text"] {
         color: #ECECEC;
         text-decoration: none;
         font-size: 20px;
-        padding: 0 !important; /* No padding */
-        line-height: 1 !important; /* Minimum line height */
-        margin: -2px 0 !important; /* Negative margin to pull text closer */
+        padding: 4px 0 !important; /* Normal padding */
+        line-height: 1.2 !important; /* Normal line height */
+        margin: 0 !important; 
         display: block;
         width: 100%;
         text-align: center;
@@ -576,15 +578,15 @@ input[type="text"] {
     }
     
     .navbar-toggle {
-        display: flex;
+        display: flex; /* Show on mobile */
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
         align-items: center;
         justify-content: center;
-        position: relative;
         padding: 10px 15px;
-        margin-left: auto;
-        order: 2;
-        height: 100%;
-        z-index: 10001; /* Ensure toggle stays above menu */
+        z-index: 10001;
     }
 
     /* Center menu items */
@@ -637,7 +639,8 @@ input[type="text"] {
     
     /* Super condensed menu items */
     .navbar-list li {
-        margin: -5px 0 !important; /* Pull items even closer with negative margin */
+        margin: 4px 0 !important; /* Slightly tighter on small screens */
+        padding: 0 !important;
         width: 100% !important;
         max-width: 280px !important;
         text-align: center !important;
@@ -645,9 +648,9 @@ input[type="text"] {
     
     .navbar-list li a {
         font-size: 20px;
-        padding: 0 !important; /* No padding */
-        line-height: 0.9 !important; /* Ultra tight line height */
-        margin: -3px 0 !important; /* Even more negative margin */
+        padding: 3px 0 !important; /* Slightly tighter padding */
+        line-height: 1.2 !important; /* Normal line height */
+        margin: 0 !important;
         text-align: center !important;
         width: 100% !important;
         display: block !important;
