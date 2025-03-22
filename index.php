@@ -163,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php include 'navbar.php'; ?>
 
     <div class="page-content home">
-        <h1>ExploreCapitals</h1>
+        <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
         <form action="index.php" method="post" id="searchForm">
             <div class="search-bar-container">

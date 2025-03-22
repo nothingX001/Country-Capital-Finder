@@ -569,10 +569,17 @@ input[type="text"] {
     .country-profiles h1,
     .about h1,
     .world-map h1 {
-        font-size: 24px; /* Slightly smaller h1 */
+        font-size: 22px; /* Further reduced from 24px */
         line-height: 1.3;
         margin-bottom: 20px;
         padding: 0 10px;
+    }
+    
+    /* Specific rule for the home page title to prevent wrapping */
+    .home h1 {
+        font-size: 38px; /* Specific size that fits without wrapping */
+        letter-spacing: -0.5px; /* Tighten letter spacing */
+        white-space: nowrap; /* Prevent wrapping */
     }
     
     h2,
@@ -1332,6 +1339,23 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         height: auto;
         max-height: 180px;
     }
+    
+    /* Further reduction for very small screens */
+    h1, 
+    .page-content h1,
+    .quiz h1,
+    .country-profiles h1,
+    .about h1,
+    .world-map h1 {
+        font-size: 20px; /* Even smaller on very small screens */
+        line-height: 1.3;
+    }
+    
+    /* Specific rule for the home page title on very small screens */
+    .home h1 {
+        font-size: 32px; /* Smaller size for very small screens */
+        letter-spacing: -0.8px; /* Tighter spacing */
+    }
 }
 
 /* Apply safe area insets consistently */
@@ -1382,4 +1406,57 @@ body.menu-open {
     position: fixed !important;
     width: 100% !important;
     height: 100% !important;
+}
+
+/* 11) Search Input - mobile optimization */
+@media (max-width: 480px) {
+    .search-bar-container {
+        width: 85%;
+        max-width: 320px;
+    }
+
+    input[type="text"] {
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    /* Make button more compact on mobile */
+    .button {
+        width: 85%;
+        max-width: 280px;
+        padding: 14px 0;
+        font-size: 1.1rem;
+        margin: 20px auto;
+    }
+    
+    /* Adjust h3 in search form to be more compact */
+    .home h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+        padding: 0 20px;
+    }
+    
+    /* Make form elements have better spacing */
+    #searchForm {
+        margin-top: 10px;
+    }
+}
+
+/* Ensure the home page layout has appropriate spacing */
+.page-content.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Fix for browser auto-zooming on inputs */
+@media screen and (max-width: 480px) {
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        font-size: 16px !important;
+    }
 }
