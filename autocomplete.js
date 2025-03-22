@@ -62,8 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function submitFormWithAnimation() {
         if (!input.form) return;
         
-        // Set flag to scroll to results after page load
-        sessionStorage.setItem('shouldScrollToResults', 'true');
+        // Don't set the flag to scroll to results
         
         // Submit the form
         input.form.submit();
@@ -176,19 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Check if we need to scroll to results
     if (sessionStorage.getItem('shouldScrollToResults') === 'true') {
+        // Clear the flag but don't scroll
         sessionStorage.removeItem('shouldScrollToResults');
-        
-        // Wait for the page to render
-        setTimeout(() => {
-            const message = document.querySelector('.message');
-            const countryProfileCard = document.getElementById('countryProfileCard');
-            
-            // Scroll to card or message
-            if (countryProfileCard) {
-                countryProfileCard.scrollIntoView({ behavior: 'smooth' });
-            } else if (message) {
-                message.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 500);
     }
 });

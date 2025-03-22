@@ -331,7 +331,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <!-- View Full Profile Link -->
             <p style="margin-top: 20px;">
                 <a href="country-detail.php?id=<?php echo urlencode($country_id); ?>" class="button" style="text-decoration: none;">
-                    View Full Profile
+                    VIEW PROFILE
                 </a>
             </p>
         </div>
@@ -367,8 +367,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             countryProfileCard.style.visibility = 'visible';
             countryProfileCard.style.opacity = '1';
             
-            // Scroll to card if it exists
-            countryProfileCard.scrollIntoView({ behavior: 'smooth' });
+            // Don't scroll to card
         } else if (message) {
             message.style.display = 'block';
             message.style.visibility = 'visible';
