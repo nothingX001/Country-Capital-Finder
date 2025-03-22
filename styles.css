@@ -197,7 +197,7 @@ body.menu-open {
     align-items: center;
     justify-content: center;
     line-height: 1;
-    transition: color 0.3s ease;
+    transition: color 0.1s ease;
 }
 
 .navbar-toggle:hover::before {
@@ -226,7 +226,7 @@ body.menu-open {
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: color 0.1s ease;
     padding: 8px 12px;
     display: block;
 }
@@ -269,37 +269,45 @@ body.menu-open {
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        padding-top: 30px;
+        justify-content: center;
         z-index: 999;
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        padding: 0;
+        margin: 0;
+        transform: none;
     }
     
     .navbar-list.open {
         display: flex !important;
         z-index: 999;
+        width: 100%;
     }
     
     .navbar-list li {
         margin: 15px 0;
-        width: 80%;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
     }
     
     .navbar-list li a {
-        font-size: 18px;
-        padding: 15px 20px;
+        color: #ECECEC;
+        text-decoration: none;
+        font-size: 24px;
+        padding: 15px 0;
         display: block;
         width: 100%;
         text-align: center;
-        border-radius: 8px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        font-weight: 500;
+        transition: background-color 0.1s ease, color 0.1s ease;
     }
     
     .navbar-list li a:hover {
         background-color: rgba(220, 203, 156, 0.1);
+        color: #DCCB9C;
     }
-    
+
     body.menu-open {
         overflow: hidden;
         position: fixed;
