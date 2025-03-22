@@ -746,7 +746,7 @@ h3 {
 
 /* 11) Search Input - larger */
 .search-bar-container {
-    width: 70%;          /* Changed from 400px to 70% of parent container */
+    width: 95%;          /* Changed from 70% to 95% for maximum width */
     margin: 0 auto 40px;   /* Added bottom margin */
     position: relative !important;
 }
@@ -777,8 +777,9 @@ input[type="text"]:focus {
 /* 11) Search Input - mobile optimization */
 @media (max-width: 480px) {
     .search-bar-container {
-        width: 70% !important; /* Changed from 90% to 70% to match desktop */
+        width: 100% !important; /* Changed from 70% to 100% for full width on mobile */
         max-width: none !important; /* Removed max-width constraint */
+        margin: 0 auto 25px;
     }
     
     input[type="text"] {
