@@ -90,14 +90,14 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Browse our database of countries, territories, and more!">
     <meta property="og:title" content="<?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - Country Detail | ExploreCapitals">
     <meta property="og:description" content="Learn about <?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> and its capital<?php echo (count($capitals) > 1) ? 's' : ''; ?> with ExploreCapitals.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body style="background: transparent;">
+<body>
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-detail">

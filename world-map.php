@@ -6,24 +6,21 @@ $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
 $locations = json_decode($data, true);
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-  <meta name="description" content="Explore an interactive world map to discover capital cities and learn about countries">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Explore capitals of countries, territories, and more with our interactive world map! Find country capitals, learn about different nations, and test your geography knowledge.">
   <meta name="keywords" content="world map, country capitals, geography, interactive map, world geography, country information">
   <meta name="author" content="ExploreCapitals">
   <meta property="og:title" content="World Map | ExploreCapitals">
-  <meta property="og:description" content="Explore an interactive world map to discover capital cities and learn about countries">
+  <meta property="og:description" content="Explore capitals of countries, territories, and more with our interactive world map!">
   <meta property="og:type" content="website">
   <meta property="og:image" content="images/explore-capitals-logo.jpg">
   <title>World Map | ExploreCapitals</title>
   <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
   <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin="" />
   <style>
     /* Original map styling */
     #map {
@@ -33,11 +30,12 @@ $locations = json_decode($data, true);
       margin-top: 20px;
     }
     html, body {
+        overscroll-behavior-y: none !important;
         overflow-x: hidden !important;
     }
   </style>
 </head>
-<body style="background: transparent;">
+<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
   <?php include 'navbar.php'; ?>
 
   <section class="page-content world-map" id="main-world-map">
