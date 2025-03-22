@@ -61,11 +61,28 @@
         setMenuState(!isMenuOpen);
     });
 
-    // Close menu when a link is clicked
+    // Handle link clicks with a delay to keep menu visible during navigation
     navbarLinks.forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', function(e) {
+            // Only apply delay behavior in mobile view
             if (window.innerWidth <= 1100) {
-                setMenuState(false);
+                // Get the href to navigate to
+                const href = this.getAttribute('href');
+                
+                // Don't delay for same-page links or # links
+                if (href && href !== '#' && !href.startsWith('#')) {
+                    // Prevent the default link behavior
+                    e.preventDefault();
+                    
+                    // Add a visual indicator that the link was clicked
+                    this.style.color = '#DCCB9C';
+                    
+                    // Keep the menu visible during navigation
+                    // Navigate after a slight delay for visual feedback
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 150); // Slightly longer delay for better user feedback
+                }
             }
         });
     });
