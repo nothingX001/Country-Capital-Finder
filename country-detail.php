@@ -97,7 +97,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-detail">

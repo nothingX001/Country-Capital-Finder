@@ -25,19 +25,24 @@ $most_searched_flag_url = !empty($statistics['most_searched_iso']) ? "https://fl
 $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcdn.com/32x24/" . strtolower($statistics['most_recent_iso']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title>About | ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    <meta name="description" content="About the ExploreCapitals project - find capital cities of countries worldwide">
+    <meta name="description" content="Learn about our capital city lookup application and its features.">
     <meta property="og:title" content="About | ExploreCapitals">
-    <meta property="og:description" content="About the ExploreCapitals project - find capital cities of countries worldwide">
+    <meta property="og:description" content="Learn about our capital city lookup application and its features.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+        }
+    </style>
 </head>
-<body>
+<body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
     <!-- Common container class plus .about -->

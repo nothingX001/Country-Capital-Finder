@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title>ExploreCapitals | The World Capital Finder</title>
@@ -136,8 +136,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta property="og:description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+        }
+        
+        #countryProfileCard {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(220, 203, 156, 0.3);
+        }
+    </style>
 </head>
-<body>
+<body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
     <div class="page-content home">
