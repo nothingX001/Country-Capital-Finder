@@ -75,7 +75,15 @@ function generateDescriptionWithOpenAI($countryData) {
     // Get API key from environment variable or config
     $apiKey = getOpenAIKey();
     
-    // If no API key is available, use the demo description
+    // First, try to get Wikipedia summary as our preferred source
+    $wikipediaSummary = getWikipediaSummary($countryData['name']);
+    
+    // If we have a substantial Wikipedia summary, format it without using OpenAI
+    if (!empty($wikipediaSummary) && strlen($wikipediaSummary) > 100) {
+        return formatWikipediaDescription($countryData, $wikipediaSummary);
+    }
+    
+    // If no API key is available or Wikipedia data is insufficient, use the demo description
     if (empty($apiKey)) {
         return generateDemoDescription($countryData);
     }
@@ -85,8 +93,7 @@ function generateDescriptionWithOpenAI($countryData) {
         return generateDemoDescription($countryData);
     }
     
-    // Get Wikipedia summary for additional context
-    $wikipediaSummary = getWikipediaSummary($countryData['name']);
+    // If we got here, we have an API key but no Wikipedia data, so proceed with OpenAI
     
     // Create a prompt for the country description
     $capitals = implode(', ', $countryData['capitals']);
@@ -106,7 +113,7 @@ function generateDescriptionWithOpenAI($countryData) {
         $prompt .= "\n- Status: Territory of {$countryData['sovereignState']}";
     }
     
-    // Add Wikipedia summary if available
+    // If we have any Wikipedia data, include it (might be partial)
     if (!empty($wikipediaSummary)) {
         $prompt .= "\n\nWikipedia information:\n{$wikipediaSummary}";
     }
@@ -140,6 +147,67 @@ function generateDescriptionWithOpenAI($countryData) {
         // Fallback to demo description if API call fails
         return generateDemoDescription($countryData);
     }
+}
+
+// Format Wikipedia data into a well-structured description
+function formatWikipediaDescription($countryData, $wikipediaSummary) {
+    $name = $countryData['name'];
+    $capitals = !empty($countryData['capitals']) ? implode(', ', $countryData['capitals']) : 'its capital';
+    $region = $countryData['region'] ?? 'its region';
+    $languages = $countryData['languages'] ?? 'various languages';
+    $entityType = strtolower($countryData['entityType'] ?? 'country');
+    
+    // Format Wikipedia summary into paragraphs
+    $sentences = explode('. ', $wikipediaSummary);
+    
+    // First paragraph: Use first several sentences from Wikipedia
+    $firstParaCount = min(6, max(3, ceil(count($sentences) / 3))); // Adaptive paragraph size
+    $firstPara = array_slice($sentences, 0, $firstParaCount);
+    $firstPara = implode('. ', $firstPara) . '.';
+    
+    // Second paragraph: Use next set of sentences from Wikipedia
+    // If Wikipedia has enough content, use more sentences for second paragraph
+    if (count($sentences) >= 9) {
+        $secondParaCount = min(7, max(3, ceil(count($sentences) / 3)));
+        $secondParaStart = $firstParaCount;
+        $secondPara = array_slice($sentences, $secondParaStart, $secondParaCount);
+        $secondPara = implode('. ', $secondPara) . '.';
+    } else {
+        // If Wikipedia doesn't have enough content, generate the second paragraph
+        $secondPara = "{$name} is known for its rich cultural heritage and diverse traditions. " .
+                     (count($countryData['capitals']) > 1 ? "Its capitals include {$capitals}, each offering unique cultural experiences. " : "Its capital, {$capitals}, serves as the cultural and political heart of the nation. ") .
+                     "The people speak " . (strpos($languages, ',') !== false ? "several languages including {$languages}, reflecting the country's diverse heritage" : "{$languages}, which forms an essential part of the national identity") . ". " .
+                     "The country is celebrated for its " . 
+                     (strpos(strtolower($region), 'europe') !== false ? "historic architecture, artistic traditions, and renowned cuisine featuring local specialties. " : 
+                     (strpos(strtolower($region), 'asia') !== false ? "ancient cultural practices, distinctive art forms, and flavorful culinary traditions. " : 
+                     (strpos(strtolower($region), 'america') !== false ? "vibrant music, diverse cuisine, and spectacular natural landscapes. " : 
+                     (strpos(strtolower($region), 'africa') !== false ? "rich musical heritage, traditional crafts, and breathtaking natural environments. " : 
+                     (strpos(strtolower($region), 'oceania') !== false ? "unique island culture, pristine natural beauty, and strong connection to the ocean. " : 
+                     "distinctive cultural identity and geographic features. ")))));
+    }
+    
+    // Third paragraph: Use remaining sentences from Wikipedia or generate if not enough
+    if (count($sentences) >= 12) {
+        $thirdParaStart = $firstParaCount + $secondParaCount;
+        $thirdParaCount = min(7, count($sentences) - $thirdParaStart);
+        $thirdPara = array_slice($sentences, $thirdParaStart, $thirdParaCount);
+        $thirdPara = implode('. ', $thirdPara) . '.';
+    } else {
+        // Generate third paragraph if not enough Wikipedia content
+        $thirdPara = "In contemporary times, {$name} has developed " . 
+                    ($entityType === 'territory' ? "unique administrative structures while maintaining connections to its sovereign state. " : "its own political and economic systems adapted to regional and global contexts. ") .
+                    "The economy encompasses various sectors including " . 
+                    (strpos(strtolower($region), 'europe') !== false ? "services, manufacturing, and technology. " : 
+                    (strpos(strtolower($region), 'asia') !== false ? "agriculture, manufacturing, and emerging technologies. " : 
+                    (strpos(strtolower($region), 'america') !== false ? "natural resources, agriculture, and services. " : 
+                    (strpos(strtolower($region), 'africa') !== false ? "agriculture, mineral extraction, and tourism. " : 
+                    (strpos(strtolower($region), 'oceania') !== false ? "tourism, agriculture, and maritime industries. " : 
+                    "diverse industries adapted to local resources. "))))) .
+                    "Visitors to {$name} are drawn to experience its unique culture, landscapes, and heritage firsthand.";
+    }
+    
+    // Combine the paragraphs into the final description
+    return $firstPara . "\n\n" . $secondPara . "\n\n" . $thirdPara;
 }
 
 // Function to retrieve the OpenAI API key securely
@@ -301,16 +369,25 @@ if (!empty($data)) {
     $countryName = $data['name'];
     $description = '';
     
-    // Option 1: Use OpenAI if API key is available
-    $description = generateDescriptionWithOpenAI($data);
+    // Get Wikipedia summary - our preferred source
+    $wikipediaSummary = getWikipediaSummary($countryName);
+    
+    // If we have substantial Wikipedia content, format it directly
+    if (!empty($wikipediaSummary) && strlen($wikipediaSummary) > 100) {
+        $description = formatWikipediaDescription($data, $wikipediaSummary);
+        $source = 'wikipedia';
+    } else {
+        // Otherwise try OpenAI (which will still try to use any Wikipedia data we have)
+        $description = generateDescriptionWithOpenAI($data);
+        $source = !empty(getOpenAIKey()) ? 'ai' : 'fallback';
+    }
     
     // Send back the response
     echo json_encode([
         'success' => true,
         'country' => $countryName,
         'description' => $description,
-        // Let's include information about which method was used (for debugging/analytics)
-        'source' => !empty(getOpenAIKey()) ? 'ai' : 'fallback'
+        'source' => $source
     ]);
     exit;
 }
