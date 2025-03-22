@@ -4,6 +4,48 @@
 include 'config.php';
 header('Content-Type: application/json');
 
+// Function to detect Windows and handle flag emoji compatibility
+function processFlags($data) {
+    // Detect if the user is on Windows
+    $isWindows = strpos($_SERVER['HTTP_USER_AGENT'] ?? '', 'Windows') !== false;
+    
+    // If not on Windows, return original data
+    if (!$isWindows) {
+        return $data;
+    }
+    
+    // Process flag emoji for Windows users
+    if (is_array($data)) {
+        foreach ($data as &$item) {
+            if (is_array($item) && isset($item['flag_emoji'])) {
+                // Convert emoji flag to image tag or add a Windows-compatible version
+                $countryCode = isset($item['iso_code']) ? $item['iso_code'] : '';
+                if (empty($countryCode) && isset($item['country_name'])) {
+                    // Try to find country code by name in the database if not available
+                    global $conn;
+                    $stmt = $conn->prepare("SELECT \"ISO Alpha-2\" FROM countries WHERE \"Country Name\" = ?");
+                    $stmt->execute([$item['country_name']]);
+                    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($result) {
+                        $countryCode = $result['ISO Alpha-2'];
+                    }
+                }
+                
+                if ($countryCode) {
+                    // Add a windows_flag_url to the response
+                    $item['windows_flag_url'] = "https://flagcdn.com/32x24/{$countryCode}.png";
+                    
+                    // Keep the original emoji for non-Windows browsers that might access this data
+                    // The frontend will use windows_flag_url if available
+                }
+            }
+        }
+        unset($item);
+    }
+    
+    return $data;
+}
+
 $type = $_GET['type'] ?? null;
 $response = [];
 
@@ -11,7 +53,7 @@ try {
     // 1. Main List of Countries (Member/Observer States)
     if ($type === 'all_main_only') {
         $stmt = $conn->query("
-            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
+            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji, \"ISO Alpha-2\" AS iso_code
             FROM countries
             WHERE status IN ('UN member', 'UN observer')
             ORDER BY \"Country Name\" ASC
@@ -21,7 +63,7 @@ try {
     // 2. Territories
     elseif ($type === 'all_territories') {
         $stmt = $conn->query("
-            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
+            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji, \"ISO Alpha-2\" AS iso_code
             FROM countries
             WHERE status = 'Territory'
             ORDER BY \"Country Name\" ASC
@@ -31,7 +73,7 @@ try {
     // 3. De Facto States
     elseif ($type === 'all_de_facto_states') {
         $stmt = $conn->query("
-            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji
+            SELECT id, \"Country Name\" AS country_name, \"Flag Emoji\" AS flag_emoji, \"ISO Alpha-2\" AS iso_code
             FROM countries
             WHERE status = 'De facto state'
             ORDER BY \"Country Name\" ASC
@@ -47,6 +89,7 @@ try {
                 SELECT c.id, 
                        c.\"Country Name\" AS country_name,
                        c.\"Flag Emoji\" AS flag_emoji,
+                       c.\"ISO Alpha-2\" AS iso_code,
                        array_agg(cap.capital_name) AS capitals,
                        CASE 
                            WHEN LOWER(c.\"Country Name\") = ANY(?) 
@@ -56,7 +99,7 @@ try {
                 FROM countries c
                 JOIN capitals cap ON c.id = cap.country_id
                 WHERE c.\"Entity Type\" IN ('UN member', 'UN observer')
-                GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\"
+                GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\", c.\"ISO Alpha-2\"
                 ORDER BY RANDOM()
                 LIMIT $limit
             )
@@ -91,6 +134,7 @@ try {
                 SELECT c.id,
                        c.\"Country Name\" AS country_name,
                        c.\"Flag Emoji\" AS flag_emoji,
+                       c.\"ISO Alpha-2\" AS iso_code,
                        array_agg(cap.capital_name) AS capitals,
                        CASE 
                            WHEN LOWER(c.\"Country Name\") = ANY(?) 
@@ -100,7 +144,7 @@ try {
                 FROM countries c
                 JOIN capitals cap ON c.id = cap.country_id
                 WHERE c.\"Entity Type\" = 'Territory'
-                GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\"
+                GROUP BY c.id, c.\"Country Name\", c.\"Flag Emoji\", c.\"ISO Alpha-2\"
                 ORDER BY RANDOM()
                 LIMIT $limit
             )
@@ -170,6 +214,7 @@ try {
         $stmt = $conn->prepare("
             SELECT \"name\" AS country_name, 
                    \"flag\" AS flag_emoji, 
+                   \"ISO Alpha-2\" AS iso_code,
                    language, 
                    flag_url AS flag_image_url,
                    status, 
@@ -246,7 +291,7 @@ try {
     // 9. Site Statistics
     elseif ($type === 'statistics') {
         $stmt = $conn->query("
-            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji
+            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji, c.\"ISO Alpha-2\" AS iso_code
             FROM site_statistics s
             LEFT JOIN countries c ON s.country_name = c.\"Country Name\"
             ORDER BY s.search_count DESC
@@ -255,12 +300,13 @@ try {
         $most_searched = $stmt->fetch(PDO::FETCH_ASSOC);
         $most_searched_countries = $most_searched ? $most_searched['country_name'] : 'No data';
         $most_searched_flag = $most_searched ? $most_searched['flag_emoji'] : '';
+        $most_searched_iso = $most_searched ? $most_searched['iso_code'] : '';
 
         $stmt = $conn->query("SELECT SUM(search_count) AS total_searches FROM site_statistics");
         $total_searches = $stmt->fetch(PDO::FETCH_ASSOC)['total_searches'] ?? 0;
 
         $stmt = $conn->query("
-            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji
+            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji, c.\"ISO Alpha-2\" AS iso_code
             FROM site_statistics s
             LEFT JOIN countries c ON s.country_name = c.\"Country Name\"
             ORDER BY s.last_searched_at DESC
@@ -269,6 +315,7 @@ try {
         $most_recent = $stmt->fetch(PDO::FETCH_ASSOC);
         $most_recent_search = $most_recent ? $most_recent['country_name'] : 'No data';
         $most_recent_flag = $most_recent ? $most_recent['flag_emoji'] : '';
+        $most_recent_iso = $most_recent ? $most_recent['iso_code'] : '';
 
         $stmt = $conn->query("
             SELECT SUM(search_count) AS searches_today
@@ -283,9 +330,11 @@ try {
         $response = [
             'most_searched_countries' => $most_searched_countries,
             'most_searched_flag' => $most_searched_flag,
+            'most_searched_iso' => $most_searched_iso,
             'total_searches' => $total_searches,
             'most_recent_search' => $most_recent_search,
             'most_recent_flag' => $most_recent_flag,
+            'most_recent_iso' => $most_recent_iso,
             'searches_today' => $searches_today,
             'unique_countries_searched' => $unique_countries_searched
         ];
@@ -295,6 +344,9 @@ try {
         http_response_code(400);
         $response = ['error' => 'Invalid type or missing parameters.'];
     }
+    
+    // Process the response for Windows users
+    $response = processFlags($response);
 } catch (Exception $e) {
     http_response_code(500);
     error_log("Error in fetch-country-data.php: " . $e->getMessage());
