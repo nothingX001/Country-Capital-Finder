@@ -13,15 +13,15 @@ include 'the-countries.php'; // Make sure this is included
 function normalize_country_input($input) {
     global $the_countries;
     $input = strtolower(trim($input));
-    
+
     // Remove "the" prefix if present for comparison
     $input_without_the = preg_replace('/^the\s+/i', '', $input);
-    
+
     // Check if this is a "the" country
     if (in_array($input_without_the, $the_countries)) {
         return ucwords($input_without_the, " \t\r\n\f\v-()/'");
     }
-    
+
     // For non-"the" countries, just normalize the input
     return ucwords($input, " \t\r\n\f\v-()/'");
 }

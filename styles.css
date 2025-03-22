@@ -235,7 +235,11 @@ body.menu-open {
     transition: color 0.1s ease;
     padding: 8px 12px;
     display: block;
-    cursor: pointer;
+    cursor: pointer !important;
+}
+
+.navbar-list li a:hover {
+    color: #DCCB9C !important;
 }
 
 /* Mobile Styles */

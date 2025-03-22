@@ -102,7 +102,7 @@
     });
 })();
 
-// Add check to ensure navbar is visible
+// Add check to ensure navbar is visible and links are styled properly
 document.addEventListener('DOMContentLoaded', function() {
     // Force the navbar to be visible
     const navbar = document.querySelector('.navbar');
@@ -112,6 +112,22 @@ document.addEventListener('DOMContentLoaded', function() {
         navbar.style.visibility = 'visible';
         navbar.style.opacity = '1';
     }
+    
+    // Ensure all navbar links have the correct styles
+    const navLinks = document.querySelectorAll('.navbar-list li a');
+    navLinks.forEach(link => {
+        // Force apply the cursor pointer style
+        link.style.cursor = 'pointer';
+        
+        // Ensure hover effects work by manually adding event listeners
+        link.addEventListener('mouseenter', function() {
+            this.style.color = '#DCCB9C';
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            this.style.color = '#ECECEC';
+        });
+    });
     
     // Force document to be interactive immediately
     document.body.addEventListener('click', function() {
