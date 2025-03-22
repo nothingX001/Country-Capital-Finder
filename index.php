@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title>ExploreCapitals | The World Capital Finder</title>
@@ -137,6 +137,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
     <style>
+        html, body {
+            overscroll-behavior-y: none !important;
+            overflow-x: hidden !important;
+        }
+        
         #countryProfileCard {
             margin-top: 30px;
             padding-top: 20px;
@@ -144,7 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     </style>
 </head>
-<body>
+<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
     <?php include 'navbar.php'; ?>
 
     <div class="page-content home">
@@ -350,6 +355,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Clear validation message when user starts typing
     document.querySelector('input[name="country"]').addEventListener('input', function() {
         this.setCustomValidity('');
+    });
+
+    // Ensure country profile card appears after search
+    document.addEventListener('DOMContentLoaded', function() {
+        const countryProfileCard = document.getElementById('countryProfileCard');
+        const message = document.querySelector('.message');
+        
+        if (countryProfileCard) {
+            countryProfileCard.style.display = 'block';
+            countryProfileCard.style.visibility = 'visible';
+            countryProfileCard.style.opacity = '1';
+            
+            // Scroll to card if it exists
+            countryProfileCard.scrollIntoView({ behavior: 'smooth' });
+        } else if (message) {
+            message.style.display = 'block';
+            message.style.visibility = 'visible';
+            message.style.opacity = '1';
+        }
     });
     </script>
 </body>

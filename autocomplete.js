@@ -58,42 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to submit form with loading animation
+    // Simple function to submit form with loading indicator
     function submitFormWithAnimation() {
         if (!input.form) return;
         
-        // Create or get loading indicator
-        let loadingIndicator = document.querySelector('.loading-indicator');
-        
-        if (!loadingIndicator) {
-            loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'loading-indicator';
-            loadingIndicator.innerHTML = 'Searching...';
-            loadingIndicator.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: rgba(0,0,0,0.7);
-                color: white;
-                padding: 15px 25px;
-                border-radius: 5px;
-                z-index: 10000;
-                pointer-events: none;
-            `;
-            document.body.appendChild(loadingIndicator);
-        }
-        
-        // Show loading indicator
-        loadingIndicator.style.display = 'block';
-        
-        // Set a flag in session storage to check if we need to scroll to results
+        // Set flag to scroll to results after page load
         sessionStorage.setItem('shouldScrollToResults', 'true');
         
         // Submit the form
-        setTimeout(() => {
-            input.form.submit();
-        }, 50);
+        input.form.submit();
     }
 
     // Handle typing in the input field
@@ -124,39 +97,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         submitFormWithAnimation();
                     });
                     
-                    // Add hover effects
-                    item.addEventListener('mouseenter', () => {
-                        item.style.backgroundColor = '#404B50';
-                        item.style.cursor = 'pointer';
-                    });
-                    
-                    item.addEventListener('mouseleave', () => {
-                        if (!item.classList.contains('active')) {
-                            item.style.backgroundColor = '';
-                        }
-                    });
-                    
                     dropdown.appendChild(item);
                 });
                 
                 dropdown.style.display = 'block';
-                input.classList.add('show-dropdown');
             } else {
                 dropdown.style.display = 'none';
-                input.classList.remove('show-dropdown');
             }
         } catch (error) {
             console.error("Autocomplete fetch error:", error);
             dropdown.style.display = 'none';
-            input.classList.remove('show-dropdown');
         }
     });
 
-    // Close dropdown when clicking outside, but not when clicking the input
+    // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!input.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.style.display = 'none';
-            input.classList.remove('show-dropdown');
             activeIndex = -1;
         }
     });
@@ -166,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         input.focus();
     }
 
-    // Form submit handler to normalize the input value and show loading indicator
+    // Form submit handler to normalize the input value
     input.form.addEventListener('submit', (e) => {
-        // Prevent default action for now
+        // Prevent default action
         e.preventDefault();
         
         // Normalize input value
@@ -197,37 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
         touchMoved = false;
     });
     
-    // If we just loaded the page after a form submission, check if we need to scroll to results
+    // Check if we need to scroll to results
     if (sessionStorage.getItem('shouldScrollToResults') === 'true') {
         sessionStorage.removeItem('shouldScrollToResults');
         
-        // Wait for the page to fully render
+        // Wait for the page to render
         setTimeout(() => {
             const message = document.querySelector('.message');
             const countryProfileCard = document.getElementById('countryProfileCard');
             
-            // Scroll to either the message or the country profile card
+            // Scroll to card or message
             if (countryProfileCard) {
-                countryProfileCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-                // Add a highlight effect
-                countryProfileCard.style.animation = 'highlight-pulse 2s ease';
-                
-                // Add this style to the document if it doesn't exist
-                if (!document.querySelector('style#highlight-animation')) {
-                    const style = document.createElement('style');
-                    style.id = 'highlight-animation';
-                    style.textContent = `
-                        @keyframes highlight-pulse {
-                            0% { box-shadow: 0 0 0 0 rgba(220, 203, 156, 0.5); }
-                            70% { box-shadow: 0 0 0 10px rgba(220, 203, 156, 0); }
-                            100% { box-shadow: 0 0 0 0 rgba(220, 203, 156, 0); }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
+                countryProfileCard.scrollIntoView({ behavior: 'smooth' });
             } else if (message) {
-                message.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                message.scrollIntoView({ behavior: 'smooth' });
             }
         }, 500);
     }

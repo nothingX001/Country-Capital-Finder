@@ -1,5 +1,5 @@
 <!-- navbar.php -->
-<nav class="navbar">
+<nav class="navbar" style="position: fixed !important; top: 0 !important; transform: translateZ(0) !important; will-change: transform !important; -webkit-backface-visibility: visible !important; backface-visibility: visible !important;">
   <div class="navbar-container">
     <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation"></button>
     <!-- Logo -->
@@ -28,6 +28,16 @@
     const navbarLinks  = document.querySelectorAll('.navbar-list li a');
 
     let isMenuOpen = false;
+
+    // Ensure navbar stays fixed during overscroll
+    document.addEventListener('scroll', () => {
+        if (window.scrollY < 0) {
+            // During overscroll
+            navbar.style.transform = 'translateY(0)';
+            navbar.style.position = 'fixed';
+            navbar.style.top = '0';
+        }
+    });
 
     // Toggle menu open/closed
     function setMenuState(open) {
@@ -102,21 +112,19 @@
     });
 })();
 
-// Add check to ensure navbar is visible and links are styled properly
+// Simplified handler to only focus on cursor and card visibility
 document.addEventListener('DOMContentLoaded', function() {
-    // Force the navbar to be visible
+    // Ensure navbar is visible
     const navbar = document.querySelector('.navbar');
-    
     if (navbar) {
         navbar.style.display = 'block';
         navbar.style.visibility = 'visible';
         navbar.style.opacity = '1';
     }
     
-    // Apply custom pointer cursor to ALL clickable elements immediately
-    const allClickableElements = document.querySelectorAll('a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], .button, .navbar-list li a, input[type="text"], .search-bar-container *, .message a, .autocomplete-dropdown li');
-    
-    allClickableElements.forEach(el => {
+    // Apply cursor pointer to clickable elements
+    const clickableElements = document.querySelectorAll('a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], .button, .navbar-list li a, .message a, .autocomplete-dropdown li');
+    clickableElements.forEach(el => {
         el.style.cursor = 'pointer';
     });
     
@@ -126,14 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
         countryProfileCard.style.display = 'block';
         countryProfileCard.style.visibility = 'visible';
         countryProfileCard.style.opacity = '1';
-        
-        // Ensure all child elements are visible too
-        const cardElements = countryProfileCard.querySelectorAll('*');
-        cardElements.forEach(el => {
-            el.style.display = el.tagName === 'DIV' ? 'block' : '';
-            el.style.visibility = 'visible';
-            el.style.opacity = '1';
-        });
     }
     
     // Ensure message is visible
@@ -143,75 +143,5 @@ document.addEventListener('DOMContentLoaded', function() {
         message.style.visibility = 'visible';
         message.style.opacity = '1';
     }
-    
-    // Fix hover behavior by applying event listeners to all links
-    const allLinks = document.querySelectorAll('a, .navbar-list li a, .button');
-    allLinks.forEach(link => {
-        // Force apply the cursor pointer style
-        link.style.cursor = 'pointer';
-        
-        // Ensure links are properly styled by adding event listeners
-        link.addEventListener('mouseenter', function() {
-            this.style.color = '#DCCB9C';
-            this.style.cursor = 'pointer';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            // Don't override text color if it's a button with its own background
-            if (!this.classList.contains('button')) {
-                this.style.color = '';
-            }
-        });
-        
-        link.addEventListener('focus', function() {
-            this.style.outline = '2px solid #DCCB9C';
-            this.style.outlineOffset = '2px';
-        });
-        
-        link.addEventListener('blur', function() {
-            this.style.outline = '';
-            this.style.outlineOffset = '';
-        });
-    });
-    
-    // Fix cursor issues when interacting with inputs
-    const allInputs = document.querySelectorAll('input[type="text"], input[type="submit"]');
-    allInputs.forEach(input => {
-        input.style.cursor = 'pointer';
-    });
-    
-    // Make the entire document interactive immediately
-    document.body.style.pointerEvents = 'auto';
-    
-    // Apply to dynamically added elements - using MutationObserver
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.addedNodes.length) {
-                mutation.addedNodes.forEach(function(node) {
-                    if (node.nodeType === 1) { // Element node
-                        // Apply cursor to clickable elements
-                        const clickables = node.querySelectorAll ? 
-                            node.querySelectorAll('a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], .button') : [];
-                        
-                        Array.from(clickables).forEach(el => {
-                            el.style.cursor = 'pointer';
-                        });
-                        
-                        // Check for countryProfileCard
-                        if (node.id === 'countryProfileCard' || node.querySelector('#countryProfileCard')) {
-                            const card = node.id === 'countryProfileCard' ? node : node.querySelector('#countryProfileCard');
-                            if (card) {
-                                card.style.display = 'block';
-                                card.style.visibility = 'visible';
-                                card.style.opacity = '1';
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: true });
 });
 </script>
