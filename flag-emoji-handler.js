@@ -2,9 +2,7 @@
  * flag-emoji-handler.js
  * Handles rendering of flag emojis on Windows devices
  */
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Flag emoji handler loaded');
-    
+(function() {
     // Function to detect Windows OS
     function isWindowsDevice() {
         return window.navigator.userAgent.indexOf('Windows') !== -1;
@@ -14,17 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function processFlagEmojis() {
         // Only proceed for Windows devices
         if (!isWindowsDevice()) {
-            console.log('Not a Windows device, skipping flag emoji processing');
             return;
         }
         
-        console.log('Processing flag emojis for Windows device');
-        
         // Find all flag emoji spans - only select those with the data-windows-flag-url attribute
-        // to avoid affecting other elements that might use the same class
         const flagElements = document.querySelectorAll('.flag-emoji[data-windows-flag-url]');
-        
-        console.log('Found ' + flagElements.length + ' flag emoji elements to process');
         
         flagElements.forEach(function(element) {
             // Check if this element has a windows_flag_url data attribute
@@ -47,25 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Make sure the navbar is visible
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        console.log('Ensuring navbar is visible');
-        navbar.style.display = '';
+    // Run once the DOM is fully loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', processFlagEmojis);
     } else {
-        console.log('Navbar element not found!');
+        processFlagEmojis();
     }
     
-    // Run the processor after ensuring navbar is visible
-    setTimeout(processFlagEmojis, 500);
-    
-    // Process flag emojis inserted after the page loads (for dynamic content)
-    const observer = new MutationObserver(function(mutations) {
-        processFlagEmojis();
-    });
-    
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-}); 
+    // Also process after a delay to catch any dynamically added elements
+    setTimeout(processFlagEmojis, 1000);
+})(); 
