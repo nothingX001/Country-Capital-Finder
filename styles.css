@@ -746,7 +746,8 @@ h3 {
 
 /* 11) Search Input - larger */
 .search-bar-container {
-    width: 95%;          /* Changed from 70% to 95% for maximum width */
+    width: 100%;          /* Changed from 95% to 100% for maximum width */
+    max-width: none;       /* Removed max-width constraint */
     margin: 0 auto 40px;   /* Added bottom margin */
     position: relative !important;
 }

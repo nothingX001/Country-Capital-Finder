@@ -150,15 +150,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Additional mobile-specific styles */
         @media (max-width: 480px) {
             .search-bar-container {
-                width: 95% !important;
+                width: 100% !important;
                 max-width: none !important;
                 margin: 0 auto 25px;
             }
             
             input[type="text"] {
                 width: 100% !important;
-                padding: 12px 15px !important;
+                padding: 16px 15px !important;
                 font-size: 16px !important;
+                box-sizing: border-box !important;
             }
             
             #searchForm {
@@ -167,6 +168,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 align-items: center;
                 width: 100%;
                 margin-bottom: 10px;
+                padding: 0 !important;
+            }
+            
+            .page-content.home {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
             }
         }
     </style>
@@ -174,12 +181,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
-    <div class="page-content home">
+    <div class="page-content home" style="max-width: 100%;">
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
-        <form action="index.php" method="post" id="searchForm">
-            <div class="search-bar-container">
-                <input type="text" name="country" placeholder="Search..." novalidate>
+        <form action="index.php" method="post" id="searchForm" style="width: 100%;">
+            <div class="search-bar-container" style="width: 100%; max-width: none;">
+                <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
             </div>
             <input type="submit" value="SUBMIT" class="button">
         </form>
