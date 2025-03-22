@@ -11,6 +11,11 @@ input[type="text"], .autocomplete-dropdown li, .search-bar-container *, .message
     cursor: pointer !important;
 }
 
+/* Global style for all <a> tag hovers */
+a:hover {
+    color: #DCCB9C !important;
+}
+
 /* Make focus states visible for better accessibility */
 *:focus-visible {
     outline: 2px solid #DCCB9C !important;
@@ -594,6 +599,15 @@ form input[type="submit"].button {
     margin-top: 15px;
 }
 
+/* Buttons - exception to hover rule, keep text color the same */
+.button:hover, 
+button:hover, 
+input[type="submit"]:hover, 
+input[type="button"]:hover, 
+input[type="reset"]:hover {
+    color: #1F2B30 !important; /* Override the global a:hover */
+}
+
 /* 13) Flash Messages */
 .message a {
     text-decoration: none;
@@ -602,7 +616,7 @@ form input[type="submit"].button {
 }
 .message a:hover {
     text-decoration: none;
-    color: #DCCB9C;
+    color: #DCCB9C !important;
 }
 
 /* 14) Autocomplete Dropdown */
@@ -666,7 +680,7 @@ form input[type="submit"].button {
 }
 .quiz-link:hover {
     text-decoration: none;
-    color: inherit;
+    color: #DCCB9C !important;
 }
 
 #quizContainer {
@@ -801,7 +815,7 @@ form input[type="submit"].button {
     gap: 10px;
 }
 .country-profiles ul li a:hover {
-    color: #DCCB9C;
+    color: #DCCB9C !important;
 }
 
 /* Official Name etc. */
@@ -866,15 +880,15 @@ form input[type="submit"].button {
     cursor: pointer !important;
 }
 
+/* Reset any problematic styles */
+html, body {
+    overscroll-behavior-y: none !important;
+}
+
 /* Add visible focus styles to improve accessibility */
 input:focus, button:focus, select:focus, textarea:focus, a:focus {
     outline: 2px solid #DCCB9C !important;
     outline-offset: 2px !important;
-}
-
-/* Reset any problematic styles */
-html, body {
-    overscroll-behavior-y: none !important;
 }
 
 /* 17) About Section */
@@ -925,7 +939,7 @@ html, body {
     transition: color 0.2s ease;
 }
 .about ul li a:hover {
-    color: #C0AA75;
+    color: #DCCB9C !important;
 }
 
 /* 18) World Map Section */
@@ -1061,7 +1075,7 @@ html, body {
 
 .sovereign-state a:hover {
     text-decoration: none;
-    color: inherit;
+    color: #DCCB9C !important;
 }
 
 .constituent-countries {
@@ -1082,7 +1096,7 @@ html, body {
 
 .constituent-countries a:hover {
     text-decoration: none;
-    color: inherit;
+    color: #DCCB9C !important;
 }
 
 .country-detail-entity a {
@@ -1093,5 +1107,5 @@ html, body {
 
 .country-detail-entity a:hover {
     text-decoration: none;
-    color: inherit;
+    color: #DCCB9C !important;
 }
