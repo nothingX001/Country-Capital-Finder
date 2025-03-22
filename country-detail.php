@@ -404,39 +404,10 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                         cursor.remove();
                         clearInterval(typing);
                         
-                        // Add source attribution with more specific details
-                        const aiLabel = document.createElement('div');
-                        aiLabel.className = 'ai-attribution';
-                        
-                        if (source === 'wikipedia') {
-                            aiLabel.innerHTML = 'Content from Wikipedia, formatted for readability';
-                        } else if (source === 'ai') {
-                            aiLabel.innerHTML = 'Generated using AI technology with Wikipedia references';
-                        } else {
-                            aiLabel.innerHTML = 'Generated from our knowledge base';
-                        }
-                        
-                        // Add clickable debug info for admins (hidden by default)
+                        // Debug info is still kept in console for troubleshooting
                         if (window.descriptionDebug) {
-                            const debugLink = document.createElement('a');
-                            debugLink.href = '#';
-                            debugLink.style.marginLeft = '10px';
-                            debugLink.style.fontSize = '0.8em';
-                            debugLink.style.opacity = '0.6';
-                            debugLink.textContent = '(debug)';
-                            debugLink.onclick = function(e) {
-                                e.preventDefault();
-                                console.log('Description debug info:', window.descriptionDebug);
-                                alert('Debug info has been logged to the console');
-                            };
-                            aiLabel.appendChild(debugLink);
+                            console.log('Description debug info:', window.descriptionDebug);
                         }
-                        
-                        aiLabel.style.fontSize = '0.8em';
-                        aiLabel.style.opacity = '0.6';
-                        aiLabel.style.marginTop = '20px';
-                        aiLabel.style.textAlign = 'right';
-                        descriptionEl.appendChild(aiLabel);
                     }
                 }, typingSpeed);
             }

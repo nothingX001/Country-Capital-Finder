@@ -256,29 +256,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <!-- Sovereign State (for territories) -->
                 <?php if (!empty($country_detail['sovereign_state']) && strtolower(trim($country_detail['entity_type'])) === 'territory'): ?>
                     <div class="sovereign-state">
-                        <strong>Sovereign State:</strong> 
-                        <a href="country-detail.php?id=<?php 
+                        <strong>Sovereign State:</strong>
+                        <a href="country-detail.php?id=<?php
                             // Fetch sovereign state ID
                             $sovereign_stmt = $conn->prepare('SELECT id FROM countries WHERE "Country Name" = ? LIMIT 1');
                             $sovereign_stmt->execute([$country_detail['sovereign_state']]);
-                            echo urlencode($sovereign_stmt->fetchColumn()); 
+                            echo urlencode($sovereign_stmt->fetchColumn());
                         ?>">
                             <?php echo htmlspecialchars($country_detail['sovereign_state']); ?>
                         </a>
                     </div>
                 <?php endif; ?>
             </div>
-            
+
             <!-- Flag Image -->
             <?php if (!empty($country_detail['flag_url'])): ?>
                 <div class="flag-image">
                     <img 
-                        src="<?php echo htmlspecialchars($country_detail['flag_url']); ?>" 
+                        src="<?php echo htmlspecialchars($country_detail['flag_url']); ?>"
                         alt="Flag of <?php echo htmlspecialchars($country_detail['country_name']); ?>"
                     >
                 </div>
             <?php endif; ?>
-            
+
             <!-- Official Name -->
             <?php if (!empty($country_detail['official_name'])): ?>
                 <div class="country-detail-entity">
