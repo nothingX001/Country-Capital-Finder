@@ -85,7 +85,7 @@ try {
 $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . strtolower($country['iso_code']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
@@ -96,74 +96,8 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
     <meta property="og:description" content="Learn about <?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> and its capital<?php echo (count($capitals) > 1) ? 's' : ''; ?> with ExploreCapitals.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
-    <style>
-      /* Additional styling for the country detail page */
-      .country-detail-header {
-          margin-bottom: 20px;
-          text-align: center;
-          font-family: "Courier New", Courier, monospace;
-      }
-      .country-detail-header h1 {
-          font-family: "Courier New", Courier, monospace;
-          font-size: 2.5rem;
-          margin-bottom: 10px;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-      }
-      .country-detail-entity {
-          font-family: "Courier New", Courier, monospace;
-          font-size: 1.2rem;
-          color: #DCCB9C;
-          margin-bottom: 10px;
-      }
-      .sovereign-state {
-          font-family: "Courier New", Courier, monospace;
-          font-size: 1.2rem;
-          color: #DCCB9C;
-          margin-bottom: 20px;
-          text-align: center;
-      }
-      .flag-image {
-          text-align: center;
-          margin-bottom: 30px;
-      }
-      .flag-image img {
-          height: 150px;  /* Fixed height that works well on all devices without overflow */
-          width: auto;    /* Width will adjust proportionally */
-      }
-
-      .attributes {
-          max-width: 500px;
-          margin: 0 auto;
-          text-align: left;
-          font-size: 1.1rem;
-          color: #DCCB9C;
-          font-family: "Courier New", Courier, monospace;
-      }
-      .attributes p {
-          margin: 10px 0;
-          line-height: 1.5;
-          font-family: "Courier New", Courier, monospace;
-      }
-      .attributes strong {
-          font-weight: bold;
-          color: #DCCB9C;
-          font-family: "Courier New", Courier, monospace;
-      }
-      .constituent-countries {
-          font-family: "Courier New", Courier, monospace;
-      }
-      .header-emoji {
-          font-size: 3rem;
-          margin-top: 10px;
-      }
-      html, body {
-          overscroll-behavior-y: none !important;
-          overflow-x: hidden !important;
-      }
-    </style>
 </head>
-<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
+<body>
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-detail">
@@ -320,6 +254,121 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
             }
             ?>
         </div>
+
+        <!-- AI Generated Description Section -->
+        <div class="ai-description">
+            <h3>About <?php echo htmlspecialchars($displayName); ?></h3>
+            <div class="ai-loading">
+                <span>Generating description</span>
+                <div class="dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <div class="ai-description-content" id="aiDescription"></div>
+        </div>
     </section>
+
+    <!-- JavaScript for AI description typing effect -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Store country data for API call
+            const countryData = {
+                name: "<?php echo addslashes($displayName); ?>",
+                capitals: <?php 
+                    $caps = [];
+                    foreach ($capitals as $cap) {
+                        $caps[] = $cap['capital_name'];
+                    }
+                    echo json_encode($caps); 
+                ?>,
+                region: "<?php echo addslashes($country['region'] ?? ''); ?>",
+                subregion: "<?php echo addslashes($country['subregion'] ?? ''); ?>",
+                population: "<?php echo addslashes($popFormatted ?? ''); ?>",
+                languages: "<?php echo addslashes($country['languages'] ?? ''); ?>",
+                entityType: "<?php echo addslashes($country['entity_type'] ?? ''); ?>",
+                area: "<?php echo addslashes($areaFormatted ?? ''); ?>",
+                currency: "<?php echo addslashes($country['currency'] ?? ''); ?>",
+                isTerritory: <?php echo (strtolower(trim($country['entity_type'] ?? '')) === 'territory') ? 'true' : 'false'; ?>,
+                sovereignState: "<?php echo addslashes($country['sovereign_state'] ?? ''); ?>"
+            };
+
+            // Function to fetch AI description
+            function getAIDescription() {
+                // Show the loading animation
+                document.querySelector('.ai-loading').style.display = 'flex';
+                
+                // Prepare API request to your backend
+                fetch('generate-description.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(countryData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.description) {
+                        // Hide loading animation
+                        document.querySelector('.ai-loading').style.display = 'none';
+                        
+                        // Type out the description with a typing effect
+                        typeDescription(data.description);
+                    } else {
+                        showError();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError();
+                });
+            }
+
+            // Function to show error message if AI generation fails
+            function showError() {
+                document.querySelector('.ai-loading').style.display = 'none';
+                document.getElementById('aiDescription').innerHTML = 
+                    "Sorry, we couldn't generate a description at this time. Please try again later.";
+            }
+
+            // Function to simulate typing effect
+            function typeDescription(text) {
+                const descriptionEl = document.getElementById('aiDescription');
+                let i = 0;
+                const typingSpeed = 10; // faster: 10 ms per character (was 20)
+                
+                // Create cursor element
+                const cursor = document.createElement('span');
+                cursor.className = 'ai-typing-cursor';
+                descriptionEl.appendChild(cursor);
+                
+                const typing = setInterval(() => {
+                    if (i < text.length) {
+                        // Check if we need to insert a paragraph break
+                        if (text.substring(i, i+2) === "\n\n") {
+                            descriptionEl.insertBefore(document.createElement('br'), cursor);
+                            descriptionEl.insertBefore(document.createElement('br'), cursor);
+                            i += 2;
+                        } else if (text[i] === "\n") {
+                            descriptionEl.insertBefore(document.createElement('br'), cursor);
+                            i++;
+                        } else {
+                            // Insert the next character
+                            descriptionEl.insertBefore(document.createTextNode(text[i]), cursor);
+                            i++;
+                        }
+                    } else {
+                        // Remove the cursor when finished
+                        cursor.remove();
+                        clearInterval(typing);
+                    }
+                }, typingSpeed);
+            }
+
+            // Start the process when page is loaded
+            setTimeout(getAIDescription, 1000); // Small delay for better UX
+        });
+    </script>
 </body>
 </html>
