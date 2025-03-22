@@ -323,9 +323,9 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
 
         <!-- Back button and other links -->
         <div class="nav-buttons">
-            <a href="country-profiles.php" class="button" style="text-decoration: none;">Back to Country Profiles</a>
+            <a href="country-profiles.php" class="button" style="text-decoration: none;">BACK TO PROFILES</a>
             <?php if (!empty($country['lat']) && !empty($country['lon'])): ?>
-                <a href="world-map.php?country=<?php echo urlencode($country['country_name']); ?>" class="button" style="text-decoration: none;">View on Map</a>
+                <a href="world-map.php?country=<?php echo urlencode($country['country_name']); ?>" class="button" style="text-decoration: none;">VIEW ON MAP</a>
             <?php endif; ?>
         </div>
     </section>

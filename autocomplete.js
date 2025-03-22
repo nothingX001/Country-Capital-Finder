@@ -80,12 +80,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`fetch-country-data.php?type=autocomplete&query=${encodeURIComponent(query)}`);
-            const countries = await response.json();
+            // Add a debug log
+            console.log("Fetching autocomplete for:", query);
+            
+            // Force query to be at least one character
+            const searchQuery = query.length > 0 ? query : '';
+            
+            const response = await fetch(`fetch-country-data.php?type=autocomplete&query=${encodeURIComponent(searchQuery)}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            
+            const responseText = await response.text();
+            console.log("Response text:", responseText);
+            
+            let countries;
+            try {
+                countries = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error("JSON Parse error:", parseError, "Response:", responseText);
+                return;
+            }
 
             // Populate the dropdown
             dropdown.innerHTML = '';
-            if (countries.length > 0) {
+            if (countries && countries.length > 0) {
                 countries.forEach((country) => {
                     const item = document.createElement('li');
                     item.textContent = country;

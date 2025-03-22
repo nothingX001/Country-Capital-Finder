@@ -245,8 +245,19 @@ try {
                 ORDER BY \"Country Name\" ASC
                 LIMIT 10
             ");
-            $stmt->execute(['{' . implode(',', $the_countries) . '}', strtolower($query) . '%']);
+            
+            // Make sure the query is at least 1 character
+            $searchTerm = !empty($query) ? $query : '';
+            
+            // Add debug
+            error_log("Autocomplete search term: " . $searchTerm);
+            
+            $stmt->execute(['{' . implode(',', $the_countries) . '}', strtolower($searchTerm) . '%']);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Add debug
+            error_log("Autocomplete results count: " . count($results));
+            
             $response = array_map(function($row) {
                 return $row['needs_the'] ? 'The ' . $row['country_name'] : $row['country_name'];
             }, $results);
