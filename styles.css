@@ -568,8 +568,9 @@ input[type="text"] {
     .quiz h1,
     .country-profiles h1,
     .about h1,
-    .world-map h1 {
-        font-size: 22px; /* Further reduced from 24px */
+    .world-map h1,
+    .home h1 {
+        font-size: 2.8rem !important; /* Standardized to 2.8rem even on mobile */
         line-height: 1.3;
         margin-bottom: 20px;
         padding: 0 10px;
@@ -588,7 +589,7 @@ input[type="text"] {
     .country-profiles h2,
     .about h2,
     .world-map h2 {
-        font-size: 20px; /* Smaller than h1 */
+        font-size: 2.2rem !important; /* Proportionally smaller than h1 */
         line-height: 1.3;
         padding: 0 5px;
     }
@@ -599,7 +600,7 @@ input[type="text"] {
     .country-profiles h3,
     .about h3,
     .world-map h3 {
-        font-size: 18px; /* Smaller than h2 */
+        font-size: 1.8rem !important; /* Proportionally smaller than h2 */
         line-height: 1.3;
         padding: 0 5px;
     }
@@ -704,8 +705,9 @@ input[type="text"] {
 .quiz h1,
 .country-profiles h1,
 .about h1,
-.world-map h1 {
-    font-size: 2.4rem; /* Reduced from 2.8rem */
+.world-map h1,
+.home h1 {
+    font-size: 2.8rem !important; /* Standardized to 2.8rem */
     margin-bottom: 30px;
 }
 
@@ -714,7 +716,7 @@ input[type="text"] {
 .country-profiles h2,
 .about h2,
 .world-map h2 {
-    font-size: 1.8rem; /* Smaller than h1 */
+    font-size: 2.2rem !important; /* Proportionally smaller than h1 */
     margin-bottom: 25px;
 }
 
@@ -723,13 +725,13 @@ input[type="text"] {
 .country-profiles h3,
 .about h3,
 .world-map h3 {
-    font-size: 1.5rem; /* Smaller than h2 */
+    font-size: 1.8rem !important; /* Proportionally smaller than h2 */
     margin-bottom: 20px;
 }
 
 /* General heading styles outside of specific containers */
 h1 { 
-    font-size: 2.4rem; /* Reduced from 2.8rem */
+    font-size: 2.8rem !important; /* Standardized to 2.8rem */
     font-weight: 600;
     font-family: "Courier New", Courier, monospace;
     margin-bottom: 30px;
@@ -738,19 +740,19 @@ h1 {
     letter-spacing: 0.5px;
 }
 h2 { 
-    font-size: 1.8rem; /* Reduced from 2rem to ensure h2 < h1 */
+    font-size: 2.2rem !important; /* Proportionally smaller than h1 */
     font-weight: 600;
     font-family: "Courier New", Courier, monospace;
-    margin-bottom: 25px; /* Slightly reduced from h1 */
+    margin-bottom: 25px;
     text-align: center;
     line-height: 1.2;
     letter-spacing: 0.5px;
 }
 h3 { 
-    font-size: 1.5rem; /* Reduced from 1.6rem to ensure h3 < h2 */
+    font-size: 1.8rem !important; /* Proportionally smaller than h2 */
     font-weight: 600;
     font-family: "Courier New", Courier, monospace;
-    margin-bottom: 20px; /* Slightly reduced from h2 */
+    margin-bottom: 20px;
     text-align: center;
     line-height: 1.2;
     letter-spacing: 0.5px;
@@ -784,6 +786,41 @@ input[type="text"]:focus {
     border-color: #DCCB9C;
     box-shadow: 0 0 0 2px rgba(220, 203, 156, 0.2);
     font-size: 16px; /* Maintain font size when focused */
+}
+
+/* 11) Search Input - mobile optimization */
+@media (max-width: 480px) {
+    .search-bar-container {
+        width: 100%;
+        max-width: 400px; /* Restored to match the default width */
+    }
+
+    input[type="text"] {
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    /* Make button more compact on mobile */
+    .button {
+        width: 100%;
+        max-width: 360px; /* Restored to match the default width */
+        padding: 14px 0;
+        font-size: 1.1rem;
+        margin: 20px auto;
+    }
+    
+    /* Adjust h3 in search form to be more compact */
+    .home h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+        padding: 0 20px;
+    }
+    
+    /* Make form elements have better spacing */
+    #searchForm {
+        margin-top: 10px;
+        width: 100%;
+    }
 }
 
 /* 12) Buttons - larger */
@@ -1346,8 +1383,29 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     .quiz h1,
     .country-profiles h1,
     .about h1,
-    .world-map h1 {
-        font-size: 20px; /* Even smaller on very small screens */
+    .world-map h1,
+    .home h1 {
+        font-size: 2.8rem !important; /* Keep 2.8rem even on smallest screens */
+        line-height: 1.3;
+    }
+    
+    h2, 
+    .page-content h2,
+    .quiz h2,
+    .country-profiles h2,
+    .about h2,
+    .world-map h2 {
+        font-size: 2.2rem !important; /* Keep proportionally smaller */
+        line-height: 1.3;
+    }
+    
+    h3, 
+    .page-content h3,
+    .quiz h3,
+    .country-profiles h3,
+    .about h3,
+    .world-map h3 {
+        font-size: 1.8rem !important; /* Keep proportionally smaller */
         line-height: 1.3;
     }
     
@@ -1406,40 +1464,6 @@ body.menu-open {
     position: fixed !important;
     width: 100% !important;
     height: 100% !important;
-}
-
-/* 11) Search Input - mobile optimization */
-@media (max-width: 480px) {
-    .search-bar-container {
-        width: 85%;
-        max-width: 320px;
-    }
-
-    input[type="text"] {
-        padding: 14px;
-        font-size: 16px;
-    }
-
-    /* Make button more compact on mobile */
-    .button {
-        width: 85%;
-        max-width: 280px;
-        padding: 14px 0;
-        font-size: 1.1rem;
-        margin: 20px auto;
-    }
-    
-    /* Adjust h3 in search form to be more compact */
-    .home h3 {
-        font-size: 16px;
-        margin-bottom: 15px;
-        padding: 0 20px;
-    }
-    
-    /* Make form elements have better spacing */
-    #searchForm {
-        margin-top: 10px;
-    }
 }
 
 /* Ensure the home page layout has appropriate spacing */
