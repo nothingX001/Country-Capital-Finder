@@ -488,11 +488,19 @@ input[type="text"] {
 /* Mobile Styles */
 @media (max-width: 1200px) {
     .navbar {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        height: 80px !important;
+    }
+    
+    /* When menu is open, show solid background and effects */
+    .navbar.menu-active {
         background-color: #2F3B44 !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
         backdrop-filter: blur(8px) !important;
         -webkit-backdrop-filter: blur(8px) !important;
-        height: 80px !important;
     }
     
     .navbar-container {
@@ -521,23 +529,24 @@ input[type="text"] {
     /* Add mobile-specific navbar-list styles */
     .navbar-list {
         position: fixed;
-        top: 80px !important; /* Position directly below navbar */
+        top: 0 !important; /* Start from the top of the screen */
         left: 0;
         width: 100%;
-        height: calc(100vh - 80px) !important; /* Full height minus navbar */
+        height: 100vh;
         background-color: #2F3B44;
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start !important; /* Start from top */
-        padding-top: 20px !important; /* Add padding at top */
+        justify-content: center; /* Center items vertically */
+        padding-top: 70px !important; /* Add padding at top to account for navbar */
         z-index: 9990; /* Slightly lower than navbar */
         overflow-y: auto;
-        background: linear-gradient(180deg, #2F3B44, #3B4B54);
+        background: #2F3B44;
         margin: 0;
         transform: none;
-        border-top: 1px solid rgba(220, 203, 156, 0.3); /* Make border more visible */
         box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Add shadow for depth */
+        /* Remove the border between navbar and menu */
+        border-top: none;
     }
     
     .navbar-list.open {
@@ -548,7 +557,7 @@ input[type="text"] {
     
     /* Adjust navbar links for mobile - more condensed */
     .navbar-list li {
-        margin: 3px 0; /* Reduced from 6px */
+        margin: 1px 0 !important; /* Further reduced from 3px for tighter spacing */
         width: 100%;
         max-width: 280px;
         text-align: center;
@@ -557,8 +566,8 @@ input[type="text"] {
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 20px; /* Reduced from 22px */
-        padding: 6px 0; /* Reduced from 8px */
+        font-size: 20px;
+        padding: 4px 0 !important; /* Reduced from 6px for tighter spacing */
         display: block;
         width: 100%;
         text-align: center;
@@ -575,8 +584,99 @@ input[type="text"] {
     }
 }
 
-.navbar.menu-active {
-    background-color: #2F3B44 !important;
+/* Reset button styles to their original */
+.button {
+    font-family: Arial, sans-serif;
+    display: block;
+    width: 360px;          /* Increased from 320px */
+    margin: 25px auto;     /* Increased from 20px auto */
+    padding: 18px 0;       /* Increased from 15px 0 */
+    font-size: 1.3rem;     /* Increased from 1.2rem */
+    font-weight: bold;
+    color: #1F2B30;
+    text-align: center;
+    border: none;
+    border-radius: 60px;   /* Increased from 50px */
+    background: linear-gradient(180deg, #DCCB9C, #C0AA75);
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 8px 16px rgba(0,0,0,0.2); /* Increased shadow */
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none !important;
+}
+
+/* Better mobile optimization for iPhone and smaller screens */
+@media (max-width: 768px) {
+    /* Remove button size changes on mobile */
+    .button, input[type="submit"], button {
+        /* Keep the same as desktop */
+        width: 360px;
+        padding: 18px 0;
+        font-size: 1.3rem;
+        border-radius: 60px;
+    }
+    
+    /* Keep the navbar transparent until menu opens */
+    .navbar {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    .navbar.menu-active {
+        background-color: #2F3B44 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+    }
+}
+
+/* iPhone-specific optimizations */
+@media (max-width: 480px) {
+    /* Center menu items better on mobile - more condensed */
+    .navbar-list {
+        justify-content: center !important;
+        padding-top: 80px !important; /* Push down to make room for navbar */
+        align-items: center !important;
+    }
+    
+    .navbar-list li {
+        margin: 0 0 !important; /* Zero margin for maximum compression */
+        width: 100% !important;
+        max-width: 280px !important;
+        text-align: center !important;
+    }
+    
+    .navbar-list li a {
+        font-size: 20px;
+        padding: 3px 0 !important; /* Further reduced for maximum compression */
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+    }
+    
+    /* Keep the navbar transparent until menu opens */
+    .navbar {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .navbar.menu-active {
+        background-color: #2F3B44 !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+    
+    /* Keep the button the same as desktop */
+    .button {
+        width: 360px;
+        margin: 25px auto;
+        padding: 18px 0;
+        font-size: 1.3rem;
+        border-radius: 60px;
+    }
 }
 
 /* 9) Main Page Containers */
@@ -680,27 +780,6 @@ input[type="text"]:focus {
 }
 
 /* 12) Buttons - larger */
-.button {
-    font-family: Arial, sans-serif;
-    display: block;
-    width: 360px;          /* Increased from 320px */
-    margin: 25px auto;     /* Increased from 20px auto */
-    padding: 18px 0;       /* Increased from 15px 0 */
-    font-size: 1.3rem;     /* Increased from 1.2rem */
-    font-weight: bold;
-    color: #1F2B30;
-    text-align: center;
-    border: none;
-    border-radius: 60px;   /* Increased from 50px */
-    background: linear-gradient(180deg, #DCCB9C, #C0AA75);
-    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 8px 16px rgba(0,0,0,0.2); /* Increased shadow */
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none !important;
-}
 .button:hover {
     background: linear-gradient(180deg, #C8B882, #B89F6A);
 }
@@ -1304,8 +1383,8 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         height: 200vh !important; /* Extra tall */
         background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
         background-attachment: fixed !important;
-        background-size: cover !important;
         background-repeat: no-repeat !important;
+        background-size: cover !important;
         z-index: -10 !important; /* Ensure it's behind everything */
     }
     
