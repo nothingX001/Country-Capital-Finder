@@ -29,15 +29,13 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    /* Enable pull-to-refresh explicitly */
+    /* Ensure pull-to-refresh works properly */
     overscroll-behavior-y: auto !important;
-    background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
-    background-attachment: fixed !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    -webkit-background-size: cover !important;
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;
+    -webkit-overflow-scrolling: touch !important;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
+    background-attachment: fixed;
+    background-size: cover;
+    height: -webkit-fill-available;
 }
 
 /* Add emoji font support */
@@ -74,7 +72,7 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    background: transparent; /* Using transparent to let HTML gradient show through */
+    background: transparent; /* Changed from gradient to transparent */
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
@@ -83,11 +81,15 @@ body {
     overflow-x: hidden;
     /* Enables smoother "momentum" scrolling on iOS */
     -webkit-overflow-scrolling: touch;
+    min-height: -webkit-fill-available;
+    height: 100%;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: auto !important;
 }
 
 /*
    2a) Background implementation:
-   Fixed gradient in both html and body::before for maximum compatibility
+   Fixed to the viewport using html background
 */
 
 body::before {
@@ -333,33 +335,8 @@ input[type="text"] {
 
 /* Mobile adjustments for country detail */
 @media (max-width: 768px) {
-    /* Preserve consistent 2rem font size for content headers */
-    .page-content h1, 
-    .quiz h1, 
-    .country-profiles h1, 
-    .about h1, 
-    .world-map h1,
-    #countryProfileCard h1,
-    .page-content h2, 
-    .quiz h2, 
-    .country-profiles h2, 
-    .about h2, 
-    .world-map h2,
-    #countryProfileCard h2,
-    .page-content h3, 
-    .quiz h3, 
-    .country-profiles h3, 
-    .about h3, 
-    .world-map h3,
-    #countryProfileCard h3 {
-        font-size: 2rem;
-        line-height: 1.2;
-        padding: 0 10px;
-        margin-bottom: 25px;
-    }
-    
     .attributes {
-        padding-left: 15px;
+        padding-left: 15px;  /* Changed from 0 to 15px for slight right shift on mobile */
         padding-right: 20px;
         width: 100%;
     }
@@ -419,16 +396,15 @@ input[type="text"] {
 
 /* Toggle Button (Hamburger) - positioned on the right */
 .navbar-toggle {
-    display: none; /* Hidden by default on desktop */
     background: none;
     border: none;
     cursor: pointer;
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10001;
-    padding: 10px;
+    margin-left: auto;
+    z-index: 10000;
+    display: none;
+    padding: 10px 15px;
+    font-size: 1.5rem;
+    color: #ECECEC;
 }
 
 .navbar-toggle::before {
@@ -477,6 +453,7 @@ input[type="text"] {
     padding: 8px 12px;
     display: flex; /* Change to flex display */
     align-items: center; /* Center text vertically */
+    justify-content: center; /* Center horizontally too */
     cursor: pointer !important;
     white-space: nowrap; /* Prevent text wrapping */
     height: 100%; /* Full height */
@@ -493,7 +470,6 @@ input[type="text"] {
         box-shadow: none !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-        height: 80px !important;
     }
     
     /* When menu is open, show solid background and effects */
@@ -502,6 +478,7 @@ input[type="text"] {
         box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
         backdrop-filter: blur(8px) !important;
         -webkit-backdrop-filter: blur(8px) !important;
+        border-bottom: 1px solid rgba(220, 203, 156, 0.3) !important; /* Add bottom border to connect with menu */
     }
     
     .navbar-container {
@@ -515,10 +492,22 @@ input[type="text"] {
         z-index: 10001; /* Ensure logo stays visible above menu */
     }
     
+    .navbar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 10px 15px;
+        margin-left: 0;
+        order: 2;
+        height: 100%;
+        z-index: 10001; /* Ensure toggle stays above menu */
+    }
+    
     /* Add mobile-specific navbar-list styles */
     .navbar-list {
         position: fixed;
-        top: 0 !important; /* Start from the top of the screen */
+        top: 0; /* Start from the top of the screen */
         left: 0;
         width: 100%;
         height: 100vh;
@@ -527,15 +516,14 @@ input[type="text"] {
         flex-direction: column;
         align-items: center;
         justify-content: center; /* Center items vertically */
-        padding-top: 0 !important; /* Remove padding */
+        padding: 0; /* Remove padding */
         z-index: 9990; /* Slightly lower than navbar */
         overflow-y: auto;
-        background: #2F3B44;
+        background: linear-gradient(180deg, #2F3B44, #3B4B54);
         margin: 0;
         transform: none;
+        border-top: 1px solid rgba(220, 203, 156, 0.3); /* Make border more visible */
         box-shadow: 0 4px 12px rgba(0,0,0,0.3); /* Add shadow for depth */
-        /* Remove the border between navbar and menu */
-        border-top: none;
     }
     
     .navbar-list.open {
@@ -544,22 +532,19 @@ input[type="text"] {
         width: 100%;
     }
     
-    /* Adjust navbar links for mobile - super condensed */
+    /* Adjust navbar links for mobile - more condensed */
     .navbar-list li {
-        margin: 5px 0 !important; /* Normal margin between items */
-        padding: 0 !important;
+        margin: 6px 0; /* Reduced from 12px */
         width: 100%;
-        max-width: 280px;
+        max-width: 320px; /* Reduced from 400px */
         text-align: center;
     }
     
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 20px;
-        padding: 4px 0 !important; /* Normal padding */
-        line-height: 1.2 !important; /* Normal line height */
-        margin: 0 !important; 
+        font-size: 24px; /* Reduced from 28px */
+        padding: 10px 0; /* Reduced from 15px */
         display: block;
         width: 100%;
         text-align: center;
@@ -574,161 +559,10 @@ input[type="text"] {
         color: #DCCB9C !important;
         cursor: pointer !important;
     }
-    
-    .navbar-toggle {
-        display: block;
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    /* Center menu items */
-    .navbar-list {
-        justify-content: center !important;
-        align-items: center !important;
-        padding-top: 0 !important;
-    }
 }
 
-/* Reset button styles to their original */
-.button {
-    font-family: Arial, sans-serif;
-    display: block;
-    width: 360px;          /* Increased from 320px */
-    margin: 25px auto;     /* Increased from 20px auto */
-    padding: 18px 0;       /* Increased from 15px 0 */
-    font-size: 1.3rem;     /* Increased from 1.2rem */
-    font-weight: bold;
-    color: #1F2B30;
-    text-align: center;
-    border: none;
-    border-radius: 60px;   /* Increased from 50px */
-    background: linear-gradient(180deg, #DCCB9C, #C0AA75);
-    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 8px 16px rgba(0,0,0,0.2); /* Increased shadow */
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-decoration: none !important;
-}
-
-/* iPhone-specific optimizations */
-@media (max-width: 480px) {
-    /* Navbar and container fixes */
-    .navbar {
-        height: 60px !important;
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        z-index: 10000 !important;
-        background-color: #2F3B44 !important;
-    }
-
-    .navbar-container {
-        height: 60px !important;
-        padding: 0 !important;
-        position: relative !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-    }
-
-    /* Absolutely position the toggle button */
-    .navbar-toggle {
-        display: block !important;
-        position: absolute !important;
-        right: 15px !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        padding: 10px !important;
-        z-index: 10001 !important;
-        margin: 0 !important;
-    }
-
-    /* Logo positioning */
-    .navbar-logo {
-        margin-left: 15px !important;
-        position: relative !important;
-        z-index: 10001 !important;
-    }
-
-    /* Menu styling */
-    .navbar-list {
-        position: fixed !important;
-        top: 60px !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: calc(100vh - 60px) !important;
-        background-color: #2F3B44 !important;
-        display: none !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        align-items: center !important;
-        padding-top: 20px !important;
-        z-index: 9999 !important;
-    }
-
-    .navbar-list.open {
-        display: flex !important;
-    }
-
-    /* Menu items styling */
-    .navbar-list li {
-        margin: 8px 0 !important;
-        width: 90% !important;
-        max-width: 250px !important;
-    }
-
-    .navbar-list li a {
-        font-size: 16px !important;
-        padding: 8px 0 !important;
-        color: #ECECEC !important;
-        text-align: center !important;
-    }
-
-    /* Adjust button sizes for mobile */
-    .button, 
-    input[type="submit"], 
-    button {
-        width: 85% !important;
-        max-width: 280px !important;
-        margin: 15px auto !important;
-        padding: 12px 0 !important;
-        font-size: 1rem !important;
-        border-radius: 40px !important;
-        box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.15) !important;
-    }
-
-    /* Search bar container adjustments */
-    .search-bar-container {
-        width: 85% !important;
-        max-width: 280px !important;
-        margin: 0 auto 20px !important;
-    }
-
-    /* Search input adjustments */
-    input[type="text"] {
-        width: 100% !important;
-        padding: 12px !important;
-        font-size: 1rem !important;
-        border-radius: 8px !important;
-    }
-
-    /* Container adjustments */
-    .page-content,
-    .quiz,
-    .country-profiles,
-    .about,
-    .world-map {
-        width: 92% !important;
-        padding: 15px !important;
-        margin-top: 70px !important;
-        margin-bottom: 20px !important;
-    }
+.navbar.menu-active {
+    background-color: #2F3B44 !important;
 }
 
 /* 9) Main Page Containers */
@@ -751,58 +585,58 @@ input[type="text"] {
     color: #ECECEC;
 }
 
-/* 10) Headings - proportionally larger */
-h1, h2, h3 {
+/* 10) Headings - standardized size in page-content areas */
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.quiz h1,
+.quiz h2,
+.quiz h3,
+.country-profiles h1,
+.country-profiles h2,
+.country-profiles h3,
+.about h1,
+.about h2,
+.about h3,
+.world-map h1,
+.world-map h2,
+.world-map h3 {
+    font-size: 2rem;
     font-family: "Courier New", Courier, monospace;
-    margin-bottom: 30px;   /* Increased from 25px */
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* General heading styles outside of specific containers */
+h1 { 
+    font-size: 2.8rem;
+    font-weight: 600;
+    font-family: "Courier New", Courier, monospace;
+    margin-bottom: 30px;
     text-align: center;
     line-height: 1.2;
     letter-spacing: 0.5px;
 }
-
-/* Set consistent but hierarchical font sizes for all headers in content areas */
-.page-content h1, 
-.quiz h1, 
-.country-profiles h1, 
-.about h1, 
-.world-map h1,
-#countryProfileCard h1 {
+h2 { 
     font-size: 2rem;
     font-weight: 600;
-}
-
-.page-content h2, 
-.quiz h2, 
-.country-profiles h2, 
-.about h2, 
-.world-map h2,
-#countryProfileCard h2 {
-    font-size: 1.6rem;
-    font-weight: 600;
-}
-
-.page-content h3, 
-.quiz h3, 
-.country-profiles h3, 
-.about h3, 
-.world-map h3,
-#countryProfileCard h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-/* Default heading sizes for areas outside content sections */
-h1 { 
-    font-size: 2.8rem;     /* Increased from 2.5rem */
-    font-weight: 600;
-}
-h2 { 
-    font-size: 2rem;       /* Increased from 1.8rem */
-    font-weight: 600;
+    font-family: "Courier New", Courier, monospace;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
 }
 h3 { 
-    font-size: 1.6rem;     /* Increased from 1.4rem */
+    font-size: 1.6rem;
     font-weight: 600;
+    font-family: "Courier New", Courier, monospace;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
 }
 
 /* 11) Search Input - larger */
@@ -832,6 +666,27 @@ input[type="text"]:focus {
 }
 
 /* 12) Buttons - larger */
+.button {
+    font-family: Arial, sans-serif;
+    display: block;
+    width: 360px;          /* Increased from 320px */
+    margin: 25px auto;     /* Increased from 20px auto */
+    padding: 18px 0;       /* Increased from 15px 0 */
+    font-size: 1.3rem;     /* Increased from 1.2rem */
+    font-weight: bold;
+    color: #1F2B30;
+    text-align: center;
+    border: none;
+    border-radius: 60px;   /* Increased from 50px */
+    background: linear-gradient(180deg, #DCCB9C, #C0AA75);
+    box-shadow: inset 0 3px 6px rgba(255,255,255,0.3), 0 8px 16px rgba(0,0,0,0.2); /* Increased shadow */
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none !important;
+}
 .button:hover {
     background: linear-gradient(180deg, #C8B882, #B89F6A);
 }
@@ -905,7 +760,7 @@ input[type="reset"]:hover {
 }
 .quiz h1 {
     text-align: center;
-    font-size: 2rem; /* Changed from 2.8rem to match standard */
+    font-size: 2.8rem;
     margin-bottom: 30px;
     color: #F0F0F0;
 }
@@ -964,7 +819,7 @@ input[type="reset"]:hover {
 #resultContainer h2 {
     text-align: center;
     margin-bottom: 25px;
-    font-size: 1.6rem; /* Changed from 2rem to match h2 standard */
+    font-size: 2rem;
     color: #F0F0F0;
 }
 #score {
@@ -1020,7 +875,7 @@ input[type="reset"]:hover {
 .country-profiles h1 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 2rem; /* Already at 2rem, maintained for consistency */
+    font-size: 2rem;
     color: #F0F0F0;
 }
 .country-profiles p {
@@ -1032,7 +887,7 @@ input[type="reset"]:hover {
 .country-profiles h2 {
     margin-top: 30px;
     margin-bottom: 15px;
-    font-size: 2rem; /* Changed from 1.5rem to match standard */
+    font-size: 1.5rem;
     color: #F0F0F0;
 }
 .country-profiles ul {
@@ -1143,7 +998,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 .about h1 {
     text-align: center;
     margin-bottom: 30px;
-    font-size: 2rem; /* Changed from 2.8rem to match standard */
+    font-size: 2.8rem;
     color: #F0F0F0;
     line-height: 1.2;
 }
@@ -1156,7 +1011,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 .about h2 {
     margin-top: 40px;
     margin-bottom: 25px;
-    font-size: 2rem; /* Already at 2rem, maintained for consistency */
+    font-size: 2rem;
     color: #F0F0F0;
 }
 .about ul {
@@ -1193,7 +1048,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 }
 .world-map h1 {
     margin-bottom: 30px;
-    font-size: 2rem; /* Changed from 2.8rem to match standard */
+    font-size: 2.8rem;
     color: #F0F0F0;
 }
 .world-map p {
@@ -1314,14 +1169,47 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 
 /* Better mobile optimization for iPhone and smaller screens */
 @media (max-width: 768px) {
-    /* Keep buttons the same size as desktop */
+    .attributes {
+        padding-left: 15px;  /* Changed from 0 to 15px for slight right shift on mobile */
+        padding-right: 20px;
+        width: 100%;
+    }
+    
+    .attributes strong {
+        min-width: 120px;
+    }
+    
+    .ai-description h3 {
+        text-align: center;
+    }
+
+    /* Better text scaling for iPhones */
+    .message {
+        font-size: 18px !important;
+        line-height: 1.4;
+    }
+    
+    .message a, .message strong {
+        font-size: 20px !important;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
+
+    /* Optimize buttons and inputs for touchscreens */
     .button, input[type="submit"], button {
-        width: 360px !important;
-        padding: 18px 0 !important;
-        font-size: 1.3rem !important;
-        border-radius: 60px !important;
-        margin: 25px auto !important;
-        max-width: 360px !important;
+        padding: 14px 20px;
+        font-size: 16px;
+        min-height: 45px; /* Ensure good tap target */
     }
     
     input[type="text"] {
@@ -1355,92 +1243,27 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         padding: 12px;
         font-size: 16px;
     }
-    
-    /* Better text scaling for iPhones */
-    .message {
-        font-size: 18px !important;
-        line-height: 1.4;
-    }
-    
-    .message a, .message strong {
-        font-size: 20px !important;
-    }
-    
-    /* Default heading styles for non-content areas */
-    h1 {
-        font-size: 24px;
-    }
-    
-    h2 {
-        font-size: 20px;
-    }
-    
-    h3 {
-        font-size: 18px;
-    }
 }
 
 /* iPhone-specific optimizations */
 @media (max-width: 480px) {
-    /* Update font sizes for content headers on iPhone to maintain hierarchy */
-    .page-content h1, 
-    .quiz h1, 
-    .country-profiles h1, 
-    .about h1, 
-    .world-map h1,
-    #countryProfileCard h1 {
-        font-size: 2rem;
-        line-height: 1.2;
-        padding: 0 10px;
-        margin-bottom: 20px;
-    }
-    
-    .page-content h2, 
-    .quiz h2, 
-    .country-profiles h2, 
-    .about h2, 
-    .world-map h2,
-    #countryProfileCard h2 {
-        font-size: 1.6rem;
-        line-height: 1.2;
-        padding: 0 10px;
-        margin-bottom: 18px;
-    }
-    
-    .page-content h3, 
-    .quiz h3, 
-    .country-profiles h3, 
-    .about h3, 
-    .world-map h3,
-    #countryProfileCard h3 {
-        font-size: 1.3rem;
-        line-height: 1.2;
-        padding: 0 10px;
-        margin-bottom: 15px;
-    }
-    
     /* Make sure background is showing on mobile */
-    html {
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
-        background-attachment: fixed !important;
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
+    html, body {
+        background-attachment: fixed;
     }
     
     body::before {
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
+        background-attachment: fixed !important;
         content: "";
         position: fixed;
-        top: -50vh !important;
-        left: -50vw !important;
-        right: -50vw !important;
-        bottom: -50vh !important;
-        width: 200vw !important; /* Extra wide */
-        height: 200vh !important; /* Extra tall */
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
-        background-attachment: fixed !important;
-        background-repeat: no-repeat !important;
-        background-size: cover !important;
-        z-index: -10 !important; /* Ensure it's behind everything */
+        z-index: -1;
+        top: -50px;
+        left: -50px;
+        right: -50px;
+        bottom: -50px;
+        width: calc(100% + 100px);
+        height: calc(100% + 100px);
     }
     
     .message {
@@ -1459,27 +1282,19 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         height: 70px !important;
     }
     
-    /* Center menu items better on mobile - more condensed */
+    /* Center menu items better on mobile */
     .navbar-list {
-        justify-content: flex-start !important;
-        padding-top: 20px !important; /* Reduced from 30px */
-        align-items: center !important;
+        justify-content: center !important;
+        padding-top: 0 !important;
     }
     
     .navbar-list li {
-        margin: 0 !important; /* No margins between items */
-        width: 100% !important;
-        max-width: 280px !important;
-        text-align: center !important;
+        margin: 4px 0 !important; /* Even more condensed on mobile */
     }
     
     .navbar-list li a {
-        font-size: 20px;
-        padding: 3px 0 !important; /* Reduced padding */
-        line-height: 1.2 !important;
-        text-align: center !important;
-        width: 100% !important;
-        display: block !important;
+        font-size: 22px;
+        padding: 8px 0;
     }
     
     .page-content,
@@ -1491,22 +1306,37 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         padding: 15px;
     }
     
-    /* Default heading styles for non-content areas on iPhone */
-    h1 {
-        font-size: 24px;
+    /* Larger header text for mobile */
+    h1, 
+    .page-content h1,
+    .quiz h1,
+    .country-profiles h1,
+    .about h1,
+    .world-map h1 {
+        font-size: 28px; /* Increased for better readability */
         line-height: 1.3;
         margin-bottom: 20px;
         padding: 0 10px;
     }
     
-    h2 {
-        font-size: 22px;
+    h2,
+    .page-content h2,
+    .quiz h2,
+    .country-profiles h2,
+    .about h2,
+    .world-map h2 {
+        font-size: 24px; /* Increased slightly */
         line-height: 1.3;
         padding: 0 5px;
     }
     
-    h3 {
-        font-size: 20px;
+    h3,
+    .page-content h3,
+    .quiz h3,
+    .country-profiles h3,
+    .about h3,
+    .world-map h3 {
+        font-size: 22px; /* Increased slightly */
         line-height: 1.3;
         padding: 0 5px;
     }
@@ -1551,6 +1381,17 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     .flag-image img {
         height: auto;
         max-height: 180px;
+    }
+
+    /* Smaller text for iPhone */
+    .navbar-list li a {
+        font-size: 22px;
+        padding: 12px 0;
+    }
+    
+    /* Adjust padding for iPhone navbar */
+    .navbar-list {
+        padding-top: 70px !important; /* Match iPhone navbar height */
     }
 }
 
@@ -1699,48 +1540,43 @@ a.button,
 @supports (-webkit-touch-callout: none) {
     /* iOS Safari specific */
     html, body {
-        min-height: -webkit-fill-available;
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
-        background-attachment: scroll !important; /* Use scroll instead of fixed for iOS */
-        background-size: cover !important;
-        background-repeat: no-repeat !important;
+        height: 100%;
+        height: -webkit-fill-available;
+        overscroll-behavior-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
     }
 
+    /* Explicitly enable momentum scrolling on iOS */
     body {
-        min-height: -webkit-fill-available;
-        background: transparent !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .navbar {
+        /* Use fixed positioning for the navbar on iOS */
+        position: fixed !important;
+        top: 0 !important;
     }
     
-    /* iOS navbar fix */
-    @media (max-width: 1200px) {
-        .navbar-list {
-            top: 80px !important;
-            height: calc(100vh - 80px) !important;
-        }
+    /* Ensure fixed background works on iOS */
+    html {
+        background-attachment: scroll;
     }
     
     /* Special handling for pull-to-refresh on iOS */
     body::before {
         /* Extend well beyond the viewport to prevent white edges */
-        content: "";
-        position: fixed !important;
-        top: -100vh !important;
-        left: -100vw !important;
-        right: -100vw !important;
-        bottom: -100vh !important;
-        width: 300vw !important;
-        height: 300vh !important;
-        background: linear-gradient(180deg, #3B4B54, #DCCB9C) !important;
-        background-attachment: fixed !important;
-        background-repeat: no-repeat !important;
-        background-size: cover !important;
-        z-index: -10 !important;
+        top: -150vh;
+        left: -150vw;
+        right: -150vw;
+        bottom: -150vh;
+        width: 400vw;
+        height: 400vh;
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
     }
 }
 
 /* Add extra fixes for iOS Safari to ensure pull-to-refresh works correctly */
 @media screen and (max-width: 480px) and (-webkit-min-device-pixel-ratio: 0) {
-    /* Enable pull-to-refresh for all pages */
     html, body {
         /* Use relative positioning for better scroll behavior */
         position: relative;
@@ -1749,8 +1585,6 @@ a.button,
         overflow: auto;
         -webkit-overflow-scrolling: touch !important;
         overscroll-behavior-y: auto !important;
-        /* Original gradient background */
-        background-color: #3B4B54; /* Fallback color */
     }
     
     /* Re-enable scrolling behavior */
@@ -1761,6 +1595,16 @@ a.button,
     /* Remove any touch-action restrictions that might block pull-to-refresh */
     * {
         touch-action: auto !important;
+    }
+    
+    /* Ensure viewport extends beyond screen */
+    body::before {
+        top: -150vh !important;
+        left: -150vw !important;
+        right: -150vw !important;
+        bottom: -150vh !important;
+        width: 400vw !important;
+        height: 400vh !important;
     }
 }
 

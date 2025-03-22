@@ -67,7 +67,7 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title>Country Profiles | ExploreCapitals</title>
@@ -80,11 +80,12 @@ try {
     <link rel="stylesheet" href="styles.css">
     <style>
         html, body {
+            overscroll-behavior-y: none !important;
             overflow-x: hidden !important;
         }
     </style>
 </head>
-<body style="background: transparent;">
+<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-profiles" id="main-country-profiles">
