@@ -822,7 +822,7 @@ input[type="reset"]:hover {
 .country-detail-entity {
     font-size: 1.4rem;
     color: #ECECEC;
-    margin-bottom: 15px;
+    margin-bottom: 25px;    /* Increased from 15px for more even spacing */
     text-align: center;
     max-width: 85%;
     margin-left: auto;
@@ -836,7 +836,7 @@ input[type="reset"]:hover {
     opacity: 1 !important;
     margin: 0 auto;
     max-width: 100%;
-    height: 192px;          /* Restored to original fixed height */
+    height: 210px;          /* Slightly increased from 192px */
     border-radius: 4px;     /* Restored to original 4px */
     box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Restored to original shadow */
 }
@@ -1063,7 +1063,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 .sovereign-state {
     font-size: 1.5rem;
     color: #ECECEC;
-    margin-bottom: 30px;
+    margin-bottom: 25px;    /* Changed from 30px for more consistent spacing */
     text-align: center;
 }
 
