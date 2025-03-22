@@ -1,51 +1,51 @@
-/**
- * flag-emoji-handler.js
- * Handles rendering of flag emojis on Windows devices
- */
-(function() {
-    // Function to detect Windows OS
-    function isWindowsDevice() {
-        return window.navigator.userAgent.indexOf('Windows') !== -1;
-    }
-    
-    // Process all flag emoji elements on the page
-    function processFlagEmojis() {
-        // Only proceed for Windows devices
-        if (!isWindowsDevice()) {
-            return;
+// flag-emoji-handler.js - Simple script to handle Windows flag emojis
+window.addEventListener('load', function() {
+    // Make sure we don't affect anything until the page fully loads
+    setTimeout(function() {
+        // Only run on Windows
+        if (navigator.userAgent.indexOf('Windows') === -1) return;
+        
+        // IMPORTANT: Never touch the navbar or any of its elements
+        var navbarElements = document.querySelectorAll('.navbar, .navbar *, .navbar-logo, .navbar-toggle, .navbar-container, .navbar-list');
+        for (var i = 0; i < navbarElements.length; i++) {
+            navbarElements[i].setAttribute('data-protected', 'true');
         }
         
-        // Find all flag emoji spans - only select those with the data-windows-flag-url attribute
-        const flagElements = document.querySelectorAll('.flag-emoji[data-windows-flag-url]');
+        // Find flag elements with the data-windows-flag-url attribute
+        // But ONLY process those that are NOT inside the navbar
+        var flags = document.querySelectorAll('.flag-emoji[data-windows-flag-url]:not([data-protected="true"])');
         
-        flagElements.forEach(function(element) {
-            // Check if this element has a windows_flag_url data attribute
-            const flagUrl = element.getAttribute('data-windows-flag-url');
+        // Replace each flag with an image
+        for (var i = 0; i < flags.length; i++) {
+            var flagElement = flags[i];
             
-            if (flagUrl) {
-                // Create image element
-                const imgElement = document.createElement('img');
-                imgElement.src = flagUrl;
-                imgElement.alt = 'Country flag';
-                imgElement.className = 'windows-flag-img';
-                imgElement.style.height = '1em';
-                imgElement.style.verticalAlign = 'middle';
-                imgElement.style.marginLeft = '4px';
-                
-                // Replace the emoji text with the image
-                element.innerHTML = '';
-                element.appendChild(imgElement);
+            // Skip this element if it's inside the navbar
+            var isInNavbar = false;
+            var parent = flagElement.parentNode;
+            while (parent) {
+                if (parent.classList && (parent.classList.contains('navbar') || 
+                    parent.hasAttribute('data-protected'))) {
+                    isInNavbar = true;
+                    break;
+                }
+                parent = parent.parentNode;
             }
-        });
-    }
-    
-    // Run once the DOM is fully loaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', processFlagEmojis);
-    } else {
-        processFlagEmojis();
-    }
-    
-    // Also process after a delay to catch any dynamically added elements
-    setTimeout(processFlagEmojis, 1000);
-})(); 
+            
+            if (isInNavbar) continue;
+            
+            // Process the flag
+            var windowsFlagUrl = flagElement.getAttribute('data-windows-flag-url');
+            if (windowsFlagUrl) {
+                var img = document.createElement('img');
+                img.src = windowsFlagUrl;
+                img.alt = 'Flag';
+                img.style.height = '1em';
+                img.style.verticalAlign = 'middle';
+                
+                // Replace content
+                flagElement.innerHTML = '';
+                flagElement.appendChild(img);
+            }
+        }
+    }, 300); // Small delay to ensure everything is loaded
+}); 

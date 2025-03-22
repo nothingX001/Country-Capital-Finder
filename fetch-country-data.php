@@ -6,15 +6,7 @@ header('Content-Type: application/json');
 
 // Function to detect Windows and handle flag emoji compatibility
 function processFlags($data) {
-    // Detect if the user is on Windows
-    $isWindows = strpos($_SERVER['HTTP_USER_AGENT'] ?? '', 'Windows') !== false;
-    
-    // If not on Windows, return original data
-    if (!$isWindows) {
-        return $data;
-    }
-    
-    // Process flag emoji for Windows users
+    // Only add windows_flag_url property without any other changes
     if (is_array($data)) {
         foreach ($data as &$item) {
             if (is_array($item) && isset($item['flag_emoji'])) {
@@ -33,10 +25,7 @@ function processFlags($data) {
                 
                 if ($countryCode) {
                     // Add a windows_flag_url to the response
-                    $item['windows_flag_url'] = "https://flagcdn.com/32x24/{$countryCode}.png";
-                    
-                    // Keep the original emoji for non-Windows browsers that might access this data
-                    // The frontend will use windows_flag_url if available
+                    $item['windows_flag_url'] = "https://flagcdn.com/32x24/".strtolower($countryCode).".png";
                 }
             }
         }
