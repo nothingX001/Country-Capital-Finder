@@ -39,6 +39,7 @@
             // Add accessibility attributes
             navbarToggle.setAttribute('aria-expanded', 'true');
             navbarList.setAttribute('aria-hidden', 'false');
+            console.log('Menu opened');
         } else {
             document.body.classList.remove('menu-open');
             navbar.classList.remove('menu-active');
@@ -46,15 +47,19 @@
             // Update accessibility attributes
             navbarToggle.setAttribute('aria-expanded', 'false');
             navbarList.setAttribute('aria-hidden', 'true');
+            console.log('Menu closed');
         }
     }
 
     // Initialize state
     navbarToggle.setAttribute('aria-expanded', 'false');
     navbarList.setAttribute('aria-hidden', 'true');
+    navbarList.classList.remove('open');
 
-    // Hook up the toggle button
-    navbarToggle.addEventListener('click', () => {
+    // Hook up the toggle button - use direct event listener
+    navbarToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         setMenuState(!isMenuOpen);
     });
 
@@ -82,11 +87,12 @@
     });
 })();
 
-// Add check to ensure navbar is visible and properly styled
+// Add check to ensure navbar is visible
 document.addEventListener('DOMContentLoaded', function() {
     // Force the navbar to be visible
     const navbar = document.querySelector('.navbar');
     const navbarList = document.querySelector('.navbar-list');
+    const navbarToggle = document.getElementById('navbarToggle');
     
     if (navbar) {
         navbar.style.display = 'block';
@@ -94,27 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
         navbar.style.opacity = '1';
     }
     
-    // Ensure proper display of navbar components based on screen size
-    function adjustForScreenSize() {
-        if (window.innerWidth <= 1100) {
-            if (navbarList && !navbarList.classList.contains('open')) {
-                navbarList.style.transform = 'translateY(-100%)';
-                navbarList.style.opacity = '0';
-                navbarList.style.visibility = 'hidden';
-            }
-        } else {
-            if (navbarList) {
-                navbarList.style.transform = '';
-                navbarList.style.opacity = '';
-                navbarList.style.visibility = '';
-            }
-        }
+    // Double check toggle button functionality
+    if (navbarToggle && navbarList) {
+        navbarToggle.addEventListener('click', function() {
+            navbarList.classList.toggle('open');
+            const isOpen = navbarList.classList.contains('open');
+            navbarToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
     }
-    
-    // Initial adjustment
-    adjustForScreenSize();
-    
-    // Listen for resize events
-    window.addEventListener('resize', adjustForScreenSize);
 });
 </script>
