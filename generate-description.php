@@ -38,36 +38,75 @@ if (!$data || !isset($data['name'])) {
 
 // Function to get Wikipedia summary for a country
 function getWikipediaSummary($countryName) {
-    // URL encode the country name for the API request
-    $encodedName = urlencode($countryName);
+    // Sometimes Wikipedia pages use different formats
+    $possibleNames = [
+        $countryName,
+        str_replace(' ', '_', $countryName),
+        str_replace(['The ', 'the '], '', $countryName)
+    ];
     
-    // Make a request to the Wikipedia API
-    $url = "https://en.wikipedia.org/api/rest_v1/page/summary/{$encodedName}";
+    // Some countries have special Wikipedia page names
+    $specialCases = [
+        'United States' => 'United_States_of_America',
+        'United Kingdom' => 'United_Kingdom',
+        'Russia' => 'Russia',
+        'China' => 'China',
+        'North Korea' => 'North_Korea',
+        'South Korea' => 'South_Korea',
+        'Democratic Republic of the Congo' => 'Democratic_Republic_of_the_Congo',
+        'Republic of the Congo' => 'Republic_of_the_Congo'
+    ];
     
-    // Initialize curl
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'ExploreCapitals/1.0 (https://explorecapitals.com; info@explorecapitals.com)');
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    if (isset($specialCases[$countryName])) {
+        $possibleNames[] = $specialCases[$countryName];
+    }
     
-    $response = curl_exec($ch);
-    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    $wikipediaSummary = '';
+    $errorDetails = [];
     
-    if ($status === 200) {
-        $data = json_decode($response, true);
-        if (isset($data['extract'])) {
-            return $data['extract'];
+    // Try each possible name format
+    foreach ($possibleNames as $name) {
+        // URL encode the country name for the API request
+        $encodedName = urlencode($name);
+        
+        // Make a request to the Wikipedia API
+        $url = "https://en.wikipedia.org/api/rest_v1/page/summary/{$encodedName}";
+        
+        // Initialize curl
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ExploreCapitals/1.0 (https://explorecapitals.com; info@explorecapitals.com)');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15); // Increased from 10 seconds to 15
+        
+        $response = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+        
+        // Store error details for debugging
+        $errorDetails[] = [
+            'name' => $name,
+            'url' => $url,
+            'status' => $status,
+            'error' => $error
+        ];
+        
+        if ($status === 200) {
+            $data = json_decode($response, true);
+            if (isset($data['extract']) && strlen($data['extract']) > 100) {
+                // Success! We found a good summary
+                return $data['extract'];
+            } elseif (isset($data['extract'])) {
+                // We got something, but it's too short - save it just in case
+                $wikipediaSummary = $data['extract'];
+            }
         }
     }
     
-    // Try a simpler query if the first one fails
-    if (strpos($countryName, 'The ') === 0) {
-        return getWikipediaSummary(substr($countryName, 4));
-    }
-    
-    return '';
+    // If we get here, all attempts failed or returned insufficient content
+    // Return whatever we might have found, or empty string
+    return $wikipediaSummary;
 }
 
 // OPTION 1: Use an existing AI API like OpenAI
@@ -368,18 +407,23 @@ function generateDemoDescription($countryData) {
 if (!empty($data)) {
     $countryName = $data['name'];
     $description = '';
+    $debug = []; // For debugging
     
     // Get Wikipedia summary - our preferred source
     $wikipediaSummary = getWikipediaSummary($countryName);
+    $debug['wikipedia_length'] = strlen($wikipediaSummary);
     
     // If we have substantial Wikipedia content, format it directly
     if (!empty($wikipediaSummary) && strlen($wikipediaSummary) > 100) {
         $description = formatWikipediaDescription($data, $wikipediaSummary);
         $source = 'wikipedia';
+        $debug['source_used'] = 'wikipedia';
     } else {
         // Otherwise try OpenAI (which will still try to use any Wikipedia data we have)
         $description = generateDescriptionWithOpenAI($data);
         $source = !empty(getOpenAIKey()) ? 'ai' : 'fallback';
+        $debug['source_used'] = $source;
+        $debug['openai_key_available'] = !empty(getOpenAIKey());
     }
     
     // Send back the response
@@ -387,7 +431,8 @@ if (!empty($data)) {
         'success' => true,
         'country' => $countryName,
         'description' => $description,
-        'source' => $source
+        'source' => $source,
+        'debug' => $debug
     ]);
     exit;
 }

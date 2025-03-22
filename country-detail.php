@@ -337,24 +337,32 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                         // Hide loading animation
                         document.querySelector('.ai-loading').style.display = 'none';
                         
+                        // Store debug info for troubleshooting
+                        window.descriptionDebug = data.debug;
+                        
                         // Type out the description with a typing effect
                         typeDescription(data.description, data.source);
+                        
+                        // Add debug info for admins (only visible in console)
+                        console.log('Description source:', data.source);
+                        console.log('Debug info:', data.debug);
                     } else {
-                        showError();
+                        showError("Could not generate description: No content returned");
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showError();
+                    showError("Network or server error while generating description");
                 });
             }
 
             // Function to show error message if AI generation fails
-            function showError() {
+            function showError(errorMessage) {
                 clearInterval(loadingInterval);
                 document.querySelector('.ai-loading').style.display = 'none';
                 document.getElementById('aiDescription').innerHTML = 
-                    "Sorry, we couldn't generate a description at this time. Please try again later.";
+                    "Sorry, we couldn't generate a description at this time. Please try again later." + 
+                    "<div style='font-size: 0.8em; margin-top: 10px; color: #999;'>Error: " + errorMessage + "</div>";
             }
 
             // Function to simulate typing effect
@@ -396,14 +404,32 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                         cursor.remove();
                         clearInterval(typing);
                         
-                        // Add source attribution
+                        // Add source attribution with more specific details
                         const aiLabel = document.createElement('div');
                         aiLabel.className = 'ai-attribution';
                         
                         if (source === 'wikipedia') {
                             aiLabel.innerHTML = 'Content from Wikipedia, formatted for readability';
+                        } else if (source === 'ai') {
+                            aiLabel.innerHTML = 'Generated using AI technology with Wikipedia references';
                         } else {
-                            aiLabel.innerHTML = 'Generated using AI technology';
+                            aiLabel.innerHTML = 'Generated from our knowledge base';
+                        }
+                        
+                        // Add clickable debug info for admins (hidden by default)
+                        if (window.descriptionDebug) {
+                            const debugLink = document.createElement('a');
+                            debugLink.href = '#';
+                            debugLink.style.marginLeft = '10px';
+                            debugLink.style.fontSize = '0.8em';
+                            debugLink.style.opacity = '0.6';
+                            debugLink.textContent = '(debug)';
+                            debugLink.onclick = function(e) {
+                                e.preventDefault();
+                                console.log('Description debug info:', window.descriptionDebug);
+                                alert('Debug info has been logged to the console');
+                            };
+                            aiLabel.appendChild(debugLink);
                         }
                         
                         aiLabel.style.fontSize = '0.8em';
