@@ -514,18 +514,6 @@ input[type="text"] {
         z-index: 10001; /* Ensure logo stays visible above menu */
     }
     
-    .navbar-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        padding: 10px 15px;
-        margin-left: 0;
-        order: 2;
-        height: 100%;
-        z-index: 10001; /* Ensure toggle stays above menu */
-    }
-    
     /* Add mobile-specific navbar-list styles */
     .navbar-list {
         position: fixed;
@@ -538,7 +526,7 @@ input[type="text"] {
         flex-direction: column;
         align-items: center;
         justify-content: center; /* Center items vertically */
-        padding-top: 70px !important; /* Add padding at top to account for navbar */
+        padding-top: 0 !important; /* Remove padding */
         z-index: 9990; /* Slightly lower than navbar */
         overflow-y: auto;
         background: #2F3B44;
@@ -557,7 +545,7 @@ input[type="text"] {
     
     /* Adjust navbar links for mobile - more condensed */
     .navbar-list li {
-        margin: 1px 0 !important; /* Further reduced from 3px for tighter spacing */
+        margin: 0 !important; /* No margin between items */
         width: 100%;
         max-width: 280px;
         text-align: center;
@@ -567,7 +555,7 @@ input[type="text"] {
         color: #ECECEC;
         text-decoration: none;
         font-size: 20px;
-        padding: 4px 0 !important; /* Reduced from 6px for tighter spacing */
+        padding: 2px 0 !important; /* Very tight padding */
         display: block;
         width: 100%;
         text-align: center;
@@ -581,6 +569,18 @@ input[type="text"] {
     .navbar-list.open li a:hover {
         color: #DCCB9C !important;
         cursor: pointer !important;
+    }
+    
+    .navbar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 10px 15px;
+        margin-left: auto; /* Position on right */
+        order: 2;
+        height: 100%;
+        z-index: 10001; /* Ensure toggle stays above menu */
     }
 }
 
@@ -607,53 +607,8 @@ input[type="text"] {
     text-decoration: none !important;
 }
 
-/* Better mobile optimization for iPhone and smaller screens */
-@media (max-width: 768px) {
-    /* Remove button size changes on mobile */
-    .button, input[type="submit"], button {
-        /* Keep the same as desktop */
-        width: 360px;
-        padding: 18px 0;
-        font-size: 1.3rem;
-        border-radius: 60px;
-    }
-    
-    /* Keep the navbar transparent until menu opens */
-    .navbar {
-        background-color: transparent !important;
-        box-shadow: none !important;
-    }
-    
-    .navbar.menu-active {
-        background-color: #2F3B44 !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;
-    }
-}
-
 /* iPhone-specific optimizations */
 @media (max-width: 480px) {
-    /* Center menu items better on mobile - more condensed */
-    .navbar-list {
-        justify-content: center !important;
-        padding-top: 80px !important; /* Push down to make room for navbar */
-        align-items: center !important;
-    }
-    
-    .navbar-list li {
-        margin: 0 0 !important; /* Zero margin for maximum compression */
-        width: 100% !important;
-        max-width: 280px !important;
-        text-align: center !important;
-    }
-    
-    .navbar-list li a {
-        font-size: 20px;
-        padding: 3px 0 !important; /* Further reduced for maximum compression */
-        text-align: center !important;
-        width: 100% !important;
-        display: block !important;
-    }
-    
     /* Keep the navbar transparent until menu opens */
     .navbar {
         background-color: transparent !important;
@@ -669,13 +624,36 @@ input[type="text"] {
         -webkit-backdrop-filter: blur(8px) !important;
     }
     
-    /* Keep the button the same as desktop */
-    .button {
-        width: 360px;
-        margin: 25px auto;
-        padding: 18px 0;
-        font-size: 1.3rem;
-        border-radius: 60px;
+    /* Center menu items better on mobile - more condensed */
+    .navbar-list {
+        justify-content: center !important;
+        align-items: center !important;
+        padding-top: 0 !important; 
+    }
+    
+    .navbar-list li {
+        margin: 0 !important; /* Even tighter margin on small devices */
+        width: 100% !important;
+        max-width: 280px !important;
+        text-align: center !important;
+    }
+    
+    .navbar-list li a {
+        font-size: 20px;
+        padding: 1px 0 !important; /* Extremely tight spacing */
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+    }
+    
+    /* Keep all buttons consistent with desktop size */
+    .button, input[type="submit"], button {
+        width: 360px !important;
+        margin: 25px auto !important;
+        padding: 18px 0 !important;
+        font-size: 1.3rem !important;
+        border-radius: 60px !important;
+        max-width: 360px !important;
     }
 }
 
@@ -1262,11 +1240,14 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 
 /* Better mobile optimization for iPhone and smaller screens */
 @media (max-width: 768px) {
-    /* Optimize buttons and inputs for touchscreens */
+    /* Keep buttons the same size as desktop */
     .button, input[type="submit"], button {
-        padding: 14px 20px;
-        font-size: 16px;
-        min-height: 45px; /* Ensure good tap target */
+        width: 360px !important;
+        padding: 18px 0 !important;
+        font-size: 1.3rem !important;
+        border-radius: 60px !important;
+        margin: 25px auto !important;
+        max-width: 360px !important;
     }
     
     input[type="text"] {
