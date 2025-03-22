@@ -10,13 +10,11 @@
     </div>
 
     <ul class="navbar-list" id="navbarList">
-      <div class="navbar-list-inner">
-        <li><a href="index.php">HOME</a></li>
-        <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
-        <li><a href="quiz.php">QUIZ</a></li>
-        <li><a href="world-map.php">WORLD MAP</a></li>
-        <li><a href="about.php">ABOUT</a></li>
-      </div>
+      <li><a href="index.php">HOME</a></li>
+      <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
+      <li><a href="quiz.php">QUIZ</a></li>
+      <li><a href="world-map.php">WORLD MAP</a></li>
+      <li><a href="about.php">ABOUT</a></li>
     </ul>
   </div>
 </nav>
