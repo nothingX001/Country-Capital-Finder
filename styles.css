@@ -231,10 +231,6 @@ body.menu-open {
     display: block;
 }
 
-.navbar-list li a:hover {
-    color: #DCCB9C;
-}
-
 /* Mobile Styles */
 @media (max-width: 1100px) {
     .navbar-container {
@@ -259,6 +255,7 @@ body.menu-open {
         z-index: 10000;
     }
     
+    /* Add mobile-specific navbar-list styles */
     .navbar-list {
         position: fixed;
         top: 80px;
@@ -285,22 +282,26 @@ body.menu-open {
     }
     
     .navbar-list li {
-        margin: 15px 0;
+        margin: 20px 0;
         width: 100%;
         max-width: 400px;
         text-align: center;
+        display: flex;
+        justify-content: center;
     }
     
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 24px;
+        font-size: 28px;
         padding: 15px 0;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         text-align: center;
         font-weight: 500;
-        transition: background-color 0.1s ease, color 0.1s ease;
+        transition: color 0.1s ease;
     }
     
     .navbar-list li a:hover {
