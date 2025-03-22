@@ -150,13 +150,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Additional mobile-specific styles */
         @media (max-width: 480px) {
             .search-bar-container {
-                width: 90% !important;
-                max-width: 320px !important;
+                width: 95% !important;
+                max-width: 340px !important;
+                margin: 0 auto 25px;
             }
             
             input[type="text"] {
                 width: 100% !important;
                 padding: 12px 15px !important;
+                font-size: 16px !important;
             }
             
             #searchForm {
@@ -164,6 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 flex-direction: column;
                 align-items: center;
                 width: 100%;
+                margin-bottom: 10px;
             }
         }
     </style>

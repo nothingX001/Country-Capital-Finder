@@ -507,8 +507,8 @@ input[type="text"] {
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 0;
+        justify-content: flex-start; /* Changed from center to push content to top */
+        padding: 80px 0 0 0; /* Added top padding to push content down */
         z-index: 9990;
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
@@ -516,6 +516,7 @@ input[type="text"] {
         transform: none;
         border-top: 1px solid rgba(220, 203, 156, 0.3);
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        min-height: 100%; /* Ensure it covers the entire screen height */
     }
     
     .navbar-list.open {
@@ -528,14 +529,14 @@ input[type="text"] {
     .navbar-list li {
         width: 100%;
         text-align: center;
-        margin-bottom: 12px; /* Reduced from original larger value */
+        margin-bottom: 6px !important; /* Reduced from 12px */
     }
     
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 24px;
-        padding: 10px 0;
+        font-size: 22px; /* Slightly reduced from 24px */
+        padding: 6px 0; /* Reduced from 10px */
         display: block;
         width: 100%;
         text-align: center;
@@ -1538,36 +1539,51 @@ h3,
 /* Ensure mobile menu has reduced vertical spacing */
 @media (max-width: 1200px) {
     .navbar-list {
-        max-height: calc(100vh - 80px);
+        max-height: 100vh;
         overflow-y: auto;
-        padding: 12px 0 !important;
+        padding-top: 80px !important; /* Match navbar height */
+        padding-bottom: 40px !important; /* Add bottom padding to ensure space at bottom */
     }
     
     .navbar-list li {
-        margin-bottom: 12px !important;
-    }
-    
-    .navbar-list li a {
-        padding: 8px 0 !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-list li {
-        margin-bottom: 8px !important;
+        margin-bottom: 6px !important;
     }
     
     .navbar-list li a {
         padding: 6px 0 !important;
     }
     
+    /* Fix for mobile menu open to prevent background showing through */
+    body.menu-open .navbar-list {
+        min-height: 100vh;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-list li {
+        margin-bottom: 4px !important; /* Reduced from 8px */
+    }
+    
+    .navbar-list li a {
+        font-size: 20px; /* Reduced from 22px */
+        padding: 5px 0 !important; /* Reduced from 6px */
+    }
+    
     .search-bar-container {
         width: 90% !important;
-        max-width: 320px !important;
+        max-width: 340px !important; /* Increased from 320px */
     }
     
     input[type="text"] {
         width: 100% !important;
         padding: 12px 15px !important;
+    }
+    
+    #searchForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
     }
 }

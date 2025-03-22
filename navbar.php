@@ -9,7 +9,7 @@
       </a>
     </div>
 
-    <ul class="navbar-list" id="navbarList" style="--menu-item-spacing: 8px;">
+    <ul class="navbar-list" id="navbarList" style="--menu-item-spacing: 4px;">
       <li><a href="index.php">HOME</a></li>
       <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
       <li><a href="quiz.php">QUIZ</a></li>
@@ -49,6 +49,17 @@
             // Add accessibility attributes
             navbarToggle.setAttribute('aria-expanded', 'true');
             navbarList.setAttribute('aria-hidden', 'false');
+            
+            // Ensure menu covers entire screen
+            navbarList.style.minHeight = '100vh';
+            navbarList.style.paddingTop = '80px';
+            navbarList.style.paddingBottom = '40px';
+            
+            // Apply reduced text size for menu items
+            navbarLinks.forEach(link => {
+                link.style.fontSize = window.innerWidth <= 480 ? '20px' : '22px';
+                link.style.padding = window.innerWidth <= 480 ? '5px 0' : '6px 0';
+            });
             
             // Add hover and cursor styles immediately when menu opens
             applyMenuItemStyles();
