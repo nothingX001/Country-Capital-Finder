@@ -6,7 +6,7 @@ $data = file_get_contents('http://localhost/fetch-country-data.php?type=map');
 $locations = json_decode($data, true);
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
+<html lang="en" style="overflow-x: hidden;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -30,12 +30,11 @@ $locations = json_decode($data, true);
       margin-top: 20px;
     }
     html, body {
-        overscroll-behavior-y: none !important;
         overflow-x: hidden !important;
     }
   </style>
 </head>
-<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
+<body style="background: transparent;">
   <?php include 'navbar.php'; ?>
 
   <section class="page-content world-map" id="main-world-map">

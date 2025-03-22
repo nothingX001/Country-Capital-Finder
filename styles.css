@@ -34,6 +34,7 @@ html {
     background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     background-attachment: fixed;
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
 /* Add emoji font support */
@@ -70,7 +71,7 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    background: transparent; /* Changed from gradient to transparent */
+    background: transparent; /* Using transparent to let HTML gradient show through */
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
@@ -83,7 +84,7 @@ body {
 
 /*
    2a) Background implementation:
-   Fixed to the viewport using html background
+   Fixed gradient in both html and body::before for maximum compatibility
 */
 
 body::before {
@@ -329,8 +330,33 @@ input[type="text"] {
 
 /* Mobile adjustments for country detail */
 @media (max-width: 768px) {
+    /* Preserve consistent 2rem font size for content headers */
+    .page-content h1, 
+    .quiz h1, 
+    .country-profiles h1, 
+    .about h1, 
+    .world-map h1,
+    #countryProfileCard h1,
+    .page-content h2, 
+    .quiz h2, 
+    .country-profiles h2, 
+    .about h2, 
+    .world-map h2,
+    #countryProfileCard h2,
+    .page-content h3, 
+    .quiz h3, 
+    .country-profiles h3, 
+    .about h3, 
+    .world-map h3,
+    #countryProfileCard h3 {
+        font-size: 2rem;
+        line-height: 1.2;
+        padding: 0 10px;
+        margin-bottom: 25px;
+    }
+    
     .attributes {
-        padding-left: 15px;  /* Changed from 0 to 15px for slight right shift on mobile */
+        padding-left: 15px;
         padding-right: 20px;
         width: 100%;
     }
@@ -586,6 +612,39 @@ h1, h2, h3 {
     line-height: 1.2;
     letter-spacing: 0.5px;
 }
+
+/* Set consistent 2rem font size for all headers in content areas */
+.page-content h1, 
+.quiz h1, 
+.country-profiles h1, 
+.about h1, 
+.world-map h1,
+#countryProfileCard h1 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.page-content h2, 
+.quiz h2, 
+.country-profiles h2, 
+.about h2, 
+.world-map h2,
+#countryProfileCard h2 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.page-content h3, 
+.quiz h3, 
+.country-profiles h3, 
+.about h3, 
+.world-map h3,
+#countryProfileCard h3 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Default heading sizes for areas outside content sections */
 h1 { 
     font-size: 2.8rem;     /* Increased from 2.5rem */
     font-weight: 600;
@@ -720,7 +779,7 @@ input[type="reset"]:hover {
 }
 .quiz h1 {
     text-align: center;
-    font-size: 2.8rem;
+    font-size: 2rem; /* Changed from 2.8rem to match standard */
     margin-bottom: 30px;
     color: #F0F0F0;
 }
@@ -779,7 +838,7 @@ input[type="reset"]:hover {
 #resultContainer h2 {
     text-align: center;
     margin-bottom: 25px;
-    font-size: 2rem;
+    font-size: 2rem; /* Changed from dynamic to match standard */
     color: #F0F0F0;
 }
 #score {
@@ -835,7 +894,7 @@ input[type="reset"]:hover {
 .country-profiles h1 {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 2rem;
+    font-size: 2rem; /* Already at 2rem, maintained for consistency */
     color: #F0F0F0;
 }
 .country-profiles p {
@@ -847,7 +906,7 @@ input[type="reset"]:hover {
 .country-profiles h2 {
     margin-top: 30px;
     margin-bottom: 15px;
-    font-size: 1.5rem;
+    font-size: 2rem; /* Changed from 1.5rem to match standard */
     color: #F0F0F0;
 }
 .country-profiles ul {
@@ -958,7 +1017,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 .about h1 {
     text-align: center;
     margin-bottom: 30px;
-    font-size: 2.8rem;
+    font-size: 2rem; /* Changed from 2.8rem to match standard */
     color: #F0F0F0;
     line-height: 1.2;
 }
@@ -971,7 +1030,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 .about h2 {
     margin-top: 40px;
     margin-bottom: 25px;
-    font-size: 2rem;
+    font-size: 2rem; /* Already at 2rem, maintained for consistency */
     color: #F0F0F0;
 }
 .about ul {
@@ -1008,7 +1067,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 }
 .world-map h1 {
     margin-bottom: 30px;
-    font-size: 2.8rem;
+    font-size: 2rem; /* Changed from 2.8rem to match standard */
     color: #F0F0F0;
 }
 .world-map p {
@@ -1129,42 +1188,6 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 
 /* Better mobile optimization for iPhone and smaller screens */
 @media (max-width: 768px) {
-    .attributes {
-        padding-left: 15px;  /* Changed from 0 to 15px for slight right shift on mobile */
-        padding-right: 20px;
-        width: 100%;
-    }
-    
-    .attributes strong {
-        min-width: 120px;
-    }
-    
-    .ai-description h3 {
-        text-align: center;
-    }
-
-    /* Better text scaling for iPhones */
-    .message {
-        font-size: 18px !important;
-        line-height: 1.4;
-    }
-    
-    .message a, .message strong {
-        font-size: 20px !important;
-    }
-    
-    h1 {
-        font-size: 24px;
-    }
-    
-    h2 {
-        font-size: 20px;
-    }
-    
-    h3 {
-        font-size: 18px;
-    }
-
     /* Optimize buttons and inputs for touchscreens */
     .button, input[type="submit"], button {
         padding: 14px 20px;
@@ -1203,10 +1226,58 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         padding: 12px;
         font-size: 16px;
     }
+    
+    /* Better text scaling for iPhones */
+    .message {
+        font-size: 18px !important;
+        line-height: 1.4;
+    }
+    
+    .message a, .message strong {
+        font-size: 20px !important;
+    }
+    
+    /* Default heading styles for non-content areas */
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
 }
 
 /* iPhone-specific optimizations */
 @media (max-width: 480px) {
+    /* Preserve the 2rem font size for content headers even on iPhone */
+    .page-content h1, 
+    .quiz h1, 
+    .country-profiles h1, 
+    .about h1, 
+    .world-map h1,
+    #countryProfileCard h1,
+    .page-content h2, 
+    .quiz h2, 
+    .country-profiles h2, 
+    .about h2, 
+    .world-map h2,
+    #countryProfileCard h2,
+    .page-content h3, 
+    .quiz h3, 
+    .country-profiles h3, 
+    .about h3, 
+    .world-map h3,
+    #countryProfileCard h3 {
+        font-size: 2rem;
+        line-height: 1.2;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+    
     /* Make sure background is showing on mobile */
     html, body {
         background-attachment: fixed;
@@ -1266,9 +1337,9 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         padding: 15px;
     }
     
-    /* Larger header text for mobile */
+    /* Default heading styles for non-content areas on iPhone */
     h1 {
-        font-size: 26px; /* Increased for better readability */
+        font-size: 24px;
         line-height: 1.3;
         margin-bottom: 20px;
         padding: 0 10px;
@@ -1326,17 +1397,6 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     .flag-image img {
         height: auto;
         max-height: 180px;
-    }
-
-    /* Smaller text for iPhone */
-    .navbar-list li a {
-        font-size: 22px;
-        padding: 12px 0;
-    }
-    
-    /* Adjust padding for iPhone navbar */
-    .navbar-list {
-        padding-top: 70px !important; /* Match iPhone navbar height */
     }
 }
 
@@ -1493,15 +1553,17 @@ a.button,
         -webkit-overflow-scrolling: touch !important;
     }
 
+    /* Ensure navbar stays fixed */
     .navbar {
-        /* Use fixed positioning for the navbar on iOS */
         position: fixed !important;
         top: 0 !important;
+        z-index: 10000 !important;
     }
-    
-    /* Ensure fixed background works on iOS */
+
     html {
-        background-attachment: scroll;
+        /* Original gradient background */
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
+        background-attachment: scroll; /* Use scroll instead of fixed for iOS */
     }
     
     /* Special handling for pull-to-refresh on iOS */
@@ -1514,11 +1576,14 @@ a.button,
         width: 400vw;
         height: 400vh;
         background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
     }
 }
 
 /* Add extra fixes for iOS Safari to ensure pull-to-refresh works correctly */
 @media screen and (max-width: 480px) and (-webkit-min-device-pixel-ratio: 0) {
+    /* Enable pull-to-refresh for all pages */
     html, body {
         /* Use relative positioning for better scroll behavior */
         position: relative;
@@ -1527,6 +1592,8 @@ a.button,
         overflow: auto;
         -webkit-overflow-scrolling: touch !important;
         overscroll-behavior-y: auto !important;
+        /* Original gradient background */
+        background-color: #3B4B54; /* Fallback color */
     }
     
     /* Re-enable scrolling behavior */
