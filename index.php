@@ -303,13 +303,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
                 
                 <!-- Common Attributes -->
-                <?php if (!empty($country_detail['region'])): ?>
-                    <p><strong>Region:</strong> <?php echo htmlspecialchars($country_detail['region']); ?></p>
-                <?php endif; ?>
-                
-                <?php if (!empty($country_detail['subregion'])): ?>
-                    <p><strong>Subregion:</strong> <?php echo htmlspecialchars($country_detail['subregion']); ?></p>
-                <?php endif; ?>
                 
                 <?php if (!empty($country_detail['languages'])): ?>
                     <p><strong>Languages:</strong> <?php echo htmlspecialchars($country_detail['languages']); ?></p>
@@ -323,10 +316,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <p><strong>Population:</strong> <?php echo number_format($country_detail['population']); ?></p>
                 <?php endif; ?>
                 
-                <?php if (!empty($country_detail['area_km2'])): ?>
-                    <p><strong>Area:</strong> <?php echo number_format($country_detail['area_km2']); ?> km²</p>
-                <?php endif; ?>
-                
                 <?php if (!empty($country_detail['calling_code'])): ?>
                     <p><strong>Calling Code:</strong> <?php 
                         $cc = trim($country_detail['calling_code']);
@@ -337,21 +326,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php if (!empty($country_detail['internet_tld'])): ?>
                     <p><strong>Internet TLD:</strong> <?php echo htmlspecialchars($country_detail['internet_tld']); ?></p>
                 <?php endif; ?>
-                
-                <!-- Coordinates -->
-                <?php if (!empty($country_detail['lat']) && !empty($country_detail['lon'])): ?>
-                    <p>
-                        <strong>Coordinates:</strong> 
-                        <?php 
-                        $latVal = floatval($country_detail['lat']);
-                        $lonVal = floatval($country_detail['lon']);
-                        $latDir = ($latVal >= 0) ? 'N' : 'S';
-                        $lonDir = ($lonVal >= 0) ? 'E' : 'W';
-                        echo number_format(abs($latVal), 4) . "° " . $latDir . ", " . 
-                             number_format(abs($lonVal), 4) . "° " . $lonDir;
-                        ?>
-                    </p>
-                <?php endif; ?>
+             
             </div>
             
             <!-- View Full Profile Link -->
