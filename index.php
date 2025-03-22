@@ -150,8 +150,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Additional mobile-specific styles */
         @media (max-width: 480px) {
             .search-bar-container {
-                width: 100% !important;
-                max-width: none !important;
+                width: 90% !important;
+                max-width: 500px !important;
                 margin: 0 auto 25px;
             }
             
@@ -184,8 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="page-content home" style="max-width: 100%;">
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
-        <form action="index.php" method="post" id="searchForm" style="width: 100%;">
-            <div class="search-bar-container" style="width: 100%; max-width: none;">
+        <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
+            <div class="search-bar-container" style="width: 90%; max-width: 500px;">
                 <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
             </div>
             <input type="submit" value="SUBMIT" class="button">

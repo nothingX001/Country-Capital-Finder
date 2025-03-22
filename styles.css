@@ -746,8 +746,8 @@ h3 {
 
 /* 11) Search Input - larger */
 .search-bar-container {
-    width: 100%;          /* Changed from 95% to 100% for maximum width */
-    max-width: none;       /* Removed max-width constraint */
+    width: 90%;          /* Changed from 100% to 90% for narrower width */
+    max-width: 500px;     /* Added max-width constraint */
     margin: 0 auto 40px;   /* Added bottom margin */
     position: relative !important;
 }
@@ -778,8 +778,8 @@ input[type="text"]:focus {
 /* 11) Search Input - mobile optimization */
 @media (max-width: 480px) {
     .search-bar-container {
-        width: 100% !important; /* Changed from 70% to 100% for full width on mobile */
-        max-width: none !important; /* Removed max-width constraint */
+        width: 90% !important; /* Changed from 100% to 90% */
+        max-width: 500px !important; /* Added max-width constraint */
         margin: 0 auto 25px;
     }
     
