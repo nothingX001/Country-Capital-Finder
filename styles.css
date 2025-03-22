@@ -5,6 +5,11 @@
     padding: 0;
 }
 
+/* Make sure all links and buttons are clickable */
+a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"] {
+    cursor: pointer;
+}
+
 html {
     margin: 0;
     padding: 0;
@@ -60,11 +65,12 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-/* 
+/*
    2a) Pseudo-element for the background:
-   pinned to the full viewport and extends beyond safe-area 
-   insets to avoid any side/bottom bars on iOS. 
+   pinned to the full viewport and extends beyond safe-area
+   insets to avoid any side/bottom bars on iOS.
 */
+
 body::before {
     content: "";
     position: fixed;
@@ -231,6 +237,7 @@ body.menu-open {
     transition: color 0.1s ease;
     padding: 8px 12px;
     display: block;
+    cursor: pointer;
 }
 
 /* Mobile Styles */
@@ -268,7 +275,8 @@ body.menu-open {
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-top: 60px;
         z-index: 999;
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
@@ -284,7 +292,7 @@ body.menu-open {
     }
     
     .navbar-list li {
-        margin: 20px 0;
+        margin: 12px 0;
         width: 100%;
         max-width: 400px;
         text-align: center;
@@ -304,6 +312,7 @@ body.menu-open {
         text-align: center;
         font-weight: 500;
         transition: color 0.1s ease;
+        cursor: pointer;
     }
     
     .navbar-list li a:hover {

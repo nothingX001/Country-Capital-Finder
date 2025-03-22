@@ -99,6 +99,15 @@ document.addEventListener('DOMContentLoaded', function() {
         navbar.style.transform = 'translateY(0)';
     }
     
+    // Force document to be interactive immediately
+    document.body.addEventListener('click', function() {
+        // This is a dummy event listener to ensure the page becomes interactive
+        // without needing the user to click anywhere specific
+    }, { once: true });
+    
+    // Simulate a click on the document body to make it interactive immediately
+    document.body.click();
+    
     // Variables for scroll behavior
     let lastScrollTop = 0;
     let scrollDelta = 5;
