@@ -25,7 +25,7 @@
     const navbar       = document.querySelector('.navbar');
     const navbarToggle = document.getElementById('navbarToggle');
     const navbarList   = document.getElementById('navbarList');
-    const navbarLogo   = document.querySelector('.navbar-logo');
+    const navbarLinks  = document.querySelectorAll('.navbar-list li a');
 
     let isMenuOpen = false;
 
@@ -36,21 +36,47 @@
             document.body.classList.add('menu-open');
             navbar.classList.add('menu-active');
             navbarList.classList.add('open');
+            // Add accessibility attributes
+            navbarToggle.setAttribute('aria-expanded', 'true');
+            navbarList.setAttribute('aria-hidden', 'false');
         } else {
             document.body.classList.remove('menu-open');
             navbar.classList.remove('menu-active');
             navbarList.classList.remove('open');
+            // Update accessibility attributes
+            navbarToggle.setAttribute('aria-expanded', 'false');
+            navbarList.setAttribute('aria-hidden', 'true');
         }
     }
+
+    // Initialize state
+    navbarToggle.setAttribute('aria-expanded', 'false');
+    navbarList.setAttribute('aria-hidden', 'true');
 
     // Hook up the toggle button
     navbarToggle.addEventListener('click', () => {
         setMenuState(!isMenuOpen);
     });
 
+    // Close menu when a link is clicked
+    navbarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 1100) {
+                setMenuState(false);
+            }
+        });
+    });
+
     // Close menu on Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && isMenuOpen) {
+            setMenuState(false);
+        }
+    });
+    
+    // Close menu if window is resized beyond mobile breakpoint
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 1100 && isMenuOpen) {
             setMenuState(false);
         }
     });
