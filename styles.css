@@ -694,23 +694,40 @@ input[type="text"] {
     .button, 
     input[type="submit"], 
     button {
-        width: 90% !important;
-        max-width: 300px !important; /* Reduced from 360px */
-        margin: 20px auto !important;
-        padding: 15px 0 !important; /* Reduced from 18px */
-        font-size: 1.1rem !important; /* Reduced from 1.3rem */
-        border-radius: 50px !important;
+        width: 85% !important;
+        max-width: 280px !important;
+        margin: 15px auto !important;
+        padding: 12px 0 !important;
+        font-size: 1rem !important;
+        border-radius: 40px !important;
+        box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.15) !important;
     }
 
-    /* Ensure content starts below navbar */
+    /* Search bar container adjustments */
+    .search-bar-container {
+        width: 85% !important;
+        max-width: 280px !important;
+        margin: 0 auto 20px !important;
+    }
+
+    /* Search input adjustments */
+    input[type="text"] {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 1rem !important;
+        border-radius: 8px !important;
+    }
+
+    /* Container adjustments */
     .page-content,
     .quiz,
     .country-profiles,
     .about,
     .world-map {
-        margin-top: 80px !important;
-        width: 95% !important;
-        padding: 20px !important;
+        width: 92% !important;
+        padding: 15px !important;
+        margin-top: 70px !important;
+        margin-bottom: 20px !important;
     }
 }
 
