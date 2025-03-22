@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Only proceed for Windows devices
         if (!isWindowsDevice()) return;
         
-        // Find all flag emoji spans
-        const flagElements = document.querySelectorAll('.flag-emoji');
+        // Find all flag emoji spans - only select those with the data-windows-flag-url attribute
+        // to avoid affecting other elements that might use the same class
+        const flagElements = document.querySelectorAll('.flag-emoji[data-windows-flag-url]');
         
         flagElements.forEach(function(element) {
             // Check if this element has a windows_flag_url data attribute
