@@ -84,7 +84,14 @@ function generateDescriptionWithOpenAI($countryData) {
         $prompt .= "Note that it is a territory of {$countryData['sovereignState']}. ";
     }
     
-    $prompt .= "Highlight key cultural, historical, or economic aspects. The first paragraph should focus on geography, demographics, and basic information. The second paragraph should highlight culture, history, and interesting facts. Keep the tone informative and engaging. Do not use markdown. Format as flowing paragraphs.";
+    // Add requests for additional external information
+    $prompt .= "Beyond the basic facts, please include: ";
+    $prompt .= "1) A brief overview of the country's history, including key historical events or periods that shaped the nation. ";
+    $prompt .= "2) What the country is internationally known for (e.g., cultural contributions, notable landmarks, cuisine, exports, achievements). ";
+    $prompt .= "3) Any unique or interesting cultural traditions or customs specific to this country. ";
+    $prompt .= "4) Current economic status and major industries. ";
+    
+    $prompt .= "Highlight key cultural, historical, or economic aspects. The first paragraph should focus on geography, demographics, basic information, and a brief historical overview. The second paragraph should highlight culture, traditions, what the country is known for, and interesting facts. Keep the tone informative and engaging. Do not use markdown. Format as flowing paragraphs.";
     
     // Call OpenAI API
     $response = callOpenAI($apiKey, $prompt);

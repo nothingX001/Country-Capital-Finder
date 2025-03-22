@@ -182,7 +182,7 @@ input[type="text"] {
     max-width: 600px;      /* Increased from 500px */
     margin: 0;              /* Changed from margin: 0 auto; */
     text-align: left;
-    padding-left: 0;        /* Changed from 80px to 0 */
+    padding-left: 20px;     /* Changed from 0 to 20px for slight right shift */
     font-size: 1.2rem;
     color: #DCCB9C;
     font-family: "Courier New", Courier, monospace;
@@ -284,7 +284,7 @@ input[type="text"] {
 /* Mobile adjustments for country detail */
 @media (max-width: 768px) {
     .attributes {
-        padding-left: 0;    /* Changed from 20px to 0 */
+        padding-left: 15px;  /* Changed from 0 to 15px for slight right shift on mobile */
         padding-right: 20px;
         width: 100%;
     }
