@@ -123,12 +123,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
+<html lang="en" style="overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title>ExploreCapitals | The World Capital Finder</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <meta name="description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
     <meta name="keywords" content="capital cities, world capitals, country capitals, geography quiz, world geography">
     <meta name="author" content="ExploreCapitals">
@@ -138,7 +138,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="styles.css">
     <style>
         html, body {
-            overscroll-behavior-y: none !important;
             overflow-x: hidden !important;
         }
         
@@ -149,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     </style>
 </head>
-<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
+<body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
     <div class="page-content home">

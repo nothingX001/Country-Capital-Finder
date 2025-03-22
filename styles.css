@@ -29,7 +29,7 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    /* Enable pull-to-refresh */
+    /* Enable pull-to-refresh explicitly */
     overscroll-behavior-y: auto !important;
     background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     background-attachment: fixed;
@@ -127,7 +127,7 @@ body::before {
     width: 100% !important;
     height: 80px !important;
     background-color: #2F3B44 !important;
-    z-index: 9999 !important;
+    z-index: 10000 !important;
     box-sizing: border-box !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -419,7 +419,8 @@ input[type="text"] {
 /* Navigation List - centered on desktop */
 .navbar-list {
     display: flex;
-    align-items: center;
+    align-items: center; /* Ensure vertical centering */
+    justify-content: center; /* Ensure horizontal centering */
     list-style: none;
     margin: 0;
     padding: 0;
@@ -427,10 +428,14 @@ input[type="text"] {
     left: 50%;
     transform: translateX(-50%);
     z-index: 999;
+    height: 100%; /* Make it full height of navbar */
 }
 
 .navbar-list li {
     margin: 0 15px;
+    display: flex; /* Add flex display */
+    align-items: center; /* Center items vertically */
+    height: 100%; /* Full height of parent */
 }
 
 .navbar-list li a {
@@ -440,9 +445,11 @@ input[type="text"] {
     font-weight: 500;
     transition: color 0.1s ease;
     padding: 8px 12px;
-    display: block;
+    display: flex; /* Change to flex display */
+    align-items: center; /* Center text vertically */
     cursor: pointer !important;
     white-space: nowrap; /* Prevent text wrapping */
+    height: 100%; /* Full height */
 }
 
 .navbar-list li a:hover {
@@ -476,27 +483,28 @@ input[type="text"] {
     /* Add mobile-specific navbar-list styles */
     .navbar-list {
         position: fixed;
-        top: 80px;
+        top: 0; /* Changed from 80px to 0 to attach to the top */
         left: 0;
         width: 100%;
-        height: calc(100vh - 80px);
+        height: 100vh;
         background-color: #2F3B44;
         display: none;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding-top: 60px;
-        z-index: 999;
+        padding-top: 80px; /* Add padding-top matching navbar height */
+        z-index: 9990; /* Slightly lower than navbar */
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
-        padding: 0;
+        padding: 80px 0 0 0; /* Set top padding to match navbar height */
         margin: 0;
         transform: none;
+        border-top: 1px solid rgba(220, 203, 156, 0.1); /* Add subtle border */
     }
     
     .navbar-list.open {
         display: flex !important;
-        z-index: 999;
+        z-index: 9990;
         width: 100%;
     }
     
@@ -522,6 +530,22 @@ input[type="text"] {
         font-weight: 500;
         transition: color 0.1s ease;
         cursor: pointer;
+    }
+
+    /* iPhone-specific adjustments */
+    @media (max-width: 480px) {
+        .navbar-list {
+            padding-top: 70px; /* Match navbar height on iPhone */
+        }
+        
+        .navbar-list.open {
+            padding-top: 70px; /* Match navbar height on iPhone */
+        }
+        
+        .navbar-list li a {
+            font-size: 22px; /* Slightly smaller font for iPhone */
+            padding: 12px 0;
+        }
     }
     
     .navbar-list li a:hover {
@@ -923,7 +947,8 @@ input[type="reset"]:hover {
 
 /* Reset any problematic styles */
 html, body {
-    overscroll-behavior-y: none !important;
+    /* Remove this line to allow pull-to-refresh */
+    /* overscroll-behavior-y: none !important; */
 }
 
 /* Add visible focus styles to improve accessibility */
@@ -1217,18 +1242,44 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         padding: 15px;
     }
     
+    /* Larger header text for mobile */
+    h1 {
+        font-size: 26px; /* Increased for better readability */
+        line-height: 1.3;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+    
+    h2 {
+        font-size: 22px;
+        line-height: 1.3;
+        padding: 0 5px;
+    }
+    
+    h3 {
+        font-size: 20px;
+        line-height: 1.3;
+        padding: 0 5px;
+    }
+    
+    /* Country name display optimizations */
+    .country-detail-entity,
+    .sovereign-state,
+    .constituent-countries {
+        font-size: 22px;
+        line-height: 1.3;
+        padding: 0 5px;
+        margin-bottom: 15px;
+    }
+    
     /* Ensure no white gaps when scrolling on iOS */
     html, body {
         background-attachment: fixed;
     }
     
-    /* Reduce font sizes further for very small screens */
+    /* Reduce font sizes for other elements to avoid overflow */
     input[type="text"] {
         font-size: 15px;
-    }
-    
-    h1 {
-        font-size: 22px;
     }
     
     .attributes p {
@@ -1246,18 +1297,48 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         min-height: 100vh;
         background: transparent;
     }
+    
+    /* Ensure flag images display well */
+    .flag-image img {
+        height: auto;
+        max-height: 180px;
+    }
 }
 
-/* Add iPhone notch safe area support */
+/* iPhone notch safe area support */
 @supports(padding: max(0px)) {
     .navbar {
         padding-top: env(safe-area-inset-top);
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
+        height: calc(80px + env(safe-area-inset-top)) !important;
     }
     
     body {
         padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Adjust navbar list for notched devices */
+    @media (max-width: 1200px) {
+        .navbar-list {
+            padding-top: calc(80px + env(safe-area-inset-top));
+            height: calc(100vh - env(safe-area-inset-bottom));
+        }
+        
+        /* iPhone-specific navbar height adjustment */
+        @media (max-width: 480px) {
+            .navbar {
+                height: calc(70px + env(safe-area-inset-top)) !important;
+            }
+            
+            .navbar-container {
+                height: 70px !important;
+            }
+            
+            .navbar-list {
+                padding-top: calc(70px + env(safe-area-inset-top));
+            }
+        }
     }
 }
 
@@ -1372,10 +1453,15 @@ a.button,
         height: -webkit-fill-available;
     }
 
+    /* Explicitly enable momentum scrolling on iOS */
+    body {
+        -webkit-overflow-scrolling: touch !important;
+    }
+
     .navbar {
-        /* Prevent navbar from bouncing during overscroll */
-        position: -webkit-sticky !important;
-        position: sticky !important;
+        /* Use fixed positioning for the navbar on iOS */
+        position: fixed !important;
+        top: 0 !important;
     }
     
     /* Ensure fixed background works on iOS */
@@ -1392,5 +1478,28 @@ a.button,
         bottom: -150vh;
         width: 400vw;
         height: 400vh;
+    }
+}
+
+/* Add extra fixes for iOS Safari to ensure pull-to-refresh works correctly */
+@media screen and (max-width: 480px) and (-webkit-min-device-pixel-ratio: 0) {
+    html, body {
+        /* Use relative positioning for better scroll behavior */
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior-y: auto !important;
+    }
+    
+    /* Re-enable scrolling behavior */
+    body {
+        overflow-y: auto !important;
+    }
+    
+    /* Remove any touch-action restrictions that might block pull-to-refresh */
+    * {
+        touch-action: auto !important;
     }
 }
