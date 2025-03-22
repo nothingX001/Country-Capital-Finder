@@ -492,8 +492,8 @@ input[type="text"] {
         display: none;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start; /* Align items from the top */
-        padding: 80px 0 0 0; /* Add top padding to match navbar height */
+        justify-content: center; /* Center items vertically */
+        padding: 0; /* Remove padding */
         z-index: 9990; /* Slightly lower than navbar */
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
@@ -508,19 +508,19 @@ input[type="text"] {
         width: 100%;
     }
     
-    /* Adjust navbar links for mobile */
+    /* Adjust navbar links for mobile - more condensed */
     .navbar-list li {
-        margin: 12px 0;
+        margin: 6px 0; /* Reduced from 12px */
         width: 100%;
-        max-width: 400px;
+        max-width: 320px; /* Reduced from 400px */
         text-align: center;
     }
     
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 28px;
-        padding: 15px 0;
+        font-size: 24px; /* Reduced from 28px */
+        padding: 10px 0; /* Reduced from 15px */
         display: block;
         width: 100%;
         text-align: center;
@@ -1190,6 +1190,25 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 
 /* iPhone-specific optimizations */
 @media (max-width: 480px) {
+    /* Make sure background is showing on mobile */
+    html, body {
+        background-attachment: fixed;
+    }
+    
+    body::before {
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
+        background-attachment: fixed !important;
+        content: "";
+        position: fixed;
+        z-index: -1;
+        top: -50px;
+        left: -50px;
+        right: -50px;
+        bottom: -50px;
+        width: calc(100% + 100px);
+        height: calc(100% + 100px);
+    }
+    
     .message {
         font-size: 16px !important;
     }
@@ -1206,8 +1225,19 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         height: 70px !important;
     }
     
-    .navbar-list.open {
-        padding-top: calc(env(safe-area-inset-top) + 70px);
+    /* Center menu items better on mobile */
+    .navbar-list {
+        justify-content: center !important;
+        padding-top: 0 !important;
+    }
+    
+    .navbar-list li {
+        margin: 4px 0 !important; /* Even more condensed on mobile */
+    }
+    
+    .navbar-list li a {
+        font-size: 22px;
+        padding: 8px 0;
     }
     
     .page-content,
@@ -1309,7 +1339,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     /* Adjust navbar list for notched devices */
     @media (max-width: 1200px) {
         .navbar-list {
-            padding-top: calc(80px + env(safe-area-inset-top));
+            padding-top: 0;
             height: calc(100vh - env(safe-area-inset-bottom));
         }
         
@@ -1324,7 +1354,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
             }
             
             .navbar-list {
-                padding-top: calc(70px + env(safe-area-inset-top));
+                padding-top: 0 !important;
             }
         }
     }
@@ -1466,6 +1496,7 @@ a.button,
         bottom: -150vh;
         width: 400vw;
         height: 400vh;
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed !important;
     }
 }
 
