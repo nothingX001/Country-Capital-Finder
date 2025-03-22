@@ -102,18 +102,15 @@
     });
 })();
 
-// Add check to ensure navbar is visible and handle scroll behavior
+// Add check to ensure navbar is visible
 document.addEventListener('DOMContentLoaded', function() {
     // Force the navbar to be visible
     const navbar = document.querySelector('.navbar');
-    const navbarList = document.querySelector('.navbar-list');
-    const pageContent = document.querySelector('.page-content, .quiz, .country-profiles, .about, .world-map');
     
     if (navbar) {
         navbar.style.display = 'block';
         navbar.style.visibility = 'visible';
         navbar.style.opacity = '1';
-        navbar.style.transform = 'translateY(0)';
     }
     
     // Force document to be interactive immediately
@@ -124,42 +121,5 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Simulate a click on the document body to make it interactive immediately
     document.body.click();
-    
-    // Variables for scroll behavior
-    let lastScrollTop = 0;
-    let scrollDelta = 5;
-    let navbarHeight = navbar ? navbar.offsetHeight : 80;
-    let isNavbarVisible = true;
-    
-    // Function to handle navbar visibility
-    function handleNavbarVisibility() {
-        // Don't hide navbar if mobile menu is open
-        if (document.body.classList.contains('menu-open')) {
-            return;
-        }
-        
-        let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Make sure they scrolled more than delta
-        if (Math.abs(lastScrollTop - currentScrollTop) <= scrollDelta) {
-            return;
-        }
-        
-        // If scrolled down past navbar height
-        if (currentScrollTop > lastScrollTop && currentScrollTop > navbarHeight) {
-            // Scrolling down - hide navbar
-            navbar.style.transform = 'translateY(-100%)';
-            isNavbarVisible = false;
-        } else if (currentScrollTop < lastScrollTop || currentScrollTop <= navbarHeight) {
-            // Scrolling up or at top - show navbar
-            navbar.style.transform = 'translateY(0)';
-            isNavbarVisible = true;
-        }
-        
-        lastScrollTop = currentScrollTop;
-    }
-    
-    // Add scroll event listener
-    window.addEventListener('scroll', handleNavbarVisibility);
 });
 </script>

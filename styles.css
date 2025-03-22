@@ -114,8 +114,6 @@ body::before {
     opacity: 1 !important;  /* Force opacity */
     -webkit-backface-visibility: visible !important;
     backface-visibility: visible !important;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
 }
 
 .navbar.scrolled {
