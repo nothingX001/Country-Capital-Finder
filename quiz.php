@@ -17,10 +17,11 @@ include 'the-countries.php';
  */
 function fetchQuizData(PDO $conn, array $entityTypes, int $limit = 10): array {
     // 1) Get up to $limit random countries with matching "Entity Type" that have capitals
-    //    (Only selecting id + "Country Name" + "Flag Emoji")
+    //    (Only selecting id + "Country Name" + "Flag Emoji" + "ISO Alpha-2")
     $inList = "'" . implode("','", $entityTypes) . "'";
     $sql = "
-        SELECT DISTINCT c.id, c.\"Country Name\" AS country_name, c.\"Flag Emoji\" AS flag_emoji, RANDOM() as rand
+        SELECT DISTINCT c.id, c.\"Country Name\" AS country_name, c.\"Flag Emoji\" AS flag_emoji, 
+               c.\"ISO Alpha-2\" AS iso_code, RANDOM() as rand
         FROM countries c
         INNER JOIN capitals cap ON c.id = cap.country_id
         WHERE c.\"Entity Type\" IN ($inList)
@@ -221,7 +222,8 @@ try {
                     country_name: row.country_name,
                     flag_emoji: row.flag_emoji,
                     capitals: row.capitals,
-                    id: row.id
+                    id: row.id,
+                    iso_code: row.iso_code
                 });
             }
         });
@@ -286,6 +288,7 @@ try {
                     correctAnswerText: formatCapitals(qData.capitals),
                     countryName: formattedCountryName,
                     flagEmoji: qData.flag_emoji,
+                    iso_code: qData.iso_code,
                     id: qData.id
                 });
             } else {
@@ -300,6 +303,7 @@ try {
                     correctAnswerText: `<strong>${formattedCountryName}</strong>`,
                     countryName: formattedCountryName,
                     flagEmoji: qData.flag_emoji,
+                    iso_code: qData.iso_code,
                     id: qData.id
                 });
             }
@@ -335,9 +339,10 @@ try {
                 : capitalLinks.slice(0, -1).join(', ') + ' or ' + capitalLinks[capitalLinks.length - 1];
             
             const userAnswerText = resp.userAnswer ? `<strong>${resp.userAnswer}</strong>` : '""';
+            const windowsFlagUrl = resp.iso_code ? `https://flagcdn.com/32x24/${resp.iso_code.toLowerCase()}.png` : '';
             const resultText = resp.isCorrect
-                ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`
-                : `Incorrect. You answered ${userAnswerText}. The answer was ${correctAnswerText}. <span class="flag-emoji">${resp.flagEmoji}</span>`;
+                ? `Correct. The answer was ${correctAnswerText}. <span class="flag-emoji" data-windows-flag-url="${windowsFlagUrl}">${resp.flagEmoji}</span>`
+                : `Incorrect. You answered ${userAnswerText}. The answer was ${correctAnswerText}. <span class="flag-emoji" data-windows-flag-url="${windowsFlagUrl}">${resp.flagEmoji}</span>`;
 
             // Replace the country name in the question with a styled link
             const questionTextWithLink = resp.questionText.replace(
@@ -399,5 +404,8 @@ try {
         });
     });
     </script>
+
+    <!-- Flag emoji handler for Windows devices -->
+    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

@@ -11,6 +11,7 @@ try {
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
+            "ISO Alpha-2"  AS iso_code,
             CASE 
                 WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
@@ -29,6 +30,7 @@ try {
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
+            "ISO Alpha-2"  AS iso_code,
             CASE 
                 WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
@@ -47,6 +49,7 @@ try {
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
+            "ISO Alpha-2"  AS iso_code,
             CASE 
                 WHEN LOWER("Country Name") = ANY(?)
                 THEN TRUE 
@@ -89,13 +92,17 @@ try {
                         // Safely handle NULL values
                         $countryName = $c['country_name'] ?? '';
                         $flagEmoji   = $c['flag_emoji']   ?? '';
+                        $isoCode     = $c['iso_code']     ?? '';
                         $displayName = $c['needs_the'] ? 'The ' . $countryName : $countryName;
+                        
+                        // Windows flag URL for this country
+                        $windowsFlagUrl = !empty($isoCode) ? "https://flagcdn.com/32x24/" . strtolower($isoCode) . ".png" : "";
                     ?>
                     <li>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($c['id']); ?>">
                             <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
+                                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -113,13 +120,17 @@ try {
                     <?php
                         $countryName = $t['country_name'] ?? '';
                         $flagEmoji   = $t['flag_emoji']   ?? '';
+                        $isoCode     = $t['iso_code']     ?? '';
                         $displayName = $t['needs_the'] ? 'The ' . $countryName : $countryName;
+                        
+                        // Windows flag URL for this territory
+                        $windowsFlagUrl = !empty($isoCode) ? "https://flagcdn.com/32x24/" . strtolower($isoCode) . ".png" : "";
                     ?>
                     <li>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($t['id']); ?>">
                             <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
+                                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -137,13 +148,17 @@ try {
                     <?php
                         $countryName = $d['country_name'] ?? '';
                         $flagEmoji   = $d['flag_emoji']   ?? '';
+                        $isoCode     = $d['iso_code']     ?? '';
                         $displayName = $d['needs_the'] ? 'The ' . $countryName : $countryName;
+                        
+                        // Windows flag URL for this de facto state
+                        $windowsFlagUrl = !empty($isoCode) ? "https://flagcdn.com/32x24/" . strtolower($isoCode) . ".png" : "";
                     ?>
                     <li>
                         <a href="country-detail.php?id=<?php echo htmlspecialchars($d['id']); ?>">
                             <?php echo htmlspecialchars($displayName); ?>
                             <?php if (!empty($flagEmoji)): ?>
-                                <span class="flag-emoji"><?php echo htmlspecialchars($flagEmoji); ?></span>
+                                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($flagEmoji); ?></span>
                             <?php endif; ?>
                         </a>
                     </li>
@@ -152,7 +167,9 @@ try {
         <?php else: ?>
             <p>No de facto states found.</p>
         <?php endif; ?>
-
     </section>
+    
+    <!-- Flag emoji handler for Windows devices -->
+    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

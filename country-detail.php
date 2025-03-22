@@ -29,6 +29,7 @@ try {
             "Area (km2)"   AS area_km2,
             "Calling Code" AS calling_code,
             "Internet TLD" AS internet_tld,
+            "ISO Alpha-2"  AS iso_code,
             "Official Name" AS official_name,
             CASE 
                 WHEN LOWER("Country Name") = ANY(?)
@@ -79,6 +80,9 @@ try {
 } catch (Exception $e) {
     die("Error fetching country details: " . $e->getMessage());
 }
+
+// Prepare Windows flag URL if ISO code is available
+$windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . strtolower($country['iso_code']) . ".png" : "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -241,6 +245,13 @@ try {
             </div>
         <?php endif; ?>
 
+        <!-- Flag Emoji -->
+        <?php if (!empty($country['flag_emoji'])): ?>
+            <div class="header-emoji">
+                <span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($windowsFlagUrl); ?>"><?php echo htmlspecialchars($country['flag_emoji']); ?></span>
+            </div>
+        <?php endif; ?>
+
         <!-- Official Name -->
         <?php if (!empty($country['official_name'])): ?>
             <div class="country-detail-entity"><em>officially <?php echo htmlspecialchars($country['official_name']);?></em></div>
@@ -310,5 +321,8 @@ try {
             ?>
         </div>
     </section>
+
+    <!-- Flag emoji handler for Windows devices -->
+    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

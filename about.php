@@ -19,6 +19,10 @@ if (!$statistics || isset($statistics['error'])) {
         'unique_countries_searched' => 'Data unavailable'
     ];
 }
+
+// Prepare Windows flag URLs if ISO codes are available
+$most_searched_flag_url = !empty($statistics['most_searched_iso']) ? "https://flagcdn.com/32x24/" . strtolower($statistics['most_searched_iso']) . ".png" : "";
+$most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcdn.com/32x24/" . strtolower($statistics['most_recent_iso']) . ".png" : "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,12 +56,15 @@ if (!$statistics || isset($statistics['error'])) {
 
         <h2>Site Statistics</h2>
         <ul>
-            <li><strong>Most Searched Country:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?> <?php if (!empty($statistics['most_searched_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_searched_flag']); ?></span><?php endif; ?></li>
+            <li><strong>Most Searched Country:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?> <?php if (!empty($statistics['most_searched_flag'])): ?><span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($most_searched_flag_url); ?>"><?php echo htmlspecialchars($statistics['most_searched_flag']); ?></span><?php endif; ?></li>
             <li><strong>Total Searches:</strong> <?php echo htmlspecialchars($statistics['total_searches']); ?></li>
-            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?> <?php if (!empty($statistics['most_recent_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_recent_flag']); ?></span><?php endif; ?></li>
+            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?> <?php if (!empty($statistics['most_recent_flag'])): ?><span class="flag-emoji" data-windows-flag-url="<?php echo htmlspecialchars($most_recent_flag_url); ?>"><?php echo htmlspecialchars($statistics['most_recent_flag']); ?></span><?php endif; ?></li>
             <li><strong>Searches Today:</strong> <?php echo htmlspecialchars($statistics['searches_today']); ?></li>
             <li><strong>Unique Countries Searched:</strong> <?php echo htmlspecialchars($statistics['unique_countries_searched']); ?></li>
         </ul>
     </section>
+    
+    <!-- Flag emoji handler for Windows devices -->
+    <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

@@ -129,5 +129,8 @@ $locations = json_decode($data, true);
       }
     });
   </script>
+  
+  <!-- Flag emoji handler for Windows devices -->
+  <script src="flag-emoji-handler.js" defer></script>
 </body>
 </html>

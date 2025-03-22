@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             id,
             "Country Name" AS country_name,
             "Flag Emoji"   AS flag_emoji,
+            "ISO Alpha-2"  AS iso_code,
             "Official Name" AS official_name
         FROM countries
         WHERE "Country Name" ILIKE ?
@@ -56,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $country_id   = $country_result['id'];
         $country_name = htmlspecialchars($country_result['country_name']);
         $flag         = htmlspecialchars($country_result['flag_emoji'] ?? '');
+        $iso_code     = htmlspecialchars($country_result['iso_code'] ?? '');
         $official_name = htmlspecialchars($country_result['official_name'] ?? '');
 
         // 2) Fetch matching capitals from the capitals table
@@ -89,8 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $verb          = ($capital_count > 1) ? 'are' : 'is';
             // Format country name with "the" if needed
             $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
-            // Build the message with a clickable country name
-            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
+            
+            // Prepare the flag URL for Windows users
+            $windows_flag_url = !empty($iso_code) ? "https://flagcdn.com/32x24/" . strtolower($iso_code) . ".png" : "";
+            
+            // Build the message with a clickable country name and flag
+            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\" data-windows-flag-url=\"" . $windows_flag_url . "\">{$flag}</span>";
         } else {
             // Format country name with "the" if needed
             $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
@@ -152,6 +158,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Autocomplete script -->
     <script src="autocomplete.js" defer></script>
+    <!-- Flag emoji handler for Windows devices -->
+    <script src="flag-emoji-handler.js" defer></script>
     <script>
     document.getElementById('searchForm').addEventListener('submit', function(e) {
         const input = this.querySelector('input[name="country"]');
