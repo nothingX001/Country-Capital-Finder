@@ -29,13 +29,10 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    /* Ensure pull-to-refresh works properly */
-    overscroll-behavior-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
+    /* Remove iOS-specific overscroll behavior */
     background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     background-attachment: fixed;
     background-size: cover;
-    height: -webkit-fill-available;
 }
 
 /* Add emoji font support */
@@ -79,12 +76,8 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-x: hidden;
-    /* Enables smoother "momentum" scrolling on iOS */
-    -webkit-overflow-scrolling: touch;
-    min-height: -webkit-fill-available;
+    /* Remove iOS-specific scrolling */
     height: 100%;
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior-y: auto !important;
 }
 
 /*
@@ -109,18 +102,15 @@ body::before {
     width: 100%;
 }
 
+/* Remove iOS safe area adjustments */
 @supports(padding: max(0px)) {
-    /* 
-       Extend beyond iPhone safe-area insets 
-       so no edges appear in landscape or with notches.
-    */
     body::before {
-        top: calc(-100px - env(safe-area-inset-top));
-        right: calc(-100px - env(safe-area-inset-right));
-        bottom: calc(-100px - env(safe-area-inset-bottom));
-        left: calc(-100px - env(safe-area-inset-left));
-        width: calc(100% + 200px);
-        height: calc(100% + 200px);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
 }
 
@@ -536,10 +526,9 @@ input[type="text"] {
     
     /* Adjust navbar links for mobile - more condensed */
     .navbar-list li {
-        margin: 3px 0; /* Reduced from 6px for tighter vertical spacing */
         width: 100%;
-        max-width: 320px;
         text-align: center;
+        margin-bottom: 12px; /* Reduced from original larger value */
     }
     
     .navbar-list li a {
@@ -731,31 +720,27 @@ input[type="text"] {
 
 /* General heading styles outside of specific containers */
 h1 { 
-    font-size: 2.8rem !important; /* Standardized to 2.8rem */
-    font-weight: 600;
-    font-family: "Courier New", Courier, monospace;
-    margin-bottom: 30px;
-    text-align: center;
+    font-size: 2.5rem;
     line-height: 1.2;
-    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    color: #DCCB9C;
+    letter-spacing: -0.5px;
+    text-align: center;
 }
 h2 { 
-    font-size: 2.2rem !important; /* Proportionally smaller than h1 */
-    font-weight: 600;
-    font-family: "Courier New", Courier, monospace;
-    margin-bottom: 25px;
+    font-size: 2rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    color: #DCCB9C; 
+    letter-spacing: -0.3px;
     text-align: center;
-    line-height: 1.2;
-    letter-spacing: 0.5px;
 }
 h3 { 
-    font-size: 1.8rem !important; /* Proportionally smaller than h2 */
-    font-weight: 600;
-    font-family: "Courier New", Courier, monospace;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    color: #DCCB9C;
     text-align: center;
-    line-height: 1.2;
-    letter-spacing: 0.5px;
 }
 
 /* 11) Search Input - larger */
@@ -791,15 +776,16 @@ input[type="text"]:focus {
 /* 11) Search Input - mobile optimization */
 @media (max-width: 480px) {
     .search-bar-container {
-        width: 100%;
-        max-width: 400px; /* Restored to match the default width */
+        width: 90%; /* Increased from previous width */
+        max-width: 320px; /* Increased from previous value */
     }
-
+    
     input[type="text"] {
-        padding: 14px;
-        font-size: 16px;
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 16px !important;
     }
-
+    
     /* Make button more compact on mobile */
     .button {
         width: 100%;
@@ -820,6 +806,15 @@ input[type="text"]:focus {
     #searchForm {
         margin-top: 10px;
         width: 100%;
+    }
+    
+    /* Further reduce spacing in mobile menu */
+    .navbar-list li {
+        margin-bottom: 8px; /* Further reduced for very small screens */
+    }
+    
+    .navbar-list li a {
+        padding: 8px 0; /* Reduced padding to decrease vertical space */
     }
 }
 
@@ -1482,5 +1477,97 @@ body.menu-open {
     input[type="password"],
     textarea {
         font-size: 16px !important;
+    }
+}
+
+/* Universal heading styles for ALL pages */
+/* These will override any page-specific styles */
+h1, 
+.about h1, 
+.quiz h1, 
+.country-profiles h1, 
+.world-map h1, 
+.home h1, 
+.country-detail-header h1,
+.page-content h1 {
+    font-size: 2.5rem !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1rem !important;
+    color: #DCCB9C !important;
+    letter-spacing: -0.5px !important;
+    text-align: center !important;
+    font-family: "Courier New", Courier, monospace !important;
+}
+
+h2, 
+.about h2, 
+.quiz h2, 
+.country-profiles h2, 
+.world-map h2, 
+.home h2, 
+.page-content h2,
+#resultContainer h2 {
+    font-size: 2rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    margin-bottom: 1rem !important;
+    color: #DCCB9C !important;
+    letter-spacing: -0.3px !important;
+    text-align: center !important;
+    font-family: "Courier New", Courier, monospace !important;
+}
+
+h3, 
+.about h3, 
+.quiz h3, 
+.country-profiles h3, 
+.world-map h3, 
+.home h3, 
+.page-content h3,
+.ai-description h3 {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1rem !important;
+    color: #DCCB9C !important;
+    text-align: center !important;
+    font-family: "Courier New", Courier, monospace !important;
+}
+
+/* Ensure mobile menu has reduced vertical spacing */
+@media (max-width: 1200px) {
+    .navbar-list {
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        padding: 12px 0 !important;
+    }
+    
+    .navbar-list li {
+        margin-bottom: 12px !important;
+    }
+    
+    .navbar-list li a {
+        padding: 8px 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-list li {
+        margin-bottom: 8px !important;
+    }
+    
+    .navbar-list li a {
+        padding: 6px 0 !important;
+    }
+    
+    .search-bar-container {
+        width: 90% !important;
+        max-width: 320px !important;
+    }
+    
+    input[type="text"] {
+        width: 100% !important;
+        padding: 12px 15px !important;
     }
 }

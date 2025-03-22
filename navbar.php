@@ -9,7 +9,7 @@
       </a>
     </div>
 
-    <ul class="navbar-list" id="navbarList">
+    <ul class="navbar-list" id="navbarList" style="--menu-item-spacing: 8px;">
       <li><a href="index.php">HOME</a></li>
       <li><a href="country-profiles.php">COUNTRY PROFILES</a></li>
       <li><a href="quiz.php">QUIZ</a></li>

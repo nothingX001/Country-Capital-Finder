@@ -147,15 +147,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             border-top: 1px solid rgba(220, 203, 156, 0.3);
         }
         
-        /* Prevent input zoom on iOS */
-        input[type="text"], 
-        input[type="search"], 
-        input[type="email"], 
-        input[type="tel"], 
-        input[type="number"], 
-        select, 
-        textarea {
-            font-size: 16px !important; /* iOS doesn't zoom with 16px or larger */
+        /* Additional mobile-specific styles */
+        @media (max-width: 480px) {
+            .search-bar-container {
+                width: 90% !important;
+                max-width: 320px !important;
+            }
+            
+            input[type="text"] {
+                width: 100% !important;
+                padding: 12px 15px !important;
+            }
+            
+            #searchForm {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
         }
     </style>
 </head>
