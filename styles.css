@@ -423,16 +423,13 @@ input[type="text"] {
     border: none;
     cursor: pointer;
     margin-left: auto;
-    margin-right: 0;
     z-index: 10000;
     display: flex;
     padding: 10px 15px;
     font-size: 1.5rem;
     color: #ECECEC;
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    position: relative;
+    order: 2;
 }
 
 .navbar-toggle::before {
@@ -548,9 +545,9 @@ input[type="text"] {
         width: 100%;
     }
     
-    /* Adjust navbar links for mobile - more condensed */
+    /* Adjust navbar links for mobile - super condensed */
     .navbar-list li {
-        margin: 0 !important; /* No margin between items */
+        margin: -5px 0 !important; /* Negative margin to pull items closer */
         width: 100%;
         max-width: 280px;
         text-align: center;
@@ -560,9 +557,9 @@ input[type="text"] {
         color: #ECECEC;
         text-decoration: none;
         font-size: 20px;
-        padding: 0 !important; /* No padding at all for maximum condensing */
-        line-height: 1.2 !important; /* Tighter line height */
-        margin: 0 !important;
+        padding: 0 !important; /* No padding */
+        line-height: 1 !important; /* Minimum line height */
+        margin: -2px 0 !important; /* Negative margin to pull text closer */
         display: block;
         width: 100%;
         text-align: center;
@@ -582,13 +579,19 @@ input[type="text"] {
         display: flex;
         align-items: center;
         justify-content: center;
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
+        position: relative;
         padding: 10px 15px;
+        margin-left: auto;
+        order: 2;
         height: 100%;
         z-index: 10001; /* Ensure toggle stays above menu */
+    }
+
+    /* Center menu items */
+    .navbar-list {
+        justify-content: center !important;
+        align-items: center !important;
+        padding-top: 0 !important;
     }
 }
 
@@ -632,15 +635,9 @@ input[type="text"] {
         -webkit-backdrop-filter: blur(8px) !important;
     }
     
-    /* Center menu items better on mobile - more condensed */
-    .navbar-list {
-        justify-content: center !important;
-        align-items: center !important;
-        padding-top: 0 !important; 
-    }
-    
+    /* Super condensed menu items */
     .navbar-list li {
-        margin: 0 !important; /* No margin at all */
+        margin: -5px 0 !important; /* Pull items even closer with negative margin */
         width: 100% !important;
         max-width: 280px !important;
         text-align: center !important;
@@ -649,11 +646,11 @@ input[type="text"] {
     .navbar-list li a {
         font-size: 20px;
         padding: 0 !important; /* No padding */
-        line-height: 1.1 !important; /* Ultra tight line height */
+        line-height: 0.9 !important; /* Ultra tight line height */
+        margin: -3px 0 !important; /* Even more negative margin */
         text-align: center !important;
         width: 100% !important;
         display: block !important;
-        margin-bottom: 0 !important;
     }
     
     /* Keep all buttons consistent with desktop size */
