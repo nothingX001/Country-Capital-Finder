@@ -126,7 +126,7 @@ try {
     <?php include 'navbar.php'; ?>
 
     <section class="page-content quiz" id="main-quiz">
-        <h1 id="quizTitle">ExploreCapitals Quiz</h1>
+        <h1 id="quizTitle">Capitals Quiz</h1>
         <p>Select a quiz type to begin.</p>
 
         <button id="startMainQuizBtn" class="button">COUNTRIES QUIZ</button>

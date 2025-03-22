@@ -215,12 +215,13 @@ input[type="text"] {
 /* Center align text in the country information card on index.php for desktop only */
 @media (min-width: 769px) {
     #countryProfileCard .attributes {
-        text-align: center;
+        text-align: left;
         margin: 0 auto;
+        padding-left: 80px; /* Add left padding to push content closer to center */
     }
     
     #countryProfileCard .attributes p {
-        text-align: center;
+        text-align: left;
     }
 }
 
@@ -666,7 +667,7 @@ input[type="text"] {
 .about,
 .world-map {
     margin-top: 100px;     /* Keep this the same */
-    margin-bottom: 30px;   /* Increased from 20px */
+    margin-bottom: 60px;   /* Increased from 30px to 60px for more space */
     max-width: 900px;      /* Increased from 800px */
     width: 90%;            /* Keep percentage the same */
     margin-left: auto;
@@ -1281,6 +1282,20 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         padding-top: calc(env(safe-area-inset-top) + 80px);
     }
 
+    /* Reduce h1 size for mobile */
+    h1, 
+    .page-content h1,
+    .quiz h1,
+    .country-profiles h1,
+    .about h1,
+    .world-map h1,
+    .home h1 {
+        font-size: 2.2rem !important; /* Reduced from 2.8rem */
+        line-height: 1.3;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+
     .page-content,
     .quiz,
     .country-profiles,
@@ -1288,7 +1303,7 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     .world-map {
         width: 95%;
         max-width: 900px;    /* Increased from 800px */
-        margin: 100px auto 50px auto;
+        margin: 100px auto 80px auto; /* Increased bottom margin from 50px to 80px */
         padding: 30px;       /* Slightly reduced on mobile */
     }
 
@@ -1395,33 +1410,13 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     .about h1,
     .world-map h1,
     .home h1 {
-        font-size: 2.8rem !important; /* Keep 2.8rem even on smallest screens */
-        line-height: 1.3;
-    }
-    
-    h2, 
-    .page-content h2,
-    .quiz h2,
-    .country-profiles h2,
-    .about h2,
-    .world-map h2 {
-        font-size: 2.2rem !important; /* Keep proportionally smaller */
-        line-height: 1.3;
-    }
-    
-    h3, 
-    .page-content h3,
-    .quiz h3,
-    .country-profiles h3,
-    .about h3,
-    .world-map h3 {
-        font-size: 1.8rem !important; /* Keep proportionally smaller */
+        font-size: 1.8rem !important; /* Reduced from 2.8rem for smallest screens */
         line-height: 1.3;
     }
     
     /* Specific rule for the home page title on very small screens */
     .home h1 {
-        font-size: 32px; /* Smaller size for very small screens */
+        font-size: 28px !important; /* Reduced from 32px */
         letter-spacing: -0.8px; /* Tighter spacing */
     }
 }
@@ -1599,5 +1594,32 @@ h3,
         flex-direction: column;
         align-items: center;
         width: 100%;
+    }
+}
+
+/* Add mobile override for universal styles */
+@media (max-width: 1024px) {
+    h1, 
+    .about h1, 
+    .quiz h1, 
+    .country-profiles h1, 
+    .world-map h1, 
+    .home h1, 
+    .country-detail-header h1,
+    .page-content h1 {
+        font-size: 2.2rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    h1, 
+    .about h1, 
+    .quiz h1, 
+    .country-profiles h1, 
+    .world-map h1, 
+    .home h1, 
+    .country-detail-header h1,
+    .page-content h1 {
+        font-size: 1.8rem !important;
     }
 }
