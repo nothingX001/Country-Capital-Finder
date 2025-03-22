@@ -553,17 +553,17 @@ input[type="text"] {
     
     /* Adjust navbar links for mobile - more condensed */
     .navbar-list li {
-        margin: 6px 0; /* Reduced from 12px */
+        margin: 3px 0; /* Reduced from 6px */
         width: 100%;
-        max-width: 320px; /* Reduced from 400px */
+        max-width: 320px;
         text-align: center;
     }
     
     .navbar-list li a {
         color: #ECECEC;
         text-decoration: none;
-        font-size: 24px; /* Reduced from 28px */
-        padding: 10px 0; /* Reduced from 15px */
+        font-size: 22px; /* Reduced from 24px */
+        padding: 8px 0; /* Reduced from 10px */
         display: block;
         width: 100%;
         text-align: center;
@@ -613,7 +613,7 @@ h1, h2, h3 {
     letter-spacing: 0.5px;
 }
 
-/* Set consistent 2rem font size for all headers in content areas */
+/* Set consistent but hierarchical font sizes for all headers in content areas */
 .page-content h1, 
 .quiz h1, 
 .country-profiles h1, 
@@ -630,7 +630,7 @@ h1, h2, h3 {
 .about h2, 
 .world-map h2,
 #countryProfileCard h2 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 600;
 }
 
@@ -640,7 +640,7 @@ h1, h2, h3 {
 .about h3, 
 .world-map h3,
 #countryProfileCard h3 {
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: 600;
 }
 
@@ -838,7 +838,7 @@ input[type="reset"]:hover {
 #resultContainer h2 {
     text-align: center;
     margin-bottom: 25px;
-    font-size: 2rem; /* Changed from dynamic to match standard */
+    font-size: 1.6rem; /* Changed from 2rem to match h2 standard */
     color: #F0F0F0;
 }
 #score {
@@ -1253,29 +1253,41 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 
 /* iPhone-specific optimizations */
 @media (max-width: 480px) {
-    /* Preserve the 2rem font size for content headers even on iPhone */
+    /* Update font sizes for content headers on iPhone to maintain hierarchy */
     .page-content h1, 
     .quiz h1, 
     .country-profiles h1, 
     .about h1, 
     .world-map h1,
-    #countryProfileCard h1,
+    #countryProfileCard h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+    
     .page-content h2, 
     .quiz h2, 
     .country-profiles h2, 
     .about h2, 
     .world-map h2,
-    #countryProfileCard h2,
+    #countryProfileCard h2 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+        padding: 0 10px;
+        margin-bottom: 18px;
+    }
+    
     .page-content h3, 
     .quiz h3, 
     .country-profiles h3, 
     .about h3, 
     .world-map h3,
     #countryProfileCard h3 {
-        font-size: 2rem;
+        font-size: 1.3rem;
         line-height: 1.2;
         padding: 0 10px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     
     /* Make sure background is showing on mobile */
@@ -1313,19 +1325,19 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
         height: 70px !important;
     }
     
-    /* Center menu items better on mobile */
+    /* Center menu items better on mobile - more condensed */
     .navbar-list {
         justify-content: center !important;
         padding-top: 0 !important;
     }
     
     .navbar-list li {
-        margin: 4px 0 !important; /* Even more condensed on mobile */
+        margin: 2px 0 !important; /* Reduced from 4px for tighter spacing */
     }
     
     .navbar-list li a {
-        font-size: 22px;
-        padding: 8px 0;
+        font-size: 20px; /* Reduced from 22px */
+        padding: 6px 0; /* Reduced from 8px */
     }
     
     .page-content,
