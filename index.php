@@ -171,17 +171,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 padding: 0 !important;
             }
             
-            .page-content.home {
-                padding-left: 0 !important;
-                padding-right: 0 !important;
-            }
+            /* Remove the padding adjustments for page-content */
         }
     </style>
 </head>
 <body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
-    <div class="page-content home" style="max-width: 100%;">
+    <div class="page-content home">
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
         <h3>Enter a country to find its capital:</h3>
         <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
