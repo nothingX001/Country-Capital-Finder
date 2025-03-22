@@ -3,6 +3,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Make sure all links and buttons are clickable */
@@ -28,8 +29,11 @@ html {
     width: 100%;
     height: 100%;
     min-height: 100%;
-    /* Normal scroll bounce rather than overscroll-behavior: none */
-    overscroll-behavior-y: none !important;
+    /* Enable pull-to-refresh */
+    overscroll-behavior-y: auto !important;
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 /* Add emoji font support */
@@ -66,7 +70,7 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    background: linear-gradient(180deg, #3B4B54, #DCCB9C);
+    background: transparent; /* Changed from gradient to transparent */
     color: #ECECEC;
     margin: 0;
     padding: 0 0 20px 0;
@@ -78,9 +82,8 @@ body {
 }
 
 /*
-   2a) Pseudo-element for the background:
-   pinned to the full viewport and extends beyond safe-area
-   insets to avoid any side/bottom bars on iOS.
+   2a) Background implementation:
+   Fixed to the viewport using html background
 */
 
 body::before {
@@ -88,10 +91,16 @@ body::before {
     position: fixed;
     inset: 0;               /* Pin to all edges */
     z-index: -1;
-    background: linear-gradient(180deg, #3B4B54, #DCCB9C);
+    background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
+    /* Make sure it extends beyond the full screen height */
+    min-height: 100vh;
+    min-width: 100vw;
+    height: 100%;
+    width: 100%;
 }
 
 @supports(padding: max(0px)) {
@@ -100,10 +109,12 @@ body::before {
        so no edges appear in landscape or with notches.
     */
     body::before {
-        top: calc(0px - env(safe-area-inset-top));
-        right: calc(0px - env(safe-area-inset-right));
-        bottom: calc(0px - env(safe-area-inset-bottom));
-        left: calc(0px - env(safe-area-inset-left));
+        top: calc(-100px - env(safe-area-inset-top));
+        right: calc(-100px - env(safe-area-inset-right));
+        bottom: calc(-100px - env(safe-area-inset-bottom));
+        left: calc(-100px - env(safe-area-inset-left));
+        width: calc(100% + 200px);
+        height: calc(100% + 200px);
     }
 }
 
@@ -128,6 +139,11 @@ body::before {
     backface-visibility: visible !important;
     transform: translateZ(0) !important; /* Force hardware acceleration */
     will-change: transform !important; /* Hint for browser optimization */
+    /* Add backdrop shadow to stand out from background */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    /* Ensure content behind is accessible when overscrolling */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* Fix for cursor over interactive elements only */
@@ -214,6 +230,10 @@ input[type="text"] {
     border-top: 1px solid rgba(220, 203, 156, 0.3);
     padding-top: 30px;
     text-align: left;
+    background-color: rgba(25, 25, 35, 0.5);
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .ai-description h3 {
@@ -221,6 +241,8 @@ input[type="text"] {
     margin-bottom: 25px;
     text-align: left;
     color: #DCCB9C;
+    border-bottom: 1px solid rgba(220, 203, 156, 0.3);
+    padding-bottom: 10px;
 }
 
 .ai-description-content {
@@ -231,6 +253,7 @@ input[type="text"] {
     font-family: "Courier New", Courier, monospace;
     min-height: 150px;
     position: relative;
+    padding: 10px 5px;
 }
 
 /* Typing effect */
@@ -253,21 +276,34 @@ input[type="text"] {
 /* Loading indicator for AI content */
 .ai-loading {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     font-size: 1.1rem;
     color: #DCCB9C;
     margin-bottom: 15px;
+    min-height: 100px;
+    padding: 20px;
+    background-color: rgba(20, 20, 28, 0.5);
+    border-radius: 6px;
+}
+
+.ai-loading span {
+    margin-bottom: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    animation: fadeInOut 2s infinite;
 }
 
 .ai-loading .dots {
     display: inline-flex;
-    margin-left: 10px;
+    margin-top: 10px;
 }
 
 .ai-loading .dot {
-    width: 8px;
-    height: 8px;
-    margin: 0 4px;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
     border-radius: 50%;
     background-color: #DCCB9C;
     animation: dot-pulse 1.5s infinite ease-in-out;
@@ -284,6 +320,11 @@ input[type="text"] {
 @keyframes dot-pulse {
     0%, 100% { transform: scale(0.8); opacity: 0.5; }
     50% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
 }
 
 /* Mobile adjustments for country detail */
@@ -308,8 +349,8 @@ input[type="text"] {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin: 25px auto;      /* Restored to original 25px */
-    max-width: 300px;       /* Restored to original 300px */
+    max-width: 100%;
+    margin: 0 auto 20px;
 }
 
 /* Fix for button styling - restore original */
@@ -1046,17 +1087,184 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     .message {
         margin-top: 30px;
         margin-bottom: 30px !important;
-        font-size: 22px !important; /* Slightly smaller on mobile */
+        font-size: 20px !important; /* Made smaller for better mobile fit */
+        padding: 0 10px;
     }
     
     .message a, .message strong {
-        font-size: 24px !important; /* Slightly smaller on mobile */
+        font-size: 22px !important; /* Made smaller for better mobile fit */
     }
     
     /* Fix for smaller screens */
     input[type="text"] {
-        padding: 18px;       /* Slightly reduced on mobile */
-        font-size: 1.1rem;   /* Slightly reduced on mobile */
+        padding: 16px;       /* Reduced padding */
+        font-size: 1rem;     /* Reduced font size */
+    }
+
+    /* Ensure elements don't overflow */
+    p, h1, h2, h3, div, span {
+        max-width: 100%;
+        word-wrap: break-word;
+    }
+}
+
+/* Better mobile optimization for iPhone and smaller screens */
+@media (max-width: 768px) {
+    .attributes {
+        padding-left: 15px;  /* Changed from 0 to 15px for slight right shift on mobile */
+        padding-right: 20px;
+        width: 100%;
+    }
+    
+    .attributes strong {
+        min-width: 120px;
+    }
+    
+    .ai-description h3 {
+        text-align: center;
+    }
+
+    /* Better text scaling for iPhones */
+    .message {
+        font-size: 18px !important;
+        line-height: 1.4;
+    }
+    
+    .message a, .message strong {
+        font-size: 20px !important;
+    }
+    
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 20px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
+
+    /* Optimize buttons and inputs for touchscreens */
+    .button, input[type="submit"], button {
+        padding: 14px 20px;
+        font-size: 16px;
+        min-height: 45px; /* Ensure good tap target */
+    }
+    
+    input[type="text"] {
+        padding: 14px;
+        font-size: 16px;
+        min-height: 45px; /* Ensure good tap target */
+    }
+    
+    /* Ensure card content doesn't overflow */
+    #countryProfileCard {
+        padding: 20px;
+        overflow-wrap: break-word;
+    }
+    
+    /* Improve spacing for mobile */
+    .page-content,
+    .quiz,
+    .country-profiles,
+    .about,
+    .world-map {
+        padding: 20px;
+        margin-top: 90px;
+    }
+    
+    /* Ensure autocomplete works well on mobile */
+    .autocomplete-dropdown {
+        max-height: 40vh;
+    }
+    
+    .autocomplete-dropdown li {
+        padding: 12px;
+        font-size: 16px;
+    }
+}
+
+/* iPhone-specific optimizations */
+@media (max-width: 480px) {
+    .message {
+        font-size: 16px !important;
+    }
+    
+    .message a, .message strong {
+        font-size: 18px !important;
+    }
+    
+    .navbar {
+        height: 70px !important;
+    }
+    
+    .navbar-container {
+        height: 70px !important;
+    }
+    
+    .navbar-list.open {
+        padding-top: calc(env(safe-area-inset-top) + 70px);
+    }
+    
+    .page-content,
+    .quiz,
+    .country-profiles,
+    .about,
+    .world-map {
+        margin-top: 80px;
+        padding: 15px;
+    }
+    
+    /* Ensure no white gaps when scrolling on iOS */
+    html, body {
+        background-attachment: fixed;
+    }
+    
+    /* Reduce font sizes further for very small screens */
+    input[type="text"] {
+        font-size: 15px;
+    }
+    
+    h1 {
+        font-size: 22px;
+    }
+    
+    .attributes p {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+    
+    .attributes strong {
+        min-width: 100px;
+        font-size: 16px;
+    }
+
+    /* Fix for pull-to-refresh */
+    #root, main, .app-container {
+        min-height: 100vh;
+        background: transparent;
+    }
+}
+
+/* Add iPhone notch safe area support */
+@supports(padding: max(0px)) {
+    .navbar {
+        padding-top: env(safe-area-inset-top);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+    
+    body {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Ensure background gradient covers any white gaps */
+@media screen and (orientation: landscape) {
+    html, body, body::before {
+        min-height: 100vw; /* Use viewport width as minimum height in landscape */
     }
 }
 
@@ -1108,4 +1316,81 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
 .country-detail-entity a:hover {
     text-decoration: none;
     color: #DCCB9C !important;
+}
+
+/* Ensure iOS Safari properly handles pull-to-refresh and overscroll */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    html {
+        background-color: #3B4B54; /* Fallback color if gradient fails */
+    }
+    
+    body::before {
+        content: "";
+        position: fixed;
+        top: -100px;
+        right: -100px;
+        bottom: -100px;
+        left: -100px;
+        z-index: -1;
+        background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        transform: translateZ(0); /* Force hardware acceleration */
+        will-change: transform; /* Hint for browser optimization */
+    }
+}
+
+/* Ensure proper tap targets on mobile */
+button, 
+input[type="button"], 
+input[type="submit"], 
+a.button, 
+.navbar-list li a, 
+.navbar-toggle,
+.autocomplete-dropdown li {
+    touch-action: manipulation;     /* Optimize for touch */
+    -webkit-tap-highlight-color: rgba(0,0,0,0);  /* Remove tap highlight */
+    min-height: 44px;               /* Minimum Apple-recommended touch target size */
+}
+
+/* Improve scrolling experience on iOS devices */
+.page-content,
+.quiz,
+.country-profiles,
+.about,
+.world-map,
+#countryProfileCard,
+.autocomplete-dropdown {
+    -webkit-overflow-scrolling: touch;    /* Enable momentum scrolling on iOS */
+}
+
+/* Optimize scrolling and fixed positioning for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific */
+    html, body {
+        height: -webkit-fill-available;
+    }
+
+    .navbar {
+        /* Prevent navbar from bouncing during overscroll */
+        position: -webkit-sticky !important;
+        position: sticky !important;
+    }
+    
+    /* Ensure fixed background works on iOS */
+    html {
+        background-attachment: scroll;
+    }
+    
+    /* Special handling for pull-to-refresh on iOS */
+    body::before {
+        /* Extend well beyond the viewport to prevent white edges */
+        top: -150vh;
+        left: -150vw;
+        right: -150vw;
+        bottom: -150vh;
+        width: 400vw;
+        height: 400vh;
+    }
 }

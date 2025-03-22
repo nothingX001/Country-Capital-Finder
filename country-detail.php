@@ -259,7 +259,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
         <div class="ai-description">
             <h3>About <?php echo htmlspecialchars($displayName); ?></h3>
             <div class="ai-loading">
-                <span>Generating description</span>
+                <span>Generating educational description</span>
                 <div class="dots">
                     <div class="dot"></div>
                     <div class="dot"></div>
@@ -294,10 +294,35 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 sovereignState: "<?php echo addslashes($country['sovereign_state'] ?? ''); ?>"
             };
 
+            // Add educational loading messages that cycle during generation
+            const loadingMessages = [
+                "Gathering historical facts...",
+                "Exploring cultural traditions...",
+                "Researching geographic features...",
+                "Uncovering local cuisine...",
+                "Finding interesting landmarks...",
+                "Discovering notable people...",
+                "Learning about economic highlights...",
+                "Collecting fascinating tidbits..."
+            ];
+            
+            let messageIndex = 0;
+            let loadingInterval;
+            
+            function cycleLoadingMessages() {
+                const loadingSpan = document.querySelector('.ai-loading span');
+                loadingSpan.textContent = loadingMessages[messageIndex];
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+            }
+
             // Function to fetch AI description
             function getAIDescription() {
                 // Show the loading animation
                 document.querySelector('.ai-loading').style.display = 'flex';
+                
+                // Start cycling through loading messages
+                loadingInterval = setInterval(cycleLoadingMessages, 2000);
+                cycleLoadingMessages(); // Set first message immediately
                 
                 // Prepare API request to your backend
                 fetch('generate-description.php', {
@@ -310,6 +335,9 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 .then(response => response.json())
                 .then(data => {
                     if (data.description) {
+                        // Clear the loading interval
+                        clearInterval(loadingInterval);
+                        
                         // Hide loading animation
                         document.querySelector('.ai-loading').style.display = 'none';
                         
@@ -327,6 +355,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
 
             // Function to show error message if AI generation fails
             function showError() {
+                clearInterval(loadingInterval);
                 document.querySelector('.ai-loading').style.display = 'none';
                 document.getElementById('aiDescription').innerHTML = 
                     "Sorry, we couldn't generate a description at this time. Please try again later.";
