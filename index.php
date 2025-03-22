@@ -150,8 +150,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Additional mobile-specific styles */
         @media (max-width: 480px) {
             .search-bar-container {
-                width: 95% !important;
-                max-width: 340px !important;
+                width: 70% !important;
+                max-width: none !important;
                 margin: 0 auto 25px;
             }
             

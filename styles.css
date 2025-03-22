@@ -508,7 +508,7 @@ input[type="text"] {
         flex-direction: column;
         align-items: center;
         justify-content: flex-start; /* Changed from center to push content to top */
-        padding: 80px 0 0 0; /* Added top padding to push content down */
+        padding: 100px 0 0 0; /* Increased from 80px to push content down more */
         z-index: 9990;
         overflow-y: auto;
         background: linear-gradient(180deg, #2F3B44, #3B4B54);
@@ -746,7 +746,7 @@ h3 {
 
 /* 11) Search Input - larger */
 .search-bar-container {
-    width: 400px;          /* Increased from 350px */
+    width: 70%;          /* Changed from 400px to 70% of parent container */
     margin: 0 auto 40px;   /* Added bottom margin */
     position: relative !important;
 }
@@ -777,8 +777,8 @@ input[type="text"]:focus {
 /* 11) Search Input - mobile optimization */
 @media (max-width: 480px) {
     .search-bar-container {
-        width: 90%; /* Increased from previous width */
-        max-width: 320px; /* Increased from previous value */
+        width: 70% !important; /* Changed from 90% to 70% to match desktop */
+        max-width: none !important; /* Removed max-width constraint */
     }
     
     input[type="text"] {
@@ -1541,7 +1541,7 @@ h3,
     .navbar-list {
         max-height: 100vh;
         overflow-y: auto;
-        padding-top: 80px !important; /* Match navbar height */
+        padding-top: 100px !important; /* Increased from 80px to match the new value */
         padding-bottom: 40px !important; /* Add bottom padding to ensure space at bottom */
     }
     

@@ -52,7 +52,7 @@
             
             // Ensure menu covers entire screen
             navbarList.style.minHeight = '100vh';
-            navbarList.style.paddingTop = '80px';
+            navbarList.style.paddingTop = '100px';
             navbarList.style.paddingBottom = '40px';
             
             // Apply reduced text size for menu items
