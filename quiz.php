@@ -104,25 +104,24 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
+<html lang="en" style="overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title>Quiz | ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Test your knowledge of world capitals with our interactive quiz. How many capitals can you name?">
-    <meta property="og:title" content="Capital City Quiz | ExploreCapitals">
-    <meta property="og:description" content="Test your knowledge of world capitals with our interactive quiz. How many capitals can you name?">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="description" content="Test your knowledge of world capital cities with our interactive quiz.">
+    <meta property="og:title" content="Capital Cities Quiz | ExploreCapitals">
+    <meta property="og:description" content="Test your knowledge of world capital cities with our interactive quiz.">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
     <style>
         html, body {
-            overscroll-behavior-y: none !important;
             overflow-x: hidden !important;
         }
     </style>
 </head>
-<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
+<body style="background: transparent;">
     <?php include 'navbar.php'; ?>
 
     <section class="page-content quiz" id="main-quiz">
