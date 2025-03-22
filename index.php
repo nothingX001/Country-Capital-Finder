@@ -328,7 +328,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     
                     <!-- View Full Profile Link -->
                     <p style="margin-top: 20px;">
-                        <a href="country-detail.php?id=<?php echo urlencode($country_id); ?>" class="button">
+                        <a href="country-detail.php?id=<?php echo urlencode($country_id); ?>" class="button" style="text-decoration: none;">
                             View Full Profile
                         </a>
                     </p>

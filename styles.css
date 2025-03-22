@@ -24,6 +24,7 @@ html {
     height: 100%;
     min-height: 100%;
     /* Normal scroll bounce rather than overscroll-behavior: none */
+    overscroll-behavior-y: none !important;
 }
 
 /* Add emoji font support */
@@ -60,7 +61,6 @@ html {
 /* 2) Body Defaults */
 body {
     font-family: "Courier New", Courier, monospace;
-    /* Solid fallback to avoid white if gradient fails */
     background: linear-gradient(180deg, #3B4B54, #DCCB9C);
     color: #ECECEC;
     margin: 0;
@@ -121,47 +121,43 @@ body::before {
     opacity: 1 !important;  /* Force opacity */
     -webkit-backface-visibility: visible !important;
     backface-visibility: visible !important;
-    /* Fix for overscroll behavior */
-    position: -webkit-sticky !important; /* Safari */
-    position: sticky !important;
     transform: translateZ(0) !important; /* Force hardware acceleration */
     will-change: transform !important; /* Hint for browser optimization */
 }
 
-.navbar.scrolled {
-    background-color: rgba(47, 59, 68, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+/* Fix for cursor over interactive elements only */
+a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"], .button, .navbar-list li a, .navbar-toggle {
+    cursor: pointer !important;
 }
 
-/* iOS Safe Area Handling (Mobile Only) */
-@supports (padding-top: env(safe-area-inset-top)) {
-    .navbar {
-        padding-top: env(safe-area-inset-top);
-        padding-left: env(safe-area-inset-left);
-        padding-right: env(safe-area-inset-right);
-        height: calc(80px + env(safe-area-inset-top));
-        transition: background-color 0.3s ease;
-    }
-    
-    .navbar-container {
-        height: 80px; /* Keep the container height fixed regardless of safe area */
-    }
-
-    body {
-        padding-top: env(safe-area-inset-top);
-    }
+input[type="text"] {
+    cursor: text !important;
 }
 
-/* Add body class for when menu is open */
-body.menu-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+/* Card visibility fixes only */
+#countryProfileCard {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.message {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 20px;
+    padding: 10px;
+    /* Slightly darker container for message boxes */
+    background-color: #404B50;
+    border: none !important;
+    margin-bottom: 20px !important;
+    border-radius: 2px;
+    color: #ECECEC;
+}
+
+/* Fix for button styling - restore original */
+.button {
+    text-decoration: none;
 }
 
 /* 4) Navbar Container */
@@ -351,7 +347,7 @@ body.menu-open {
 .country-profiles,
 .about,
 .world-map {
-    margin-top: 100px;
+    margin-top: 100px;     /* Ensure this stays at 100px */
     margin-bottom: 20px;
     max-width: 600px;
     margin-left: auto;
@@ -433,6 +429,7 @@ input[type="text"]:focus {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-decoration: none !important;
 }
 .button:hover {
     background: linear-gradient(180deg, #C8B882, #B89F6A);
@@ -446,20 +443,6 @@ form input[type="submit"].button {
 }
 
 /* 13) Flash Messages */
-.message {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    margin-top: 20px;
-    padding: 10px;
-    /* Slightly darker container for message boxes */
-    background-color: #404B50;
-    border: none !important;
-    margin-bottom: 20px !important;
-    border-radius: 2px;
-    color: #ECECEC;
-}
-
 .message a {
     text-decoration: none;
     color: inherit;
@@ -920,14 +903,11 @@ img {
     visibility: visible !important;
     opacity: 1 !important;
     margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(220, 203, 156, 0.3);
+    padding: 20px;
     background-color: #333F44;
     border-radius: 6px;
-    padding: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    visibility: visible !important;
-    opacity: 1 !important;
+    border-top: 1px solid rgba(220, 203, 156, 0.3);
 }
 
 .country-detail-header {
@@ -951,21 +931,6 @@ img {
     height: auto;
     border-radius: 4px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
-/* Ensure message visibility */
-.message {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    margin-top: 20px;
-    padding: 10px;
-    /* Slightly darker container for message boxes */
-    background-color: #404B50;
-    border: none !important;
-    margin-bottom: 20px !important;
-    border-radius: 2px;
-    color: #ECECEC;
 }
 
 /* CSS to ensure country profile card is displayed and all interactive elements have a pointer cursor */
@@ -1028,4 +993,9 @@ input:focus, button:focus, select:focus, textarea:focus, a:focus {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+}
+
+/* Reset any problematic styles */
+html, body {
+    overscroll-behavior-y: none !important;
 }

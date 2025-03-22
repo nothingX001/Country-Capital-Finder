@@ -25,7 +25,7 @@ $most_searched_flag_url = !empty($statistics['most_searched_iso']) ? "https://fl
 $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcdn.com/32x24/" . strtolower($statistics['most_recent_iso']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -34,8 +34,14 @@ $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcd
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+    <style>
+        html, body {
+            overscroll-behavior-y: none !important;
+            overflow-x: hidden !important;
+        }
+    </style>
 </head>
-<body>
+<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
     <?php include 'navbar.php'; ?>
 
     <!-- Common container class plus .about -->

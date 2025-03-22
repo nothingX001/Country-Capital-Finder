@@ -85,13 +85,16 @@ try {
 $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . strtolower($country['iso_code']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Browse our database of countries, territories, and more!">
+    <meta property="og:title" content="<?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - Country Detail | ExploreCapitals">
+    <meta property="og:description" content="Learn about <?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> and its capital<?php echo (count($capitals) > 1) ? 's' : ''; ?> with ExploreCapitals.">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
     <style>
       /* Additional styling for the country detail page */
@@ -154,9 +157,13 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
           font-size: 3rem;
           margin-top: 10px;
       }
+      html, body {
+          overscroll-behavior-y: none !important;
+          overflow-x: hidden !important;
+      }
     </style>
 </head>
-<body>
+<body style="overscroll-behavior-y: none; background: linear-gradient(180deg, #3B4B54, #DCCB9C);">
     <?php include 'navbar.php'; ?>
 
     <section class="page-content country-detail">
@@ -312,6 +319,14 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 echo '<p><strong>Internet TLD:</strong> ' . htmlspecialchars($country['internet_tld']) . '</p>';
             }
             ?>
+        </div>
+
+        <!-- Back button and other links -->
+        <div class="nav-buttons">
+            <a href="country-profiles.php" class="button" style="text-decoration: none;">Back to Country Profiles</a>
+            <?php if (!empty($country['lat']) && !empty($country['lon'])): ?>
+                <a href="world-map.php?country=<?php echo urlencode($country['country_name']); ?>" class="button" style="text-decoration: none;">View on Map</a>
+            <?php endif; ?>
         </div>
     </section>
 </body>
