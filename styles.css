@@ -1513,6 +1513,11 @@ h1,
     font-family: "Courier New", Courier, monospace !important;
 }
 
+/* Custom white heading for search */
+.search-heading {
+    color: #FFFFFF !important;
+}
+
 h2, 
 .about h2, 
 .quiz h2, 
