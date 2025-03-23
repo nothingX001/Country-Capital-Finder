@@ -258,7 +258,7 @@ input[type="text"] {
     font-size: 1.2rem;
     line-height: 1.7;
     color: #ECECEC;
-    text-align: left;
+    text-align: left !important;
     font-family: "Courier New", Courier, monospace;
     min-height: 150px;
     position: relative;
@@ -266,6 +266,9 @@ input[type="text"] {
     max-width: 100%;
     word-wrap: normal;
     white-space: pre-line;
+    width: auto;
+    display: inline-block;
+    max-width: 95%;
 }
 
 /* Typing effect */
