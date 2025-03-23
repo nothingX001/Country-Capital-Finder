@@ -1514,7 +1514,10 @@ h1,
 }
 
 /* Custom white heading for search */
-.search-heading {
+.search-heading,
+h3.search-heading,
+.page-content h3.search-heading,
+.home h3.search-heading {
     color: #FFFFFF !important;
 }
 
