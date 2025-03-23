@@ -76,8 +76,11 @@ function getWikipediaSummary($countryName) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'ExploreCapitals/1.0 (https://explorecapitals.com; info@explorecapitals.com)');
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15); // Increased from 10 seconds to 15
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ExploreCapitals/1.1 (https://explorecapitals.com; info@explorecapitals.com)');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20); // Increase timeout to 20 seconds
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); // Verify SSL
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Follow redirects
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 5); // Maximum redirects
         
         $response = curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -92,7 +95,7 @@ function getWikipediaSummary($countryName) {
             'error' => $error
         ];
         
-        if ($status === 200) {
+        if ($status === 200 && !empty($response)) {
             $data = json_decode($response, true);
             if (isset($data['extract']) && strlen($data['extract']) > 100) {
                 // Success! We found a good summary
@@ -258,6 +261,15 @@ if (!empty($data)) {
         'source' => $source,
         'debug' => $debug
     ]);
-    exit;
+} else {
+    // If there's no data or an invalid request, return an error
+    echo json_encode([
+        'success' => false,
+        'error' => 'Missing or invalid country data',
+        'debug' => [
+            'received_data' => $data ?? 'No data received',
+            'time' => date('Y-m-d H:i:s')
+        ]
+    ]);
 }
 ?> 

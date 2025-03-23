@@ -328,8 +328,17 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                     },
                     body: JSON.stringify(countryData)
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    if (data.success === false) {
+                        throw new Error(data.error || 'Unknown error from server');
+                    }
+                    
                     if (data.description) {
                         // Clear the loading interval
                         clearInterval(loadingInterval);
@@ -351,8 +360,8 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    showError("Network or server error while generating description");
+                    console.error('Error generating description:', error);
+                    showError(`Error: ${error.message || 'Unknown error'}`);
                 });
             }
 
