@@ -895,6 +895,18 @@ input[type="reset"]:hover {
     color: #DCCB9C !important;
 }
 
+/* Style for sovereign state links */
+.sovereign-state a {
+    text-decoration: none;
+    color: #ECECEC;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.sovereign-state a:hover {
+    text-decoration: none;
+    color: #DCCB9C !important;
+}
+
 /* 14) Autocomplete Dropdown */
 .autocomplete-dropdown {
     position: absolute !important;
