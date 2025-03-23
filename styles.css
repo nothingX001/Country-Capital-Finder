@@ -622,8 +622,8 @@ input[type="text"] {
     .constituent-countries {
         font-size: 1.4rem;
         line-height: 1.3;
-        padding: 0 10px;
-        margin-bottom: 15px;
+        padding: 0 5px;
+        margin-bottom: 25px;
     }
     
     /* Make sure page content is consistent */
