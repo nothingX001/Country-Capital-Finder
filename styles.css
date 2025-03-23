@@ -1701,3 +1701,9 @@ h3,
         font-size: 1.1rem !important;
     }
 }
+
+/* Add space below AI description to prevent choppy scrolling during typing */
+.ai-description-bottom-space {
+    padding-bottom: 300px;
+    width: 100%;
+}

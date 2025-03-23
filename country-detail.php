@@ -262,8 +262,11 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 <div class="ai-loading-spinner"></div>
                 <span>Researching information...</span>
             </div>
-            <div id="aiDescription" class="ai-description-content" style="line-height: 1.8; font-size: 1.1em;"></div>
+            <div id="aiDescription" class="ai-description-content" style="line-height: 1.8; font-size: 1.1em; min-height: 300px;"></div>
         </div>
+
+        <!-- Extra space to prevent choppy scrolling during AI typing -->
+        <div style="padding-bottom: 300px; width: 100%;"></div>
     </section>
 
     <!-- JavaScript for AI description typing effect -->
@@ -378,6 +381,32 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
             function typeDescription(text, source) {
                 const descriptionEl = document.getElementById('aiDescription');
                 descriptionEl.innerHTML = ''; // Clear any existing content
+                
+                // Format the text with line breaks for display without typing effect
+                function getFormattedText() {
+                    return text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+                }
+                
+                // Show full text immediately if page not visible or on visibility change
+                function showFullText() {
+                    clearInterval(typingInterval);
+                    if (cursor) cursor.remove();
+                    descriptionEl.innerHTML = getFormattedText();
+                }
+                
+                // Check if page is initially hidden
+                if (document.hidden) {
+                    showFullText();
+                    return;
+                }
+                
+                // Add visibility change listener
+                document.addEventListener('visibilitychange', function() {
+                    if (document.hidden) {
+                        showFullText();
+                    }
+                });
+                
                 let i = 0;
                 const typingSpeed = 8; // Faster typing speed (was 10ms)
                 
@@ -388,7 +417,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 cursor.style.animation = 'blink 1s step-start infinite';
                 descriptionEl.appendChild(cursor);
                 
-                const typing = setInterval(() => {
+                const typingInterval = setInterval(() => {
                     if (i < text.length) {
                         // Check if we need to insert a paragraph break
                         if (text.substring(i, i+2) === "\n\n") {
@@ -411,7 +440,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                     } else {
                         // Remove the cursor when finished
                         cursor.remove();
-                        clearInterval(typing);
+                        clearInterval(typingInterval);
                         
                         // Debug info is still kept in console for troubleshooting
                         if (window.descriptionDebug) {
