@@ -124,7 +124,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                         
                         $links = [];
                         foreach ($constituents as $constituent) {
-                            $links[] = '<a href="country-detail.php?id=' . urlencode($constituent['id']) . '">' . htmlspecialchars($constituent['Country Name']) . '</a>';
+                            $links[] = '<a href="country-detail.php?id=' . urlencode($constituent['id']) . '" class="sovereign-link">' . htmlspecialchars($constituent['Country Name']) . '</a>';
                         }
                         echo implode(', ', $links);
                         ?>

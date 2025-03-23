@@ -898,14 +898,16 @@ input[type="reset"]:hover {
 /* Style for sovereign state links */
 .sovereign-state a,
 .country-detail-entity a,
+.constituent-countries a,
 .sovereign-link {
     text-decoration: none;
     color: #ECECEC;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: color 0.1s ease;
 }
 .sovereign-state a:hover,
 .country-detail-entity a:hover,
+.constituent-countries a:hover,
 .sovereign-link:hover {
     text-decoration: none;
     color: #DCCB9C !important;
