@@ -173,7 +173,7 @@ input[type="text"] {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    margin-top: 30px;       /* Increased from 25px */
+    margin-top: 25px;       /* Increased from 25px */
     padding: 10px;          /* Increased from 20px */
     border: none !important;
     margin-bottom: 30px !important; /* Increased from 25px */
