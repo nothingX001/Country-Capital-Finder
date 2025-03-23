@@ -896,13 +896,17 @@ input[type="reset"]:hover {
 }
 
 /* Style for sovereign state links */
-.sovereign-state a {
+.sovereign-state a,
+.country-detail-entity a,
+.sovereign-link {
     text-decoration: none;
     color: #ECECEC;
     cursor: pointer;
     transition: color 0.2s ease;
 }
-.sovereign-state a:hover {
+.sovereign-state a:hover,
+.country-detail-entity a:hover,
+.sovereign-link:hover {
     text-decoration: none;
     color: #DCCB9C !important;
 }
@@ -1535,7 +1539,7 @@ h1,
 h3.search-heading,
 .page-content h3.search-heading,
 .home h3.search-heading {
-    color: #FFFFFF !important;
+    color: #ECECEC !important;
 }
 
 h2, 

@@ -144,7 +144,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                         $uk_id = $uk_stmt->fetchColumn();
                         
                         if ($uk_id) {
-                            echo 'Part of the <a href="country-detail.php?id=' . urlencode($uk_id) . '">United Kingdom</a>';
+                            echo 'Part of the <a href="country-detail.php?id=' . urlencode($uk_id) . '" class="sovereign-link">United Kingdom</a>';
                         } else {
                             echo 'Part of the United Kingdom';
                         }

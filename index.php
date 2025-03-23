@@ -180,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="page-content home">
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
-        <h3 class="search-heading" style="color: #FFFFFF;">Enter a country to find its capital:</h3>
+        <h3 class="search-heading" style="color: #ECECEC;">Enter a country to find its capital:</h3>
         <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
             <div class="search-bar-container" style="width: 90%; max-width: 500px;">
                 <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
