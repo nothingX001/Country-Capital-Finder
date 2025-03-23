@@ -263,6 +263,9 @@ input[type="text"] {
     min-height: 150px;
     position: relative;
     padding: 10px 5px;
+    max-width: 100%;
+    word-wrap: normal;
+    white-space: pre-line;
 }
 
 /* Typing effect */
