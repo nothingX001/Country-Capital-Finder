@@ -174,7 +174,7 @@ input[type="text"] {
     visibility: visible !important;
     opacity: 1 !important;
     margin-top: 30px;       /* Increased from 25px */
-    padding: 18px;          /* Increased from 20px */
+    padding: 15px;          /* Increased from 20px */
     border: none !important;
     margin-bottom: 30px !important; /* Increased from 25px */
     border-radius: 6px;     /* Increased from 4px */
@@ -209,6 +209,15 @@ input[type="text"] {
     margin-bottom: 15px;
     text-align: left;
 }
+
+.country-detail-entity,
+    .sovereign-state,
+    .constituent-countries {
+        font-size: 1.4rem;
+        line-height: 1.3;
+        padding: 0 25px;
+        margin-bottom: 25px;
+    }
 
 /* Center align text in the country information card on index.php for desktop only */
 @media (min-width: 769px) {
