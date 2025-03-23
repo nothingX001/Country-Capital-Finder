@@ -262,7 +262,7 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 <div class="ai-loading-spinner"></div>
                 <span>Researching information...</span>
             </div>
-            <div id="aiDescription" style="line-height: 1.8; font-size: 1.1em; text-align: justify;"></div>
+            <div id="aiDescription" class="ai-description-content" style="line-height: 1.8; font-size: 1.1em;"></div>
         </div>
     </section>
 

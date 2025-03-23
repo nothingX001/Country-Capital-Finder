@@ -266,9 +266,11 @@ input[type="text"] {
     max-width: 100%;
     word-wrap: normal;
     white-space: pre-line;
-    width: auto;
-    display: inline-block;
-    max-width: 95%;
+    display: block;
+    text-justify: left;
+    hyphens: none;
+    width: 100%;
+    margin: 0;
 }
 
 /* Typing effect */
