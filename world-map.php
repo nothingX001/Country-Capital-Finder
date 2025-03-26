@@ -19,10 +19,9 @@ $locations = json_decode($data, true);
   <meta property="og:image" content="images/explore-capitals-logo.jpg">
   <title>World Map | ExploreCapitals</title>
   <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-  <link rel="stylesheet" href="styles.css"> <!-- Use your original stylesheet -->
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <style>
-    /* Original map styling */
     #map {
       height: 500px;
       width: 100%;
@@ -32,6 +31,20 @@ $locations = json_decode($data, true);
     html, body {
         overscroll-behavior-y: none !important;
         overflow-x: hidden !important;
+    }
+    .leaflet-popup-content {
+      margin: 10px;
+      text-align: center;
+    }
+    .leaflet-popup-content h3 {
+      margin: 0 0 5px 0;
+      color: #2A363B;
+      font-size: 16px;
+    }
+    .leaflet-popup-content p {
+      margin: 0;
+      color: #2A363B;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -47,35 +60,21 @@ $locations = json_decode($data, true);
     <div id="map"></div>
   </section>
 
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="map-autocomplete.js"></script>
   <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZGNobzIwMDEiLCJhIjoiY20yYW04bHdtMGl3YjJyb214YXB5dzBtbSJ9.Zs-Gl2JsEgUrU3qTi4gy4w';
-
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [0, 20],
-      zoom: 1.5,
-      projection: 'globe',
-      maxBounds: [[-180, -90], [180, 90]]
+    // Initialize the map
+    const map = L.map('map', {
+      center: [20, 0],
+      zoom: 2,
+      minZoom: 2,
+      maxZoom: 18
     });
 
-    map.on('style.load', () => {
-      map.setFog({
-        range: [0.5, 10],
-        color: 'rgba(135, 206, 235, 0.15)',
-        "high-color": 'rgba(255, 255, 255, 0.1)',
-        "space-color": 'rgba(0, 0, 0, 1)',
-        "horizon-blend": 0.1,
-        "star-intensity": 0.1
-      });
-    });
-
-    map.on('error', (e) => {
-      console.error('Map error:', e.error);
-      alert('Failed to load the map. Please check the console for details.');
-    });
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
     // Expected keys: country_name, capital_name, latitude, longitude, iso_code, flag_emoji
     const locations = <?php echo json_encode($locations); ?>;
@@ -85,7 +84,7 @@ $locations = json_decode($data, true);
       const query = this.value.toLowerCase().trim();
       if (!query) return;
       
-      // Only check for an exact match on country_name.
+      // Only check for an exact match on country_name
       const matchCountry = locations.find(loc =>
         loc.country_name && loc.country_name.toLowerCase() === query
       );
@@ -95,7 +94,7 @@ $locations = json_decode($data, true);
         const lat = parseFloat(matchCountry.latitude);
         
         // Calculate zoom level based on country size
-        let zoomLevel = 3; // Default zoom level
+        let zoomLevel = 4; // Default zoom level
         
         // If we have bounding box coordinates, use them to calculate zoom
         if (matchCountry.min_lat && matchCountry.max_lat && 
@@ -108,28 +107,46 @@ $locations = json_decode($data, true);
           
           // Adjust zoom level based on the size
           if (maxDiff < 0.5) { // Very small countries (like Vatican City, Singapore)
-            zoomLevel = 8;
+            zoomLevel = 10;
           } else if (maxDiff < 1) { // Small countries
-            zoomLevel = 7;
+            zoomLevel = 9;
           } else if (maxDiff < 2) { // Medium-small countries
-            zoomLevel = 6;
+            zoomLevel = 8;
           } else if (maxDiff < 5) { // Medium countries
-            zoomLevel = 5;
+            zoomLevel = 7;
           } else if (maxDiff < 10) { // Medium-large countries
-            zoomLevel = 4;
+            zoomLevel = 6;
           } else if (maxDiff < 20) { // Large countries
-            zoomLevel = 3;
+            zoomLevel = 5;
           } else { // Very large countries (like Russia, Canada, China)
-            zoomLevel = 2;
+            zoomLevel = 4;
           }
         }
         
-        map.flyTo({ 
-          center: [lng, lat], 
-          zoom: zoomLevel,
-          duration: 2000,
-          essential: true
+        map.flyTo([lat, lng], zoomLevel, {
+          duration: 2,
+          easeLinearity: 0.25
         });
+      }
+    });
+
+    // Add markers for each location
+    locations.forEach(location => {
+      if (location.latitude && location.longitude) {
+        const lat = parseFloat(location.latitude);
+        const lng = parseFloat(location.longitude);
+        
+        if (!isNaN(lat) && !isNaN(lng)) {
+          const marker = L.marker([lat, lng]).addTo(map);
+          
+          // Create popup content
+          let popupContent = `<h3>${location.country_name} ${location.flag_emoji || ''}</h3>`;
+          if (location.capital_name) {
+            popupContent += `<p>Capital: ${location.capital_name}</p>`;
+          }
+          
+          marker.bindPopup(popupContent);
+        }
       }
     });
   </script>
