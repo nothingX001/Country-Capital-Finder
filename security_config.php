@@ -5,6 +5,9 @@ if (defined('SECURITY_CONFIG_INCLUDED')) {
 }
 define('SECURITY_CONFIG_INCLUDED', true);
 
+// Start output buffering to prevent any accidental output
+ob_start();
+
 // Session Security (must be set before session_start)
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_secure', 1);
@@ -46,7 +49,9 @@ function generate_csrf_token() {
 
 function verify_csrf_token($token) {
     if (!isset($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
-        http_response_code(403);
+        if (!headers_sent()) {
+            http_response_code(403);
+        }
         die('Invalid CSRF token');
     }
     return true;
