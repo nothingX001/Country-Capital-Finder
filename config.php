@@ -1,14 +1,41 @@
 <?php
 // Set error handling
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+
+// Check if we're in development environment
+$is_development = getenv('APP_ENV') === 'development' || 
+                 $_SERVER['SERVER_NAME'] === 'localhost' || 
+                 $_SERVER['SERVER_NAME'] === '127.0.0.1';
+
+if ($is_development) {
+    // Show errors in development
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+} else {
+    // Hide errors in production
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+}
+
+// Always log errors
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/error.log');
 
 // Custom error handler
 function secureErrorHandler($errno, $errstr, $errfile, $errline) {
-    error_log("Error [$errno]: $errstr in $errfile on line $errline");
-    return true;
+    $is_development = getenv('APP_ENV') === 'development' || 
+                     $_SERVER['SERVER_NAME'] === 'localhost' || 
+                     $_SERVER['SERVER_NAME'] === '127.0.0.1';
+    
+    if ($is_development) {
+        // Show detailed errors in development
+        error_log("Error [$errno]: $errstr in $errfile on line $errline");
+        return false; // Let PHP handle the error display
+    } else {
+        // Log but don't show errors in production
+        error_log("Error [$errno]: $errstr in $errfile on line $errline");
+        return true;
+    }
 }
 set_error_handler('secureErrorHandler');
 
@@ -63,9 +90,16 @@ if ($databaseUrl) {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         error_log("Database connection failed: " . $e->getMessage());
-        // Don't die here, allow scripts to continue without DB if needed
+        // Create a dummy connection object to prevent null reference errors
+        $conn = new stdClass();
+        $conn->error = true;
+        $conn->error_message = "Database connection failed";
     }
 } else {
     error_log("DATABASE_URL environment variable not set. Database features will be unavailable.");
+    // Create a dummy connection object to prevent null reference errors
+    $conn = new stdClass();
+    $conn->error = true;
+    $conn->error_message = "Database URL not configured";
 }
 ?>
