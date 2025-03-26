@@ -135,9 +135,9 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
     
     // Add population and area if available
     if (!empty($population) && !empty($area)) {
-        $additionalInfo[] = "With a population of {$population} people spread across {$area} km²";
+        $additionalInfo[] = "with a population of {$population} people spread across {$area} km²";
     } elseif (!empty($population)) {
-        $additionalInfo[] = "With a population of {$population} people";
+        $additionalInfo[] = "with a population of {$population} people";
     }
     
     // Add capital information
@@ -181,7 +181,13 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
     
     // Combine all information into a single comprehensive paragraph
     $additionalText = implode(', ', $additionalInfo);
-    $finalDescription = $coreDescription . " " . $name . " is " . $additionalText . ".";
+    
+    // Create a more natural flow by connecting the Wikipedia content with the additional information
+    $finalDescription = $coreDescription . " " . $name . ", " . $additionalText . ".";
+    
+    // Clean up any double spaces or awkward punctuation
+    $finalDescription = preg_replace('/\s+/', ' ', $finalDescription);
+    $finalDescription = preg_replace('/,\./', '.', $finalDescription);
     
     return $finalDescription;
 }
