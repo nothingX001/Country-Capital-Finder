@@ -264,9 +264,6 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
             </div>
             <div id="aiDescription" class="ai-description-content" style="line-height: 1.8; font-size: 1.1em; min-height: 300px;"></div>
         </div>
-
-        <!-- Extra space to prevent choppy scrolling during AI typing -->
-        <div style="padding-bottom: 300px; width: 100%;"></div>
     </section>
 
     <!-- JavaScript for AI description typing effect -->
