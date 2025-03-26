@@ -1,4 +1,55 @@
 <?php
+// Security headers
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
+header("X-Content-Type-Options: nosniff");
+header("Referrer-Policy: strict-origin-when-cross-origin");
+header("Content-Security-Policy: default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;");
+header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
+
+// Secure session settings
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_samesite', 'Strict');
+session_start();
+
+// Rate limiting
+function checkRateLimit() {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $time = time();
+    $window = 60; // 1 minute window
+    $max_requests = 30; // Maximum requests per window
+    
+    if (!isset($_SESSION['rate_limit'])) {
+        $_SESSION['rate_limit'] = [
+            'count' => 0,
+            'window_start' => $time
+        ];
+    }
+    
+    // Reset if window has passed
+    if ($time - $_SESSION['rate_limit']['window_start'] > $window) {
+        $_SESSION['rate_limit'] = [
+            'count' => 0,
+            'window_start' => $time
+        ];
+    }
+    
+    // Check if limit exceeded
+    if ($_SESSION['rate_limit']['count'] >= $max_requests) {
+        return false;
+    }
+    
+    $_SESSION['rate_limit']['count']++;
+    return true;
+}
+
+// Generate CSRF token if not exists
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // index.php
 
 // Enable error reporting
@@ -12,7 +63,16 @@ include 'the-countries.php'; // Make sure this is included
 // Optional helper to normalize user input
 function normalize_country_input($input) {
     global $the_countries;
-    $input = strtolower(trim($input));
+    // Sanitize input
+    $input = filter_var(trim($input), FILTER_SANITIZE_STRING);
+    if (empty($input)) {
+        return '';
+    }
+    
+    // Remove any potentially dangerous characters
+    $input = preg_replace('/[^a-zA-Z\s\-\(\)\']/', '', $input);
+    
+    $input = strtolower($input);
 
     // Remove "the" prefix if present for comparison
     $input_without_the = preg_replace('/^the\s+/i', '', $input);
@@ -35,90 +95,107 @@ function format_country_name_in_sentence($country_name, $the_countries) {
 
 // Handle the search form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $country_input = $_POST['country'] ?? '';
-    $country = normalize_country_input($country_input);
-
-    // 1) Look up the country by "Country Name"
-    $stmt = $conn->prepare('
-        SELECT
-            id,
-            "Country Name" AS country_name,
-            "Flag Emoji"   AS flag_emoji,
-            "ISO Alpha-2"  AS iso_code,
-            "Official Name" AS official_name
-        FROM countries
-        WHERE "Country Name" ILIKE ?
-        LIMIT 1
-    ');
-    $stmt->execute([$country]);
-    $country_result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($country_result) {
-        $country_id   = $country_result['id'];
-        $country_name = htmlspecialchars($country_result['country_name']);
-        $flag         = htmlspecialchars($country_result['flag_emoji'] ?? '');
-        $iso_code     = htmlspecialchars($country_result['iso_code'] ?? '');
-        $official_name = htmlspecialchars($country_result['official_name'] ?? '');
-
-        // 2) Fetch matching capitals from the capitals table
-        $cap_stmt = $conn->prepare('
-            SELECT capital_name
-            FROM capitals
-            WHERE country_id = ?
-        ');
-        $cap_stmt->execute([$country_id]);
-        $capitals = $cap_stmt->fetchAll(PDO::FETCH_COLUMN);
-
-        // 3) Build a message about the capital(s) with capital names in bold.
-        if ($capitals) {
-            // Bold each capital using <strong> tags.
-            $boldCapitals = array_map(function($cap) use ($country_id) {
-                return '<a href="country-detail.php?id=' . urlencode($country_id) . '"><strong>' . htmlspecialchars($cap) . '</strong></a>';
-            }, $capitals);
-
-            // Format capitals based on count
-            if (count($capitals) === 1) {
-                $capital_names = $boldCapitals[0];
-            } else if (count($capitals) === 2) {
-                $capital_names = $boldCapitals[0] . ' or ' . $boldCapitals[1];
-            } else {
-                $lastCapital = array_pop($boldCapitals);
-                $capital_names = implode(', ', $boldCapitals) . ' and ' . $lastCapital;
-            }
-
-            $capital_count = count($capitals);
-            $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
-            $verb          = ($capital_count > 1) ? 'are' : 'is';
-            // Format country name with "the" if needed
-            $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
-            
-            // Prepare the flag URL for Windows users
-            $windows_flag_url = !empty($iso_code) ? "https://flagcdn.com/32x24/" . strtolower($iso_code) . ".png" : "";
-            
-            // Build the message with a clickable country name and flag
-            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
-        } else {
-            // Format country name with "the" if needed
-            $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
-            $message = "No capitals found for <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a>.";
-        }
-
-        // 4) (Optional) Update site statistics if desired
-        try {
-            $stats_stmt = $conn->prepare('
-                INSERT INTO site_statistics (country_name, search_count, last_searched_at)
-                VALUES (?, 1, NOW())
-                ON CONFLICT (country_name)
-                DO UPDATE SET
-                    search_count     = site_statistics.search_count + 1,
-                    last_searched_at = NOW()
-            ');
-            $stats_stmt->execute([$country_name]);
-        } catch (Exception $e) {
-            // Optionally log or ignore the error.
-        }
+    // Check rate limit
+    if (!checkRateLimit()) {
+        $message = "Too many requests. Please wait a moment before trying again.";
     } else {
-        $message = "Sorry, the country you entered is not in our database.";
+        // Verify CSRF token
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $message = "Invalid request. Please try again.";
+        } else {
+            $country_input = $_POST['country'] ?? '';
+            if (empty($country_input)) {
+                $message = "Please enter a country name.";
+            } else {
+                $country = normalize_country_input($country_input);
+                if (empty($country)) {
+                    $message = "Invalid input. Please enter a valid country name.";
+                } else {
+                    // 1) Look up the country by "Country Name"
+                    $stmt = $conn->prepare('
+                        SELECT
+                            id,
+                            "Country Name" AS country_name,
+                            "Flag Emoji"   AS flag_emoji,
+                            "ISO Alpha-2"  AS iso_code,
+                            "Official Name" AS official_name
+                        FROM countries
+                        WHERE "Country Name" ILIKE ?
+                        LIMIT 1
+                    ');
+                    $stmt->execute([$country]);
+                    $country_result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($country_result) {
+                        $country_id   = $country_result['id'];
+                        $country_name = htmlspecialchars($country_result['country_name']);
+                        $flag         = htmlspecialchars($country_result['flag_emoji'] ?? '');
+                        $iso_code     = htmlspecialchars($country_result['iso_code'] ?? '');
+                        $official_name = htmlspecialchars($country_result['official_name'] ?? '');
+
+                        // 2) Fetch matching capitals from the capitals table
+                        $cap_stmt = $conn->prepare('
+                            SELECT capital_name
+                            FROM capitals
+                            WHERE country_id = ?
+                        ');
+                        $cap_stmt->execute([$country_id]);
+                        $capitals = $cap_stmt->fetchAll(PDO::FETCH_COLUMN);
+
+                        // 3) Build a message about the capital(s) with capital names in bold.
+                        if ($capitals) {
+                            // Bold each capital using <strong> tags.
+                            $boldCapitals = array_map(function($cap) use ($country_id) {
+                                return '<a href="country-detail.php?id=' . urlencode($country_id) . '"><strong>' . htmlspecialchars($cap) . '</strong></a>';
+                            }, $capitals);
+
+                            // Format capitals based on count
+                            if (count($capitals) === 1) {
+                                $capital_names = $boldCapitals[0];
+                            } else if (count($capitals) === 2) {
+                                $capital_names = $boldCapitals[0] . ' or ' . $boldCapitals[1];
+                            } else {
+                                $lastCapital = array_pop($boldCapitals);
+                                $capital_names = implode(', ', $boldCapitals) . ' and ' . $lastCapital;
+                            }
+
+                            $capital_count = count($capitals);
+                            $capital_word  = ($capital_count > 1) ? 'capitals' : 'capital';
+                            $verb          = ($capital_count > 1) ? 'are' : 'is';
+                            // Format country name with "the" if needed
+                            $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
+                            
+                            // Prepare the flag URL for Windows users
+                            $windows_flag_url = !empty($iso_code) ? "https://flagcdn.com/32x24/" . strtolower($iso_code) . ".png" : "";
+                            
+                            // Build the message with a clickable country name and flag
+                            $message = "The {$capital_word} of <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a> {$verb} {$capital_names}. <span class=\"flag-emoji\">{$flag}</span>";
+                        } else {
+                            // Format country name with "the" if needed
+                            $formatted_country_name = format_country_name_in_sentence($country_name, $the_countries);
+                            $message = "No capitals found for <a href='country-detail.php?id=" . urlencode($country_id) . "'>{$formatted_country_name}</a>.";
+                        }
+
+                        // 4) (Optional) Update site statistics if desired
+                        try {
+                            $stats_stmt = $conn->prepare('
+                                INSERT INTO site_statistics (country_name, search_count, last_searched_at)
+                                VALUES (?, 1, NOW())
+                                ON CONFLICT (country_name)
+                                DO UPDATE SET
+                                    search_count     = site_statistics.search_count + 1,
+                                    last_searched_at = NOW()
+                            ');
+                            $stats_stmt->execute([$country_name]);
+                        } catch (Exception $e) {
+                            // Optionally log or ignore the error.
+                        }
+                    } else {
+                        $message = "Sorry, the country you entered is not in our database.";
+                    }
+                }
+            }
+        }
     }
 }
 ?>
@@ -182,6 +259,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
         <h3 class="search-heading" style="color: #ECECEC;">Enter a country to find its capital:</h3>
         <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
             <div class="search-bar-container" style="width: 90%; max-width: 500px;">
                 <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
             </div>
