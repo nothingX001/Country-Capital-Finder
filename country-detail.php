@@ -352,8 +352,9 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                         // Store debug info for troubleshooting
                         window.descriptionDebug = data.debug;
                         
-                        // Type out the description with a typing effect
-                        typeDescription(data.description, data.source);
+                        // Display the description immediately
+                        const descriptionEl = document.getElementById('aiDescription');
+                        descriptionEl.innerHTML = data.description.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
                         
                         // Add debug info for admins (only visible in console)
                         console.log('Description source:', data.source);
@@ -375,79 +376,6 @@ $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . 
                 document.getElementById('aiDescription').innerHTML = 
                     "Sorry, we couldn't generate a description at this time. Please try again later." + 
                     "<div style='font-size: 0.8em; margin-top: 10px; color: #999;'>Error: " + errorMessage + "</div>";
-            }
-
-            // Function to simulate typing effect
-            function typeDescription(text, source) {
-                const descriptionEl = document.getElementById('aiDescription');
-                descriptionEl.innerHTML = ''; // Clear any existing content
-                
-                // Format the text with line breaks for display without typing effect
-                function getFormattedText() {
-                    return text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
-                }
-                
-                // Show full text immediately if page not visible or on visibility change
-                function showFullText() {
-                    clearInterval(typingInterval);
-                    if (cursor) cursor.remove();
-                    descriptionEl.innerHTML = getFormattedText();
-                }
-                
-                // Check if page is initially hidden
-                if (document.hidden) {
-                    showFullText();
-                    return;
-                }
-                
-                // Add visibility change listener
-                document.addEventListener('visibilitychange', function() {
-                    if (document.hidden) {
-                        showFullText();
-                    }
-                });
-                
-                let i = 0;
-                const typingSpeed = 8; // Faster typing speed (was 10ms)
-                
-                // Create cursor element
-                const cursor = document.createElement('span');
-                cursor.className = 'ai-typing-cursor';
-                cursor.innerHTML = '|';
-                cursor.style.animation = 'blink 1s step-start infinite';
-                descriptionEl.appendChild(cursor);
-                
-                const typingInterval = setInterval(() => {
-                    if (i < text.length) {
-                        // Check if we need to insert a paragraph break
-                        if (text.substring(i, i+2) === "\n\n") {
-                            descriptionEl.insertBefore(document.createElement('br'), cursor);
-                            descriptionEl.insertBefore(document.createElement('br'), cursor);
-                            i += 2;
-                        } else if (text[i] === "\n") {
-                            descriptionEl.insertBefore(document.createElement('br'), cursor);
-                            i++;
-                        } else {
-                            // Insert the next character
-                            descriptionEl.insertBefore(document.createTextNode(text[i]), cursor);
-                            i++;
-                        }
-                        
-                        // Scroll to keep up with the text if necessary
-                        if (descriptionEl.offsetHeight > window.innerHeight) {
-                            descriptionEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                        }
-                    } else {
-                        // Remove the cursor when finished
-                        cursor.remove();
-                        clearInterval(typingInterval);
-                        
-                        // Debug info is still kept in console for troubleshooting
-                        if (window.descriptionDebug) {
-                            console.log('Description debug info:', window.descriptionDebug);
-                        }
-                    }
-                }, typingSpeed);
             }
 
             // Start the process when page is loaded
