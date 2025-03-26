@@ -49,10 +49,7 @@ function generate_csrf_token() {
 
 function verify_csrf_token($token) {
     if (!isset($_SESSION['csrf_token']) || $token !== $_SESSION['csrf_token']) {
-        if (!headers_sent()) {
-            http_response_code(403);
-        }
-        die('Invalid CSRF token');
+        return false;
     }
     return true;
 }

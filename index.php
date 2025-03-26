@@ -205,8 +205,13 @@ $csrf_token = generate_csrf_token();
             <div class="search-bar-container" style="width: 90%; max-width: 500px;">
                 <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
             </div>
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
             <input type="submit" value="SUBMIT" class="button">
         </form>
+
+        <?php if (isset($error_message)): ?>
+            <p class="message error"><?php echo htmlspecialchars($error_message); ?></p>
+        <?php endif; ?>
 
         <?php if (isset($message)): ?>
             <!-- Output message as raw HTML so the <strong> tags take effect -->
