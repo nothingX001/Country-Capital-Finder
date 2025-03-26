@@ -1,4 +1,41 @@
 <?php
+// Basic error checking
+error_log("Starting index.php execution");
+
+// Force error display for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Check if required files exist
+$required_files = ['config.php', 'the-countries.php', 'navbar.php'];
+foreach ($required_files as $file) {
+    if (!file_exists($file)) {
+        error_log("Required file missing: $file");
+        die("Required file missing: $file");
+    }
+}
+
+// Include required files
+include 'config.php';
+include 'the-countries.php';
+
+// Test database connection
+if (isset($conn) && !isset($conn->error)) {
+    try {
+        $test_stmt = $conn->query("SELECT COUNT(*) FROM countries");
+        $count = $test_stmt->fetchColumn();
+        error_log("Database test successful. Found $count countries.");
+    } catch (PDOException $e) {
+        error_log("Database test failed: " . $e->getMessage());
+        echo "Database Error: " . htmlspecialchars($e->getMessage());
+    }
+} else {
+    $error = isset($conn->error_message) ? $conn->error_message : "Unknown error";
+    error_log("Database connection not available: " . $error);
+    echo "Database Connection Error: " . htmlspecialchars($error);
+}
+
 // Security headers
 header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
@@ -53,14 +90,6 @@ if (empty($_SESSION['csrf_token'])) {
 }
 
 // index.php
-
-// Enable error reporting
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'config.php';
-include 'the-countries.php'; // Make sure this is included
 
 // Optional helper to normalize user input
 function normalize_country_input($input) {
