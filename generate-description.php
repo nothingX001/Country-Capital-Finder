@@ -135,9 +135,9 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
     
     // Add population and area if available
     if (!empty($population) && !empty($area)) {
-        $additionalInfo[] = "with a population of {$population} people spread across {$area} km²";
+        $additionalInfo[] = "has a population of {$population} people spread across {$area} km²";
     } elseif (!empty($population)) {
-        $additionalInfo[] = "with a population of {$population} people";
+        $additionalInfo[] = "has a population of {$population} people";
     }
     
     // Add language information
@@ -149,34 +149,34 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
     
     // Add currency information if available
     if (!empty($currency)) {
-        $additionalInfo[] = "using {$currency} as its currency";
+        $additionalInfo[] = "uses {$currency} as its currency";
     }
     
     // Add region-specific unique facts
     if (strpos(strtolower($region), 'europe') !== false) {
-        $additionalInfo[] = "boasting a rich heritage of medieval architecture, classical music traditions, and world-renowned cuisine";
+        $additionalInfo[] = "and is known for its rich heritage of medieval architecture, classical music traditions, and world-renowned cuisine";
     } 
     elseif (strpos(strtolower($region), 'asia') !== false) {
-        $additionalInfo[] = "featuring ancient temples, traditional arts, and distinctive culinary traditions";
+        $additionalInfo[] = "and features ancient temples, traditional arts, and distinctive culinary traditions";
     }
     elseif (strpos(strtolower($region), 'america') !== false) {
-        $additionalInfo[] = "characterized by diverse landscapes, indigenous heritage, and vibrant cultural expressions";
+        $additionalInfo[] = "and is characterized by diverse landscapes, indigenous heritage, and vibrant cultural expressions";
     }
     elseif (strpos(strtolower($region), 'africa') !== false) {
-        $additionalInfo[] = "home to diverse wildlife, rich cultural traditions, and significant archaeological sites";
+        $additionalInfo[] = "and is home to diverse wildlife, rich cultural traditions, and significant archaeological sites";
     }
     elseif (strpos(strtolower($region), 'oceania') !== false) {
-        $additionalInfo[] = "known for its unique biodiversity, indigenous cultures, and stunning natural landscapes";
+        $additionalInfo[] = "and is known for its unique biodiversity, indigenous cultures, and stunning natural landscapes";
     }
     else {
-        $additionalInfo[] = "distinguished by its unique cultural heritage and geographical features";
+        $additionalInfo[] = "and is distinguished by its unique cultural heritage and geographical features";
     }
     
     // Combine all information into a single comprehensive paragraph
     $additionalText = implode(', ', $additionalInfo);
     
     // Create a more natural flow by connecting the Wikipedia content with the additional information
-    $finalDescription = $coreDescription . " " . $name . ", " . $additionalText . ".";
+    $finalDescription = $coreDescription . " " . $name . " " . $additionalText . ".";
     
     // Clean up any double spaces or awkward punctuation
     $finalDescription = preg_replace('/\s+/', ' ', $finalDescription);
