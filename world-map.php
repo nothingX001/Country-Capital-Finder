@@ -132,19 +132,15 @@ $locations = json_decode($data, true);
 
     // Add markers for each location
     locations.forEach(location => {
-      if (location.latitude && location.longitude) {
+      if (location.latitude && location.longitude && location.capital_name) {  // Only add markers for capitals
         const lat = parseFloat(location.latitude);
         const lng = parseFloat(location.longitude);
         
         if (!isNaN(lat) && !isNaN(lng)) {
           const marker = L.marker([lat, lng]).addTo(map);
           
-          // Create popup content with only capital name
-          let popupContent = '';
-          if (location.capital_name) {
-            popupContent = `<h3>${location.capital_name}</h3>`;
-          }
-          
+          // Create popup content with capital name
+          const popupContent = `<h3>${location.capital_name}</h3>`;
           marker.bindPopup(popupContent);
         }
       }
