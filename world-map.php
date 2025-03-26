@@ -94,7 +94,7 @@ $locations = json_decode($data, true);
         const lat = parseFloat(matchCountry.latitude);
         
         // Calculate zoom level based on country size
-        let zoomLevel = 4; // Default zoom level
+        let zoomLevel = 5; // Default zoom level increased from 4 to 5
         
         // If we have bounding box coordinates, use them to calculate zoom
         if (matchCountry.min_lat && matchCountry.max_lat && 
@@ -107,19 +107,19 @@ $locations = json_decode($data, true);
           
           // Adjust zoom level based on the size
           if (maxDiff < 0.5) { // Very small countries (like Vatican City, Singapore)
-            zoomLevel = 10;
+            zoomLevel = 12;    // Increased from 10
           } else if (maxDiff < 1) { // Small countries
-            zoomLevel = 9;
+            zoomLevel = 11;    // Increased from 9
           } else if (maxDiff < 2) { // Medium-small countries
-            zoomLevel = 8;
+            zoomLevel = 10;    // Increased from 8
           } else if (maxDiff < 5) { // Medium countries
-            zoomLevel = 7;
+            zoomLevel = 8;     // Increased from 7
           } else if (maxDiff < 10) { // Medium-large countries
-            zoomLevel = 6;
+            zoomLevel = 7;     // Increased from 6
           } else if (maxDiff < 20) { // Large countries
-            zoomLevel = 5;
+            zoomLevel = 6;     // Increased from 5
           } else { // Very large countries (like Russia, Canada, China)
-            zoomLevel = 4;
+            zoomLevel = 5;     // Increased from 4
           }
         }
         
@@ -139,8 +139,8 @@ $locations = json_decode($data, true);
         if (!isNaN(lat) && !isNaN(lng)) {
           const marker = L.marker([lat, lng]).addTo(map);
           
-          // Create popup content
-          let popupContent = `<h3>${location.country_name} ${location.flag_emoji || ''}</h3>`;
+          // Create popup content without flag emoji
+          let popupContent = `<h3>${location.country_name}</h3>`;
           if (location.capital_name) {
             popupContent += `<p>Capital: ${location.capital_name}</p>`;
           }
