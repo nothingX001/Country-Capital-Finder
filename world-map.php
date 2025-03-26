@@ -139,10 +139,10 @@ $locations = json_decode($data, true);
         if (!isNaN(lat) && !isNaN(lng)) {
           const marker = L.marker([lat, lng]).addTo(map);
           
-          // Create popup content without flag emoji
-          let popupContent = `<h3>${location.country_name}</h3>`;
+          // Create popup content with only capital name
+          let popupContent = '';
           if (location.capital_name) {
-            popupContent += `<p>Capital: ${location.capital_name}</p>`;
+            popupContent = `<h3>${location.capital_name}</h3>`;
           }
           
           marker.bindPopup(popupContent);
