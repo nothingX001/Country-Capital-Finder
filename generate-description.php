@@ -135,7 +135,7 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
     
     // Add population and area if available
     if (!empty($population) && !empty($area)) {
-        $additionalInfo[] = "has a population of {$population} people spread across {$area} km²";
+        $additionalInfo[] = "has a population of {$population} people living in its area of {$area} km²";
     } elseif (!empty($population)) {
         $additionalInfo[] = "has a population of {$population} people";
     }
@@ -149,27 +149,7 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
     
     // Add currency information if available
     if (!empty($currency)) {
-        $additionalInfo[] = "uses {$currency} as its currency";
-    }
-    
-    // Add region-specific unique facts
-    if (strpos(strtolower($region), 'europe') !== false) {
-        $additionalInfo[] = "and is known for its rich heritage of medieval architecture, classical music traditions, and world-renowned cuisine";
-    } 
-    elseif (strpos(strtolower($region), 'asia') !== false) {
-        $additionalInfo[] = "and features ancient temples, traditional arts, and distinctive culinary traditions";
-    }
-    elseif (strpos(strtolower($region), 'america') !== false) {
-        $additionalInfo[] = "and is characterized by diverse landscapes, indigenous heritage, and vibrant cultural expressions";
-    }
-    elseif (strpos(strtolower($region), 'africa') !== false) {
-        $additionalInfo[] = "and is home to diverse wildlife, rich cultural traditions, and significant archaeological sites";
-    }
-    elseif (strpos(strtolower($region), 'oceania') !== false) {
-        $additionalInfo[] = "and is known for its unique biodiversity, indigenous cultures, and stunning natural landscapes";
-    }
-    else {
-        $additionalInfo[] = "and is distinguished by its unique cultural heritage and geographical features";
+        $additionalInfo[] = "and the {$currency} is used as currency";
     }
     
     // Combine all information into a single comprehensive paragraph
