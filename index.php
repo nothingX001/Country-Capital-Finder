@@ -1,11 +1,11 @@
 <?php
 // index.php
 
-// Start secure session
-session_start();
-
-// Include security configuration
+// Include security configuration first
 require_once 'security_config.php';
+
+// Start secure session after security config is loaded
+session_start();
 
 // Enable error reporting
 ini_set('display_errors', 1);
