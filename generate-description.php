@@ -140,13 +140,6 @@ function formatWikipediaDescription($countryData, $wikipediaSummary) {
         $additionalInfo[] = "with a population of {$population} people";
     }
     
-    // Add capital information
-    if (count($countryData['capitals']) > 1) {
-        $additionalInfo[] = "its administrative centers include {$capitals}";
-    } else {
-        $additionalInfo[] = "its capital is {$capitals}";
-    }
-    
     // Add language information
     if (strpos($languages, ',') !== false) {
         $additionalInfo[] = "where {$languages} are spoken";
