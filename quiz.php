@@ -115,6 +115,16 @@ try {
     <meta property="og:description" content="Test your knowledge of world capitals with our interactive quiz. How many capitals can you name?">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94SRL3PBNE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-94SRL3PBNE');
+    </script>
     <style>
         html, body {
             overscroll-behavior-y: none !important;
