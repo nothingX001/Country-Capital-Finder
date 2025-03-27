@@ -34,6 +34,16 @@ $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcd
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94SRL3PBNE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-94SRL3PBNE');
+    </script>
     <style>
         html, body {
             overscroll-behavior-y: none !important;

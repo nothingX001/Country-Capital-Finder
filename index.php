@@ -143,19 +143,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 $csrf_token = generate_csrf_token();
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overflow-x: hidden;">
+<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
     <meta charset="UTF-8">
-    <title>ExploreCapitals | The World Capital Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
-    <meta name="keywords" content="capital cities, world capitals, country capitals, geography quiz, world geography">
+    <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
-    <meta property="og:title" content="ExploreCapitals - Find Any Country's Capital City">
-    <meta property="og:description" content="Find the capital city of any country or territory in the world. Search by country name to discover its capital(s).">
-    <meta property="og:type" content="website">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94SRL3PBNE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-94SRL3PBNE');
+    </script>
     <style>
         html, body {
             overflow-x: hidden !important;
