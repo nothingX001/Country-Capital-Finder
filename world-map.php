@@ -9,6 +9,7 @@ $locations = json_decode($data, true);
 <html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
   <meta charset="UTF-8">
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="c7233634-6349-4f6d-8f04-54d9768b27b0" type="text/javascript" async></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Explore capitals of countries, territories, and more with our interactive world map! Find country capitals, learn about different nations, and test your geography knowledge.">
   <meta name="keywords" content="world map, country capitals, geography, interactive map, world geography, country information">
