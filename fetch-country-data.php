@@ -281,7 +281,7 @@ try {
         $total_searches = $stmt->fetch(PDO::FETCH_ASSOC)['total_searches'] ?? 0;
 
         $stmt = $conn->query("
-            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji, c.\"ISO Alpha-2\" AS iso_code
+            SELECT s.country_name, c.\"Flag Emoji\" AS flag_emoji, c.\"ISO Alpha-2\" AS iso_code, s.last_searched_at
             FROM site_statistics s
             LEFT JOIN countries c ON s.country_name = c.\"Country Name\"
             ORDER BY s.last_searched_at DESC
@@ -291,6 +291,7 @@ try {
         $most_recent_search = $most_recent ? $most_recent['country_name'] : 'No data';
         $most_recent_flag = $most_recent ? $most_recent['flag_emoji'] : '';
         $most_recent_iso = $most_recent ? $most_recent['iso_code'] : '';
+        $last_searched_at = $most_recent ? $most_recent['last_searched_at'] : null;
 
         $stmt = $conn->query("
             SELECT SUM(search_count) AS searches_today
@@ -310,6 +311,7 @@ try {
             'most_recent_search' => $most_recent_search,
             'most_recent_flag' => $most_recent_flag,
             'most_recent_iso' => $most_recent_iso,
+            'last_searched_at' => $last_searched_at,
             'searches_today' => $searches_today,
             'unique_countries_searched' => $unique_countries_searched
         ];

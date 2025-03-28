@@ -153,7 +153,7 @@ $csrf_token = generate_csrf_token();
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
     <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
-    
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-94SRL3PBNE"></script>
     <script>

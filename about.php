@@ -16,8 +16,16 @@ if (!$statistics || isset($statistics['error'])) {
         'total_searches' => 'Data unavailable',
         'most_recent_search' => 'Data unavailable',
         'searches_today' => 'Data unavailable',
-        'unique_countries_searched' => 'Data unavailable'
+        'unique_countries_searched' => 'Data unavailable',
+        'last_searched_at' => null
     ];
+}
+
+// Format the last searched timestamp if available
+$last_searched_formatted = '';
+if (!empty($statistics['last_searched_at'])) {
+    $timestamp = strtotime($statistics['last_searched_at']);
+    $last_searched_formatted = ' at ' . date('g:i A', $timestamp) . ' on ' . date('F jS, Y', $timestamp);
 }
 
 // Prepare Windows flag URLs if ISO codes are available
@@ -75,7 +83,7 @@ $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcd
         <ul>
             <li><strong>Most Searched Country:</strong> <?php echo htmlspecialchars($statistics['most_searched_countries']); ?> <?php if (!empty($statistics['most_searched_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_searched_flag']); ?></span><?php endif; ?></li>
             <li><strong>Total Searches:</strong> <?php echo htmlspecialchars($statistics['total_searches']); ?></li>
-            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?> <?php if (!empty($statistics['most_recent_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_recent_flag']); ?></span><?php endif; ?></li>
+            <li><strong>Most Recent Search:</strong> <?php echo htmlspecialchars($statistics['most_recent_search']); ?> <?php if (!empty($statistics['most_recent_flag'])): ?><span class="flag-emoji"><?php echo htmlspecialchars($statistics['most_recent_flag']); ?></span><?php endif; ?><?php echo $last_searched_formatted; ?></li>
             <li><strong>Searches Today:</strong> <?php echo htmlspecialchars($statistics['searches_today']); ?></li>
             <li><strong>Unique Countries Searched:</strong> <?php echo htmlspecialchars($statistics['unique_countries_searched']); ?></li>
         </ul>
