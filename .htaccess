@@ -1,35 +1,22 @@
 # Security Headers
-Header set Content-Security-Policy "default-src 'self'; \
-    script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; \
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; \
-    img-src 'self' data: https:; \
-    font-src 'self' https://fonts.gstatic.com; \
-    object-src 'none'; \
-    base-uri 'self'; \
-    form-action 'self'; \
-    frame-ancestors 'none'; \
-    upgrade-insecure-requests;"
-
-# HSTS (Strict-Transport-Security)
-Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-
-# X-Content-Type-Options
-Header set X-Content-Type-Options "nosniff"
-
-# Referrer-Policy
-Header set Referrer-Policy "strict-origin-when-cross-origin"
-
-# X-Frame-Options
-Header set X-Frame-Options "SAMEORIGIN"
-
-# XSS Protection
-Header set X-XSS-Protection "1; mode=block"
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "DENY"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
+</IfModule>
 
 # Disable directory listing
 Options -Indexes
 
 # Prevent access to sensitive files
-<FilesMatch "^(Dockerfile|docker-compose\.yml|README\.md)$">
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^(config\.php|api_keys\.php|security_config\.php)$">
     Order allow,deny
     Deny from all
 </FilesMatch>

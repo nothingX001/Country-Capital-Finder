@@ -3,19 +3,11 @@
 
 include 'config.php';
 include 'the-countries.php'; // Include the list of "the" countries
-include 'security.php';
 
-// Initialize security
-$security = Security::getInstance($conn);
-
-// Apply rate limiting
-$security->rateLimit();
-
-// Get and validate the country ID
+// Get the country ID from the query string
 $country_id = $_GET['id'] ?? null;
-if (!$country_id || !$security->validateCountryId($country_id)) {
-    http_response_code(404);
-    die("Invalid country ID or country not found.");
+if (!$country_id) {
+    die("Invalid country ID.");
 }
 
 try {
@@ -50,9 +42,6 @@ try {
     ');
     $stmt->execute(['{' . implode(',', $the_countries) . '}', $country_id]);
     $country = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Sanitize the output
-    $country = $security->sanitizeOutput($country);
 
     if (!$country) {
         die("Country not found.");
