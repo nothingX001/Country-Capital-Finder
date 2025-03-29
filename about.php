@@ -25,7 +25,7 @@ if (!$statistics || isset($statistics['error'])) {
 $last_searched_formatted = '';
 if (!empty($statistics['last_searched_at'])) {
     $timestamp = strtotime($statistics['last_searched_at']);
-    $last_searched_formatted = ' at ' . date('g:i A', $timestamp) . ' on ' . date('F jS, Y', $timestamp);
+    $last_searched_formatted = ', ' . date('g:i A', $timestamp) . ' on ' . date('F jS, Y', $timestamp);
 }
 
 // Prepare Windows flag URLs if ISO codes are available
