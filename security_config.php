@@ -19,12 +19,18 @@ header("X-Frame-Options: DENY");
 header("X-XSS-Protection: 1; mode=block");
 header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: strict-origin-when-cross-origin");
-header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://consent.cookiebot.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; img-src 'self' data: https: https://flagcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://consentcdn.cookiebot.com; frame-src https://consentcdn.cookiebot.com; upgrade-insecure-requests;");
 
 // Error Reporting (disable in production)
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);
+
+// Hide PHP Version and Server Information
+ini_set('expose_php', 0);
+header_remove('X-Powered-By');
+header_remove('Server');
 
 // Security Functions
 function sanitize_input($data) {

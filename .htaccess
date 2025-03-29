@@ -4,7 +4,24 @@
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Frame-Options "DENY"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://consent.cookiebot.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; img-src 'self' data: https: https://flagcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://consentcdn.cookiebot.com; frame-src https://consentcdn.cookiebot.com; upgrade-insecure-requests;"
+    
+    # Hide PHP version
+    Header unset X-Powered-By
+    # Hide server information
+    Header always unset Server
+    Header unset X-Runtime
+    Header unset X-Version
+</IfModule>
+
+# Hide PHP version and server information
+ServerSignature Off
+ServerTokens Prod
+
+# Disable server information in error pages
+<IfModule mod_php.c>
+    php_flag expose_php Off
 </IfModule>
 
 # Disable directory listing
@@ -16,19 +33,25 @@ Options -Indexes
     Deny from all
 </FilesMatch>
 
-<FilesMatch "^(config\.php|api_keys\.php|security_config\.php)$">
+<FilesMatch "^(config\.php|api_keys\.php|security_config\.php|Dockerfile|docker-compose\.yml)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Prevent access to PHP files in uploads directory
+# Prevent access to PHP files except in root directory
 <FilesMatch "\.php$">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Allow only specific file types
-<FilesMatch "\.(php|html|css|js|jpg|jpeg|png|gif|ico|svg)$">
+# Allow PHP files only in root directory
+<LocationMatch "^/[^/]+\.php$">
+    Order allow,deny
+    Allow from all
+</LocationMatch>
+
+# Allow static assets
+<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|ico|svg)$">
     Order allow,deny
     Allow from all
 </FilesMatch>
