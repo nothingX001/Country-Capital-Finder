@@ -25,7 +25,8 @@ if (!$statistics || isset($statistics['error'])) {
 $last_searched_formatted = '';
 if (!empty($statistics['last_searched_at'])) {
     $timestamp = strtotime($statistics['last_searched_at']);
-    $last_searched_formatted = ', ' . date('g:i A', $timestamp) . ' on ' . date('F jS, Y', $timestamp);
+    // Pass the ISO string to JavaScript for client-side formatting
+    $last_searched_formatted = '<span class="timestamp" data-timestamp="' . date('c', $timestamp) . '"></span>';
 }
 
 // Prepare Windows flag URLs if ISO codes are available
@@ -88,5 +89,27 @@ $most_recent_flag_url = !empty($statistics['most_recent_iso']) ? "https://flagcd
             <li><strong>Unique Countries Searched:</strong> <?php echo htmlspecialchars($statistics['unique_countries_searched']); ?></li>
         </ul>
     </section>
+    <script>
+        // Format timestamps in user's local timezone
+        document.addEventListener('DOMContentLoaded', function() {
+            const timestampElements = document.querySelectorAll('.timestamp');
+            timestampElements.forEach(function(element) {
+                const timestamp = new Date(element.dataset.timestamp);
+                const formattedDate = timestamp.toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                // Add ordinal suffix to day
+                const day = timestamp.getDate();
+                const suffix = ['th', 'st', 'nd', 'rd'][(day > 3 && day < 21) || day % 10 > 3 ? 0 : day % 10];
+                const formattedWithSuffix = formattedDate.replace(day, day + suffix);
+                element.textContent = ', ' + formattedWithSuffix;
+            });
+        });
+    </script>
 </body>
 </html>
