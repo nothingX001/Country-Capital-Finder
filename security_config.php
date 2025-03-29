@@ -8,11 +8,20 @@ define('SECURITY_CONFIG_INCLUDED', true);
 // Start output buffering to prevent any accidental output
 ob_start();
 
+// Enable error logging in production
+ini_set('log_errors', 1);
+error_log("Loading security configuration");
+
 // Session Security (must be set before session_start)
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_secure', 1);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.cookie_samesite', 'Strict');
+
+// Only start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Security Headers
 header("X-Frame-Options: DENY");

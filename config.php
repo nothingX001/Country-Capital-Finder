@@ -17,8 +17,20 @@ $openai_api_key = '';
 // Only attempt database connection if DATABASE_URL is set
 if ($databaseUrl) {
     try {
+        error_log("Attempting database connection with URL: " . preg_replace('/:[^:\/]+@/', ':***@', $databaseUrl));
+        
         // Parse the DATABASE_URL
         $dbopts = parse_url($databaseUrl);
+        
+        if ($dbopts === false) {
+            throw new Exception("Invalid DATABASE_URL format");
+        }
+
+        if (!isset($dbopts["host"]) || !isset($dbopts["port"]) || 
+            !isset($dbopts["user"]) || !isset($dbopts["pass"]) || 
+            !isset($dbopts["path"])) {
+            throw new Exception("Missing required database connection parameters");
+        }
 
         $host = $dbopts["host"];
         $port = $dbopts["port"];
@@ -27,8 +39,11 @@ if ($databaseUrl) {
         $dbname = ltrim($dbopts["path"], '/');
 
         // Create a new PDO instance with secure options
+        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+        error_log("Connecting to database at: $host:$port/$dbname");
+        
         $conn = new PDO(
-            "pgsql:host=$host;port=$port;dbname=$dbname",
+            $dsn,
             $user,
             $password,
             array(
@@ -38,11 +53,17 @@ if ($databaseUrl) {
             )
         );
         
-        // Set error mode
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Test the connection
+        $conn->query('SELECT 1');
+        error_log("Database connection successful");
+        
     } catch (PDOException $e) {
         error_log("Database connection failed: " . $e->getMessage());
-        // Don't die here, allow scripts to continue without DB if needed
+        error_log("DSN used: pgsql:host=$host;port=$port;dbname=$dbname");
+        $conn = null;
+    } catch (Exception $e) {
+        error_log("Database configuration error: " . $e->getMessage());
+        $conn = null;
     }
 } else {
     error_log("DATABASE_URL environment variable not set. Database features will be unavailable.");

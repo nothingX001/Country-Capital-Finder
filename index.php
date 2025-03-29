@@ -5,19 +5,20 @@
 require_once 'security_config.php';
 
 // Start secure session after security config is loaded
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// Enable error reporting
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Enable error logging
+error_log("Starting index.php execution");
 
 include 'config.php';
 include 'the-countries.php'; // Make sure this is included
 
-// Ensure database connection exists
+// Ensure database connection exists and log any issues
 if (!isset($conn) || !($conn instanceof PDO)) {
-    die("Database connection error");
+    error_log("Database connection not available in index.php");
+    die("Database connection error. Please try again later.");
 }
 
 // Optional helper to normalize user input
