@@ -18,7 +18,10 @@ include 'the-countries.php'; // Make sure this is included
 // Ensure database connection exists and log any issues
 if (!isset($conn) || !($conn instanceof PDO)) {
     error_log("Database connection not available in index.php");
-    die("Database connection error. Please try again later.");
+    // Instead of dying, we'll continue with limited functionality
+    $db_error = true;
+} else {
+    $db_error = false;
 }
 
 // Optional helper to normalize user input
@@ -200,22 +203,28 @@ $csrf_token = generate_csrf_token();
 
     <div class="page-content home">
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
-        <h3 class="search-heading" style="color: #ECECEC;">Enter a country to find its capital:</h3>
-        <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
-            <div class="search-bar-container" style="width: 90%; max-width: 500px;">
-                <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
+        
+        <?php if ($db_error): ?>
+            <div class="maintenance-notice" style="background: rgba(255, 0, 0, 0.1); padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <p style="color: #ff0000;">We're currently experiencing technical difficulties. Our team has been notified and is working on the issue. Please try again later.</p>
             </div>
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-            <input type="submit" value="SUBMIT" class="button">
-        </form>
+        <?php else: ?>
+            <h3 class="search-heading" style="color: #ECECEC;">Enter a country to find its capital:</h3>
+            <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
+                <div class="search-bar-container" style="width: 90%; max-width: 500px;">
+                    <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
+                </div>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+                <input type="submit" value="SUBMIT" class="button">
+            </form>
 
-        <?php if (isset($error_message)): ?>
-            <p class="message error"><?php echo htmlspecialchars($error_message); ?></p>
-        <?php endif; ?>
+            <?php if (isset($error_message)): ?>
+                <p class="message error"><?php echo htmlspecialchars($error_message); ?></p>
+            <?php endif; ?>
 
-        <?php if (isset($message)): ?>
-            <!-- Output message as raw HTML so the <strong> tags take effect -->
-            <p class="message"><?php echo $message; ?></p>
+            <?php if (isset($message)): ?>
+                <p class="message"><?php echo $message; ?></p>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
     

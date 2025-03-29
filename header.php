@@ -8,7 +8,6 @@ $baseUrl = $protocol . $host . '/';
 ?>
 <meta charset="UTF-8">
 <base href="<?php echo htmlspecialchars($baseUrl); ?>">
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="c7233634-6349-4f6d-8f04-54d9768b27b0" type="text/javascript" async></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
 
@@ -19,4 +18,7 @@ $baseUrl = $protocol . $host . '/';
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-94SRL3PBNE');
-</script> 
+</script>
+
+<!-- Cookiebot -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="c7233634-6349-4f6d-8f04-54d9768b27b0" async></script> 
