@@ -4,48 +4,31 @@
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Frame-Options "DENY"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://consent.cookiebot.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; img-src 'self' data: https: https://flagcdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://consentcdn.cookiebot.com; frame-src https://consentcdn.cookiebot.com; upgrade-insecure-requests;"
-    
-    # Hide PHP version
-    Header unset X-Powered-By
-    # Hide server information
-    Header always unset Server
-    Header unset X-Runtime
-    Header unset X-Version
-</IfModule>
-
-# Hide PHP version and server information
-ServerSignature Off
-ServerTokens Prod
-
-# Disable server information in error pages
-<IfModule mod_php.c>
-    php_flag expose_php Off
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;"
 </IfModule>
 
 # Disable directory listing
 Options -Indexes
 
-# Block access to sensitive files
-<FilesMatch "^(\.env|\.git|\.htaccess|\.htpasswd|config\.php|api_keys\.php|security_config\.php|Dockerfile|docker-compose\.yml)$">
+# Prevent access to sensitive files
+<FilesMatch "^\.">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Block PHP files in subdirectories but allow in root
-<FilesMatch "\.php$">
+<FilesMatch "^(config\.php|api_keys\.php|security_config\.php)$">
     Order allow,deny
-    <If "-f '%{REQUEST_FILENAME}' && '%{REQUEST_URI}' =~ m#^/[^/]+\.php$#">
-        Allow from all
-    </If>
-    <Else>
-        Deny from all
-    </Else>
+    Deny from all
 </FilesMatch>
 
-# Allow static assets
-<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|ico|svg)$">
+# Prevent access to PHP files in uploads directory
+<FilesMatch "\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow only specific file types
+<FilesMatch "\.(php|html|css|js|jpg|jpeg|png|gif|ico|svg)$">
     Order allow,deny
     Allow from all
 </FilesMatch>
@@ -57,19 +40,15 @@ Options -Indexes
     # Force HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Prevent access to system files
+    RewriteRule ^(\.git|\.env|\.htaccess|\.htpasswd|\.ini|\.log|\.sh|\.sql)$ - [F]
 </IfModule>
 
 # PHP settings
 <IfModule mod_php.c>
-    php_flag expose_php Off
     php_value upload_max_filesize 10M
     php_value post_max_size 10M
     php_value max_execution_time 300
     php_value max_input_time 300
-    
-    # Enable error logging
-    php_flag log_errors On
-    php_flag display_errors Off
-    php_flag display_startup_errors Off
-    php_value error_log /Applications/XAMPP/xamppfiles/logs/php_error.log
 </IfModule> 

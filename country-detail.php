@@ -4,56 +4,10 @@
 include 'config.php';
 include 'the-countries.php'; // Include the list of "the" countries
 
-// Add rate limiting
-session_start();
-$rate_limit_window = 60; // 1 minute window
-$max_requests = 30; // Maximum requests per window
-
-// Initialize rate limiting array if not exists
-if (!isset($_SESSION['rate_limit'])) {
-    $_SESSION['rate_limit'] = array(
-        'count' => 0,
-        'window_start' => time()
-    );
-}
-
-// Check if window has expired and reset if needed
-if (time() - $_SESSION['rate_limit']['window_start'] > $rate_limit_window) {
-    $_SESSION['rate_limit'] = array(
-        'count' => 0,
-        'window_start' => time()
-    );
-}
-
-// Increment request count
-$_SESSION['rate_limit']['count']++;
-
-// Check if rate limit exceeded
-if ($_SESSION['rate_limit']['count'] > $max_requests) {
-    http_response_code(429);
-    die("Too many requests. Please try again later.");
-}
-
-// Get and validate the country ID
+// Get the country ID from the query string
 $country_id = $_GET['id'] ?? null;
-
-// Validate country ID format (must be numeric and positive)
-if (!$country_id || !is_numeric($country_id) || $country_id <= 0) {
-    http_response_code(400);
-    die("Invalid country ID format.");
-}
-
-// Validate country ID exists in database before proceeding
-try {
-    $validate_stmt = $conn->prepare('SELECT COUNT(*) FROM countries WHERE id = ?');
-    $validate_stmt->execute([$country_id]);
-    if ($validate_stmt->fetchColumn() == 0) {
-        http_response_code(404);
-        die("Country not found.");
-    }
-} catch (Exception $e) {
-    http_response_code(500);
-    die("Error validating country ID.");
+if (!$country_id) {
+    die("Invalid country ID.");
 }
 
 try {

@@ -5,24 +5,15 @@
 require_once 'security_config.php';
 
 // Start secure session after security config is loaded
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
-// Enable error logging
-error_log("Starting index.php execution");
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 include 'config.php';
 include 'the-countries.php'; // Make sure this is included
-
-// Ensure database connection exists and log any issues
-if (!isset($conn) || !($conn instanceof PDO)) {
-    error_log("Database connection not available in index.php");
-    // Instead of dying, we'll continue with limited functionality
-    $db_error = true;
-} else {
-    $db_error = false;
-}
 
 // Optional helper to normalize user input
 function normalize_country_input($input) {
@@ -154,11 +145,24 @@ $csrf_token = generate_csrf_token();
 <!DOCTYPE html>
 <html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
-    <?php include 'header.php'; ?>
+    <meta charset="UTF-8">
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="c7233634-6349-4f6d-8f04-54d9768b27b0" type="text/javascript" async></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ExploreCapitals</title>
+    <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94SRL3PBNE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-94SRL3PBNE');
+    </script>
     <style>
         html, body {
             overflow-x: hidden !important;
@@ -203,28 +207,22 @@ $csrf_token = generate_csrf_token();
 
     <div class="page-content home">
         <h1 style="white-space: nowrap; font-size: clamp(32px, 5vw, 38px); letter-spacing: -0.5px;">ExploreCapitals</h1>
-        
-        <?php if ($db_error): ?>
-            <div class="maintenance-notice" style="background: rgba(255, 0, 0, 0.1); padding: 20px; border-radius: 5px; margin: 20px 0;">
-                <p style="color: #ff0000;">We're currently experiencing technical difficulties. Our team has been notified and is working on the issue. Please try again later.</p>
+        <h3 class="search-heading" style="color: #ECECEC;">Enter a country to find its capital:</h3>
+        <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
+            <div class="search-bar-container" style="width: 90%; max-width: 500px;">
+                <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
             </div>
-        <?php else: ?>
-            <h3 class="search-heading" style="color: #ECECEC;">Enter a country to find its capital:</h3>
-            <form action="index.php" method="post" id="searchForm" style="width: 90%; max-width: 500px;">
-                <div class="search-bar-container" style="width: 90%; max-width: 500px;">
-                    <input type="text" name="country" placeholder="Search..." novalidate style="width: 100%; box-sizing: border-box;">
-                </div>
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
-                <input type="submit" value="SUBMIT" class="button">
-            </form>
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token); ?>">
+            <input type="submit" value="SUBMIT" class="button">
+        </form>
 
-            <?php if (isset($error_message)): ?>
-                <p class="message error"><?php echo htmlspecialchars($error_message); ?></p>
-            <?php endif; ?>
+        <?php if (isset($error_message)): ?>
+            <p class="message error"><?php echo htmlspecialchars($error_message); ?></p>
+        <?php endif; ?>
 
-            <?php if (isset($message)): ?>
-                <p class="message"><?php echo $message; ?></p>
-            <?php endif; ?>
+        <?php if (isset($message)): ?>
+            <!-- Output message as raw HTML so the <strong> tags take effect -->
+            <p class="message"><?php echo $message; ?></p>
         <?php endif; ?>
     </div>
     
