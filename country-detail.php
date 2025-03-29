@@ -3,11 +3,19 @@
 
 include 'config.php';
 include 'the-countries.php'; // Include the list of "the" countries
+include 'security.php';
 
-// Get the country ID from the query string
+// Initialize security
+$security = Security::getInstance($conn);
+
+// Apply rate limiting
+$security->rateLimit();
+
+// Get and validate the country ID
 $country_id = $_GET['id'] ?? null;
-if (!$country_id) {
-    die("Invalid country ID.");
+if (!$country_id || !$security->validateCountryId($country_id)) {
+    http_response_code(404);
+    die("Invalid country ID or country not found.");
 }
 
 try {
@@ -42,6 +50,9 @@ try {
     ');
     $stmt->execute(['{' . implode(',', $the_countries) . '}', $country_id]);
     $country = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Sanitize the output
+    $country = $security->sanitizeOutput($country);
 
     if (!$country) {
         die("Country not found.");
@@ -85,13 +96,13 @@ try {
 $windowsFlagUrl = !empty($country['iso_code']) ? "https://flagcdn.com/32x24/" . strtolower($country['iso_code']) . ".png" : "";
 ?>
 <!DOCTYPE html>
-<html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="c7233634-6349-4f6d-8f04-54d9768b27b0" type="text/javascript" async></script>
     <title><?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - ExploreCapitals</title>
     <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Browse our database of countries, territories, and more!">
     <meta property="og:title" content="<?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> - Country Detail | ExploreCapitals">
     <meta property="og:description" content="Learn about <?php echo htmlspecialchars($country['country_name'] ?? 'Country Detail'); ?> and its capital<?php echo (count($capitals) > 1) ? 's' : ''; ?> with ExploreCapitals.">

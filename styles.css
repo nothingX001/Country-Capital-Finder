@@ -23,16 +23,44 @@ a:hover {
     outline-offset: 2px !important;
 }
 
+/* Global scrolling behavior */
 html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     min-height: 100%;
-    /* Remove iOS-specific overscroll behavior */
     background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
     background-attachment: fixed;
     background-size: cover;
+    position: fixed;
+    overflow: hidden;
+}
+
+body {
+    font-family: "Courier New", Courier, monospace;
+    background: transparent;
+    color: #ECECEC;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+    overscroll-behavior-y: auto; /* Allow native rubber-band effect */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Ensure content fills the viewport */
+.page-content {
+    min-height: 100%;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Add emoji font support */
@@ -67,24 +95,6 @@ html {
 }
 
 /* 2) Body Defaults */
-body {
-    font-family: "Courier New", Courier, monospace;
-    background: transparent; /* Changed from gradient to transparent */
-    color: #ECECEC;
-    margin: 0;
-    padding: 0 0 20px 0;
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-    /* Remove iOS-specific scrolling */
-    height: 100%;
-}
-
-/*
-   2a) Background implementation:
-   Fixed to the viewport using html background
-*/
-
 body::before {
     content: "";
     position: fixed;
