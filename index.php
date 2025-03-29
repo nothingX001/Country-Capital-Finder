@@ -145,24 +145,11 @@ $csrf_token = generate_csrf_token();
 <!DOCTYPE html>
 <html lang="en" style="overscroll-behavior-y: none; overflow-x: hidden;">
 <head>
-    <meta charset="UTF-8">
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="c7233634-6349-4f6d-8f04-54d9768b27b0" type="text/javascript" async></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <?php include 'header.php'; ?>
     <title>ExploreCapitals</title>
-    <link rel="icon" type="image/jpeg" href="images/explore-capitals-logo.jpg">
     <meta name="description" content="ExploreCapitals is a unique application where you can find any country or territory's capital.">
     <meta name="author" content="ExploreCapitals">
-    <link rel="stylesheet" href="styles.css"> <!-- Only the single stylesheet -->
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94SRL3PBNE"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-94SRL3PBNE');
-    </script>
+    <link rel="stylesheet" href="styles.css">
     <style>
         html, body {
             overflow-x: hidden !important;
