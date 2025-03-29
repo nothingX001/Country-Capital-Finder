@@ -15,6 +15,11 @@ error_reporting(E_ALL);
 include 'config.php';
 include 'the-countries.php'; // Make sure this is included
 
+// Ensure database connection exists
+if (!isset($conn) || !($conn instanceof PDO)) {
+    die("Database connection error");
+}
+
 // Optional helper to normalize user input
 function normalize_country_input($input) {
     global $the_countries;
