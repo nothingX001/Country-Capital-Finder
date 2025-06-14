@@ -10,16 +10,19 @@
 }
 
 .about-header h1 {
-  color: #ECECEC;
-  font-size: 2.5rem;
+  color: #DCCB9C;
+  font-size: 2.8rem;
   margin-bottom: 1rem;
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: -0.5px;
 }
 
 .about-header p {
-  color: #DCCB9C;
-  font-size: 1.1rem;
+  color: #ECECEC;
+  font-size: 1.2rem;
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.6;
 }
 
 .statistics-section {
@@ -27,13 +30,15 @@
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 3rem;
+  border-top: 1px solid rgba(220, 203, 156, 0.3);
 }
 
 .statistics-section h2 {
-  color: #ECECEC;
-  font-size: 1.8rem;
+  color: #DCCB9C;
+  font-size: 2.2rem;
   margin-bottom: 1.5rem;
   text-align: center;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .statistics-grid {
@@ -48,6 +53,7 @@
   background-color: rgba(42, 54, 59, 0.8);
   border-radius: 8px;
   transition: transform 0.2s ease;
+  border-top: 1px solid rgba(220, 203, 156, 0.3);
 }
 
 .statistic-item:hover {
@@ -55,14 +61,15 @@
 }
 
 .statistic-value {
-  color: #ECECEC;
+  color: #DCCB9C;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .statistic-label {
-  color: #DCCB9C;
+  color: #ECECEC;
   font-size: 1rem;
 }
 
@@ -71,13 +78,15 @@
   padding: 2rem;
   border-radius: 8px;
   margin-bottom: 3rem;
+  border-top: 1px solid rgba(220, 203, 156, 0.3);
 }
 
 .features-section h2 {
-  color: #ECECEC;
-  font-size: 1.8rem;
+  color: #DCCB9C;
+  font-size: 2.2rem;
   margin-bottom: 1.5rem;
   text-align: center;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .features-list {
@@ -94,6 +103,7 @@
   background-color: rgba(42, 54, 59, 0.8);
   border-radius: 8px;
   margin-bottom: 1rem;
+  border-top: 1px solid rgba(220, 203, 156, 0.3);
 }
 
 .feature-item:last-child {
@@ -107,15 +117,17 @@
 }
 
 .feature-content h3 {
-  color: #ECECEC;
+  color: #DCCB9C;
   margin: 0 0 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .feature-content p {
-  color: #DCCB9C;
+  color: #ECECEC;
   margin: 0;
   font-size: 1rem;
+  line-height: 1.6;
 }
 
 .disclaimer {
@@ -123,17 +135,19 @@
   padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
+  border-top: 1px solid rgba(220, 203, 156, 0.3);
 }
 
 .disclaimer p {
-  color: #DCCB9C;
+  color: #ECECEC;
   margin: 0;
   font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
   .about-header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 
   .about-header p {
@@ -142,7 +156,7 @@
 
   .statistics-section h2,
   .features-section h2 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .statistic-value {
@@ -157,5 +171,24 @@
 
   .feature-icon {
     margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .statistics-section h2,
+  .features-section h2 {
+    font-size: 1.6rem;
+  }
+  
+  .statistic-value {
+    font-size: 1.6rem;
+  }
+  
+  .feature-content h3 {
+    font-size: 1.2rem;
   }
 } 

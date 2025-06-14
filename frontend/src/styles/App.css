@@ -2,6 +2,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(180deg, #3B4B54, #DCCB9C) fixed;
+  background-attachment: fixed;
+  background-size: cover;
+  color: #ECECEC;
 }
 
 .page-content {
@@ -10,6 +14,11 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  background-color: #2A363B;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  margin-top: 100px;
+  margin-bottom: 60px;
 }
 
 .loading-indicator {
@@ -40,6 +49,16 @@
   border-radius: 4px;
   background-color: rgba(42, 54, 59, 0.8);
   color: #ECECEC;
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.message a, .message strong {
+  text-decoration: none;
+  color: #DCCB9C;
+  font-weight: bold;
+  font-size: 26px;
 }
 
 .message.error {
@@ -49,5 +68,30 @@
 @media (max-width: 768px) {
   .page-content {
     padding: 80px 15px 15px;
+    width: 95%;
+    margin-top: 80px;
+  }
+  
+  .message {
+    font-size: 20px;
+  }
+  
+  .message a, .message strong {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content {
+    width: 90%;
+    padding: 60px 10px 10px;
+  }
+  
+  .message {
+    font-size: 16px;
+  }
+  
+  .message a, .message strong {
+    font-size: 18px;
   }
 } 
