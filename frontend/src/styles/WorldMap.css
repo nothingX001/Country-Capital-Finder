@@ -1,0 +1,119 @@
+.world-map {
+  height: calc(100vh - 100px);
+  position: relative;
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 1rem;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.overlay-title {
+  color: #ECECEC;
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+}
+
+.overlay-content {
+  color: #DCCB9C;
+  font-size: 0.9rem;
+}
+
+.mapboxgl-popup {
+  max-width: 300px !important;
+}
+
+.mapboxgl-popup-content {
+  background-color: rgba(42, 54, 59, 0.95) !important;
+  color: #ECECEC !important;
+  padding: 1rem !important;
+  border-radius: 8px !important;
+}
+
+.mapboxgl-popup-close-button {
+  color: #ECECEC !important;
+  font-size: 1.2rem !important;
+  padding: 0.5rem !important;
+}
+
+.mapboxgl-popup-close-button:hover {
+  background-color: rgba(220, 203, 156, 0.2) !important;
+  color: #DCCB9C !important;
+}
+
+.popup-title {
+  color: #ECECEC;
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.popup-content {
+  color: #DCCB9C;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.mapboxgl-ctrl-group {
+  background-color: rgba(42, 54, 59, 0.8) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.mapboxgl-ctrl-group button {
+  background-color: transparent !important;
+  border: none !important;
+  color: #ECECEC !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background-color: rgba(220, 203, 156, 0.2) !important;
+  color: #DCCB9C !important;
+}
+
+.mapboxgl-ctrl-group button + button {
+  border-top: 1px solid rgba(220, 203, 156, 0.2) !important;
+}
+
+.mapboxgl-ctrl-attrib {
+  background-color: rgba(42, 54, 59, 0.8) !important;
+  color: #DCCB9C !important;
+  font-size: 0.8rem !important;
+  padding: 0.5rem !important;
+}
+
+.mapboxgl-ctrl-attrib a {
+  color: #DCCB9C !important;
+}
+
+.mapboxgl-ctrl-attrib a:hover {
+  color: #ECECEC !important;
+}
+
+@media (max-width: 768px) {
+  .map-overlay {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 0.8rem;
+  }
+
+  .overlay-title {
+    font-size: 1rem;
+  }
+
+  .overlay-content {
+    font-size: 0.8rem;
+  }
+} 

@@ -1,0 +1,123 @@
+.country-profiles {
+  padding: 20px;
+}
+
+.filters {
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.filter-group label {
+  display: block;
+  color: #ECECEC;
+  margin-bottom: 0.5rem;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid #DCCB9C;
+  border-radius: 4px;
+  background-color: rgba(42, 54, 59, 0.8);
+  color: #ECECEC;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #ECECEC;
+}
+
+.countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.country-card {
+  background-color: rgba(42, 54, 59, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.country-card:hover {
+  transform: translateY(-5px);
+}
+
+.country-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.country-flag {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.country-info {
+  padding: 1.5rem;
+}
+
+.country-info h3 {
+  color: #ECECEC;
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.country-info p {
+  color: #DCCB9C;
+  margin: 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 2px solid #DCCB9C;
+  border-radius: 4px;
+  background-color: rgba(42, 54, 59, 0.8);
+  color: #ECECEC;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  background-color: #DCCB9C;
+  color: #2A363B;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background-color: #DCCB9C;
+  color: #2A363B;
+}
+
+@media (max-width: 768px) {
+  .countries-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .country-flag {
+    height: 150px;
+  }
+} 

@@ -1,0 +1,86 @@
+service: explore-capitals-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  environment:
+    PGHOST: ${ssm:/explore/pg/host}
+    PGPORT: ${ssm:/explore/pg/port}
+    PGDATABASE: ${ssm:/explore/pg/database}
+    PGUSER: ${ssm:/explore/pg/user}
+    PGPASSWORD: ${ssm:/explore/pg/password}
+
+functions:
+  getCapital:
+    handler: src/handlers.getCapital
+    events:
+      - httpApi:
+          path: /api/capital
+          method: get
+          cors: true
+
+  getCountries:
+    handler: src/handlers.getCountries
+    events:
+      - httpApi:
+          path: /api/countries
+          method: get
+          cors: true
+
+  getCountryDetail:
+    handler: src/handlers.getCountryDetail
+    events:
+      - httpApi:
+          path: /api/country/{id}
+          method: get
+          cors: true
+
+  getQuiz:
+    handler: src/handlers.getQuiz
+    events:
+      - httpApi:
+          path: /api/quiz
+          method: get
+          cors: true
+
+  getMapData:
+    handler: src/handlers.getMapData
+    events:
+      - httpApi:
+          path: /api/map
+          method: get
+          cors: true
+
+  getStatistics:
+    handler: src/handlers.getStatistics
+    events:
+      - httpApi:
+          path: /api/statistics
+          method: get
+          cors: true
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!src/**'
+    - 'src/handlers.ts'
+    - 'src/utils.ts'
+    - 'package.json'
+    - 'package-lock.json'
+
+plugins:
+  - serverless-esbuild
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude: ['aws-sdk']
+    target: 'node20'
+    platform: 'node'
+    concurrency: 10 

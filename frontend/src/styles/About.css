@@ -1,0 +1,161 @@
+.about {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-header h1 {
+  color: #ECECEC;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-header p {
+  color: #DCCB9C;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.statistics-section {
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+
+.statistics-section h2 {
+  color: #ECECEC;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.statistic-item {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: rgba(42, 54, 59, 0.8);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.statistic-item:hover {
+  transform: translateY(-5px);
+}
+
+.statistic-value {
+  color: #ECECEC;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.statistic-label {
+  color: #DCCB9C;
+  font-size: 1rem;
+}
+
+.features-section {
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+}
+
+.features-section h2 {
+  color: #ECECEC;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba(42, 54, 59, 0.8);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.feature-icon {
+  color: #DCCB9C;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.feature-content h3 {
+  color: #ECECEC;
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.feature-content p {
+  color: #DCCB9C;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.disclaimer {
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.disclaimer p {
+  color: #DCCB9C;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .about-header h1 {
+    font-size: 2rem;
+  }
+
+  .about-header p {
+    font-size: 1rem;
+  }
+
+  .statistics-section h2,
+  .features-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .statistic-value {
+    font-size: 1.8rem;
+  }
+
+  .feature-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .feature-icon {
+    margin-bottom: 0.5rem;
+  }
+} 

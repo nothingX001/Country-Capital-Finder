@@ -1,0 +1,167 @@
+.country-detail {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #DCCB9C;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s ease;
+}
+
+.back-button:hover {
+  color: #ECECEC;
+}
+
+.country-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.country-flag {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.country-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.country-info h1 {
+  color: #ECECEC;
+  font-size: 2.5rem;
+  margin: 0 0 1rem;
+}
+
+.country-info p {
+  color: #DCCB9C;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.detail-section {
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.detail-section h2 {
+  color: #ECECEC;
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+}
+
+.detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detail-list li {
+  color: #DCCB9C;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-list li:last-child {
+  margin-bottom: 0;
+}
+
+.detail-list li strong {
+  color: #ECECEC;
+  min-width: 120px;
+}
+
+.neighbors-section {
+  background-color: rgba(42, 54, 59, 0.8);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.neighbors-section h2 {
+  color: #ECECEC;
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+}
+
+.neighbors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.neighbor-card {
+  background-color: rgba(42, 54, 59, 0.8);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.neighbor-card:hover {
+  transform: translateY(-3px);
+}
+
+.neighbor-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.neighbor-flag {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+.neighbor-info {
+  padding: 1rem;
+}
+
+.neighbor-info h3 {
+  color: #ECECEC;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.neighbor-info p {
+  color: #DCCB9C;
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .country-header {
+    grid-template-columns: 1fr;
+  }
+
+  .country-info h1 {
+    font-size: 2rem;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .neighbors-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+} 
